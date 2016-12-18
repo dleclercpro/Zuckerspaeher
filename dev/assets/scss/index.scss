@@ -1,0 +1,271 @@
+/*******************************************************************************
+
+Title : index.scss
+Author : David Leclerc
+Date : 12.12.2016
+Notes : -
+
+*******************************************************************************/
+
+// IMPORTS
+@import "normalize";
+@import "reset";
+@import "fonts";
+@import "config";
+@import "placeholders";
+@import "mixins";
+
+// STYLES
+html{
+	width: 100%;
+	height: 100%; // Setting height in percentages can cause trouble...
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	font-family: $font_stack;
+	display: flex;
+	flex-wrap: wrap;
+	background-color: $grey;
+
+	@include mq("tablet") {
+		background-color: red;
+	}
+
+	@include mq("phone") {
+		background-color: blue;
+	}
+}
+
+header {
+	width: 100%;
+	height: 100% - $height-content;
+	padding: 0 $padding-header;
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.75);
+	border-bottom: 2px solid black;
+	z-index: 1;
+
+	> #branding {
+		height: 100%;
+		color: $white;
+		font-family: "Gloria Hallelujah";
+		font-size: 30px;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+	}
+
+	> #buttons {
+		@extend %center;
+		width: 20px;
+		margin-left: auto;
+
+		> img {
+			width: 100%;
+			cursor: pointer;
+		}
+	}
+}
+
+#content {
+	width: 100%;
+	height: $height-content;
+	position: relative;
+	overflow: hidden;
+}
+
+footer {
+	width: 100%;
+	height: (100% - $height-content) / 2;
+	background-color: $black;
+}
+
+#user-info {
+	width: 50%;
+	max-width: 500px;
+	padding: 30px 2.5%;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 5%;
+	left: 2%;
+	border-radius: 3px;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+
+	@include mq("tablet") {
+		width: 60%;
+	}
+
+	@include mq("phone") {
+		width: 92%;
+	}
+
+	> #user-picture {
+		height: 125px;
+		border-radius: 50%;
+		border: 5px solid $white;
+	}
+
+	> #user-details {
+		margin-left: 5%;
+		font-size: 18px;
+		color: $white;
+
+		> #last-update {
+			font-weight: bold;
+			color: red;
+		}
+	}
+}
+
+#graph {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+
+	> #graph-data {
+		width: $width-graph;
+		height: $height-graph;
+		position: relative;
+
+		> #bg-info {
+			display: none;
+			width: 10%;
+			height: 100px;
+			padding: 10px;
+			position: absolute;
+			border-radius: 3px;
+			box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+			background-color: rgba(0, 0, 0, 0.75);
+			z-index: 1;
+
+			> #bg-value {
+				color: white;
+				font-size: 16px;
+				font-weight: bold;
+			}
+
+			> #bg-time {
+				@extend #bg-value;
+			}
+		}
+
+		> .bg {
+			border: 2px solid $black;
+			border-radius: 50%;
+			position: absolute;
+			width: 2 * $radius-bg;
+			height: 2 * $radius-bg;
+			cursor: pointer;
+		}
+	}
+
+	> #graph-y-axis {
+		width: 100% - $width-graph;
+		height: $height-graph;
+		display: flex;
+		flex-direction: column;
+
+		> .graph-y-axis-tick {
+			padding-bottom: 2px;
+			font-weight: bold;
+			color: $white;
+			border-bottom: 2px dotted $white;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			flex-shrink: 0;
+			flex-grow: 0;
+		}
+	}
+
+	> #graph-x-axis {
+		width: $width-graph;
+		height: 100% - $height-graph;
+		display: flex;
+
+		> .graph-x-axis-tick {
+			padding-right: 4px;
+			font-weight: bold;
+			color: $white;
+			border-right: 2px dotted $white;
+			display: flex;
+			justify-content: flex-end;
+			flex-shrink: 0;
+			flex-grow: 0;
+		}
+	}
+
+	> #graph-none {
+		width: 100% - $width-graph;
+		height: 100% - $height-graph;
+	}
+}
+
+#settings {
+	width: $width-settings;
+	height: 100%;
+	padding: 0 $padding-settings;
+	background-color: rgba(0, 0, 0, 0.75);
+	position: absolute;
+	top: 0;
+	right: -$width-settings;
+	color: $white;
+	border-left: 2px solid black;
+
+	> h1 {
+		width: 50%;
+		margin: 10px 0;
+		font-weight: bold;
+		font-size: 20px;
+		font-family: "Gloria Hallelujah";
+	}
+
+	> div {
+		width: 75%;
+	}
+}
+
+footer {
+	display: none;
+}
+
+
+
+// General classes
+.bg-very-low {
+	background-color: $red;
+
+	&:hover {
+		background-color: darken($red, 25%);
+	}
+}
+
+.bg-low {
+	background-color: $orange;
+
+	&:hover {
+		background-color: darken($orange, 25%);
+	}
+}
+
+.bg-normal {
+	background-color: $green;
+
+	&:hover {
+		background-color: darken($green, 25%);
+	}
+}
+
+.bg-high {
+	@extend .bg-low;
+}
+
+.bg-very-high {
+	@extend .bg-very-low;
+}

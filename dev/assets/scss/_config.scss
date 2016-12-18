@@ -1,0 +1,27 @@
+// Breakpoints
+$breakpoints: (
+	"phone": 640px,
+	"tablet": 768px,
+	"desktop": 1024px
+);
+
+// Fonts
+$font_stack: "Slabo 27px", serif;
+
+// Colors
+$black: #111111;
+$white: #EEEEEE;
+$grey: #222222;
+$green: #99e500;
+$orange: #ff8100;
+$red: #e50000;
+
+// Sizes
+$width-graph: 97.5%;
+$height-graph: 96%;
+$height-content: 92.5%;
+$width-settings: 25%;
+$height-settings: 95%;
+$radius-bg: 5px;
+$padding-header: 2.5%;
+$padding-settings: 2%;

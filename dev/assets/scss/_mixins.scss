@@ -1,0 +1,6 @@
+@mixin mq($type) {
+	
+	@media all and (max-width: map-get($breakpoints, $type)) {
+		@content;
+	}
+}
