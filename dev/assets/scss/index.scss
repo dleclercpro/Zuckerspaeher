@@ -44,7 +44,8 @@ header {
 	padding: 0 $padding-header;
 	display: flex;
 	background-color: rgba(0, 0, 0, 0.75);
-	border-bottom: 2px solid black;
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.75);
+	//border-bottom: 2px solid black;
 	z-index: 1;
 
 	> #branding {
@@ -77,6 +78,7 @@ header {
 }
 
 footer {
+	display: none;
 	width: 100%;
 	height: (100% - $height-content) / 2;
 	background-color: $black;
@@ -135,8 +137,6 @@ footer {
 
 		> #bg-info {
 			display: none;
-			width: 10%;
-			height: 100px;
 			padding: 10px;
 			position: absolute;
 			border-radius: 3px;
@@ -211,12 +211,13 @@ footer {
 	width: $width-settings;
 	height: 100%;
 	padding: 0 $padding-settings;
+	box-shadow: -3px 0 3px rgba(0, 0, 0, 0.75);
 	background-color: rgba(0, 0, 0, 0.75);
+	//border-left: 2px solid black;
 	position: absolute;
 	top: 0;
 	right: -$width-settings;
 	color: $white;
-	border-left: 2px solid black;
 
 	> h1 {
 		width: 50%;
@@ -229,10 +230,6 @@ footer {
 	> div {
 		width: 75%;
 	}
-}
-
-footer {
-	display: none;
 }
 
 
@@ -268,4 +265,24 @@ footer {
 
 .bg-very-high {
 	@extend .bg-very-low;
+}
+
+.bg-very-low-text {
+	color: $red;
+}
+
+.bg-low-text {
+	color: $orange;
+}
+
+.bg-normal-text {
+	color: $green;
+}
+
+.bg-high-text {
+	@extend .bg-low-text;
+}
+
+.bg-very-high-text {
+	@extend .bg-very-low-text;
 }

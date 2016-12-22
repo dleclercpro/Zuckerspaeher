@@ -412,7 +412,7 @@ header {
   padding: 0 2.5%;
   display: flex;
   background-color: rgba(0, 0, 0, 0.75);
-  border-bottom: 2px solid black;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.75);
   z-index: 1; }
   header > #branding {
     height: 100%;
@@ -436,6 +436,7 @@ header {
   overflow: hidden; }
 
 footer {
+  display: none;
   width: 100%;
   height: 3.75%;
   background-color: #111111; }
@@ -482,8 +483,6 @@ footer {
     position: relative; }
     #graph > #graph-data > #bg-info {
       display: none;
-      width: 10%;
-      height: 100px;
       padding: 10px;
       position: absolute;
       border-radius: 3px;
@@ -537,12 +536,12 @@ footer {
   width: 25%;
   height: 100%;
   padding: 0 2%;
+  box-shadow: -3px 0 3px rgba(0, 0, 0, 0.75);
   background-color: rgba(0, 0, 0, 0.75);
   position: absolute;
   top: 0;
   right: -25%;
-  color: #EEEEEE;
-  border-left: 2px solid black; }
+  color: #EEEEEE; }
   #settings > h1 {
     width: 50%;
     margin: 10px 0;
@@ -551,9 +550,6 @@ footer {
     font-family: "Gloria Hallelujah"; }
   #settings > div {
     width: 75%; }
-
-footer {
-  display: none; }
 
 .bg-very-low, .bg-very-high {
   background-color: #e50000; }
@@ -569,3 +565,12 @@ footer {
   background-color: #99e500; }
   .bg-normal:hover {
     background-color: #446600; }
+
+.bg-very-low-text, .bg-very-high-text {
+  color: #e50000; }
+
+.bg-low-text, .bg-high-text {
+  color: #ff8100; }
+
+.bg-normal-text {
+  color: #99e500; }

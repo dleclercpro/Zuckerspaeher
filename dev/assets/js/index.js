@@ -24,6 +24,7 @@ $(document).ready(function()
 	var BGInfo = $("#bg-info");
 	var BGInfoTime = $("#bg-time");
 	var BGInfoValue = $("#bg-value");
+	var BGLabel;
 
 	// Sizes
 	var widthSettings = "25%";
@@ -176,16 +177,39 @@ $(document).ready(function()
 				BGTick.addClass("bg-very-high");
 			}
 
+			// Show BG info bubble
 			BGTick.on("mouseenter", function () {
 				t = new Date(parseInt($(this).attr("x")));
-				t = ("0" + t.getHours()).slice(-2) + ":" + ("0" + t.getMinutes()).slice(-2);
-				BG = Math.round($(this).attr("y") * 10) / 10;
+				year = t.getFullYear();
+				month = t.getMonth();
+				day = t.getDate();
+				hour = t.getHours();
+				minute = t.getMinutes();
+				second = t.getSeconds();
+				BG = (Math.round($(this).attr("y") * 10) / 10).toFixed(1);
+				BGLabel = $("<span>" + BG + "</span>");
+
+				// Position bubble on graph
 				BGInfo.css({
 					"left": (($(this).attr("x") - (x_0 - dX)) / dX * graphData.width() - radiusBGTick - thicknessXAxisTick / 2) + 10 + "px",
 					"bottom": ($(this).attr("y") / y.max() * graphData.height() - radiusBGTick - thicknessYAxisTick / 2) + 10 + "px"
 				});
-				BGInfoValue.text("BG: " + BG + " mmol/L");
-				BGInfoTime.text("Time: " + t);
+
+				if (BG < BGScale[0]) {
+					BGLabel.addClass("bg-very-low-text");
+				} else if (BG >= BGScale[0] && BG < BGScale[1]) {
+					BGLabel.addClass("bg-low-text");
+				} else if (BG >= BGScale[1] && BG < BGScale[2]) {
+					BGLabel.addClass("bg-normal-text");
+				} else if (BG >= BGScale[2] && BG < BGScale[3]) {
+					BGLabel.addClass("bg-high-text");
+				} else if (BG >= BGScale[3]) {
+					BGLabel.addClass("bg-very-high-text");
+				}
+
+				BGInfoValue.html(BGLabel.prop("outerHTML") + " mmol/L");
+				BGInfoTime.text(("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + day + "." + month + "." + year);
+				
 				BGInfo.show();
 			});
 
