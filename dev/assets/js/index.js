@@ -2,13 +2,12 @@ $(document).ready(function()
 {
 	// Config
 	var now = new Date();
-	var then;
 	var x = [];
 	var x_ = [];
 	var x_0 = now.getTime();
 	var y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var dx = 1; // Time step (h)
-	var dX = 12; // Time range (h)
+	var dX = 8; // Time range (h)
 	var dy = 0;
 	var dY = y.max() - y.min();
 	var xTicks = [];
@@ -24,7 +23,7 @@ $(document).ready(function()
 	var BGInfo = $("#bg-info");
 	var BGInfoTime = $("#bg-time");
 	var BGInfoValue = $("#bg-value");
-	var BGLabel;
+	var BGInfoLabel = $("#bg-label");
 
 	// Sizes
 	var widthSettings = "25%";
@@ -36,17 +35,10 @@ $(document).ready(function()
 
 	// Functions
 	function init() {
-		buildAxes();
+		buildXAxis();
+		buildYAxis();
 		simulateData();
 		showData();
-	}
-
-	function buildAxes () {
-		// X-Axis
-		buildXAxis();
-
-		// Y-Axis
-		buildYAxis();
 	}
 
 	function buildXAxis () {
@@ -62,9 +54,7 @@ $(document).ready(function()
 
 		// Format epoch to string
 		for (i = 0; i < x.length; i++) {
-			then = new Date(x[i]);
-
-			x_.push(("0" + then.getHours()).slice(-2) + ":" + ("0" + then.getMinutes()).slice(-2));
+			x_.push(convertTime(x[i], "HH:MM"));
 		}
 
 		// Create time axis
@@ -165,29 +155,23 @@ $(document).ready(function()
 			});
 
 			// Color BG
-			if (BG < BGScale[0]) {
-				BGTick.addClass("bg-very-low");
-			} else if (BG >= BGScale[0] && BG < BGScale[1]) {
-				BGTick.addClass("bg-low");
-			} else if (BG >= BGScale[1] && BG < BGScale[2]) {
-				BGTick.addClass("bg-normal");
-			} else if (BG >= BGScale[2] && BG < BGScale[3]) {
-				BGTick.addClass("bg-high");
-			} else if (BG >= BGScale[3]) {
-				BGTick.addClass("bg-very-high");
-			}
+			BGTick.addClass(rankBG(BG, BGScale));
 
 			// Show BG info bubble
 			BGTick.on("mouseenter", function () {
-				t = new Date(parseInt($(this).attr("x")));
-				year = t.getFullYear();
-				month = t.getMonth();
-				day = t.getDate();
-				hour = t.getHours();
-				minute = t.getMinutes();
-				second = t.getSeconds();
+				// Get BG and time
+				t = convertTime($(this).attr("x"), "HH:MM - DD.MM.YYYY");
 				BG = (Math.round($(this).attr("y") * 10) / 10).toFixed(1);
-				BGLabel = $("<span>" + BG + "</span>");
+
+				// Add BG value
+				BGInfoLabel.text(BG);
+
+				// Ajust BG class
+				BGInfoLabel.removeClass();
+				BGInfoLabel.addClass(rankBG(BG, BGScale));
+
+				// Add time
+				BGInfoTime.text(t);
 
 				// Position bubble on graph
 				BGInfo.css({
@@ -195,21 +179,7 @@ $(document).ready(function()
 					"bottom": ($(this).attr("y") / y.max() * graphData.height() - radiusBGTick - thicknessYAxisTick / 2) + 10 + "px"
 				});
 
-				if (BG < BGScale[0]) {
-					BGLabel.addClass("bg-very-low-text");
-				} else if (BG >= BGScale[0] && BG < BGScale[1]) {
-					BGLabel.addClass("bg-low-text");
-				} else if (BG >= BGScale[1] && BG < BGScale[2]) {
-					BGLabel.addClass("bg-normal-text");
-				} else if (BG >= BGScale[2] && BG < BGScale[3]) {
-					BGLabel.addClass("bg-high-text");
-				} else if (BG >= BGScale[3]) {
-					BGLabel.addClass("bg-very-high-text");
-				}
-
-				BGInfoValue.html(BGLabel.prop("outerHTML") + " mmol/L");
-				BGInfoTime.text(("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + day + "." + month + "." + year);
-				
+				// Show bubble
 				BGInfo.show();
 			});
 

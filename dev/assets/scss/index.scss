@@ -148,6 +148,10 @@ footer {
 				color: white;
 				font-size: 16px;
 				font-weight: bold;
+
+				> #bg-label {
+					background: none;
+				}
 			}
 
 			> #bg-time {
@@ -237,6 +241,7 @@ footer {
 // General classes
 .bg-very-low {
 	background-color: $red;
+	color: $red;
 
 	&:hover {
 		background-color: darken($red, 25%);
@@ -245,6 +250,7 @@ footer {
 
 .bg-low {
 	background-color: $orange;
+	color: $orange;
 
 	&:hover {
 		background-color: darken($orange, 25%);
@@ -253,6 +259,7 @@ footer {
 
 .bg-normal {
 	background-color: $green;
+	color: $green;
 
 	&:hover {
 		background-color: darken($green, 25%);
@@ -265,24 +272,4 @@ footer {
 
 .bg-very-high {
 	@extend .bg-very-low;
-}
-
-.bg-very-low-text {
-	color: $red;
-}
-
-.bg-low-text {
-	color: $orange;
-}
-
-.bg-normal-text {
-	color: $green;
-}
-
-.bg-high-text {
-	@extend .bg-low-text;
-}
-
-.bg-very-high-text {
-	@extend .bg-very-low-text;
 }

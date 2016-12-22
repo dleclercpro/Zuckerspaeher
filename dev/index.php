@@ -47,7 +47,7 @@ Notes : -
 			<div id="graph">
 				<div id="graph-data">
 					<div id="bg-info">
-						<div id="bg-value"></div>
+						<div id="bg-value"><span id="bg-label"></span> mmol/L</div>
 						<div id="bg-time"></div>
 					</div>
 					<!--
@@ -105,6 +105,7 @@ Notes : -
 		<!-- JS -->
 		<script src="assets/js/helpers/jquery-3.1.1.js"></script>
 		<script src="assets/js/helpers/jquery-ui-1.12.1.js"></script>
+		<script src="assets/js/mod.js"></script>
 		<script src="assets/js/lib.js"></script>
 		<script src="assets/js/index.js"></script>
 		<!--

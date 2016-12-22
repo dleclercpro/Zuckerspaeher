@@ -493,6 +493,8 @@ footer {
         color: white;
         font-size: 16px;
         font-weight: bold; }
+        #graph > #graph-data > #bg-info > #bg-value > #bg-label, #graph > #graph-data > #bg-info > #bg-time > #bg-label {
+          background: none; }
     #graph > #graph-data > .bg {
       border: 2px solid #111111;
       border-radius: 50%;
@@ -552,25 +554,19 @@ footer {
     width: 75%; }
 
 .bg-very-low, .bg-very-high {
-  background-color: #e50000; }
+  background-color: #e50000;
+  color: #e50000; }
   .bg-very-low:hover, .bg-very-high:hover {
     background-color: #660000; }
 
 .bg-low, .bg-high {
-  background-color: #ff8100; }
+  background-color: #ff8100;
+  color: #ff8100; }
   .bg-low:hover, .bg-high:hover {
     background-color: #804100; }
 
 .bg-normal {
-  background-color: #99e500; }
+  background-color: #99e500;
+  color: #99e500; }
   .bg-normal:hover {
     background-color: #446600; }
-
-.bg-very-low-text, .bg-very-high-text {
-  color: #e50000; }
-
-.bg-low-text, .bg-high-text {
-  color: #ff8100; }
-
-.bg-normal-text {
-  color: #99e500; }
