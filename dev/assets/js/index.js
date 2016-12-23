@@ -34,7 +34,8 @@ $(document).ready(function()
 	function init() {
 		buildXAxis();
 		buildYAxis();
-		simulateData();
+		simulateBG();
+		simulateTBR();
 		showData();
 	}
 
@@ -89,45 +90,6 @@ $(document).ready(function()
 		}
 	}
 
-	function simulateData () {
-		var ticks = [];
-		//var x_0 = 1482080888 * 1000;
-		var x = [];
-		var y = [];
-		var dx = 3 * 60 * 1000; // ms
-		var dX = 12 * 60 * 60 * 1000; // ms
-		var u = 0;
-		var u_0 = 15;
-		var A = 20;
-		var B = 1;
-		var k = 2;
-
-		// Create epoch time scale
-		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x_0 - i * dx);
-		}
-
-		x.unshift(x_0 - dX);
-
-		for (i = 0; i < x.length; i++) {
-			u = (x[i] - (x_0 - dX)) / 1000000;
-
-			if (u >= u_0) {
-				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
-			} else {
-				y.push(B);
-			}
-		}
-
-		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='bg' x='" + x[i] + "' y='" + y[i] + "'></div>"));
-		}
-
-		for (i = 0; i < x.length; i++) {
-			graphData.append(ticks[i]);
-		}
-	}
-
 	function showData () {
 		var t;
 		var BG;
@@ -135,6 +97,8 @@ $(document).ready(function()
 		var yBG;
 		var BGDot;
 		var BGDots = $(".bg");
+		var TBRBar;
+		var TBRBars = $(".tbr");
 		var xBubble;
 		var yBubble;
 		var radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
@@ -149,9 +113,9 @@ $(document).ready(function()
 			t = BGDot.attr("x");
 			BG = BGDot.attr("y");
 
-			// Get BG tick coordinates
+			// Compute BG tick coordinates
 			xBG = (t - (x_0 - dX)) / dX * graphData.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
-			yBG = BG / y.max() * graphData.height() - radiusBGDot + thicknessYAxisTick / 2;
+			yBG = BG / y.max() * graphData.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
 
 			// Position BG on graph
 			BGDot.css({
@@ -170,6 +134,31 @@ $(document).ready(function()
 			// Hide bubble
 			BGDot.on("mouseleave", function () {
 				bubble.hide();
+			});
+		}
+
+		for (i = 0; i < TBRBars.length - 1; i++) {
+			// Actualize TBR
+			TBRBar = TBRBars.eq(i);
+			TBRBarNext = TBRBars.eq(i + 1);
+
+			// Get TBR infos
+			t = TBRBar.attr("x");
+			tNext = TBRBarNext.attr("x");
+			TBR = TBRBar.attr("y");
+
+			// Compute TBR bar coordinates
+			xTBR = (t - (x_0 - dX)) / dX * graphData.outerWidth();
+			yTBR = 2 / y.max() * graphData.outerHeight();
+			wTBR = (tNext - t) / dX * graphData.outerWidth();
+			hTBR = TBR / y.max() * graphData.outerHeight();
+
+			// Position TBR on graph
+			TBRBar.css({
+				"left": xTBR + "px",
+				"bottom": yTBR + "px",
+				"width": wTBR + "px",
+				"height": hTBR + "px"
 			});
 		}
 	}
@@ -218,6 +207,85 @@ $(document).ready(function()
 			settings.animate({
 				right: "+=" + widthSettings
 			});
+		}
+	}
+
+
+
+	function simulateBG () {
+		//var x_0 = 1482080888 * 1000;
+		var x = [];
+		var y = [];
+		var dx = 5 * 60 * 1000; // ms
+		var dX = 12 * 60 * 60 * 1000; // ms
+		var u = 0;
+		var u_0 = 15;
+		var A = 25;
+		var B = 1;
+		var k = 2;
+		var ticks = [];
+
+		// Create epoch time scale
+		for (i = 0; i < (dX / dx); i++) {
+			x.unshift(x_0 - i * dx);
+		}
+
+		x.unshift(x_0 - dX);
+
+		for (i = 0; i < x.length; i++) {
+			u = (x[i] - (x_0 - dX)) / 1000000;
+
+			if (u >= u_0) {
+				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
+			} else {
+				y.push(B);
+			}
+		}
+
+		for (i = 0; i < x.length; i++) {
+			ticks.push($("<div class='bg' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+		}
+
+		for (i = 0; i < x.length; i++) {
+			graphData.append(ticks[i]);
+		}
+	}
+
+	function simulateTBR () {
+		var x = [];
+		var y = [];
+		var dx = 15 * 60 * 1000; // ms
+		var dX = 12 * 60 * 60 * 1000; // ms
+		var u = 0;
+		var u_0 = 15;
+		var A = 15;
+		var B = 0.5;
+		var k = 2;
+		var ticks = [];
+
+		// Create epoch time scale
+		for (i = 0; i < (dX / dx); i++) {
+			x.unshift(x_0 - i * dx);
+		}
+
+		x.unshift(x_0 - dX);
+
+		for (i = 0; i < x.length; i++) {
+			u = (x[i] - (x_0 - dX)) / 1000000;
+
+			if (u >= u_0) {
+				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
+			} else {
+				y.push(B);
+			}
+		}
+
+		for (i = 0; i < x.length; i++) {
+			ticks.push($("<div class='tbr' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+		}
+
+		for (i = 0; i < x.length; i++) {
+			graphData.append(ticks[i]);
 		}
 	}
 

@@ -40,7 +40,7 @@ Notes : -
 					27.12.1991<br>
 					Dexcom G5<br>
 					MiniMed 640G<br>
-					<span id="lastUpdate">23:55 - 21.12.2016</span>
+					<span id="last-update">23:55 - 21.12.2016</span>
 				</p>
 			</div>
 
@@ -50,39 +50,6 @@ Notes : -
 						<div id="bg-value"><span id="bg-number"></span> mmol/L</div>
 						<div id="bg-time"></div>
 					</div>
-					<!--
-					<div class="bg" x="7.75" y="2.9"></div>
-					<div class="bg" x="8" y="3.5"></div>
-					<div class="bg" x="8.25" y="4.2"></div>
-					<div class="bg" x="8.5" y="4.7"></div>
-					<div class="bg" x="8.75" y="5"></div>
-					<div class="bg" x="9" y="5.5"></div>
-					<div class="bg" x="9.25" y="5.7"></div>
-					<div class="bg" x="9.5" y="5.6"></div>
-					<div class="bg" x="9.75" y="5.9"></div>
-					<div class="bg" x="10" y="6.5"></div>
-					<div class="bg" x="10.25" y="5.9"></div>
-					<div class="bg" x="10.5" y="6.0"></div>
-					<div class="bg" x="10.75" y="6.1"></div>
-					<div class="bg" x="11" y="6.3"></div>
-					<div class="bg" x="11.25" y="6.2"></div>
-					<div class="bg" x="11.5" y="5.1"></div>
-					<div class="bg" x="11.75" y="4.2"></div>
-					<div class="bg" x="12" y="4.3"></div>
-					<div class="bg" x="12.25" y="5.5"></div>
-					<div class="bg" x="12.5" y="6.7"></div>
-					<div class="bg" x="12.75" y="8.0"></div>
-					<div class="bg" x="13" y="9.9"></div>
-					<div class="bg" x="13.25" y="10.5"></div>
-					<div class="bg" x="13.5" y="10.4"></div>
-					<div class="bg" x="13.75" y="10.0"></div>
-					<div class="bg" x="14" y="9.8"></div>
-					<div class="bg" x="14.25" y="9.3"></div>
-					<div class="bg" x="14.5" y="8.2"></div>
-					<div class="bg" x="14.75" y="7.5"></div>
-					<div class="bg" x="15" y="7.2"></div>
-					<div class="bg" x="15.25" y="6.8"></div>
-					-->
 				</div>
 
 				<div id="graph-y-axis"></div>

@@ -168,6 +168,27 @@ footer {
 			height: 2 * $radius-bg;
 			cursor: pointer;
 		}
+
+		> .tbr {
+			border-top: 2px solid $black-trans;
+			border-bottom: 2px solid $black-trans;
+			border-left: 1px solid $black-trans;
+			border-right: 1px solid $black-trans;
+			position: absolute;
+			width: 25px;
+			height: 50px;
+			cursor: pointer;
+			background-color: $blue-trans;
+
+			&:hover {
+				background-color: lighten($blue-trans, 25%);
+			}
+
+			// On-going TBR can't be displayed?
+			&:last-child {
+				display: none;
+			}
+		}
 	}
 
 	> #graph-y-axis {
