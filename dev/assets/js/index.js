@@ -7,7 +7,7 @@ $(document).ready(function()
 	var x_0 = now.getTime();
 	var y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var dx = 1; // Time step (h)
-	var dX = 8; // Time range (h)
+	var dX = 12; // Time range (h)
 	var dy = 0;
 	var dY = y.max() - y.min();
 	var xTicks = [];
@@ -20,16 +20,13 @@ $(document).ready(function()
 	var graphYAxis = $("#graph-y-axis");	
 	var settings = $("#settings");
 	var settingsButton = $("#settings-button");
-	var BGInfo = $("#bg-info");
-	var BGInfoTime = $("#bg-time");
-	var BGInfoValue = $("#bg-value");
-	var BGInfoLabel = $("#bg-label");
+	var bubble = $("#bg-info");
+	var bubbleTime = $("#bg-time");
+	var infoBGValue = $("#bg-value");
+	var bubbleBG = $("#bg-number");
 
 	// Sizes
 	var widthSettings = "25%";
-	var radiusBGTick = 5;
-	var thicknessXAxisTick = 2;
-	var thicknessYAxisTick = 2;
 
 
 
@@ -102,7 +99,7 @@ $(document).ready(function()
 		var u = 0;
 		var u_0 = 15;
 		var A = 20;
-		var B = 2;
+		var B = 1;
 		var k = 2;
 
 		// Create epoch time scale
@@ -132,61 +129,84 @@ $(document).ready(function()
 	}
 
 	function showData () {
-		var BGTicks = $(".bg");
-		var BGTick;
 		var t;
 		var BG;
+		var xBG;
+		var yBG;
+		var BGDot;
+		var BGDots = $(".bg");
+		var xBubble;
+		var yBubble;
+		var radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
+		var thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
+		var thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
-		for (i = 0; i < BGTicks.length; i++)	{
+		for (i = 0; i < BGDots.length; i++)	{
 			// Actualize BG
-			BGTick = BGTicks.eq(i);
+			BGDot = BGDots.eq(i);
 
-			// Get coordinates of BG
-			t = BGTick.attr("x");
-			BG = BGTick.attr("y");
+			// Get BG infos
+			t = BGDot.attr("x");
+			BG = BGDot.attr("y");
+
+			// Get BG tick coordinates
+			xBG = (t - (x_0 - dX)) / dX * graphData.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
+			yBG = BG / y.max() * graphData.height() - radiusBGDot + thicknessYAxisTick / 2;
 
 			// Position BG on graph
-			BGTick.css({
-				// ... on X-Axis
-				"left": ((t - (x_0 - dX)) / dX * graphData.width() - radiusBGTick - thicknessXAxisTick / 2) + "px",
-
-				// ... on Y-Axis
-				"bottom": (BG / y.max() * graphData.height() - radiusBGTick - thicknessYAxisTick / 2) + "px"
+			BGDot.css({
+				"left": xBG + "px",
+				"bottom": yBG + "px"
 			});
 
-			// Color BG
-			BGTick.addClass(rankBG(BG, BGScale));
+			// Color BG tick
+			BGDot.addClass(rankBG(BG, BGScale));
 
-			// Show BG info bubble
-			BGTick.on("mouseenter", function () {
-				// Get BG and time
-				t = convertTime($(this).attr("x"), "HH:MM - DD.MM.YYYY");
-				BG = (Math.round($(this).attr("y") * 10) / 10).toFixed(1);
-
-				// Add BG value
-				BGInfoLabel.text(BG);
-
-				// Ajust BG class
-				BGInfoLabel.removeClass();
-				BGInfoLabel.addClass(rankBG(BG, BGScale));
-
-				// Add time
-				BGInfoTime.text(t);
-
-				// Position bubble on graph
-				BGInfo.css({
-					"left": (($(this).attr("x") - (x_0 - dX)) / dX * graphData.width() - radiusBGTick - thicknessXAxisTick / 2) + 10 + "px",
-					"bottom": ($(this).attr("y") / y.max() * graphData.height() - radiusBGTick - thicknessYAxisTick / 2) + 10 + "px"
-				});
-
-				// Show bubble
-				BGInfo.show();
+			// Show bubble
+			BGDot.on("mouseenter", function () {
+				showBubble($(this));
 			});
 
-			BGTick.on("mouseleave", function () {
-				BGInfo.hide();
+			// Hide bubble
+			BGDot.on("mouseleave", function () {
+				bubble.hide();
 			});
 		}
+	}
+
+	function showBubble (BGDot) {
+		// Get BG and time
+		t = convertTime(BGDot.attr("x"), "HH:MM - DD.MM.YYYY");
+		BG = (Math.round(BGDot.attr("y") * 10) / 10).toFixed(1);
+
+		// Add BG
+		bubbleBG.text(BG);
+
+		// Color BG
+		bubbleBG.removeClass();
+		bubbleBG.addClass(rankBG(BG, BGScale));
+
+		// Add time
+		bubbleTime.text(t);
+
+		// Position bubble on graph
+		xBubble = parseFloat(BGDot.css("left")) + 10;
+		yBubble = parseFloat(BGDot.css("bottom")) + 10;
+
+		if (xBubble + bubble.outerWidth() > graphData.outerWidth()) {
+			bubble.css({
+				"left": xBubble - 1.5 * 10 - bubble.outerWidth() + "px",
+				"bottom": yBubble + "px"
+			});
+		} else {
+			bubble.css({
+				"left": xBubble + "px",
+				"bottom": yBubble + "px"
+			});
+		}
+
+		// Show bubble
+		bubble.show();
 	}
 
 	function toggleSettings () {

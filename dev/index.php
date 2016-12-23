@@ -47,7 +47,7 @@ Notes : -
 			<div id="graph">
 				<div id="graph-data">
 					<div id="bg-info">
-						<div id="bg-value"><span id="bg-label"></span> mmol/L</div>
+						<div id="bg-value"><span id="bg-number"></span> mmol/L</div>
 						<div id="bg-time"></div>
 					</div>
 					<!--

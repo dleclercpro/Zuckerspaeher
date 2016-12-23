@@ -18,7 +18,7 @@ function range (start, stop, step) {
     }
 
     return result;
-};
+}
 
 function convertTime (t, format) {
     if (parseInt(t) == t) {
@@ -54,7 +54,7 @@ function convertTime (t, format) {
 
         return d.getTime();
     }
-};
+}
 
 function rankBG (BG, BGScale) {
     if (BG < BGScale[0]) {
@@ -68,4 +68,4 @@ function rankBG (BG, BGScale) {
     } else if (BG >= BGScale[3]) {
         return "bg-very-high";
     }
-};
+}
