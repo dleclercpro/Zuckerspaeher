@@ -50,6 +50,7 @@ Notes : -
 						<div id="bg-value"><span id="bg-number"></span> mmol/L</div>
 						<div id="bg-time"></div>
 					</div>
+					<div id="target-range"></div>
 				</div>
 
 				<div id="graph-y-axis"></div>
@@ -59,10 +60,10 @@ Notes : -
 
 			<div id="settings">
 				<h1>Settings</h1>
-				<div>Test</div>
-				<div>Test</div>
-				<div>Test</div>
-				<div>Test</div>
+				<select>
+					<option>Test 1</option>
+					<option>Test 2</option>
+				</select>
 				<div>Test</div>
 			</div>
 		</section>

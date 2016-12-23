@@ -149,7 +149,7 @@ $(document).ready(function()
 
 			// Compute TBR bar coordinates
 			xTBR = (t - (x_0 - dX)) / dX * graphData.outerWidth();
-			yTBR = 2 / y.max() * graphData.outerHeight();
+			yTBR = 7 / y.max() * graphData.outerHeight();
 			wTBR = (tNext - t) / dX * graphData.outerWidth();
 			hTBR = TBR / y.max() * graphData.outerHeight();
 
@@ -254,11 +254,11 @@ $(document).ready(function()
 	function simulateTBR () {
 		var x = [];
 		var y = [];
-		var dx = 15 * 60 * 1000; // ms
+		var dx = 5 * 60 * 1000; // ms
 		var dX = 12 * 60 * 60 * 1000; // ms
 		var u = 0;
 		var u_0 = 15;
-		var A = 15;
+		var A = 10;
 		var B = 0.5;
 		var k = 2;
 		var ticks = [];
