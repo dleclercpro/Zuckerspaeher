@@ -8,15 +8,15 @@ $(document).ready(function()
 	var y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var dx = 1; // Time step (h)
 	var dX = 12; // Time range (h)
-	var dy = 0;
-	var dY = y.max() - y.min();
+	var dy = 0; // BG step (mmol/L)
+	var dY = y.max() - y.min(); // BG range (mmol/L)
 	var xTicks = [];
 	var yTicks = [];
 	var BGScale = [3, 4, 7, 12];
 
 	// Elements
 	var loader = $("#loader");
-	var graphData = $("#graph-data");
+	var graph = $("#graph-data");
 	var graphXAxis = $("#graph-x-axis");
 	var graphYAxis = $("#graph-y-axis");	
 	var settings = $("#settings");
@@ -115,8 +115,8 @@ $(document).ready(function()
 			BG = BGDot.attr("y");
 
 			// Compute BG tick coordinates
-			xBG = (t - (x_0 - dX)) / dX * graphData.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
-			yBG = BG / y.max() * graphData.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
+			xBG = (t - (x_0 - dX)) / dX * graph.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
+			yBG = BG / y.max() * graph.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
 
 			// Position BG on graph
 			BGDot.css({
@@ -149,10 +149,10 @@ $(document).ready(function()
 			TBR = TBRBar.attr("y");
 
 			// Compute TBR bar coordinates
-			xTBR = (t - (x_0 - dX)) / dX * graphData.outerWidth();
-			yTBR = 7 / y.max() * graphData.outerHeight();
-			wTBR = (tNext - t) / dX * graphData.outerWidth();
-			hTBR = TBR / y.max() * graphData.outerHeight();
+			xTBR = (t - (x_0 - dX)) / dX * graph.outerWidth();
+			yTBR = 1 / y.max() * graph.outerHeight();
+			wTBR = (tNext - t) / dX * graph.outerWidth();
+			hTBR = TBR / 2 / y.max() * graph.outerHeight();
 
 			// Position TBR on graph
 			TBRBar.css({
@@ -183,7 +183,7 @@ $(document).ready(function()
 		xBubble = parseFloat(BGDot.css("left")) + 10;
 		yBubble = parseFloat(BGDot.css("bottom")) + 10;
 
-		if (xBubble + bubble.outerWidth() > graphData.outerWidth()) {
+		if (xBubble + bubble.outerWidth() > graph.outerWidth()) {
 			bubble.css({
 				"left": xBubble - 1.5 * 10 - bubble.outerWidth() + "px",
 				"bottom": yBubble + "px"
@@ -221,8 +221,8 @@ $(document).ready(function()
 		var dX = 12 * 60 * 60 * 1000; // ms
 		var u = 0;
 		var u_0 = 15;
-		var A = 25;
-		var B = 1;
+		var A = 20;
+		var B = 2;
 		var k = 2;
 		var ticks = [];
 
@@ -248,7 +248,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			graphData.append(ticks[i]);
+			graph.append(ticks[i]);
 		}
 	}
 
@@ -259,8 +259,8 @@ $(document).ready(function()
 		var dX = 12 * 60 * 60 * 1000; // ms
 		var u = 0;
 		var u_0 = 15;
-		var A = 10;
-		var B = 0.5;
+		var A = 3.5;
+		var B = 0;
 		var k = 2;
 		var ticks = [];
 
@@ -286,7 +286,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			graphData.append(ticks[i]);
+			graph.append(ticks[i]);
 		}
 	}
 

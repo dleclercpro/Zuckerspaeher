@@ -54,9 +54,7 @@ Notes : -
 						<div id="bg-value"><span id="bg-number"></span> mmol/L</div>
 						<div id="bg-time"></div>
 					</div>
-					<div id="target-range"></div>
 				</div>
-
 				<div id="graph-y-axis"></div>
 				<div id="graph-x-axis"></div>
 				<div id="graph-none"></div>

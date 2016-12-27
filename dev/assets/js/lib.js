@@ -24,7 +24,7 @@ function convertTime (t, format) {
     if (parseInt(t) == t) {
         var d = new Date(parseInt(t));
         var year = d.getFullYear();
-        var month = d.getMonth();
+        var month = d.getMonth() + 1;
         var day = d.getDate();
         var hour = d.getHours();
         var minute = d.getMinutes();

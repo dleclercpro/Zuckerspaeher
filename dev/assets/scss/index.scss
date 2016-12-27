@@ -55,8 +55,8 @@ header {
 	height: 100% - $height-content;
 	padding: 0 $padding-header;
 	display: flex;
-	background-color: rgba(0, 0, 0, 0.75);
-	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.75);
+	background-color: $black-trans;
+	box-shadow: 0 3px 3px $black-trans;
 	//border-bottom: 2px solid black;
 	z-index: 1;
 
@@ -106,9 +106,9 @@ footer {
 	top: 5%;
 	left: 2%;
 	border-radius: 3px;
-	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 1;
+	box-shadow: 3px 3px 3px $black-trans;
+	background-color: $black-trans;
+	z-index: 10;
 
 	@include mq("tablet") {
 		width: 60%;
@@ -145,16 +145,49 @@ footer {
 	> #graph-data {
 		width: $width-graph;
 		height: $height-graph;
+		display: flex;
+		flex-wrap: wrap;
 		position: relative;
+
+		> .tbr {
+			border-top: 2px solid $black-trans;
+			border-bottom: 2px solid $black-trans;
+			border-left: 1px solid $black-trans;
+			border-right: 1px solid $black-trans;
+			position: absolute;
+			width: 25px;
+			height: 50px;
+			cursor: pointer;
+			background-color: $blue-trans;
+
+			&:hover {
+				background-color: darken($blue-trans, 10%);
+			}
+
+			// On-going TBR can't be displayed?
+			&:last-child {
+				display: none;
+			}
+		}
+
+		> .bg {
+			border: 2px solid $black;
+			border-radius: 50%;
+			position: absolute;
+			width: 2 * $radius-bg;
+			height: 2 * $radius-bg;
+			cursor: pointer;
+			z-index: 5;
+		}
 
 		> #bg-info {
 			display: none;
 			padding: 10px;
 			position: absolute;
 			border-radius: 3px;
-			box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-			background-color: rgba(0, 0, 0, 0.75);
-			z-index: 1;
+			box-shadow: 3px 3px 3px $black-trans;
+			background-color: $black-trans;
+			z-index: 9;
 
 			> #bg-value {
 				color: white;
@@ -171,53 +204,11 @@ footer {
 				@extend #bg-value;
 			}
 		}
-
-		> #target-range {
-			width: 100%;
-			height: (7 - 4) / (15 - 0) * 100%;
-			position: absolute;
-			bottom: 4 / (15 - 0) * 100%;
-			left: 0;
-			border-top: 1px dashed lighten($grey, 25%);
-			border-bottom: 1px dashed lighten($grey, 25%);
-		}
-
-		> .bg {
-			border: 2px solid $black;
-			border-radius: 50%;
-			position: absolute;
-			width: 2 * $radius-bg;
-			height: 2 * $radius-bg;
-			cursor: pointer;
-		}
-
-		> .tbr {
-			border-top: 2px solid $black-trans;
-			border-bottom: 2px solid $black-trans;
-			border-left: 1px solid $black-trans;
-			border-right: 1px solid $black-trans;
-			position: absolute;
-			width: 25px;
-			height: 50px;
-			cursor: pointer;
-			background-color: $beige-trans;
-
-			&:hover {
-				background-color: darken($beige-trans, 25%);
-			}
-
-			// On-going TBR can't be displayed?
-			&:last-child {
-				display: none;
-			}
-		}
 	}
 
 	> #graph-y-axis {
 		width: 100% - $width-graph;
 		height: $height-graph;
-		display: flex;
-		flex-direction: column;
 
 		> .graph-y-axis-tick {
 			padding-bottom: 2px;
@@ -259,8 +250,8 @@ footer {
 	width: $width-settings;
 	height: 100%;
 	padding: 0 $padding-settings;
-	box-shadow: -3px 0 3px rgba(0, 0, 0, 0.75);
-	background-color: rgba(0, 0, 0, 0.75);
+	box-shadow: -3px 0 3px $black-trans;
+	background-color: $black-trans;
 	//border-left: 2px solid black;
 	position: absolute;
 	top: 0;
