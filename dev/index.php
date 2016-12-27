@@ -48,11 +48,27 @@ Notes : -
 				</p>
 			</div>
 
+			<div id="dash-info">
+				<p id="dash-bg">
+					<span class="bg-number">5.6</span><span id="bg-arrow">→</span>
+				</p>
+				<p id="dash-trends">
+					<span id="dbg">dBG: -0.5 mmol/L</span>
+					<span id="iob">IOB: 0.4 U</span>
+					<span id="cob">COB: 5 g</span>
+					<span id="basal">Basal: 1.25 U/h</span>
+				</p>
+			</div>
+
 			<div id="graph">
 				<div id="graph-data">
 					<div id="bg-info">
-						<div id="bg-value"><span id="bg-number"></span> mmol/L</div>
+						<div id="bg-label"><span id="bg-number"></span> mmol/L</div>
 						<div id="bg-time"></div>
+					</div>
+					<div id="tbr-info">
+						<div id="tbr-label"><span id="tbr-number"></span>%</div>
+						<div id="tbr-time"></div>
 					</div>
 				</div>
 				<div id="graph-y-axis"></div>

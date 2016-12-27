@@ -98,7 +98,7 @@ footer {
 
 #user-info {
 	width: 50%;
-	max-width: 500px;
+	max-width: 450px;
 	padding: 30px 2.5%;
 	display: flex;
 	align-items: center;
@@ -132,6 +132,63 @@ footer {
 		> #last-update {
 			font-weight: bold;
 			color: red;
+		}
+	}
+}
+
+#dash-info {
+	width: 50%;
+	max-width: 450px;
+	padding: 30px 2.5%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: absolute;
+	top: 5%;
+	right: 2%;
+	border-radius: 3px;
+	box-shadow: -3px 3px 3px $black-trans;
+	background-color: $black-trans;
+	z-index: 10;
+
+	> #dash-bg {
+		font-size: 38px;
+		font-weight: bold;
+		color: $white;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 5px;
+
+		> .bg-number {
+
+		}
+
+		> #bg-arrow {
+			margin-left: 5px;
+		}
+	}
+
+	> #dash-trends {
+		color: $white;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+
+		> #dbg {
+
+		}
+
+		> #iob {
+			margin-left: 10px;
+		}
+
+		> #cob {
+			margin-left: 10px;
+		}
+
+		> #basal {
+			margin-left: 10px;
 		}
 	}
 }
@@ -189,7 +246,7 @@ footer {
 			background-color: $black-trans;
 			z-index: 15;
 
-			> #bg-value {
+			> #bg-label {
 				color: white;
 				font-size: 16px;
 				font-weight: bold;
@@ -201,7 +258,28 @@ footer {
 			}
 
 			> #bg-time {
-				@extend #bg-value;
+				@extend #bg-label;
+			}
+		}
+
+		> #tbr-info {
+			display: none;
+			padding: 10px;
+			position: absolute;
+			border-radius: 3px;
+			box-shadow: 3px 3px 3px $black-trans;
+			background-color: $black-trans;
+			z-index: 15;
+
+			> #tbr-label {
+				color: white;
+				font-size: 16px;
+				font-weight: bold;
+				white-space: nowrap;
+			}
+
+			> #tbr-time {
+				@extend #tbr-label;
 			}
 		}
 	}

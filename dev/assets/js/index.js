@@ -21,11 +21,13 @@ $(document).ready(function()
 	var graphYAxis = $("#graph-y-axis");	
 	var settings = $("#settings");
 	var settingsButton = $("#settings-button");
-	var bubble = $("#bg-info");
-	var bubbleTime = $("#bg-time");
-	var infoBGValue = $("#bg-value");
-	var bubbleBG = $("#bg-number");
-
+	var bubbleBG = $("#bg-info");
+	var bubbleBGTime = $("#bg-time");
+	var bubbleBGLabel = $("#bg-number");
+	var bubbleTBR = $("#tbr-info");
+	var bubbleTBRTime = $("#tbr-time");
+	var bubbleTBRLabel = $("#tbr-number");
+	
 	// Sizes
 	var widthSettings = "25%";
 
@@ -106,6 +108,7 @@ $(document).ready(function()
 		var thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
 		var thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
+		// BGs
 		for (i = 0; i < BGDots.length; i++)	{
 			// Actualize BG
 			BGDot = BGDots.eq(i);
@@ -129,15 +132,16 @@ $(document).ready(function()
 
 			// Show bubble
 			BGDot.on("mouseenter", function () {
-				showBubble($(this));
+				showBubbleBG($(this));
 			});
 
 			// Hide bubble
 			BGDot.on("mouseleave", function () {
-				bubble.hide();
+				bubbleBG.hide();
 			});
 		}
 
+		// TBRs
 		for (i = 0; i < TBRBars.length - 1; i++) {
 			// Actualize TBR
 			TBRBar = TBRBars.eq(i);
@@ -161,50 +165,103 @@ $(document).ready(function()
 				"width": wTBR + "px",
 				"height": hTBR + "px"
 			});
+
+			// Show bubble
+			TBRBar.on("mouseenter", function () {
+				showBubbleTBR($(this));
+			});
+
+			// Hide bubble
+			TBRBar.on("mouseleave", function () {
+				bubbleTBR.hide();
+			});
 		}
 	}
 
-	function showBubble (BGDot) {
+	function showBubbleBG (BGDot) {
 		// Get BG and time
 		t = convertTime(BGDot.attr("x"), "HH:MM - DD.MM.YYYY");
 		BG = (Math.round(BGDot.attr("y") * 10) / 10).toFixed(1);
 
 		// Add BG
-		bubbleBG.text(BG);
+		bubbleBGLabel.text(BG);
 
 		// Color BG
-		bubbleBG.removeClass();
-		bubbleBG.addClass(rankBG(BG, BGScale));
+		bubbleBGLabel.removeClass();
+		bubbleBGLabel.addClass(rankBG(BG, BGScale));
 
 		// Add time
-		bubbleTime.text(t);
+		bubbleBGTime.text(t);
 
 		// Position bubble on graph
 		xBubble = parseFloat(BGDot.css("left")) + 10;
 		yBubble = parseFloat(BGDot.css("bottom")) + 10;
 
-		if (xBubble + bubble.outerWidth() > graph.outerWidth()) {
-			bubble.css({
-				"left": xBubble - 1.5 * 10 - bubble.outerWidth() + "px"
+		// If bubble exceeds width of graph
+		if (xBubble + bubbleBG.outerWidth() > graph.outerWidth()) {
+			bubbleBG.css({
+				"left": xBubble - 1.5 * 10 - bubbleBG.outerWidth() + "px"
 			});
 		} else {
-			bubble.css({
+			bubbleBG.css({
 				"left": xBubble + "px"
 			});
 		}
 
-		if (yBubble + bubble.outerHeight() > graph.outerHeight()) {
-			bubble.css({
-				"bottom": yBubble - 1.5 * 10 - bubble.outerHeight() + "px"
+		// If bubble exceeds height of graph
+		if (yBubble + bubbleBG.outerHeight() > graph.outerHeight()) {
+			bubbleBG.css({
+				"bottom": yBubble - 1.5 * 10 - bubbleBG.outerHeight() + "px"
 			});
 		} else {
-			bubble.css({
+			bubbleBG.css({
 				"bottom": yBubble + "px"
 			});
 		}
 
 		// Show bubble
-		bubble.show();
+		bubbleBG.show();
+	}
+
+	function showBubbleTBR (TBRBar) {
+		// Get TBR and time
+		t = convertTime(TBRBar.attr("x"), "HH:MM - DD.MM.YYYY");
+		TBR = (Math.round(TBRBar.attr("y") * 100)).toFixed(0);
+
+		// Add TBR
+		bubbleTBRLabel.text(TBR);
+
+		// Add time
+		bubbleTBRTime.text(t);
+
+		// Position bubble on graph
+		xBubble = parseFloat(TBRBar.css("left")) + 10;
+		yBubble = parseFloat(TBRBar.css("bottom")) + 10;
+
+		// If bubble exceeds width of graph
+		if (xBubble + bubbleTBR.outerWidth() > graph.outerWidth()) {
+			bubbleTBR.css({
+				"left": xBubble - 1.5 * 10 - bubbleTBR.outerWidth() + "px"
+			});
+		} else {
+			bubbleTBR.css({
+				"left": xBubble + "px"
+			});
+		}
+
+		// If bubble exceeds height of graph
+		if (yBubble + bubbleTBR.outerHeight() > graph.outerHeight()) {
+			bubbleTBR.css({
+				"bottom": yBubble - 1.5 * 10 - bubbleTBR.outerHeight() + "px"
+			});
+		} else {
+			bubbleTBR.css({
+				"bottom": yBubble + "px"
+			});
+		}
+
+		// Show bubble
+		bubbleTBR.show();
 	}
 
 	function toggleSettings () {

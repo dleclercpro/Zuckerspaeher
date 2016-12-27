@@ -460,7 +460,7 @@ footer {
 
 #user-info {
   width: 50%;
-  max-width: 500px;
+  max-width: 450px;
   padding: 30px 2.5%;
   display: flex;
   align-items: center;
@@ -488,6 +488,42 @@ footer {
     #user-info > #user-details > #last-update {
       font-weight: bold;
       color: red; }
+
+#dash-info {
+  width: 50%;
+  max-width: 450px;
+  padding: 30px 2.5%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: absolute;
+  top: 5%;
+  right: 2%;
+  border-radius: 3px;
+  box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 10; }
+  #dash-info > #dash-bg {
+    font-size: 38px;
+    font-weight: bold;
+    color: #eeeeee;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px; }
+    #dash-info > #dash-bg > #bg-arrow {
+      margin-left: 5px; }
+  #dash-info > #dash-trends {
+    color: #eeeeee;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; }
+    #dash-info > #dash-trends > #iob {
+      margin-left: 10px; }
+    #dash-info > #dash-trends > #cob {
+      margin-left: 10px; }
+    #dash-info > #dash-trends > #basal {
+      margin-left: 10px; }
 
 #graph {
   width: 100%;
@@ -530,13 +566,26 @@ footer {
       box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
       background-color: rgba(0, 0, 0, 0.75);
       z-index: 15; }
-      #graph > #graph-data > #bg-info > #bg-value, #graph > #graph-data > #bg-info > #bg-time {
+      #graph > #graph-data > #bg-info > #bg-label, #graph > #graph-data > #bg-info > #bg-time {
         color: white;
         font-size: 16px;
         font-weight: bold;
         white-space: nowrap; }
-        #graph > #graph-data > #bg-info > #bg-value > #bg-number, #graph > #graph-data > #bg-info > #bg-time > #bg-number {
+        #graph > #graph-data > #bg-info > #bg-label > #bg-number, #graph > #graph-data > #bg-info > #bg-time > #bg-number {
           background: none; }
+    #graph > #graph-data > #tbr-info {
+      display: none;
+      padding: 10px;
+      position: absolute;
+      border-radius: 3px;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.75);
+      z-index: 15; }
+      #graph > #graph-data > #tbr-info > #tbr-label, #graph > #graph-data > #tbr-info > #tbr-time {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        white-space: nowrap; }
   #graph > #graph-y-axis {
     width: 2.5%;
     height: 96%; }
