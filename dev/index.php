@@ -57,7 +57,7 @@ Notes : -
 				</div>
 				<div id="graph-y-axis"></div>
 				<div id="graph-x-axis"></div>
-				<div id="graph-none"></div>
+				<div id="graph-corner"></div>
 			</div>
 
 			<div id="settings">

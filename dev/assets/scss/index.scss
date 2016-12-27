@@ -187,7 +187,7 @@ footer {
 			border-radius: 3px;
 			box-shadow: 3px 3px 3px $black-trans;
 			background-color: $black-trans;
-			z-index: 9;
+			z-index: 15;
 
 			> #bg-value {
 				color: white;
@@ -240,7 +240,7 @@ footer {
 		}
 	}
 
-	> #graph-none {
+	> #graph-corner {
 		width: 100% - $width-graph;
 		height: 100% - $height-graph;
 	}

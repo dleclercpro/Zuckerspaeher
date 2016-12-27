@@ -185,12 +185,20 @@ $(document).ready(function()
 
 		if (xBubble + bubble.outerWidth() > graph.outerWidth()) {
 			bubble.css({
-				"left": xBubble - 1.5 * 10 - bubble.outerWidth() + "px",
-				"bottom": yBubble + "px"
+				"left": xBubble - 1.5 * 10 - bubble.outerWidth() + "px"
 			});
 		} else {
 			bubble.css({
-				"left": xBubble + "px",
+				"left": xBubble + "px"
+			});
+		}
+
+		if (yBubble + bubble.outerHeight() > graph.outerHeight()) {
+			bubble.css({
+				"bottom": yBubble - 1.5 * 10 - bubble.outerHeight() + "px"
+			});
+		} else {
+			bubble.css({
 				"bottom": yBubble + "px"
 			});
 		}
@@ -221,7 +229,7 @@ $(document).ready(function()
 		var dX = 12 * 60 * 60 * 1000; // ms
 		var u = 0;
 		var u_0 = 15;
-		var A = 20;
+		var A = 23;
 		var B = 2;
 		var k = 2;
 		var ticks = [];
