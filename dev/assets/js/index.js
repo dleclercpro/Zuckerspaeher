@@ -15,6 +15,7 @@ $(document).ready(function()
 	var BGScale = [3, 4, 7, 12];
 
 	// Elements
+	var loader = $("#loader");
 	var graphData = $("#graph-data");
 	var graphXAxis = $("#graph-x-axis");
 	var graphYAxis = $("#graph-y-axis");	

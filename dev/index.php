@@ -23,6 +23,10 @@ Notes : -
 
 	<body>
 
+		<div id="loader">
+			<img src="assets/img/loader.gif">
+		</div>
+
 		<header>
 			<div id="branding">
 				<p>MeinNS</p>

@@ -38,6 +38,18 @@ body {
 	}
 }
 
+#loader {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	z-index: 999;
+	@extend %center;
+}
+
 header {
 	width: 100%;
 	height: 100% - $height-content;
@@ -166,8 +178,8 @@ footer {
 			position: absolute;
 			bottom: 4 / (15 - 0) * 100%;
 			left: 0;
-			border-top: 1px dashed lighten($grey, 50%);
-			border-bottom: 1px dashed lighten($grey, 50%);
+			border-top: 1px dashed lighten($grey, 25%);
+			border-bottom: 1px dashed lighten($grey, 25%);
 		}
 
 		> .bg {
@@ -188,10 +200,10 @@ footer {
 			width: 25px;
 			height: 50px;
 			cursor: pointer;
-			background-color: $blue-trans;
+			background-color: $beige-trans;
 
 			&:hover {
-				background-color: darken($blue-trans, 25%);
+				background-color: darken($beige-trans, 25%);
 			}
 
 			// On-going TBR can't be displayed?
@@ -211,7 +223,7 @@ footer {
 			padding-bottom: 2px;
 			font-weight: bold;
 			color: $white;
-			border-bottom: 2px dotted $white;
+			border-bottom: 1px dashed $white;
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
@@ -229,7 +241,7 @@ footer {
 			padding-right: 4px;
 			font-weight: bold;
 			color: $white;
-			border-right: 2px dotted $white;
+			border-right: 1px dashed $white;
 			display: flex;
 			justify-content: flex-end;
 			flex-shrink: 0;
