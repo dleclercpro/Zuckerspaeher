@@ -14,13 +14,21 @@ $(document).ready(function()
 	var dY = yMax - yMin; // BG range (mmol/L)
 	var xTicks = [];
 	var yTicks = [];
-	var BGScale = [3, 4, 7, 12];
+	var BGScale = [3, 4, 7, 12]; // (mmol/L)
+	var dBGdtScale = [-0.5, -0.25, 0.25, 0.5]; // (mmol/L/m)
 
 	// Elements
 	var loader = $("#loader");
 	var graph = $("#graph-inner");
-	var BGDots;
-	var TBRBars;
+	var dash = $("#dash");
+	var dashBG = dash.find(".BG");
+	var dashArrow = dash.find(".arrow");
+	var dashdBG = dash.find(".dBG");
+	var dashdBGdt = dash.find(".dBG-dt");
+	var dashTBR = dash.find(".TBR");
+	var dashBR = dash.find(".BR");
+	var dashIOB = dash.find(".IOB");
+	var dashCOB = dash.find(".COB");
 	var xAxis = $("#graph-x-axis");
 	var YAxis = $("#graph-y-axis");	
 	var settings = $("#settings");
@@ -28,6 +36,8 @@ $(document).ready(function()
 	var bubble = $("#bubble");
 	var bubbleInfo = bubble.find(".info");
 	var bubbleTime = bubble.find(".time");
+	var BGDots;
+	var TBRBars;
 	
 	// Sizes
 	var widthSettings = "25%";
@@ -42,6 +52,7 @@ $(document).ready(function()
 		simulateBG();
 		simulateTBR();
 		buildGraph();
+		buildDash();
 	}
 
 	function buildXAxis () {
@@ -184,14 +195,14 @@ $(document).ready(function()
 
 		if (e.hasClass("BG")) {
 			// Get info
-			var BG = (Math.round(e.attr("y") * 10) / 10).toFixed(1);
+			var BG = roundBG(e.attr("y"));
 			var BGType = rankBG(BG, BGScale);
 
 			// Add info to bubble
 			bubbleInfo.html("<span class='BG " + BGType + "'>" + BG + "</span> mmol/L");
 		} else if (e.hasClass("TBR")) {
 			// Get infos
-			var TBR = (Math.round(e.attr("y") * 100)).toFixed(0);
+			var TBR = roundTBR(e.attr("y"));
 
 			// Add info to bubble
 			bubbleInfo.html("<span class='TBR'>" + TBR + "</span>%");
@@ -223,6 +234,40 @@ $(document).ready(function()
 
 		// Show bubble
 		bubble.show();
+	}
+
+	function buildDash () {
+		// Get last BG
+		var lastBG = roundBG(BGDots.eq(-1).attr("y"));
+		var lastBGType = rankBG(lastBG, BGScale);
+
+		// Add to dash
+		dashBG.text(lastBG);
+
+		// Color last BG
+		dashBG.addClass(lastBGType);
+
+		// Get dBG over last 5 minutes
+		var dBG = roundBG(BGDots.eq(-1).attr("y") - BGDots.eq(-2).attr("y"));
+
+		// Add to dash
+		dashdBG.text(dBG);
+
+		// Get dBG/dt over last 5 minutes
+		var dt = (BGDots.eq(-1).attr("x") - BGDots.eq(-2).attr("x")) / 1000 / 60; // (m)
+		var dBGdt = roundBG(dBG / dt);
+
+		// Add to dash
+		dashdBGdt.text(dBGdt);
+
+		// Select arrow and add it to dash
+		dashArrow.text(rankdBGdt(dBGdt, dBGdtScale));
+
+		// Get current TBR
+		var TBR = roundTBR(TBRBars.eq(-1).attr("y"));
+
+		// Add to dash
+		dashTBR.text(TBR);
 	}
 
 	function toggleSettings () {

@@ -23,7 +23,7 @@ function range (start, stop, step) {
 function convertTime (t, format) {
     if (parseInt(t) == t) {
         var date = new Date(parseInt(t));
-        
+
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
         var day = date.getDate();
@@ -70,4 +70,36 @@ function rankBG (BG, BGScale) {
     } else if (BG >= BGScale[3]) {
         return "BG-very-high";
     }
+}
+
+function rankdBGdt (dBGdt, dBGdtScale) {
+    var arrowUp = decodeEntity("&#8593;");
+    var arrowRightUp = decodeEntity("&#8599;");
+    var arrowRight = decodeEntity("&#8594;");
+    var arrowRightDown = decodeEntity("&#8600");
+    var arrowDown = decodeEntity("&#8595;");
+
+    if (dBGdt < dBGdtScale[0]) {
+        return arrowDown;
+    } else if (dBGdt >= dBGdtScale[0]  && dBGdt < dBGdtScale[1]) {
+        return arrowRightDown;
+    } else if (dBGdt >= dBGdtScale[1] && dBGdt < dBGdtScale[2]) {
+        return arrowRight;
+    } else if (dBGdt >= dBGdtScale[2] && dBGdt < dBGdtScale[3]) {
+        return arrowRightUp;
+    } else if (dBGdt >= dBGdtScale[3]) {
+        return arrowUp;
+    }
+}
+
+function roundBG (BG) {
+    return (Math.round(BG * 10) / 10).toFixed(1);
+}
+
+function roundTBR (TBR) {
+    return (Math.round(TBR * 100)).toFixed(0);
+}
+
+function decodeEntity (str) {
+    return $("<textarea>").html(str).text();
 }

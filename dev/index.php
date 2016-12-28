@@ -50,20 +50,20 @@ Notes : -
 
 			<div id="dash">
 				<div id="dash-BG">
-					<span class="BG">5.6</span>
-					<span class="arrow">→</span>
+					<span class="BG">---</span>
+					<span class="arrow"></span>
 				</div>
 				<div id="dash-delta">
-					<p><b>&Delta;BG:</b> <span class="dBG">-0.5</span> mmol/L</p>
-					<p><b>&Delta;BG/&Delta;t:</b> <span class="dBG-dt">-0.1</span> mmol/L/m</p>
+					<p><b>&Delta;BG:</b> <span class="dBG">---</span> mmol/L</p>
+					<p><b>&Delta;BG/&Delta;t:</b> <span class="dBG-dt">---</span> mmol/L/m</p>
 				</div>
 				<div id="dash-basal">
-					<p><b>TBR:</b> <span class="TBR">1.75</span> U/h (125%)</p>
-					<p><b>BR:</b> <span class="BR">1.25</span> U/h</p>
+					<p><b>TBR:</b> <span class="TBR">---</span>%</p>
+					<p><b>BR:</b> <span class="BR">---</span> U/h</p>
 				</div>
 				<div id="dash-on-board">
-					<p><b>IOB:</b> <span class="IOB">0.4</span> U</p>
-					<p><b>COB:</b> <span class="COB">5</span> g</p>
+					<p><b>IOB:</b> <span class="IOB">---</span> U</p>
+					<p><b>COB:</b> <span class="COB">---</span> g</p>
 				</div>
 			</div>
 

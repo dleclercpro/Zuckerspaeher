@@ -513,6 +513,8 @@ footer {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px; }
+    #dash > #dash-BG > .BG {
+      background: none; }
     #dash > #dash-BG > .arrow {
       margin-left: 8px; }
   #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board {
