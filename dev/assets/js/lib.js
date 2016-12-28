@@ -22,14 +22,15 @@ function range (start, stop, step) {
 
 function convertTime (t, format) {
     if (parseInt(t) == t) {
-        var d = new Date(parseInt(t));
-        var year = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var day = d.getDate();
-        var hour = d.getHours();
-        var minute = d.getMinutes();
-        var second = d.getSeconds();
-        var millisecond = d.getMilliseconds(0);
+        var date = new Date(parseInt(t));
+        
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        var millisecond = date.getMilliseconds(0);
 
         if (format === "HH:MM - DD.MM.YYYY") {
             return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + day + "." + month + "." + year;
@@ -37,35 +38,36 @@ function convertTime (t, format) {
             return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
         }
     } else {
-        var d = new Date();
+        var date = new Date();
+
         var year = t.slice(-4);
         var month = t.slice(-7, -5);
         var day = t.slice(-10, -8);
         var hour = t.slice(0, 2);
         var minute = t.slice(3, 5);
 
-        d.setFullYear(year);
-        d.setMonth(month - 1);
-        d.setDate(day);
-        d.setHours(hour);
-        d.setMinutes(minute);
-        d.setSeconds(0);
-        d.setMilliseconds(0);
+        date.setFullYear(year);
+        date.setMonth(month - 1);
+        date.setDate(day);
+        date.setHours(hour);
+        date.setMinutes(minute);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
 
-        return d.getTime();
+        return date.getTime();
     }
 }
 
 function rankBG (BG, BGScale) {
     if (BG < BGScale[0]) {
-        return "bg-very-low";
+        return "BG-very-low";
     } else if (BG >= BGScale[0] && BG < BGScale[1]) {
-        return "bg-low";
+        return "BG-low";
     } else if (BG >= BGScale[1] && BG < BGScale[2]) {
-        return "bg-normal";
+        return "BG-normal";
     } else if (BG >= BGScale[2] && BG < BGScale[3]) {
-        return "bg-high";
+        return "BG-high";
     } else if (BG >= BGScale[3]) {
-        return "bg-very-high";
+        return "BG-very-high";
     }
 }

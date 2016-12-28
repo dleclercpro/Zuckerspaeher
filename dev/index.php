@@ -37,7 +37,7 @@ Notes : -
 		</header>
 
 		<section id=content>
-			<div id="user-info">
+			<div id="user">
 				<img id="user-picture" src="assets/img/me.png">
 				<p id="user-details">
 					Leclerc, David<br>
@@ -48,27 +48,30 @@ Notes : -
 				</p>
 			</div>
 
-			<div id="dash-info">
-				<p id="dash-bg">
-					<span class="bg-number">5.6</span><span id="bg-arrow">→</span>
-				</p>
-				<p id="dash-trends">
-					<span id="dbg">dBG: -0.5 mmol/L</span>
-					<span id="iob">IOB: 0.4 U</span>
-					<span id="cob">COB: 5 g</span>
-					<span id="basal">Basal: 1.25 U/h</span>
-				</p>
+			<div id="dash">
+				<div id="dash-BG">
+					<span class="BG">5.6</span>
+					<span class="arrow">→</span>
+				</div>
+				<div id="dash-delta">
+					<p><b>&Delta;BG:</b> <span class="dBG">-0.5</span> mmol/L</p>
+					<p><b>&Delta;BG/&Delta;t:</b> <span class="dBG-dt">-0.1</span> mmol/L/m</p>
+				</div>
+				<div id="dash-basal">
+					<p><b>TBR:</b> <span class="TBR">1.75</span> U/h (125%)</p>
+					<p><b>BR:</b> <span class="BR">1.25</span> U/h</p>
+				</div>
+				<div id="dash-on-board">
+					<p><b>IOB:</b> <span class="IOB">0.4</span> U</p>
+					<p><b>COB:</b> <span class="COB">5</span> g</p>
+				</div>
 			</div>
 
 			<div id="graph">
-				<div id="graph-data">
-					<div id="bg-info">
-						<div id="bg-label"><span id="bg-number"></span> mmol/L</div>
-						<div id="bg-time"></div>
-					</div>
-					<div id="tbr-info">
-						<div id="tbr-label"><span id="tbr-number"></span>%</div>
-						<div id="tbr-time"></div>
+				<div id="graph-inner">
+					<div id="bubble">
+						<div class="info"></div>
+						<div class="time"></div>
 					</div>
 				</div>
 				<div id="graph-y-axis"></div>

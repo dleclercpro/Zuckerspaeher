@@ -458,7 +458,7 @@ footer {
   height: 3.75%;
   background-color: #111111; }
 
-#user-info {
+#user {
   width: 50%;
   max-width: 450px;
   padding: 30px 2.5%;
@@ -472,24 +472,24 @@ footer {
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10; }
   @media all and (max-width: 768px) {
-    #user-info {
+    #user {
       width: 60%; } }
   @media all and (max-width: 640px) {
-    #user-info {
+    #user {
       width: 92%; } }
-  #user-info > #user-picture {
+  #user > #user-picture {
     height: 125px;
     border-radius: 50%;
     border: 5px solid #eeeeee; }
-  #user-info > #user-details {
+  #user > #user-details {
     margin-left: 5%;
     font-size: 18px;
     color: #eeeeee; }
-    #user-info > #user-details > #last-update {
+    #user > #user-details > #last-update {
       font-weight: bold;
       color: red; }
 
-#dash-info {
+#dash {
   width: 50%;
   max-width: 450px;
   padding: 30px 2.5%;
@@ -503,26 +503,26 @@ footer {
   box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.75);
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10; }
-  #dash-info > #dash-bg {
-    font-size: 38px;
+  #dash > #dash-BG {
+    font-family: "Gloria Hallelujah";
+    font-size: 45px;
     font-weight: bold;
+    line-height: 45px;
     color: #eeeeee;
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 5px; }
-    #dash-info > #dash-bg > #bg-arrow {
-      margin-left: 5px; }
-  #dash-info > #dash-trends {
+    margin-bottom: 10px; }
+    #dash > #dash-BG > .arrow {
+      margin-left: 8px; }
+  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board {
+    font-size: 16px;
     color: #eeeeee;
     width: 100%;
     display: flex;
-    justify-content: flex-end; }
-    #dash-info > #dash-trends > #iob {
-      margin-left: 10px; }
-    #dash-info > #dash-trends > #cob {
-      margin-left: 10px; }
-    #dash-info > #dash-trends > #basal {
+    justify-content: flex-end;
+    margin-top: 2px; }
+    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p {
       margin-left: 10px; }
 
 #graph {
@@ -530,13 +530,13 @@ footer {
   height: 100%;
   display: flex;
   flex-wrap: wrap; }
-  #graph > #graph-data {
+  #graph > #graph-inner {
     width: 97.5%;
     height: 96%;
     display: flex;
     flex-wrap: wrap;
     position: relative; }
-    #graph > #graph-data > .tbr {
+    #graph > #graph-inner > .TBR {
       border-top: 2px solid rgba(0, 0, 0, 0.75);
       border-bottom: 2px solid rgba(0, 0, 0, 0.75);
       border-left: 1px solid rgba(0, 0, 0, 0.75);
@@ -545,12 +545,12 @@ footer {
       width: 25px;
       height: 50px;
       cursor: pointer;
-      background-color: rgba(100, 100, 255, 0.5); }
-      #graph > #graph-data > .tbr:hover {
-        background-color: rgba(49, 49, 255, 0.5); }
-      #graph > #graph-data > .tbr:last-child {
+      background-color: rgba(50, 50, 255, 0.5); }
+      #graph > #graph-inner > .TBR:hover {
+        background-color: rgba(0, 0, 178, 0.5); }
+      #graph > #graph-inner > .TBR:last-child {
         display: none; }
-    #graph > #graph-data > .bg {
+    #graph > #graph-inner > .BG {
       border: 2px solid #111111;
       border-radius: 50%;
       position: absolute;
@@ -558,7 +558,7 @@ footer {
       height: 10px;
       cursor: pointer;
       z-index: 5; }
-    #graph > #graph-data > #bg-info {
+    #graph > #graph-inner > #bubble {
       display: none;
       padding: 10px;
       position: absolute;
@@ -566,29 +566,20 @@ footer {
       box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
       background-color: rgba(0, 0, 0, 0.75);
       z-index: 15; }
-      #graph > #graph-data > #bg-info > #bg-label, #graph > #graph-data > #bg-info > #bg-time {
-        color: white;
+      #graph > #graph-inner > #bubble > .info, #graph > #graph-inner > #bubble .time {
+        color: #eeeeee;
         font-size: 16px;
         font-weight: bold;
         white-space: nowrap; }
-        #graph > #graph-data > #bg-info > #bg-label > #bg-number, #graph > #graph-data > #bg-info > #bg-time > #bg-number {
-          background: none; }
-    #graph > #graph-data > #tbr-info {
-      display: none;
-      padding: 10px;
-      position: absolute;
-      border-radius: 3px;
-      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-      background-color: rgba(0, 0, 0, 0.75);
-      z-index: 15; }
-      #graph > #graph-data > #tbr-info > #tbr-label, #graph > #graph-data > #tbr-info > #tbr-time {
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        white-space: nowrap; }
+      #graph > #graph-inner > #bubble .BG {
+        background: none; }
+      #graph > #graph-inner > #bubble .TBR {
+        color: #3232ff; }
   #graph > #graph-y-axis {
     width: 2.5%;
-    height: 96%; }
+    height: 96%;
+    display: flex;
+    flex-direction: column-reverse; }
     #graph > #graph-y-axis > .graph-y-axis-tick {
       padding-bottom: 2px;
       font-weight: bold;
@@ -602,7 +593,8 @@ footer {
   #graph > #graph-x-axis {
     width: 97.5%;
     height: 4%;
-    display: flex; }
+    display: flex;
+    flex-direction: row; }
     #graph > #graph-x-axis > .graph-x-axis-tick {
       padding-right: 4px;
       font-weight: bold;
@@ -625,7 +617,8 @@ footer {
   position: absolute;
   top: 0;
   right: -25%;
-  color: #eeeeee; }
+  color: #eeeeee;
+  z-index: 30; }
   #settings > h1 {
     width: 50%;
     margin: 10px 0;
@@ -635,20 +628,20 @@ footer {
   #settings > div {
     width: 75%; }
 
-.bg-very-low, .bg-very-high {
+.BG-very-low, .BG-very-high {
   background-color: #e50000;
   color: #e50000; }
-  .bg-very-low:hover, .bg-very-high:hover {
+  .BG-very-low:hover, .BG-very-high:hover {
     background-color: #660000; }
 
-.bg-low, .bg-high {
+.BG-low, .BG-high {
   background-color: #ff8100;
   color: #ff8100; }
-  .bg-low:hover, .bg-high:hover {
+  .BG-low:hover, .BG-high:hover {
     background-color: #804100; }
 
-.bg-normal {
+.BG-normal {
   background-color: #99e500;
   color: #99e500; }
-  .bg-normal:hover {
+  .BG-normal:hover {
     background-color: #446600; }

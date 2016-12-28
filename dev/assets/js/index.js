@@ -2,36 +2,38 @@ $(document).ready(function()
 {
 	// Config
 	var now = new Date();
+	var x0 = now.getTime();
 	var x = [];
-	var x_ = [];
-	var x_0 = now.getTime();
+	var xStr = [];
 	var y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
+	var yMin = y.min();
+	var yMax = y.max();
 	var dx = 1; // Time step (h)
 	var dX = 12; // Time range (h)
 	var dy = 0; // BG step (mmol/L)
-	var dY = y.max() - y.min(); // BG range (mmol/L)
+	var dY = yMax - yMin; // BG range (mmol/L)
 	var xTicks = [];
 	var yTicks = [];
 	var BGScale = [3, 4, 7, 12];
 
 	// Elements
 	var loader = $("#loader");
-	var graph = $("#graph-data");
-	var graphXAxis = $("#graph-x-axis");
-	var graphYAxis = $("#graph-y-axis");	
+	var graph = $("#graph-inner");
+	var BGDots;
+	var TBRBars;
+	var xAxis = $("#graph-x-axis");
+	var YAxis = $("#graph-y-axis");	
 	var settings = $("#settings");
 	var settingsButton = $("#settings-button");
-	var bubbleBG = $("#bg-info");
-	var bubbleBGTime = $("#bg-time");
-	var bubbleBGLabel = $("#bg-number");
-	var bubbleTBR = $("#tbr-info");
-	var bubbleTBRTime = $("#tbr-time");
-	var bubbleTBRLabel = $("#tbr-number");
+	var bubble = $("#bubble");
+	var bubbleInfo = bubble.find(".info");
+	var bubbleTime = bubble.find(".time");
 	
 	// Sizes
 	var widthSettings = "25%";
-
-
+	var radiusBGDot;
+	var thicknessXAxisTick;
+	var thicknessYAxisTick;
 
 	// Functions
 	function init() {
@@ -39,29 +41,31 @@ $(document).ready(function()
 		buildYAxis();
 		simulateBG();
 		simulateTBR();
-		showData();
+		buildGraph();
 	}
 
 	function buildXAxis () {
-		dx = dx * 60 * 60 * 1000; // Time step (ms)
-		dX = dX * 60 * 60 * 1000; // Time range (ms)
+		// Convert time step and range from h to ms
+		dx *= 60 * 60 * 1000;
+		dX *= 60 * 60 * 1000;
 
 		// Create epoch time scale
 		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x_0 - i * dx);
+			x.unshift(x0 - i * dx);
 		}
 
-		x.unshift(x_0 - dX);
+		// Add last tick based on given dX
+		x.unshift(x0 - dX);
 
 		// Format epoch to string
 		for (i = 0; i < x.length; i++) {
-			x_.push(convertTime(x[i], "HH:MM"));
+			xStr.push(convertTime(x[i], "HH:MM"));
 		}
 
-		// Create time axis
+		// Create X-Axis
 		for (i = 0; i < x.length - 1; i++) {
 			// Create tick
-			xTicks.push($("<div class='graph-x-axis-tick'>" + x_[i + 1] + "</div>"));
+			xTicks.push($("<div class='graph-x-axis-tick'>" + xStr[i + 1] + "</div>"));
 
 			// Style tick
 			xTicks[i].css({
@@ -69,19 +73,18 @@ $(document).ready(function()
 			});
 
 			// Add tick to graph
-			graphXAxis.append(xTicks[i]);
+			xAxis.append(xTicks[i]);
 		}
 	}
 
 	function buildYAxis () {
-		y = y.reverse();
-
+		// Create Y-Axis
 		for (i = 0; i < y.length - 1; i++)	{
 			// Compute dy
-			dy = y[i] - y[i + 1];
+			dy = y[i + 1] - y[i];
 
 			// Create tick
-			yTicks.push($("<div class='graph-y-axis-tick'>" + y[i + 1] + "</div>"));
+			yTicks.push($("<div class='graph-y-axis-tick'>" + y[i] + "</div>"));
 
 			// Style tick
 			yTicks[i].css({
@@ -89,179 +92,137 @@ $(document).ready(function()
 			});
 
 			// Add tick to DOM
-			graphYAxis.append(yTicks[i]);
+			YAxis.append(yTicks[i]);
 		}
 	}
 
-	function showData () {
-		var t;
-		var BG;
-		var xBG;
-		var yBG;
-		var BGDot;
-		var BGDots = $(".bg");
-		var TBRBar;
-		var TBRBars = $(".tbr");
-		var xBubble;
-		var yBubble;
-		var radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
-		var thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
-		var thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
+	function buildGraph () {
+		BGDots = $("#graph-inner > .BG");
+		TBRBars = $("#graph-inner > .TBR");
+		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
+		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
+		thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
 		// BGs
 		for (i = 0; i < BGDots.length; i++)	{
 			// Actualize BG
-			BGDot = BGDots.eq(i);
+			var BGDot = BGDots.eq(i);
 
-			// Get BG infos
-			t = BGDot.attr("x");
-			BG = BGDot.attr("y");
-
-			// Compute BG tick coordinates
-			xBG = (t - (x_0 - dX)) / dX * graph.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
-			yBG = BG / y.max() * graph.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
-
-			// Position BG on graph
-			BGDot.css({
-				"left": xBG + "px",
-				"bottom": yBG + "px"
-			});
-
-			// Color BG tick
-			BGDot.addClass(rankBG(BG, BGScale));
-
-			// Show bubble
-			BGDot.on("mouseenter", function () {
-				showBubbleBG($(this));
-			});
-
-			// Hide bubble
-			BGDot.on("mouseleave", function () {
-				bubbleBG.hide();
-			});
+			// Build BG
+			buildElement(BGDot);
 		}
 
 		// TBRs
 		for (i = 0; i < TBRBars.length - 1; i++) {
 			// Actualize TBR
-			TBRBar = TBRBars.eq(i);
-			TBRBarNext = TBRBars.eq(i + 1);
+			var TBRBar = TBRBars.eq(i);
 
-			// Get TBR infos
-			t = TBRBar.attr("x");
-			tNext = TBRBarNext.attr("x");
-			TBR = TBRBar.attr("y");
+			// Build TBR
+			buildElement(TBRBar);
+		}
+	}
+
+	function buildElement(e) {
+		// Get time
+		var t0 = e.attr("x");
+
+		if (e.hasClass("BG")) {
+			// Get BG
+			var BG = e.attr("y");
+
+			// Compute BG tick coordinates
+			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
+			var y = BG / yMax * graph.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
+
+			// Color BG tick
+			e.addClass(rankBG(BG, BGScale));
+
+			// Position BG on graph
+			e.css({
+				"left": x + "px",
+				"bottom": y + "px"
+			});
+		} else if (e.hasClass("TBR")) {
+			// Get next time
+			var t1 = e.next().attr("x");
+
+			// Get TBR
+			var TBR = e.attr("y");
 
 			// Compute TBR bar coordinates
-			xTBR = (t - (x_0 - dX)) / dX * graph.outerWidth();
-			yTBR = 1 / y.max() * graph.outerHeight();
-			wTBR = (tNext - t) / dX * graph.outerWidth();
-			hTBR = TBR / 2 / y.max() * graph.outerHeight();
+			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth();
+			var y = 1 / yMax * graph.outerHeight();
+			var w = (t1 - t0) / dX * graph.outerWidth();
+			var h = TBR / 2 / yMax * graph.outerHeight();
 
 			// Position TBR on graph
-			TBRBar.css({
-				"left": xTBR + "px",
-				"bottom": yTBR + "px",
-				"width": wTBR + "px",
-				"height": hTBR + "px"
-			});
-
-			// Show bubble
-			TBRBar.on("mouseenter", function () {
-				showBubbleTBR($(this));
-			});
-
-			// Hide bubble
-			TBRBar.on("mouseleave", function () {
-				bubbleTBR.hide();
-			});
-		}
-	}
-
-	function showBubbleBG (BGDot) {
-		// Get BG and time
-		t = convertTime(BGDot.attr("x"), "HH:MM - DD.MM.YYYY");
-		BG = (Math.round(BGDot.attr("y") * 10) / 10).toFixed(1);
-
-		// Add BG
-		bubbleBGLabel.text(BG);
-
-		// Color BG
-		bubbleBGLabel.removeClass();
-		bubbleBGLabel.addClass(rankBG(BG, BGScale));
-
-		// Add time
-		bubbleBGTime.text(t);
-
-		// Position bubble on graph
-		xBubble = parseFloat(BGDot.css("left")) + 10;
-		yBubble = parseFloat(BGDot.css("bottom")) + 10;
-
-		// If bubble exceeds width of graph
-		if (xBubble + bubbleBG.outerWidth() > graph.outerWidth()) {
-			bubbleBG.css({
-				"left": xBubble - 1.5 * 10 - bubbleBG.outerWidth() + "px"
-			});
-		} else {
-			bubbleBG.css({
-				"left": xBubble + "px"
-			});
-		}
-
-		// If bubble exceeds height of graph
-		if (yBubble + bubbleBG.outerHeight() > graph.outerHeight()) {
-			bubbleBG.css({
-				"bottom": yBubble - 1.5 * 10 - bubbleBG.outerHeight() + "px"
-			});
-		} else {
-			bubbleBG.css({
-				"bottom": yBubble + "px"
+			e.css({
+				"left": x + "px",
+				"bottom": y + "px",
+				"width": w + "px",
+				"height": h + "px"
 			});
 		}
 
 		// Show bubble
-		bubbleBG.show();
+		e.on("mouseenter", function () {
+			buildBubble($(this));
+		});
+
+		// Hide bubble
+		e.on("mouseleave", function () {
+			bubble.hide();
+		});
 	}
 
-	function showBubbleTBR (TBRBar) {
-		// Get TBR and time
-		t = convertTime(TBRBar.attr("x"), "HH:MM - DD.MM.YYYY");
-		TBR = (Math.round(TBRBar.attr("y") * 100)).toFixed(0);
-
-		// Add TBR
-		bubbleTBRLabel.text(TBR);
+	function buildBubble (e) {
+		// Get time
+		var t = convertTime(e.attr("x"), "HH:MM - DD.MM.YYYY");
 
 		// Add time
-		bubbleTBRTime.text(t);
+		bubbleTime.html(t);
+
+		if (e.hasClass("BG")) {
+			// Get info
+			var BG = (Math.round(e.attr("y") * 10) / 10).toFixed(1);
+			var BGType = rankBG(BG, BGScale);
+
+			// Add info to bubble
+			bubbleInfo.html("<span class='BG " + BGType + "'>" + BG + "</span> mmol/L");
+		} else if (e.hasClass("TBR")) {
+			// Get infos
+			var TBR = (Math.round(e.attr("y") * 100)).toFixed(0);
+
+			// Add info to bubble
+			bubbleInfo.html("<span class='TBR'>" + TBR + "</span>%");
+		}
+
+		// Define bubble coordinates
+		var x = parseFloat(e.css("left")) + 10;
+		var y = parseFloat(e.css("bottom")) + 10;
 
 		// Position bubble on graph
-		xBubble = parseFloat(TBRBar.css("left")) + 10;
-		yBubble = parseFloat(TBRBar.css("bottom")) + 10;
+		bubble.css({
+			"left": x + "px",
+			"bottom": y + "px"
+		});
 
 		// If bubble exceeds width of graph
-		if (xBubble + bubbleTBR.outerWidth() > graph.outerWidth()) {
-			bubbleTBR.css({
-				"left": xBubble - 1.5 * 10 - bubbleTBR.outerWidth() + "px"
-			});
-		} else {
-			bubbleTBR.css({
-				"left": xBubble + "px"
+		if (x + bubble.outerWidth() > graph.outerWidth()) {
+			bubble.css({
+				"left": x - 1.5 * 10 - bubble.outerWidth() + "px"
 			});
 		}
 
 		// If bubble exceeds height of graph
-		if (yBubble + bubbleTBR.outerHeight() > graph.outerHeight()) {
-			bubbleTBR.css({
-				"bottom": yBubble - 1.5 * 10 - bubbleTBR.outerHeight() + "px"
-			});
-		} else {
-			bubbleTBR.css({
-				"bottom": yBubble + "px"
+		if (y + bubble.outerHeight() > graph.outerHeight()) {
+			bubble.css({
+				"bottom": y - 1.5 * 10 - bubble.outerHeight() + "px"
 			});
 		}
 
 		// Show bubble
-		bubbleTBR.show();
+		bubble.show();
 	}
 
 	function toggleSettings () {
@@ -276,10 +237,7 @@ $(document).ready(function()
 		}
 	}
 
-
-
 	function simulateBG () {
-		//var x_0 = 1482080888 * 1000;
 		var x = [];
 		var y = [];
 		var dx = 5 * 60 * 1000; // ms
@@ -293,13 +251,13 @@ $(document).ready(function()
 
 		// Create epoch time scale
 		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x_0 - i * dx);
+			x.unshift(x0 - i * dx);
 		}
 
-		x.unshift(x_0 - dX);
+		x.unshift(x0 - dX);
 
 		for (i = 0; i < x.length; i++) {
-			u = (x[i] - (x_0 - dX)) / 1000000;
+			u = (x[i] - (x0 - dX)) / 1000000;
 
 			if (u >= u_0) {
 				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
@@ -309,7 +267,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='bg' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+			ticks.push($("<div class='BG' x='" + x[i] + "' y='" + y[i] + "'></div>"));
 		}
 
 		for (i = 0; i < x.length; i++) {
@@ -331,13 +289,13 @@ $(document).ready(function()
 
 		// Create epoch time scale
 		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x_0 - i * dx);
+			x.unshift(x0 - i * dx);
 		}
 
-		x.unshift(x_0 - dX);
+		x.unshift(x0 - dX);
 
 		for (i = 0; i < x.length; i++) {
-			u = (x[i] - (x_0 - dX)) / 1000000;
+			u = (x[i] - (x0 - dX)) / 1000000;
 
 			if (u >= u_0) {
 				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
@@ -347,7 +305,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='tbr' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+			ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + y[i] + "'></div>"));
 		}
 
 		for (i = 0; i < x.length; i++) {
@@ -361,7 +319,7 @@ $(document).ready(function()
 	init();
 
 	$(window).resize(function () {
-		showData();
+		buildGraph();
 	});
 
 	settingsButton.on("click", function () {

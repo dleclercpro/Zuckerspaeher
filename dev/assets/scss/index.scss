@@ -96,7 +96,7 @@ footer {
 	background-color: $black;
 }
 
-#user-info {
+#user {
 	width: 50%;
 	max-width: 450px;
 	padding: 30px 2.5%;
@@ -136,7 +136,7 @@ footer {
 	}
 }
 
-#dash-info {
+#dash {
 	width: 50%;
 	max-width: 450px;
 	padding: 30px 2.5%;
@@ -151,45 +151,45 @@ footer {
 	background-color: $black-trans;
 	z-index: 10;
 
-	> #dash-bg {
-		font-size: 38px;
+	> #dash-BG {
+		font-family: "Gloria Hallelujah";
+		font-size: 45px;
 		font-weight: bold;
+		line-height: 45px;
 		color: $white;
 		width: 100%;
 		display: flex;
 		justify-content: flex-end;
-		margin-bottom: 5px;
+		margin-bottom: 10px;
 
-		> .bg-number {
+		> .BG {
 
 		}
 
-		> #bg-arrow {
-			margin-left: 5px;
+		> .arrow {
+			margin-left: 8px;
 		}
 	}
 
-	> #dash-trends {
+	> #dash-delta {
+		font-size: 16px;
 		color: $white;
 		width: 100%;
 		display: flex;
 		justify-content: flex-end;
+		margin-top: 2px;
 
-		> #dbg {
-
-		}
-
-		> #iob {
+		> p {
 			margin-left: 10px;
 		}
+	}
 
-		> #cob {
-			margin-left: 10px;
-		}
+	> #dash-basal {
+		@extend #dash-delta;
+	}
 
-		> #basal {
-			margin-left: 10px;
-		}
+	> #dash-on-board {
+		@extend #dash-delta;
 	}
 }
 
@@ -199,14 +199,14 @@ footer {
 	display: flex;
 	flex-wrap: wrap;
 
-	> #graph-data {
+	> #graph-inner {
 		width: $width-graph;
 		height: $height-graph;
 		display: flex;
 		flex-wrap: wrap;
 		position: relative;
 
-		> .tbr {
+		> .TBR {
 			border-top: 2px solid $black-trans;
 			border-bottom: 2px solid $black-trans;
 			border-left: 1px solid $black-trans;
@@ -218,7 +218,7 @@ footer {
 			background-color: $blue-trans;
 
 			&:hover {
-				background-color: darken($blue-trans, 10%);
+				background-color: darken($blue-trans, 25%);
 			}
 
 			// On-going TBR can't be displayed?
@@ -227,17 +227,17 @@ footer {
 			}
 		}
 
-		> .bg {
+		> .BG {
 			border: 2px solid $black;
 			border-radius: 50%;
 			position: absolute;
-			width: 2 * $radius-bg;
-			height: 2 * $radius-bg;
+			width: 2 * $radius-BG;
+			height: 2 * $radius-BG;
 			cursor: pointer;
 			z-index: 5;
 		}
 
-		> #bg-info {
+		> #bubble {
 			display: none;
 			padding: 10px;
 			position: absolute;
@@ -246,40 +246,19 @@ footer {
 			background-color: $black-trans;
 			z-index: 15;
 
-			> #bg-label {
-				color: white;
-				font-size: 16px;
-				font-weight: bold;
-				white-space: nowrap;
-
-				> #bg-number {
-					background: none;
-				}
-			}
-
-			> #bg-time {
-				@extend #bg-label;
-			}
-		}
-
-		> #tbr-info {
-			display: none;
-			padding: 10px;
-			position: absolute;
-			border-radius: 3px;
-			box-shadow: 3px 3px 3px $black-trans;
-			background-color: $black-trans;
-			z-index: 15;
-
-			> #tbr-label {
-				color: white;
+			> .info, .time {
+				color: $white;
 				font-size: 16px;
 				font-weight: bold;
 				white-space: nowrap;
 			}
 
-			> #tbr-time {
-				@extend #tbr-label;
+			.BG {
+				background: none;
+			}
+
+			.TBR {
+				color: $blue;
 			}
 		}
 	}
@@ -287,6 +266,8 @@ footer {
 	> #graph-y-axis {
 		width: 100% - $width-graph;
 		height: $height-graph;
+		display: flex;
+		flex-direction: column-reverse;
 
 		> .graph-y-axis-tick {
 			padding-bottom: 2px;
@@ -305,6 +286,7 @@ footer {
 		width: $width-graph;
 		height: 100% - $height-graph;
 		display: flex;
+		flex-direction: row;
 
 		> .graph-x-axis-tick {
 			padding-right: 4px;
@@ -335,6 +317,7 @@ footer {
 	top: 0;
 	right: -$width-settings;
 	color: $white;
+	z-index: 30;
 
 	> h1 {
 		width: 50%;
@@ -352,7 +335,7 @@ footer {
 
 
 // General classes
-.bg-very-low {
+.BG-very-low {
 	background-color: $red;
 	color: $red;
 
@@ -361,7 +344,7 @@ footer {
 	}
 }
 
-.bg-low {
+.BG-low {
 	background-color: $orange;
 	color: $orange;
 
@@ -370,7 +353,7 @@ footer {
 	}
 }
 
-.bg-normal {
+.BG-normal {
 	background-color: $green;
 	color: $green;
 
@@ -379,10 +362,10 @@ footer {
 	}
 }
 
-.bg-high {
-	@extend .bg-low;
+.BG-high {
+	@extend .BG-low;
 }
 
-.bg-very-high {
-	@extend .bg-very-low;
+.BG-very-high {
+	@extend .BG-very-low;
 }
