@@ -97,7 +97,7 @@ function roundBG (BG) {
 }
 
 function roundTBR (TBR) {
-    return (Math.round(TBR * 100)).toFixed(0);
+    return Math.round(TBR).toFixed(0);
 }
 
 function decodeEntity (str) {

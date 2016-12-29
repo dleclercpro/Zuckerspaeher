@@ -541,8 +541,7 @@ footer {
     #graph > #graph-inner > .TBR {
       border-top: 2px solid rgba(0, 0, 0, 0.75);
       border-bottom: 2px solid rgba(0, 0, 0, 0.75);
-      border-left: 1px solid rgba(0, 0, 0, 0.75);
-      border-right: 1px solid rgba(0, 0, 0, 0.75);
+      border-right: 2px solid rgba(0, 0, 0, 0.75);
       position: absolute;
       width: 25px;
       height: 50px;
@@ -550,6 +549,8 @@ footer {
       background-color: rgba(50, 50, 255, 0.5); }
       #graph > #graph-inner > .TBR:hover {
         background-color: rgba(0, 0, 178, 0.5); }
+      #graph > #graph-inner > .TBR:first-child {
+        border-left: 2px solid rgba(0, 0, 0, 0.75); }
       #graph > #graph-inner > .TBR:last-child {
         display: none; }
     #graph > #graph-inner > .BG {

@@ -209,8 +209,7 @@ footer {
 		> .TBR {
 			border-top: 2px solid $black-trans;
 			border-bottom: 2px solid $black-trans;
-			border-left: 1px solid $black-trans;
-			border-right: 1px solid $black-trans;
+			border-right: 2px solid $black-trans;
 			position: absolute;
 			width: 25px;
 			height: 50px;
@@ -219,6 +218,11 @@ footer {
 
 			&:hover {
 				background-color: darken($blue-trans, 25%);
+			}
+
+			// First TBR misses left border
+			&:first-child {
+				border-left: 2px solid $black-trans;
 			}
 
 			// On-going TBR can't be displayed?

@@ -15,7 +15,7 @@ $(document).ready(function()
 	var xTicks = [];
 	var yTicks = [];
 	var BGScale = [3, 4, 7, 12]; // (mmol/L)
-	var dBGdtScale = [-0.5, -0.25, 0.25, 0.5]; // (mmol/L/m)
+	var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
 	// Elements
 	var loader = $("#loader");
@@ -111,6 +111,7 @@ $(document).ready(function()
 		BGDots = $("#graph-inner > .BG");
 		TBRBars = $("#graph-inner > .TBR");
 		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
+		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-bottom-width"));
 		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
 		thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
@@ -162,9 +163,21 @@ $(document).ready(function()
 
 			// Compute TBR bar coordinates
 			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth();
-			var y = 1 / yMax * graph.outerHeight();
+			var y = 1 / yMax * graph.outerHeight() - thicknessTBRBarBorder / 2;
 			var w = (t1 - t0) / dX * graph.outerWidth();
-			var h = TBR / 2 / yMax * graph.outerHeight();
+			var h = (TBR / 100 - 1) / yMax * graph.outerHeight();
+
+			// For low TBR
+			if (h < 0) {
+				// Make height positive
+				h *= -1;
+
+				// Move bar under baseline
+				y -= h;
+
+				// Recenter bar with Y-Axis
+				y += thicknessTBRBarBorder;
+			}
 
 			// Position TBR on graph
 			e.css({
@@ -327,8 +340,8 @@ $(document).ready(function()
 		var dX = 12 * 60 * 60 * 1000; // ms
 		var u = 0;
 		var u_0 = 15;
-		var A = 3.5;
-		var B = 0;
+		var A = 180;
+		var B = 100;
 		var k = 2;
 		var ticks = [];
 
