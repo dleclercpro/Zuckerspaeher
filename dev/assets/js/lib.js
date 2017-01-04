@@ -22,7 +22,9 @@ function range (start, stop, step) {
 
 function convertTime (t, format) {
     if (parseInt(t) == t) {
-        var date = new Date(parseInt(t));
+        t = parseInt(t);
+
+        var date = new Date(t);
 
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
@@ -59,6 +61,8 @@ function convertTime (t, format) {
 }
 
 function rankBG (BG, BGScale) {
+    BG = parseFloat(BG);
+
     if (BG < BGScale[0]) {
         return "BG-very-low";
     } else if (BG >= BGScale[0] && BG < BGScale[1]) {
@@ -73,6 +77,8 @@ function rankBG (BG, BGScale) {
 }
 
 function rankdBGdt (dBGdt, dBGdtScale) {
+    dBGdt = parseFloat(dBGdt);
+    
     var arrowUp = decodeEntity("&#8593;");
     var arrowRightUp = decodeEntity("&#8599;");
     var arrowRight = decodeEntity("&#8594;");
@@ -93,10 +99,14 @@ function rankdBGdt (dBGdt, dBGdtScale) {
 }
 
 function roundBG (BG) {
+    BG = parseFloat(BG);
+
     return (Math.round(BG * 10) / 10).toFixed(1);
 }
 
 function roundTBR (TBR) {
+    TBR = parseInt(TBR);
+
     return Math.round(TBR).toFixed(0);
 }
 

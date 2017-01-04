@@ -112,7 +112,7 @@ $(document).ready(function()
 		BGDots = $("#graph-inner > .BG");
 		TBRBars = $("#graph-inner > .TBR");
 		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
-		thicknessTBRBarBorder = 2; // FIX ME
+		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-bottom-width"));
 		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
 		thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
@@ -137,12 +137,12 @@ $(document).ready(function()
 
 	function buildElement(e) {
 		// Get time
-		var t0 = e.attr("x");
-		var t1 = e.next().attr("x");
+		var t0 = parseInt(e.attr("x"));
+		var t1 = parseInt(e.next().attr("x"));
 
 		if (e.hasClass("BG")) {
 			// Get BG
-			var BG = e.attr("y");
+			var BG = parseFloat(e.attr("y"));
 
 			// Compute BG tick coordinates
 			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
@@ -368,7 +368,7 @@ $(document).ready(function()
 		dashdBG.text(dBG);
 
 		// Get dBG/dt over last 5 minutes
-		var dt = (BGDots.eq(-1).attr("x") - BGDots.eq(-2).attr("x")) / 1000 / 60; // (m)
+		var dt = (parseInt(BGDots.eq(-1).attr("x")) - parseInt(BGDots.eq(-2).attr("x"))) / 1000 / 60; // (m)
 		var dBGdt = roundBG(dBG / dt);
 
 		// Add to dash
