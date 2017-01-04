@@ -97,14 +97,14 @@ footer {
 }
 
 #user {
-	width: 50%;
+	width: 45%;
 	max-width: 450px;
 	padding: 30px 2.5%;
 	display: flex;
 	align-items: center;
 	position: absolute;
 	top: 5%;
-	left: 2%;
+	left: $padding-header + 0.5%;
 	border-radius: 3px;
 	box-shadow: 3px 3px 3px $black-trans;
 	background-color: $black-trans;
@@ -119,6 +119,7 @@ footer {
 	}
 
 	> #user-picture {
+		width: 125px;
 		height: 125px;
 		border-radius: 50%;
 		border: 5px solid $white;
@@ -137,7 +138,7 @@ footer {
 }
 
 #dash {
-	width: 50%;
+	width: 45%;
 	max-width: 450px;
 	padding: 30px 2.5%;
 	display: flex;
@@ -145,7 +146,7 @@ footer {
 	align-items: center;
 	position: absolute;
 	top: 5%;
-	right: 2%;
+	right: $padding-header + 0.5%;
 	border-radius: 3px;
 	box-shadow: -3px 3px 3px $black-trans;
 	background-color: $black-trans;
@@ -167,6 +168,7 @@ footer {
 		}
 
 		> .arrow {
+			background: none;
 			margin-left: 8px;
 		}
 	}
@@ -207,27 +209,29 @@ footer {
 		position: relative;
 
 		> .TBR {
-			border-top: 2px solid $black-trans;
-			border-bottom: 2px solid $black-trans;
-			border-right: 2px solid $black-trans;
 			position: absolute;
-			width: 25px;
-			height: 50px;
 			cursor: pointer;
-			background-color: $blue-trans;
+			background-color: $purple;
+			display: flex;
+			flex-wrap: wrap;
+			border-top: 2px solid $black;
+			border-bottom: 2px solid $black;
+			overflow: hidden;
 
 			&:hover {
-				background-color: darken($blue-trans, 25%);
-			}
-
-			// First TBR misses left border
-			&:first-child {
-				border-left: 2px solid $black-trans;
+				background-color: darken($purple, 5%);
 			}
 
 			// On-going TBR can't be displayed?
 			&:last-child {
 				display: none;
+			}
+
+			> .innerTBRBar {
+				width: 50%;
+				height: 0;
+				border-left: 2px solid $black;
+				border-right: 2px solid $black;
 			}
 		}
 
@@ -262,7 +266,7 @@ footer {
 			}
 
 			.TBR {
-				color: $blue;
+				color: $purple;
 			}
 		}
 	}

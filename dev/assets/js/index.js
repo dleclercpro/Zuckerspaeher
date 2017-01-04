@@ -42,6 +42,7 @@ $(document).ready(function()
 	// Sizes
 	var widthSettings = "25%";
 	var radiusBGDot;
+	var thicknessTBRBarBorder;
 	var thicknessXAxisTick;
 	var thicknessYAxisTick;
 
@@ -111,7 +112,7 @@ $(document).ready(function()
 		BGDots = $("#graph-inner > .BG");
 		TBRBars = $("#graph-inner > .TBR");
 		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
-		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-bottom-width"));
+		thicknessTBRBarBorder = 2; // FIX ME
 		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
 		thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
@@ -137,6 +138,7 @@ $(document).ready(function()
 	function buildElement(e) {
 		// Get time
 		var t0 = e.attr("x");
+		var t1 = e.next().attr("x");
 
 		if (e.hasClass("BG")) {
 			// Get BG
@@ -155,28 +157,127 @@ $(document).ready(function()
 				"bottom": y + "px"
 			});
 		} else if (e.hasClass("TBR")) {
-			// Get next time
-			var t1 = e.next().attr("x");
-
-			// Get TBR
-			var TBR = e.attr("y");
+			// Get TBRs
+			var prevTBR = parseInt(e.prev().attr("y"));
+			var TBR = parseInt(e.attr("y"));
+			var nextTBR = parseInt(e.next().attr("y"));
 
 			// Compute TBR bar coordinates
 			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth();
 			var y = 1 / yMax * graph.outerHeight() - thicknessTBRBarBorder / 2;
 			var w = (t1 - t0) / dX * graph.outerWidth();
-			var h = (TBR / 100 - 1) / yMax * graph.outerHeight();
+			var h = Math.abs((TBR / 100 - 1) / yMax * graph.outerHeight());
+			var prevH = Math.abs((prevTBR / 100 - 1) / yMax * graph.outerHeight());
+			var nextH = Math.abs((nextTBR / 100 - 1) / yMax * graph.outerHeight());
 
+			// For high TBR
+			if (TBR > 100) {
+				// Add class to TBR
+				e.addClass("highTBR");
+
+				// Push inner bars up
+				e.children().css({
+					"margin-bottom": "auto"
+				});
+
+				// Draw contour
+				if (TBR > prevTBR) {
+					e.children().first().css({
+						"height": h - prevH,
+						"border-right": "none"
+					});
+				}
+
+				if (TBR > nextTBR) {
+					e.children().last().css({
+						"height": h - nextH,
+						"border-left": "none"
+					});
+				}
+			} 
 			// For low TBR
-			if (h < 0) {
-				// Make height positive
-				h *= -1;
+			else if (TBR < 100) {
+				// Add class to TBR
+				e.addClass("lowTBR");
+
+				// Push inner bars down
+				e.children().css({
+					"margin-top": "auto"
+				});
 
 				// Move bar under baseline
 				y -= h;
 
 				// Recenter bar with Y-Axis
 				y += thicknessTBRBarBorder;
+
+				// Draw contour
+				if (TBR < prevTBR) {
+					e.children().first().css({
+						"height": h - prevH,
+						"border-right": "none"
+					});
+				}
+
+				if (TBR < nextTBR) {
+					e.children().last().css({
+						"height": h - nextH,
+						"border-left": "none"
+					});
+				}
+			}
+			// For no TBR
+			else {
+				// Add class to TBR
+				e.addClass("noTBR");
+
+				// Baseline should only be one line
+				e.css({
+					"border-top": "none"
+				});
+
+				// No side-borders needed on inner bars
+				e.children().css({
+					"border": "none"
+				});
+			}
+
+			// TBR crosses baseline
+			if (prevTBR < 100 && TBR > 100) {
+				e.children().first().css({
+					"height": h - thicknessTBRBarBorder,
+				});
+
+				e.prev().children().last().css({
+					"height": prevH - thicknessTBRBarBorder,
+				});
+			} else if (nextTBR < 100 && TBR > 100) {
+				e.children().last().css({
+					"height": h - thicknessTBRBarBorder,
+				});
+
+				e.next().children().first().css({
+					"height": nextH - thicknessTBRBarBorder,
+				});
+			}
+
+			// Deal with minor TBRs
+			if (h < 2 * thicknessTBRBarBorder) {
+				h = thicknessTBRBarBorder;
+
+				e.children().css({
+					"border": "none"
+				});
+
+				if (TBR > 100) {
+					e.css({
+						"border-top": "none"
+					});
+				} else if (TBR < 100) {
+					e.css({
+						"border-bottom": "none"
+					});
+				}
 			}
 
 			// Position TBR on graph
@@ -222,8 +323,8 @@ $(document).ready(function()
 		}
 
 		// Define bubble coordinates
-		var x = parseFloat(e.css("left")) + 10;
-		var y = parseFloat(e.css("bottom")) + 10;
+		var x = parseFloat(e.css("left")) + parseFloat(e.css("width")) + 1;
+		var y = parseFloat(e.css("bottom")) + parseFloat(e.css("height")) + 1;
 
 		// Position bubble on graph
 		bubble.css({
@@ -276,6 +377,9 @@ $(document).ready(function()
 		// Select arrow and add it to dash
 		dashArrow.text(rankdBGdt(dBGdt, dBGdtScale));
 
+		// Color arrow
+		dashArrow.addClass(lastBGType);
+
 		// Get current TBR
 		var TBR = roundTBR(TBRBars.eq(-1).attr("y"));
 
@@ -325,7 +429,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='BG' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+			ticks.push($("<div class='BG' x='" + x[i] + "' y='" + roundBG(y[i]) + "'></div>"));
 		}
 
 		for (i = 0; i < x.length; i++) {
@@ -363,7 +467,11 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+			ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + roundTBR(y[i]) + "'></div>"));
+
+			for (j = 0; j < 2; j++) {
+				ticks.last().append($("<div class='innerTBRBar'></div>"));
+			}
 		}
 
 		for (i = 0; i < x.length; i++) {
@@ -383,5 +491,4 @@ $(document).ready(function()
 	settingsButton.on("click", function () {
 		toggleSettings();
 	});
-
 });

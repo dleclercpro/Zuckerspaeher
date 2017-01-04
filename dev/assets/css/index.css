@@ -459,14 +459,14 @@ footer {
   background-color: #111111; }
 
 #user {
-  width: 50%;
+  width: 45%;
   max-width: 450px;
   padding: 30px 2.5%;
   display: flex;
   align-items: center;
   position: absolute;
   top: 5%;
-  left: 2%;
+  left: 3%;
   border-radius: 3px;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
   background-color: rgba(0, 0, 0, 0.75);
@@ -478,6 +478,7 @@ footer {
     #user {
       width: 92%; } }
   #user > #user-picture {
+    width: 125px;
     height: 125px;
     border-radius: 50%;
     border: 5px solid #eeeeee; }
@@ -490,7 +491,7 @@ footer {
       color: red; }
 
 #dash {
-  width: 50%;
+  width: 45%;
   max-width: 450px;
   padding: 30px 2.5%;
   display: flex;
@@ -498,7 +499,7 @@ footer {
   align-items: center;
   position: absolute;
   top: 5%;
-  right: 2%;
+  right: 3%;
   border-radius: 3px;
   box-shadow: -3px 3px 3px rgba(0, 0, 0, 0.75);
   background-color: rgba(0, 0, 0, 0.75);
@@ -516,6 +517,7 @@ footer {
     #dash > #dash-BG > .BG {
       background: none; }
     #dash > #dash-BG > .arrow {
+      background: none;
       margin-left: 8px; }
   #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board {
     font-size: 16px;
@@ -539,20 +541,23 @@ footer {
     flex-wrap: wrap;
     position: relative; }
     #graph > #graph-inner > .TBR {
-      border-top: 2px solid rgba(0, 0, 0, 0.75);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.75);
-      border-right: 2px solid rgba(0, 0, 0, 0.75);
       position: absolute;
-      width: 25px;
-      height: 50px;
       cursor: pointer;
-      background-color: rgba(50, 50, 255, 0.5); }
+      background-color: #2a0d45;
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 2px solid #111111;
+      border-bottom: 2px solid #111111;
+      overflow: hidden; }
       #graph > #graph-inner > .TBR:hover {
-        background-color: rgba(0, 0, 178, 0.5); }
-      #graph > #graph-inner > .TBR:first-child {
-        border-left: 2px solid rgba(0, 0, 0, 0.75); }
+        background-color: #1d0930; }
       #graph > #graph-inner > .TBR:last-child {
         display: none; }
+      #graph > #graph-inner > .TBR > .innerTBRBar {
+        width: 50%;
+        height: 0;
+        border-left: 2px solid #111111;
+        border-right: 2px solid #111111; }
     #graph > #graph-inner > .BG {
       border: 2px solid #111111;
       border-radius: 50%;
@@ -577,7 +582,7 @@ footer {
       #graph > #graph-inner > #bubble .BG {
         background: none; }
       #graph > #graph-inner > #bubble .TBR {
-        color: #3232ff; }
+        color: #2a0d45; }
   #graph > #graph-y-axis {
     width: 2.5%;
     height: 96%;
