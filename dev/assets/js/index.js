@@ -205,12 +205,6 @@ $(document).ready(function()
 					"margin-top": "auto"
 				});
 
-				// Move bar under baseline
-				y -= h;
-
-				// Recenter bar with Y-Axis
-				y += thicknessTBRBarBorder;
-
 				// Draw contour
 				if (TBR < prevTBR) {
 					e.children().first().css({
@@ -278,6 +272,14 @@ $(document).ready(function()
 						"border-bottom": "none"
 					});
 				}
+			}
+
+			if (TBR < 100) {
+				// Move bar under baseline
+				y -= h;
+
+				// Recenter bar with Y-Axis
+				y += thicknessTBRBarBorder;
 			}
 
 			// Position TBR on graph

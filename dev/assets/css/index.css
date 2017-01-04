@@ -545,7 +545,6 @@ footer {
       cursor: pointer;
       background-color: #2a0d45;
       display: flex;
-      flex-wrap: wrap;
       border-top: 2px solid #111111;
       border-bottom: 2px solid #111111;
       overflow: hidden; }
