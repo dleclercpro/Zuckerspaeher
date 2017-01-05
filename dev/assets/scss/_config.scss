@@ -21,6 +21,8 @@ $black-trans: rgba(0, 0, 0, 0.75);
 // Sizes
 $width-graph: 97.5%;
 $height-graph: 96%;
+$height-graph-BG: 85%;
+$height-graph-TBR: 100% - $height-graph-BG;
 $height-content: 92.5%;
 $width-settings: 25%;
 $height-settings: 95%;

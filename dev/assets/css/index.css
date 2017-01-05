@@ -534,30 +534,12 @@ footer {
   height: 100%;
   display: flex;
   flex-wrap: wrap; }
-  #graph > #graph-inner {
+  #graph > #graph-inner-bg {
     width: 97.5%;
-    height: 96%;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative; }
-    #graph > #graph-inner > .TBR {
-      position: absolute;
-      cursor: pointer;
-      background-color: #2a0d45;
-      display: flex;
-      border-top: 2px solid #111111;
-      border-bottom: 2px solid #111111;
-      overflow: hidden; }
-      #graph > #graph-inner > .TBR:hover {
-        background-color: #1d0930; }
-      #graph > #graph-inner > .TBR:last-child {
-        display: none; }
-      #graph > #graph-inner > .TBR > .innerTBRBar {
-        width: 50%;
-        height: 0;
-        border-left: 2px solid #111111;
-        border-right: 2px solid #111111; }
-    #graph > #graph-inner > .BG {
+    height: 81.6%;
+    position: relative;
+    order: 1; }
+    #graph > #graph-inner-bg > .BG {
       border: 2px solid #111111;
       border-radius: 50%;
       position: absolute;
@@ -565,29 +547,51 @@ footer {
       height: 10px;
       cursor: pointer;
       z-index: 5; }
-    #graph > #graph-inner > #bubble {
-      display: none;
-      padding: 10px;
+  #graph > #graph-inner-tbr {
+    width: 97.5%;
+    height: 14.4%;
+    position: relative;
+    order: 3; }
+    #graph > #graph-inner-tbr > .TBR {
       position: absolute;
-      border-radius: 3px;
-      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-      background-color: rgba(0, 0, 0, 0.75);
-      z-index: 15; }
-      #graph > #graph-inner > #bubble > .info, #graph > #graph-inner > #bubble .time {
-        color: #eeeeee;
-        font-size: 16px;
-        font-weight: bold;
-        white-space: nowrap; }
-      #graph > #graph-inner > #bubble .BG {
-        background: none; }
-      #graph > #graph-inner > #bubble .TBR {
-        color: #2a0d45; }
-  #graph > #graph-y-axis {
+      cursor: pointer;
+      background-color: #2a0d45;
+      display: flex;
+      border-top: 2px solid #111111;
+      border-bottom: 2px solid #111111;
+      overflow: hidden; }
+      #graph > #graph-inner-tbr > .TBR:hover {
+        background-color: #1d0930; }
+      #graph > #graph-inner-tbr > .TBR:last-child {
+        display: none; }
+      #graph > #graph-inner-tbr > .TBR > .innerTBRBar {
+        width: 50%;
+        height: 0;
+        border-left: 2px solid #111111;
+        border-right: 2px solid #111111; }
+  #graph > #graph-y-axis-bg {
     width: 2.5%;
-    height: 96%;
+    height: 81.6%;
     display: flex;
-    flex-direction: column-reverse; }
-    #graph > #graph-y-axis > .graph-y-axis-tick {
+    flex-direction: column-reverse;
+    order: 2; }
+    #graph > #graph-y-axis-bg > .graph-y-axis-tick {
+      padding-bottom: 2px;
+      font-weight: bold;
+      color: #eeeeee;
+      border-bottom: 1px dashed #eeeeee;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      flex-grow: 0; }
+  #graph > #graph-y-axis-tbr {
+    width: 2.5%;
+    height: 14.4%;
+    display: flex;
+    flex-direction: column-reverse;
+    order: 4; }
+    #graph > #graph-y-axis-tbr > .graph-y-axis-tick {
       padding-bottom: 2px;
       font-weight: bold;
       color: #eeeeee;
@@ -601,7 +605,8 @@ footer {
     width: 97.5%;
     height: 4%;
     display: flex;
-    flex-direction: row; }
+    flex-direction: row;
+    order: 5; }
     #graph > #graph-x-axis > .graph-x-axis-tick {
       padding-right: 4px;
       font-weight: bold;
@@ -611,9 +616,28 @@ footer {
       justify-content: flex-end;
       flex-shrink: 0;
       flex-grow: 0; }
-  #graph > #graph-corner {
+  #graph > #graph-outer {
     width: 2.5%;
-    height: 4%; }
+    height: 4%;
+    order: 6; }
+
+#bubble {
+  display: none;
+  padding: 10px;
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 15; }
+  #bubble > .info, #bubble .time {
+    color: #eeeeee;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap; }
+  #bubble .BG {
+    background: none; }
+  #bubble .TBR {
+    color: #2a0d45; }
 
 #settings {
   width: 25%;

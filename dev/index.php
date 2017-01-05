@@ -68,15 +68,17 @@ Notes : -
 			</div>
 
 			<div id="graph">
-				<div id="graph-inner">
-					<div id="bubble">
-						<div class="info"></div>
-						<div class="time"></div>
-					</div>
-				</div>
-				<div id="graph-y-axis"></div>
+				<div id="graph-inner-bg"></div>
+				<div id="graph-inner-tbr"></div>
+				<div id="graph-y-axis-bg"></div>
+				<div id="graph-y-axis-tbr"></div>
 				<div id="graph-x-axis"></div>
-				<div id="graph-corner"></div>
+				<div id="graph-outer"></div>
+			</div>
+
+			<div id="bubble">
+				<div class="info"></div>
+				<div class="time"></div>
 			</div>
 
 			<div id="settings">

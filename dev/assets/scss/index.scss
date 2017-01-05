@@ -57,7 +57,6 @@ header {
 	display: flex;
 	background-color: $black-trans;
 	box-shadow: 0 3px 3px $black-trans;
-	//border-bottom: 2px solid black;
 	z-index: 1;
 
 	> #branding {
@@ -201,12 +200,28 @@ footer {
 	display: flex;
 	flex-wrap: wrap;
 
-	> #graph-inner {
+	> #graph-inner-bg {
 		width: $width-graph;
-		height: $height-graph;
-		display: flex;
-		flex-wrap: wrap;
+		height: $height-graph-BG / 100% * $height-graph;
 		position: relative;
+		order: 1;
+
+		> .BG {
+			border: 2px solid $black;
+			border-radius: 50%;
+			position: absolute;
+			width: 2 * $radius-BG;
+			height: 2 * $radius-BG;
+			cursor: pointer;
+			z-index: 5;
+		}
+	}
+
+	> #graph-inner-tbr {
+		width: $width-graph;
+		height: $height-graph-TBR / 100% * $height-graph;
+		position: relative;
+		order: 3;
 
 		> .TBR {
 			position: absolute;
@@ -233,48 +248,34 @@ footer {
 				border-right: 2px solid $black;
 			}
 		}
+	}
 
-		> .BG {
-			border: 2px solid $black;
-			border-radius: 50%;
-			position: absolute;
-			width: 2 * $radius-BG;
-			height: 2 * $radius-BG;
-			cursor: pointer;
-			z-index: 5;
-		}
+	> #graph-y-axis-bg {
+		width: 100% - $width-graph;
+		height: $height-graph-BG / 100% * $height-graph;
+		display: flex;
+		flex-direction: column-reverse;
+		order: 2;
 
-		> #bubble {
-			display: none;
-			padding: 10px;
-			position: absolute;
-			border-radius: 3px;
-			box-shadow: 3px 3px 3px $black-trans;
-			background-color: $black-trans;
-			z-index: 15;
-
-			> .info, .time {
-				color: $white;
-				font-size: 16px;
-				font-weight: bold;
-				white-space: nowrap;
-			}
-
-			.BG {
-				background: none;
-			}
-
-			.TBR {
-				color: $purple;
-			}
+		> .graph-y-axis-tick {
+			padding-bottom: 2px;
+			font-weight: bold;
+			color: $white;
+			border-bottom: 1px dashed $white;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			flex-shrink: 0;
+			flex-grow: 0;
 		}
 	}
 
-	> #graph-y-axis {
+	> #graph-y-axis-tbr {
 		width: 100% - $width-graph;
-		height: $height-graph;
+		height: $height-graph-TBR / 100% * $height-graph;
 		display: flex;
 		flex-direction: column-reverse;
+		order: 4;
 
 		> .graph-y-axis-tick {
 			padding-bottom: 2px;
@@ -294,6 +295,7 @@ footer {
 		height: 100% - $height-graph;
 		display: flex;
 		flex-direction: row;
+		order: 5;
 
 		> .graph-x-axis-tick {
 			padding-right: 4px;
@@ -307,9 +309,35 @@ footer {
 		}
 	}
 
-	> #graph-corner {
+	> #graph-outer {
 		width: 100% - $width-graph;
 		height: 100% - $height-graph;
+		order: 6;
+	}
+}
+
+#bubble {
+	display: none;
+	padding: 10px;
+	position: absolute;
+	border-radius: 3px;
+	box-shadow: 3px 3px 3px $black-trans;
+	background-color: $black-trans;
+	z-index: 15;
+
+	> .info, .time {
+		color: $white;
+		font-size: 16px;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+
+	.BG {
+		background: none;
+	}
+
+	.TBR {
+		color: $purple;
 	}
 }
 

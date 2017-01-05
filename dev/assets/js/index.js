@@ -8,18 +8,27 @@ $(document).ready(function()
 	var y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var yMin = y.min();
 	var yMax = y.max();
+	var yTBR = [0, 100, 200]; // %
+	var yTBRMin = yTBR.min();
+	var yTBRMax = yTBR.max();
 	var dx = 1; // Time step (h)
 	var dX = 12; // Time range (h)
-	var dy = 0; // BG step (mmol/L)
+	var dy; // BG step (mmol/L)
 	var dY = yMax - yMin; // BG range (mmol/L)
+	var dyTBR;
+	var dYTBR = yTBRMax - yTBRMin;
 	var xTicks = [];
 	var yTicks = [];
+	var yTBRTicks = [];
 	var BGScale = [3, 4, 7, 12]; // (mmol/L)
 	var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
 	// Elements
+	var header = $("header");
 	var loader = $("#loader");
-	var graph = $("#graph-inner");
+	var graph = $("#graph");
+	var graphBG = $("#graph-inner-bg");
+	var graphTBR = $("#graph-inner-tbr");
 	var dash = $("#dash");
 	var dashBG = dash.find(".BG");
 	var dashArrow = dash.find(".arrow");
@@ -30,7 +39,8 @@ $(document).ready(function()
 	var dashIOB = dash.find(".IOB");
 	var dashCOB = dash.find(".COB");
 	var xAxis = $("#graph-x-axis");
-	var YAxis = $("#graph-y-axis");	
+	var YAxis = $("#graph-y-axis-bg");
+	var YAxisTBR = $("#graph-y-axis-tbr");
 	var settings = $("#settings");
 	var settingsButton = $("#settings-button");
 	var bubble = $("#bubble");
@@ -91,7 +101,7 @@ $(document).ready(function()
 
 	function buildYAxis () {
 		// Create Y-Axis
-		for (i = 0; i < y.length - 1; i++)	{
+		for (i = 0; i < y.length - 1; i++) {
 			// Compute dy
 			dy = y[i + 1] - y[i];
 
@@ -106,11 +116,27 @@ $(document).ready(function()
 			// Add tick to DOM
 			YAxis.append(yTicks[i]);
 		}
+
+		for (i = 0; i < yTBR.length - 1; i++) {
+			// Compute dy
+			dyTBR = yTBR[i + 1] - yTBR[i];
+
+			// Create tick
+			yTBRTicks.push($("<div class='graph-y-axis-tick'>" + yTBR[i] + "</div>"));
+
+			// Style tick
+			yTBRTicks[i].css({
+				"height": (dyTBR / dYTBR * 100) + "%"
+			});
+
+			// Add tick to DOM
+			YAxisTBR.append(yTBRTicks[i]);
+		}
 	}
 
 	function buildGraph () {
-		BGDots = $("#graph-inner > .BG");
-		TBRBars = $("#graph-inner > .TBR");
+		BGDots = $("#graph-inner-bg > .BG");
+		TBRBars = $("#graph-inner-tbr > .TBR");
 		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
 		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-bottom-width"));
 		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
@@ -145,8 +171,8 @@ $(document).ready(function()
 			var BG = parseFloat(e.attr("y"));
 
 			// Compute BG tick coordinates
-			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
-			var y = BG / yMax * graph.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
+			var x = (t0 - (x0 - dX)) / dX * graphBG.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
+			var y = BG / yMax * graphBG.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
 
 			// Color BG tick
 			e.addClass(rankBG(BG, BGScale));
@@ -163,12 +189,12 @@ $(document).ready(function()
 			var nextTBR = parseInt(e.next().attr("y"));
 
 			// Compute TBR bar coordinates
-			var x = (t0 - (x0 - dX)) / dX * graph.outerWidth();
-			var y = 1 / yMax * graph.outerHeight() - thicknessTBRBarBorder / 2;
-			var w = (t1 - t0) / dX * graph.outerWidth();
-			var h = Math.abs((TBR / 100 - 1) / yMax * graph.outerHeight());
-			var prevH = Math.abs((prevTBR / 100 - 1) / yMax * graph.outerHeight());
-			var nextH = Math.abs((nextTBR / 100 - 1) / yMax * graph.outerHeight());
+			var x = (t0 - (x0 - dX)) / dX * graphTBR.outerWidth();
+			var y = 100 / yTBRMax * graphTBR.outerHeight() - thicknessTBRBarBorder / 2;
+			var w = (t1 - t0) / dX * graphTBR.outerWidth();
+			var h = Math.abs((TBR - 100) / yTBRMax * graphTBR.outerHeight());
+			var prevH = Math.abs((prevTBR - 100) / yTBRMax * graphTBR.outerHeight());
+			var nextH = Math.abs((nextTBR - 100) / yTBRMax * graphTBR.outerHeight());
 
 			// For high TBR
 			if (TBR > 100) {
@@ -325,13 +351,14 @@ $(document).ready(function()
 		}
 
 		// Define bubble coordinates
-		var x = parseFloat(e.css("left")) + parseFloat(e.css("width")) + 1;
-		var y = parseFloat(e.css("bottom")) + parseFloat(e.css("height")) + 1;
+		var x = parseFloat(e.offset().left) + parseFloat(e.css("width")) + 5;
+		var y = parseFloat(e.offset().top) - header.outerHeight();
+
 
 		// Position bubble on graph
 		bubble.css({
 			"left": x + "px",
-			"bottom": y + "px"
+			"top": y + "px"
 		});
 
 		// If bubble exceeds width of graph
@@ -344,7 +371,7 @@ $(document).ready(function()
 		// If bubble exceeds height of graph
 		if (y + bubble.outerHeight() > graph.outerHeight()) {
 			bubble.css({
-				"bottom": y - 1.5 * 10 - bubble.outerHeight() + "px"
+				"top": y - 1.5 * 10 - bubble.outerHeight() + "px"
 			});
 		}
 
@@ -435,7 +462,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			graph.append(ticks[i]);
+			graphBG.append(ticks[i]);
 		}
 	}
 
@@ -477,7 +504,7 @@ $(document).ready(function()
 		}
 
 		for (i = 0; i < x.length; i++) {
-			graph.append(ticks[i]);
+			graphTBR.append(ticks[i]);
 		}
 	}
 
