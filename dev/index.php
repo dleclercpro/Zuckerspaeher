@@ -68,12 +68,12 @@ Notes : -
 			</div>
 
 			<div id="graph">
-				<div id="graph-inner-bg"></div>
-				<div id="graph-inner-tbr"></div>
-				<div id="graph-y-axis-bg"></div>
-				<div id="graph-y-axis-tbr"></div>
+				<div id="graph-BG"></div>
+				<div id="graph-I"></div>
+				<div id="graph-y-axis-BG"></div>
+				<div id="graph-y-axis-I"></div>
 				<div id="graph-x-axis"></div>
-				<div id="graph-outer"></div>
+				<div id="graph-NA"></div>
 			</div>
 
 			<div id="bubble">

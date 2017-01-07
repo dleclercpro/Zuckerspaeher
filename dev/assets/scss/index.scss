@@ -57,7 +57,6 @@ header {
 	display: flex;
 	background-color: $black-trans;
 	box-shadow: 0 3px 3px $black-trans;
-	z-index: 1;
 
 	> #branding {
 		height: 100%;
@@ -200,7 +199,7 @@ footer {
 	display: flex;
 	flex-wrap: wrap;
 
-	> #graph-inner-bg {
+	> #graph-BG {
 		width: $width-graph;
 		height: $height-graph-BG / 100% * $height-graph;
 		position: relative;
@@ -217,7 +216,7 @@ footer {
 		}
 	}
 
-	> #graph-inner-tbr {
+	> #graph-I {
 		width: $width-graph;
 		height: $height-graph-TBR / 100% * $height-graph;
 		position: relative;
@@ -230,6 +229,7 @@ footer {
 			display: flex;
 			border-top: 2px solid $black;
 			border-bottom: 2px solid $black;
+			z-index: 5;
 			overflow: hidden;
 
 			&:hover {
@@ -248,9 +248,23 @@ footer {
 				border-right: 2px solid $black;
 			}
 		}
+
+		> .B {
+			border: 2px solid $black;
+			background-color: $blue;
+			position: absolute;
+			width: 2 * $radius-B;
+			height: 2 * $radius-B;
+			cursor: pointer;
+			z-index: 5;
+
+			&:hover {
+				background-color: darken($blue, 25%);
+			}
+		}
 	}
 
-	> #graph-y-axis-bg {
+	> #graph-y-axis-BG {
 		width: 100% - $width-graph;
 		height: $height-graph-BG / 100% * $height-graph;
 		display: flex;
@@ -270,7 +284,7 @@ footer {
 		}
 	}
 
-	> #graph-y-axis-tbr {
+	> #graph-y-axis-I {
 		width: 100% - $width-graph;
 		height: $height-graph-TBR / 100% * $height-graph;
 		display: flex;
@@ -309,7 +323,7 @@ footer {
 		}
 	}
 
-	> #graph-outer {
+	> #graph-NA {
 		width: 100% - $width-graph;
 		height: 100% - $height-graph;
 		order: 6;
@@ -338,6 +352,10 @@ footer {
 
 	.TBR {
 		color: $purple;
+	}
+
+	.B {
+		color: $blue;
 	}
 }
 

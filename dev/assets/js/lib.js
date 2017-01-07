@@ -110,6 +110,12 @@ function roundTBR (TBR) {
     return Math.round(TBR).toFixed(0);
 }
 
+function roundB (B) {
+    B = parseInt(B);
+
+    return (Math.round(B * 10) / 10).toFixed(1);
+}
+
 function decodeEntity (str) {
     return $("<textarea>").html(str).text();
 }
