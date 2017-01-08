@@ -48,8 +48,8 @@ $(document).ready(function()
 	var TBRBars;
 	
 	// Sizes
-	var widthSettings;
 	var radiusBGDot;
+	var radiusBDot;
 	var thicknessTBRBarBorder;
 	var thicknessXAxisTick;
 	var thicknessYAxisTick;
@@ -452,17 +452,23 @@ $(document).ready(function()
 	}
 
 	function toggleSettings () {
-		widthSettings = settings.outerWidth();
+		// Get coordinates and size of settings menu
+		var x = Math.abs(parseFloat(settings.css("right")));
+		var X = settings.outerWidth();
 
-		if (settings.css("right") == "0px") {
-			settings.animate({
-				right: "-=" + widthSettings
+		// Decide on sliding direction
+		if (settings.hasClass("is-active")) {
+			settings.stop().animate({
+				right: "-=" + (X - x)
 			});
 		} else {
-			settings.animate({
-				right: "+=" + widthSettings
-			});
+			settings.stop().animate({
+				right: "+=" + x
+			});			
 		}
+
+		// Toggle defining class
+		settings.toggleClass("is-active");
 	}
 
 	function simulateBG () {
