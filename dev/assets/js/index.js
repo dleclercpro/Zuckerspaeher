@@ -588,6 +588,32 @@ $(document).ready(function()
 		graphI.append(ticks);
 	}
 
+	function getBGs () {
+		// Create TBRs object
+		var BGs = {};
+
+		// Turn off async AJAX
+		$.ajaxSetup({
+			async: false
+		});
+
+		// Get boluses with AJAX
+		$.getJSON("ajax/BG.json", function (data) {
+			// Store boluses with epoch time
+			$.each(data, function (key, value) {
+				BGs[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+			});
+		});
+
+		// Turn on async AJAX
+		$.ajaxSetup({
+			async: true
+		});
+
+		// Return boluses
+		return BGs;
+	}
+
 	function getTBRs () {
 		// Create TBRs object
 		var TBRs = {};
