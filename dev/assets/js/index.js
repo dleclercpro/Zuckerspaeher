@@ -159,9 +159,13 @@ $(document).ready(function()
 		}
 
 		// TBRs
-		for (i = 0; i < TBRBars.length - 1; i++) {
+		for (i = 0; i < TBRBars.length; i++) {
 			// Actualize TBR
 			var TBRBar = TBRBars.eq(i);
+
+			if (i == TBRBars.length - 1) {
+				TBRBar.addClass("lastTBR");
+			}
 
 			// Build TBR
 			buildElement(TBRBar);
@@ -199,6 +203,17 @@ $(document).ready(function()
 				"bottom": y + "px"
 			});
 		} else if (e.hasClass("TBR")) {
+			// Initialize TBR styles
+			e.css({
+				"border-top": "2px solid black",
+				"border-bottom": "2px solid black"
+			});
+
+			e.children().css({
+				"border-left": "2px solid black",
+				"border-right": "2px solid black"
+			});
+
 			// Get TBRs
 			var prevTBR = parseInt(e.prev().attr("y"));
 			var TBR = parseInt(e.attr("y"));
@@ -573,6 +588,32 @@ $(document).ready(function()
 		graphI.append(ticks);
 	}
 
+	function getTBRs () {
+		// Create TBRs object
+		var TBRs = {};
+
+		// Turn off async AJAX
+		$.ajaxSetup({
+			async: false
+		});
+
+		// Get boluses with AJAX
+		$.getJSON("ajax/insulin.json", function (data) {
+			// Store boluses with epoch time
+			$.each(data["Temporary Basals"], function (key, value) {
+				TBRs[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+			});
+		});
+
+		// Turn on async AJAX
+		$.ajaxSetup({
+			async: true
+		});
+
+		// Return boluses
+		return TBRs;
+	}
+
 	function getBoluses () {
 		// Create bolus object
 		var boluses = {};
@@ -588,6 +629,11 @@ $(document).ready(function()
 			$.each(data["Boluses"], function (key, value) {
 				boluses[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
 			});
+		});
+
+		// Turn on async AJAX
+		$.ajaxSetup({
+			async: true
 		});
 
 		// Return boluses

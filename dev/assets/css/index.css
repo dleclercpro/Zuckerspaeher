@@ -556,19 +556,15 @@ footer {
       cursor: pointer;
       background-color: #2a0d45;
       display: flex;
-      border-top: 2px solid #111111;
-      border-bottom: 2px solid #111111;
       z-index: 5;
       overflow: hidden; }
       #graph > #graph-I > .TBR:hover {
         background-color: #1d0930; }
-      #graph > #graph-I > .TBR:last-child {
+      #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBRBar {
         width: 50%;
-        height: 0;
-        border-left: 2px solid #111111;
-        border-right: 2px solid #111111; }
+        height: 0; }
     #graph > #graph-I > .B {
       border: 2px solid #111111;
       background-color: #1111ff;

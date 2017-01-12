@@ -227,8 +227,6 @@ footer {
 			cursor: pointer;
 			background-color: $purple;
 			display: flex;
-			border-top: 2px solid $black;
-			border-bottom: 2px solid $black;
 			z-index: 5;
 			overflow: hidden;
 
@@ -237,15 +235,13 @@ footer {
 			}
 
 			// On-going TBR can't be displayed?
-			&:last-child {
+			&.lastTBR {
 				display: none;
 			}
 
 			> .innerTBRBar {
 				width: 50%;
 				height: 0;
-				border-left: 2px solid $black;
-				border-right: 2px solid $black;
 			}
 		}
 
