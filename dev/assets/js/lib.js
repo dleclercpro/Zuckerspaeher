@@ -42,19 +42,32 @@ function convertTime (t, format) {
     } else {
         var date = new Date();
 
-        var year = t.slice(-4);
-        var month = t.slice(-7, -5);
-        var day = t.slice(-10, -8);
-        var hour = t.slice(0, 2);
-        var minute = t.slice(3, 5);
+        if (format === "YYYY.MM.DD - HH:MM:SS") {
+            var year = t.slice(0, 4);
+            var month = t.slice(5, 7);
+            var day = t.slice(8, 10);
+            var hour = t.slice(-8, -6);
+            var minute = t.slice(-5, -3);
+            var second = t.slice(-2);
+            var millisecond = 0;
+        } else {
+            var year = t.slice(-4);
+            var month = t.slice(-7, -5);
+            var day = t.slice(-10, -8);
+            var hour = t.slice(0, 2);
+            var minute = t.slice(3, 5);
+            var second = 0;
+            var millisecond = 0;
+        }
+
 
         date.setFullYear(year);
         date.setMonth(month - 1);
         date.setDate(day);
         date.setHours(hour);
         date.setMinutes(minute);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
+        date.setSeconds(second);
+        date.setMilliseconds(millisecond);
 
         return date.getTime();
     }

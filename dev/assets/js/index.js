@@ -25,6 +25,11 @@ $(document).ready(function()
 	var graph = $("#graph");
 	var graphBG = $("#graph-BG");
 	var graphI = $("#graph-I");
+	var xAxis = $("#graph-x-axis");
+	var yAxisBG = $("#graph-y-axis-BG");
+	var yAxisTBR = $("#graph-y-axis-I");
+	var xTicks;
+	var yTicks;
 	var dash = $("#dash");
 	var dashBG = dash.find(".BG");
 	var dashArrow = dash.find(".arrow");
@@ -34,17 +39,13 @@ $(document).ready(function()
 	var dashBR = dash.find(".BR");
 	var dashIOB = dash.find(".IOB");
 	var dashCOB = dash.find(".COB");
-	var xAxis = $("#graph-x-axis");
-	var YAxisBG = $("#graph-y-axis-BG");
-	var YAxisTBR = $("#graph-y-axis-I");
-	var xTicks;
-	var yTicks;
 	var settings = $("#settings");
 	var settingsButton = $("#settings-button");
 	var bubble = $("#bubble");
 	var bubbleInfo = bubble.find(".info");
 	var bubbleTime = bubble.find(".time");
 	var BGDots;
+	var BDots;
 	var TBRBars;
 	
 	// Sizes
@@ -116,7 +117,7 @@ $(document).ready(function()
 			});
 
 			// Add tick to DOM
-			YAxisBG.append(tick);
+			yAxisBG.append(tick);
 		}
 
 		for (i = 0; i < yTBR.length - 1; i++) {
@@ -132,7 +133,7 @@ $(document).ready(function()
 			});
 
 			// Add tick to DOM
-			YAxisTBR.append(tick);
+			yAxisTBR.append(tick);
 		}
 	}
 
@@ -570,6 +571,27 @@ $(document).ready(function()
 		}
 
 		graphI.append(ticks);
+	}
+
+	function getBoluses () {
+		// Create bolus object
+		var boluses = {};
+
+		// Turn off async AJAX
+		$.ajaxSetup({
+			async: false
+		});
+
+		// Get boluses with AJAX
+		$.getJSON("ajax/insulin.json", function (data) {
+			// Store boluses with epoch time
+			$.each(data["Boluses"], function (key, value) {
+				boluses[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+			});
+		});
+
+		// Return boluses
+		return boluses;
 	}
 
 
