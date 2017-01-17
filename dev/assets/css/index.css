@@ -554,12 +554,12 @@ footer {
     #graph > #graph-I > .TBR {
       position: absolute;
       cursor: pointer;
-      background-color: #2a0d45;
+      background-color: #871f78;
       display: flex;
       z-index: 5;
       overflow: hidden; }
       #graph > #graph-I > .TBR:hover {
-        background-color: #1d0930; }
+        background-color: #491141; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBRBar {
@@ -643,7 +643,7 @@ footer {
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #2a0d45; }
+    color: #871f78; }
   #bubble .B {
     color: #1111ff; }
 

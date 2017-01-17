@@ -20,6 +20,25 @@ function range (start, stop, step) {
     return result;
 }
 
+function sortWithIndices(x) {
+  for (i = 0; i < x.length; i++) {
+    x[i] = [x[i], i];
+  }
+
+  x.sort(function(a, b) {
+    return a[0] < b[0] ? -1 : 1;
+  });
+
+  indices = [];
+
+  for (i = 0; i < x.length; i++) {
+    indices.push(x[i][1]);
+    x[i] = x[i][0];
+  }
+
+  return indices;
+}
+
 function convertTime (t, format) {
     if (parseInt(t) == t) {
         t = parseInt(t);
@@ -34,8 +53,10 @@ function convertTime (t, format) {
         var second = date.getSeconds();
         var millisecond = date.getMilliseconds(0);
 
-        if (format === "HH:MM - DD.MM.YYYY") {
-            return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + day + "." + month + "." + year;
+        if (format === "YYYY.MM.DD - HH:MM:SS") {
+            return year + "." + ("0" + month).slice(-2) + "." + ("0" + day).slice(-2) + " - " + ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + ":" + ("0" + second).slice(-2);
+        } else if (format === "HH:MM - DD.MM.YYYY") {
+            return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + ("0" + day).slice(-2) + "." + ("0" + month).slice(-2) + "." + year;
         } else if (format === "HH:MM") {
             return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
         }

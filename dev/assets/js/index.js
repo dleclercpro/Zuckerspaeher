@@ -55,7 +55,7 @@ $(document).ready(function()
 	var thicknessXAxisTick;
 	var thicknessYAxisTick;
 
-	// Variables
+	// Global variables
 	var tick;
 
 	// Functions
@@ -616,7 +616,10 @@ $(document).ready(function()
 
 	function getTBRs () {
 		// Create TBRs object
-		var TBRs = {};
+		var TBRTimes = [];
+		var TBRs = [];
+		var TBRUnits = [];
+		var TBRDurations = [];
 
 		// Turn off async AJAX
 		$.ajaxSetup({
@@ -627,7 +630,11 @@ $(document).ready(function()
 		$.getJSON("ajax/insulin.json", function (data) {
 			// Store boluses with epoch time
 			$.each(data["Temporary Basals"], function (key, value) {
-				TBRs[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+				TBRTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
+				TBRs.push(value[0]);
+				TBRUnits.push(value[1]);
+				TBRDurations.push(value[2] * 60 * 1000);
+				
 			});
 		});
 
@@ -635,6 +642,70 @@ $(document).ready(function()
 		$.ajaxSetup({
 			async: true
 		});
+
+		// Sort TBR times in case they aren't already
+		var indices = sortWithIndices(TBRTimes);
+
+		// Sort rest of TBR infos according to time sorted indices
+		var TBRs_ = [];
+		var TBRUnits_ = [];
+		var TBRDurations_ = [];
+
+		for (i = 0; i < TBRs.length; i++) {
+			TBRs_[i] = TBRs[indices[i]];
+			TBRUnits_[i] = TBRUnits[indices[i]];
+			TBRDurations_[i] = TBRDurations[indices[i]];
+		}
+
+		// Reassign TBRs with sorted ones
+		TBRs = TBRs_;
+		TBRUnits = TBRUnits_;
+		TBRDurations = TBRDurations_;
+
+		// Reconstruct TBR profile
+		var TBRTimes_ = [];
+		var TBRs_ = [];
+
+		for (i = 0; i < TBRs.length - 1; i++) {
+			TBRTimes_.push(TBRTimes[i]);
+			TBRs_.push(TBRs[i]);
+
+			// TBR was canceled
+			if (TBRs[i] == 0 && TBRDurations[i] == 0) {
+
+				// FIXME: Necessary? Delete TBR cancel associated with unit change
+				if (TBRTimes[i + 1] - TBRTimes[i] < 3 * 60 * 1000) {
+					delete TBRTimes_.last();
+					delete TBRs_.last();
+				}
+
+				continue;
+			}
+
+			// Add a point in time if TBR ran completely
+			if (TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
+				TBRTimes_.push(TBRTimes[i] + TBRDurations[i]);
+				TBRs_.push(0);
+			}
+		}
+
+		// Deal with most recent TBR
+		TBRTimes_.push(TBRTimes.last());
+		TBRs_.push(TBRs.last());
+
+		// If TBR ran completely and no more TBR were applied before now
+		if (TBRTimes.last() + TBRDurations.last() < x0) {
+			TBRTimes_.push(TBRTimes.last() + TBRDurations.last());
+			TBRs_.push(0);
+		}
+
+		// Add current point
+		TBRTimes_.push(x0);
+		TBRs_.push(TBRs_.last());
+
+		for (i = 0; i < TBRs_.length; i++) {
+			alert(convertTime(TBRTimes_[i], "YYYY.MM.DD - HH:MM:SS") + " @ " + TBRs_[i]);
+		}
 
 		// Return boluses
 		return TBRs;
@@ -678,4 +749,6 @@ $(document).ready(function()
 	settingsButton.on("click", function () {
 		toggleSettings();
 	});
+
+	var a = getTBRs();
 });
