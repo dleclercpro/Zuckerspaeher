@@ -663,48 +663,48 @@ $(document).ready(function()
 		TBRDurations = TBRDurations_;
 
 		// Reconstruct TBR profile
-		var TBRTimes_ = [];
-		var TBRs_ = [];
+		n = TBRs.length;
+		TBRTimes_ = [];
+		TBRs_ = [];
+		TBRUnits_ = [];
 
-		for (i = 0; i < TBRs.length - 1; i++) {
-			TBRTimes_.push(TBRTimes[i]);
-			TBRs_.push(TBRs[i]);
+		for (i = 0; i < n; i++) {
+			// Add current point in time to allow next comparisons
+			if (i == n - 1) {
+				TBRTimes.push(x0);
+				TBRs.push(TBRs_.last());
+				TBRUnits.push(TBRUnits_.last());
+				TBRDurations.push(0);
+			}
 
-			// TBR was canceled
-			if (TBRs[i] == 0 && TBRDurations[i] == 0) {
-
-				// FIXME: Necessary? Delete TBR cancel associated with unit change
-				if (TBRTimes[i + 1] - TBRTimes[i] < 3 * 60 * 1000) {
-					delete TBRTimes_.last();
-					delete TBRs_.last();
-				}
-
+			//Ignore TBR cancel associated with unit change
+			if (TBRs[i] == 0 && TBRDurations[i] == 0 && TBRUnits[i + 1] != TBRUnits[i] && TBRTimes[i + 1] - TBRTimes[i] < 5 * 60 * 1000) {
 				continue;
 			}
 
-			// Add a point in time if TBR ran completely
-			if (TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
+			// Add TBR to profile if different than last
+			if (TBRs[i] != TBRs_.last() || TBRUnits[i] != TBRUnits_.last()) {
+				TBRTimes_.push(TBRTimes[i]);
+				TBRs_.push(TBRs[i]);
+				TBRUnits_.push(TBRUnits[i]);
+			}
+
+			// Add a point in time if current TBR ran completely
+			if (TBRDurations[i] != 0 && TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
 				TBRTimes_.push(TBRTimes[i] + TBRDurations[i]);
 				TBRs_.push(0);
+				TBRUnits_.push(TBRUnits_.last());
 			}
 		}
 
-		// Deal with most recent TBR
+		// Add current point in time
 		TBRTimes_.push(TBRTimes.last());
 		TBRs_.push(TBRs.last());
-
-		// If TBR ran completely and no more TBR were applied before now
-		if (TBRTimes.last() + TBRDurations.last() < x0) {
-			TBRTimes_.push(TBRTimes.last() + TBRDurations.last());
-			TBRs_.push(0);
-		}
-
-		// Add current point
-		TBRTimes_.push(x0);
-		TBRs_.push(TBRs_.last());
+		TBRUnits_.push(TBRUnits.last());
+		TBRDurations_.push(TBRDurations.last());
 
 		for (i = 0; i < TBRs_.length; i++) {
-			alert(convertTime(TBRTimes_[i], "YYYY.MM.DD - HH:MM:SS") + " @ " + TBRs_[i]);
+			alert(convertTime(TBRTimes_[i], "YYYY.MM.DD - HH:MM:SS") + " @ " + TBRs_[i] + " " + TBRUnits_[i]);
 		}
 
 		// Return boluses
