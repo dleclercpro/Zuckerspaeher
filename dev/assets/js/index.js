@@ -611,6 +611,10 @@ $(document).ready(function()
 
 		// Display BGs
 		for (i = 0; i < BGs.length; i++) {
+			if (BGTimes[i] > x0) {
+				break;
+			}
+			
 			graphBG.append($("<div class='BG' x='" + BGTimes[i] + "' y='" + roundBG(BGs[i]) + "'></div>"));
 		}
 
