@@ -236,9 +236,16 @@ footer {
 				background-color: darken($purple, 15%);
 			}
 
+			&.firstTBR {
+
+			}
+
+			&.lastTBR {
+				display: none;
+			}
+
 			> .innerTBRBar {
 				width: 50%;
-				height: 100%;
 				border-left: 2px solid $black;
 				border-right: 2px solid $black;
 			}

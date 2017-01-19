@@ -325,16 +325,6 @@ $(document).ready(function()
 				}
 			}
 
-			// First and last TBRs
-			if (e.hasClass("firstTBR")) {
-				e.children().first().css({
-					"height": h - thicknessTBRBarBorder,
-					"border-right": "none"
-				});
-			} else if (e.hasClass("lastTBR")) {
-				e.hide();
-			}
-
 			// Low TBRs
 			if (TBR < 100) {
 				// Move bar under baseline
@@ -710,6 +700,11 @@ $(document).ready(function()
 				TBRUnits_.push(TBRUnits_.last());
 			}
 		}
+
+		// Add first point left of graph
+		TBRTimes_.unshift(x0 - dX);
+		TBRs_.unshift(100);
+		TBRUnits_.unshift(TBRUnits.first());
 
 		// Add current point in time
 		TBRTimes_.push(TBRTimes.last());

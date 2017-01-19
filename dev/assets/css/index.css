@@ -557,14 +557,17 @@ footer {
       background-color: #871f78;
       display: flex;
       z-index: 5;
-      overflow: hidden; }
+      overflow: hidden;
+      border-top: 2px solid #111111;
+      border-bottom: 2px solid #111111; }
       #graph > #graph-I > .TBR:hover {
         background-color: #491141; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBRBar {
         width: 50%;
-        height: 0; }
+        border-left: 2px solid #111111;
+        border-right: 2px solid #111111; }
     #graph > #graph-I > .B {
       border: 2px solid #111111;
       background-color: #1111ff;
