@@ -191,6 +191,10 @@ footer {
 	> #dash-on-board {
 		@extend #dash-delta;
 	}
+
+	> #dash-factors {
+		@extend #dash-delta;
+	}
 }
 
 #graph {

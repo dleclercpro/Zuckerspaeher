@@ -65,6 +65,11 @@ Notes : -
 					<p><b>IOB:</b> <span class="IOB">---</span> U</p>
 					<p><b>COB:</b> <span class="COB">---</span> g</p>
 				</div>
+				<div id="dash-factors">
+					<p><b>ISF:</b> <span class="ISF">---</span> U/mmol/L</p>
+					<p><b>CSF:</b> <span class="CSF">---</span> U/g</p>
+					<p></p>
+				</div>
 			</div>
 
 			<div id="graph">
