@@ -2,11 +2,12 @@ $(document).ready(function()
 {
 	// Config
 	var now = new Date();
-	var x0 = now.getTime();
+	var x0 = now.getTime() - 3 * 60 * 60 * 1000;
+	var x0 = 1474340548000;
 	var x = [];
 	var x_ = [];
 	var dx = 1; // Time step (h)
-	var dX = 12; // Time range (h)
+	var dX = 18; // Time range (h)
 	var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var yBGMin = yBG.min();
 	var yBGMax = yBG.max();
@@ -62,8 +63,10 @@ $(document).ready(function()
 	function init() {
 		buildXAxis();
 		buildYAxis();
-		simulateBG();
-		simulateTBR();
+		getBGs();
+		getTBRs();
+		//simulateBG();
+		//simulateTBR();
 		simulateBolus();
 		buildGraph();
 		buildDash();
@@ -145,7 +148,7 @@ $(document).ready(function()
 		yTicks = $(".graph-y-axis-tick");
 		radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
 		radiusBDot = parseInt(BDots.first().outerWidth()) / 2;
-		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-bottom-width"));
+		thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-top-width")) || parseInt(TBRBars.first().css("border-bottom-width"));
 		thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
 		thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
 
@@ -163,7 +166,9 @@ $(document).ready(function()
 			// Actualize TBR
 			var TBRBar = TBRBars.eq(i);
 
-			if (i == TBRBars.length - 1) {
+			if (i == 0) {
+				TBRBar.addClass("firstTBR");
+			} else if (i == TBRBars.length - 1) {
 				TBRBar.addClass("lastTBR");
 			}
 
@@ -203,17 +208,6 @@ $(document).ready(function()
 				"bottom": y + "px"
 			});
 		} else if (e.hasClass("TBR")) {
-			// Initialize TBR styles
-			e.css({
-				"border-top": "2px solid black",
-				"border-bottom": "2px solid black"
-			});
-
-			e.children().css({
-				"border-left": "2px solid black",
-				"border-right": "2px solid black"
-			});
-
 			// Get TBRs
 			var prevTBR = parseInt(e.prev().attr("y"));
 			var TBR = parseInt(e.attr("y"));
@@ -329,6 +323,16 @@ $(document).ready(function()
 						"border-bottom": "none"
 					});
 				}
+			}
+
+			// First and last TBRs
+			if (e.hasClass("firstTBR")) {
+				e.children().first().css({
+					"height": h - thicknessTBRBarBorder,
+					"border-right": "none"
+				});
+			} else if (e.hasClass("lastTBR")) {
+				e.hide();
 			}
 
 			// Low TBRs
@@ -488,6 +492,7 @@ $(document).ready(function()
 	}
 
 	function simulateBG () {
+		var x0 = 1484760242000;
 		var x = [];
 		var y = [];
 		var dx = 5 * 60 * 1000; // ms
@@ -524,6 +529,7 @@ $(document).ready(function()
 	}
 
 	function simulateTBR () {
+		var x0 = 1484760242000;
 		var x = [];
 		var y = [];
 		var dx = 5 * 60 * 1000; // ms
@@ -564,6 +570,7 @@ $(document).ready(function()
 	}
 
 	function simulateBolus () {
+		var x0 = 1484760242000;
 		var x = [];
 		var y = [];
 		var dx = 25 * 60 * 1000; // ms
@@ -589,8 +596,9 @@ $(document).ready(function()
 	}
 
 	function getBGs () {
-		// Create TBRs object
-		var BGs = {};
+		// Create BG arrays
+		var BGTimes = [];
+		var BGs = [];
 
 		// Turn off async AJAX
 		$.ajaxSetup({
@@ -601,7 +609,8 @@ $(document).ready(function()
 		$.getJSON("ajax/BG.json", function (data) {
 			// Store boluses with epoch time
 			$.each(data, function (key, value) {
-				BGs[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+				BGTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
+				BGs.push(value);
 			});
 		});
 
@@ -610,12 +619,17 @@ $(document).ready(function()
 			async: true
 		});
 
+		// Display BGs
+		for (i = 0; i < BGs.length; i++) {
+			graphBG.append($("<div class='BG' x='" + BGTimes[i] + "' y='" + roundBG(BGs[i]) + "'></div>"));
+		}
+
 		// Return boluses
-		return BGs;
+		return [BGTimes, BGs];
 	}
 
 	function getTBRs () {
-		// Create TBRs object
+		// Create TBR arrays
 		var TBRTimes = [];
 		var TBRs = [];
 		var TBRUnits = [];
@@ -663,6 +677,7 @@ $(document).ready(function()
 		TBRDurations = TBRDurations_;
 
 		// Reconstruct TBR profile
+		// TBR Profiler
 		n = TBRs.length;
 		TBRTimes_ = [];
 		TBRs_ = [];
@@ -674,7 +689,6 @@ $(document).ready(function()
 				TBRTimes.push(x0);
 				TBRs.push(TBRs_.last());
 				TBRUnits.push(TBRUnits_.last());
-				TBRDurations.push(0);
 			}
 
 			//Ignore TBR cancel associated with unit change
@@ -692,7 +706,7 @@ $(document).ready(function()
 			// Add a point in time if current TBR ran completely
 			if (TBRDurations[i] != 0 && TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
 				TBRTimes_.push(TBRTimes[i] + TBRDurations[i]);
-				TBRs_.push(0);
+				TBRs_.push(100);
 				TBRUnits_.push(TBRUnits_.last());
 			}
 		}
@@ -701,19 +715,30 @@ $(document).ready(function()
 		TBRTimes_.push(TBRTimes.last());
 		TBRs_.push(TBRs.last());
 		TBRUnits_.push(TBRUnits.last());
-		TBRDurations_.push(TBRDurations.last());
 
+		/*
 		for (i = 0; i < TBRs_.length; i++) {
 			alert(convertTime(TBRTimes_[i], "YYYY.MM.DD - HH:MM:SS") + " @ " + TBRs_[i] + " " + TBRUnits_[i]);
 		}
+		*/
+
+		// Display TBRs
+		for (i = 0; i < TBRs_.length; i++) {
+			graphI.append($("<div class='TBR' x='" + TBRTimes_[i] + "' y='" + roundTBR(TBRs_[i]) + "'></div>"));
+
+			for (j = 0; j < 2; j++) {
+				graphI.children().last().append($("<div class='innerTBRBar'></div>"));
+			}
+		}
 
 		// Return boluses
-		return TBRs;
+		return [TBRTimes, TBRs, TBRUnits];
 	}
 
 	function getBoluses () {
-		// Create bolus object
-		var boluses = {};
+		// Create bolus arrays
+		var BTimes = [];
+		var B = [];
 
 		// Turn off async AJAX
 		$.ajaxSetup({
@@ -724,7 +749,8 @@ $(document).ready(function()
 		$.getJSON("ajax/insulin.json", function (data) {
 			// Store boluses with epoch time
 			$.each(data["Boluses"], function (key, value) {
-				boluses[convertTime(key, "YYYY.MM.DD - HH:MM:SS")] = value;
+				BTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
+				B.push(value);
 			});
 		});
 
@@ -734,7 +760,7 @@ $(document).ready(function()
 		});
 
 		// Return boluses
-		return boluses;
+		return [BTimes, B];
 	}
 
 
@@ -750,5 +776,7 @@ $(document).ready(function()
 		toggleSettings();
 	});
 
-	var a = getTBRs();
+	//var a = getBGs();
+	//var b = getTBRs();
+	var c = getBoluses();
 });
