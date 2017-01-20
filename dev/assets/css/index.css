@@ -395,6 +395,23 @@ p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
   justify-content: center;
   align-items: center; }
 
+#graph > #graph-y-axis-BG > .graph-y-axis-tick, #graph > #graph-y-axis-I > .graph-y-axis-tick, #graph > #graph-x-axis > .graph-x-axis-tick {
+  font-weight: bold;
+  color: #eeeeee;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  flex-grow: 0; }
+
+#graph > #graph-y-axis-BG > .graph-y-axis-tick, #graph > #graph-y-axis-I > .graph-y-axis-tick {
+  flex-direction: column;
+  padding-bottom: 2px;
+  border-bottom: 1px dashed #eeeeee; }
+
+#graph > #graph-x-axis > .graph-x-axis-tick {
+  padding-right: 4px;
+  border-right: 1px dashed #eeeeee; }
+
 html {
   width: 100%;
   height: 100%; }
@@ -518,14 +535,14 @@ footer {
     #dash > #dash-BG > .arrow {
       background: none;
       margin-left: 8px; }
-  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board {
+  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors {
     font-size: 16px;
     color: #eeeeee;
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-top: 2px; }
-    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p {
+    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p {
       margin-left: 10px; }
 
 #graph {
@@ -554,14 +571,14 @@ footer {
     #graph > #graph-I > .TBR {
       position: absolute;
       cursor: pointer;
-      background-color: #511248;
+      background-color: #3b0d21;
       display: flex;
       z-index: 5;
       overflow: hidden;
       border-top: 2px solid #111111;
       border-bottom: 2px solid #111111; }
       #graph > #graph-I > .TBR:hover {
-        background-color: #3c0d35; }
+        background-color: #2e0a1a; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBRBar {
@@ -570,61 +587,32 @@ footer {
         border-right: 2px solid #111111; }
     #graph > #graph-I > .B {
       border: 2px solid #111111;
-      background-color: #1111ff;
+      background-color: #1100ff;
       position: absolute;
       width: 10px;
       height: 10px;
       cursor: pointer;
       z-index: 5; }
       #graph > #graph-I > .B:hover {
-        background-color: #000091; }
+        background-color: #090080; }
   #graph > #graph-y-axis-BG {
     width: 2.5%;
     height: 81.6%;
     display: flex;
     flex-direction: column-reverse;
     order: 2; }
-    #graph > #graph-y-axis-BG > .graph-y-axis-tick {
-      padding-bottom: 2px;
-      font-weight: bold;
-      color: #eeeeee;
-      border-bottom: 1px dashed #eeeeee;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      flex-grow: 0; }
   #graph > #graph-y-axis-I {
     width: 2.5%;
     height: 14.4%;
     display: flex;
     flex-direction: column-reverse;
     order: 4; }
-    #graph > #graph-y-axis-I > .graph-y-axis-tick {
-      padding-bottom: 2px;
-      font-weight: bold;
-      color: #eeeeee;
-      border-bottom: 1px dashed #eeeeee;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      flex-grow: 0; }
   #graph > #graph-x-axis {
     width: 97.5%;
     height: 4%;
     display: flex;
     flex-direction: row;
     order: 5; }
-    #graph > #graph-x-axis > .graph-x-axis-tick {
-      padding-right: 4px;
-      font-weight: bold;
-      color: #eeeeee;
-      border-right: 1px dashed #eeeeee;
-      display: flex;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      flex-grow: 0; }
   #graph > #graph-NA {
     width: 2.5%;
     height: 4%;
@@ -646,9 +634,9 @@ footer {
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #511248; }
+    color: #3b0d21; }
   #bubble .B {
-    color: #1111ff; }
+    color: #1100ff; }
 
 #settings {
   width: 25%;

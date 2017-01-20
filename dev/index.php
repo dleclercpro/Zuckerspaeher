@@ -39,13 +39,13 @@ Notes : -
 		<section id=content>
 			<div id="user">
 				<img id="user-picture" src="assets/img/me.png">
-				<p id="user-details">
-					Leclerc, David<br>
-					27.12.1991<br>
-					Dexcom G5<br>
-					MiniMed 640G<br>
-					<span id="last-update">23:55 - 21.12.2016</span>
-				</p>
+				<div id="user-details">
+					<p>Leclerc, David</p>
+					<p>27.12.1991</p>
+					<p>Dexcom G5</p>
+					<p>MiniMed 640G</p>
+					<p id="last-update">23:55 - 21.12.2016 (<span>50</span>%)</p>
+				</div>
 			</div>
 
 			<div id="dash">
@@ -66,9 +66,8 @@ Notes : -
 					<p><b>COB:</b> <span class="COB">---</span> g</p>
 				</div>
 				<div id="dash-factors">
-					<p><b>ISF:</b> <span class="ISF">---</span> U/mmol/L</p>
+					<p><b>ISF:</b> <span class="ISF">---</span> mmol/L/U</p>
 					<p><b>CSF:</b> <span class="CSF">---</span> U/g</p>
-					<p></p>
 				</div>
 			</div>
 

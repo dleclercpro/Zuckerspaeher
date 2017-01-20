@@ -237,7 +237,7 @@ footer {
 			border-bottom: 2px solid $black;
 
 			&:hover {
-				background-color: darken($purple, 5%);
+				background-color: darken($purple, 3%);
 			}
 
 			&.firstTBR {
@@ -278,15 +278,7 @@ footer {
 		order: 2;
 
 		> .graph-y-axis-tick {
-			padding-bottom: 2px;
-			font-weight: bold;
-			color: $white;
-			border-bottom: 1px dashed $white;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-			flex-shrink: 0;
-			flex-grow: 0;
+			@extend %graph-y-axis-tick;
 		}
 	}
 
@@ -298,15 +290,7 @@ footer {
 		order: 4;
 
 		> .graph-y-axis-tick {
-			padding-bottom: 2px;
-			font-weight: bold;
-			color: $white;
-			border-bottom: 1px dashed $white;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-			flex-shrink: 0;
-			flex-grow: 0;
+			@extend %graph-y-axis-tick;
 		}
 	}
 
@@ -318,14 +302,7 @@ footer {
 		order: 5;
 
 		> .graph-x-axis-tick {
-			padding-right: 4px;
-			font-weight: bold;
-			color: $white;
-			border-right: 1px dashed $white;
-			display: flex;
-			justify-content: flex-end;
-			flex-shrink: 0;
-			flex-grow: 0;
+			@extend %graph-x-axis-tick;
 		}
 	}
 
