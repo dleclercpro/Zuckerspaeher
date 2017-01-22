@@ -456,7 +456,7 @@ $(document).ready(function()
 		dashArrow.addClass(lastBGType);
 
 		// Get current TBR
-		var TBR = roundTBR(TBRBars.eq(-1).attr("y"));
+		var TBR = roundTBR(TBRBars.eq(-2).attr("y"));
 
 		// Add to dash
 		dashTBR.text(TBR);

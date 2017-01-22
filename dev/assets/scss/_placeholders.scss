@@ -25,3 +25,20 @@
 	padding-right: 4px;
 	border-right: 1px dashed $white;
 }
+
+%button {
+	margin: 0;
+	padding: 0;
+	border-radius: $border-radius;
+	border: none;
+	font-weight: bold;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&:active {
+		box-shadow: inset 3px 3px 3px $black;
+		padding-left: 6px;
+	}
+}
