@@ -571,14 +571,14 @@ footer {
     #graph > #graph-I > .TBR {
       position: absolute;
       cursor: pointer;
-      background-color: #3b0d21;
+      background-color: #350099;
       display: flex;
       z-index: 5;
       overflow: hidden;
       border-top: 2px solid #111111;
       border-bottom: 2px solid #111111; }
       #graph > #graph-I > .TBR:hover {
-        background-color: #2e0a1a; }
+        background-color: #2c0080; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBRBar {
@@ -587,14 +587,14 @@ footer {
         border-right: 2px solid #111111; }
     #graph > #graph-I > .B {
       border: 2px solid #111111;
-      background-color: #1100ff;
+      background-color: #0025dd;
       position: absolute;
       width: 10px;
       height: 10px;
       cursor: pointer;
       z-index: 5; }
       #graph > #graph-I > .B:hover {
-        background-color: #090080; }
+        background-color: #001891; }
   #graph > #graph-y-axis-BG {
     width: 2.5%;
     height: 81.6%;
@@ -634,9 +634,9 @@ footer {
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #3b0d21; }
+    color: #350099; }
   #bubble .B {
-    color: #1100ff; }
+    color: #0025dd; }
 
 #settings {
   width: 25%;

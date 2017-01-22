@@ -237,7 +237,7 @@ footer {
 			border-bottom: 2px solid $black;
 
 			&:hover {
-				background-color: darken($purple, 3%);
+				background-color: darken($purple, 5%);
 			}
 
 			&.firstTBR {
@@ -265,7 +265,7 @@ footer {
 			z-index: 5;
 
 			&:hover {
-				background-color: darken($blue, 25%);
+				background-color: darken($blue, 15%);
 			}
 		}
 	}

@@ -65,9 +65,10 @@ $(document).ready(function()
 		buildYAxis();
 		getBGs();
 		getTBRs();
+		getBs();
 		//simulateBG();
 		//simulateTBR();
-		simulateBolus();
+		//simulateBolus();
 		buildGraph();
 		buildDash();
 	}
@@ -715,12 +716,6 @@ $(document).ready(function()
 		TBRs_.push(TBRs.last());
 		TBRUnits_.push(TBRUnits.last());
 
-		/*
-		for (i = 0; i < TBRs_.length; i++) {
-			alert(convertTime(TBRTimes_[i], "YYYY.MM.DD - HH:MM:SS") + " @ " + TBRs_[i] + " " + TBRUnits_[i]);
-		}
-		*/
-
 		// Display TBRs
 		for (i = 0; i < TBRs_.length; i++) {
 			graphI.append($("<div class='TBR' x='" + TBRTimes_[i] + "' y='" + roundTBR(TBRs_[i]) + "'></div>"));
@@ -734,10 +729,10 @@ $(document).ready(function()
 		return [TBRTimes, TBRs, TBRUnits];
 	}
 
-	function getBoluses () {
+	function getBs () {
 		// Create bolus arrays
 		var BTimes = [];
-		var B = [];
+		var Bs = [];
 
 		// Turn off async AJAX
 		$.ajaxSetup({
@@ -749,7 +744,7 @@ $(document).ready(function()
 			// Store boluses with epoch time
 			$.each(data["Boluses"], function (key, value) {
 				BTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
-				B.push(value);
+				Bs.push(value);
 			});
 		});
 
@@ -758,8 +753,17 @@ $(document).ready(function()
 			async: true
 		});
 
+		// Display boluses
+		for (i = 0; i < Bs.length; i++) {
+			if (BTimes[i] > x0) {
+				break;
+			}
+			
+			graphI.append($("<div class='B' x='" + BTimes[i] + "' y='" + roundB(Bs[i]) + "'></div>"));
+		}
+
 		// Return boluses
-		return [BTimes, B];
+		return [BTimes, Bs];
 	}
 
 
@@ -774,8 +778,4 @@ $(document).ready(function()
 	settingsButton.on("click", function () {
 		toggleSettings();
 	});
-
-	//var a = getBGs();
-	//var b = getTBRs();
-	var c = getBoluses();
 });
