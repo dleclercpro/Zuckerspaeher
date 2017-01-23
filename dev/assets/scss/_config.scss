@@ -9,9 +9,10 @@ $breakpoints: (
 $font_stack: "Slabo 27px", serif;
 
 // Colors
-$black: #090909;
+$black: #090808;
 $white: #eeeeee;
-$gray: #252222;
+$gray: #252020;
+//$gray: #1b1b1b;
 $green: #99e500;
 $orange: #ff8100;
 $red: #e50000;
@@ -31,5 +32,6 @@ $height-settings: 95%;
 $radius-BG: 5px;
 $radius-B: $radius-BG;
 $border-radius: 3px;
+$shadow-radius: 3px;
 $padding-header: 2.5%;
 $padding-settings: 2%;

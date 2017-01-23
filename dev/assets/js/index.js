@@ -1,13 +1,131 @@
-$(document).ready(function()
-{
+$(document).ready(function() {
+	// Objects
+	function Graph() {
+		// Attributes
+		this.container;
+		this.e = $("<div id='graph'></div>");
+
+		// Methods
+		this.generateAxis = function(z0, dz, dZ) {
+			// Initialize empty array
+			var z = [];
+
+			// Generate axis tick
+			for (i = 0; i < (dZ / dz); i++) {
+				z.unshift(z0 - i * dz);
+			}
+
+			// Add last tick based on given dZ
+			z.unshift(z0 - dZ);
+
+			return z;
+		}
+
+		this.buildAxis = function(z, z0, dz, dZ, label, name, format) {
+			// Create axis node
+			var axis = $("<div id='graph-" + name + "-axis' class='graph-" + label + "-axis'></div>");
+
+			// Build axis based on z0, dz and dZ
+			if (z.length == 0) {
+				var z = this.generateAxis(z0, dz, dZ);
+
+				for (i = 0; i < z.length - 1; i++) {
+					// Add tick to axis node
+					axis.append($("<div class='graph-" + label + "-axis-tick'>" + z[i + 1] + "</div>")
+						.css({
+							"width": ((z[i + 1] - z[i]) / dZ * 100) + "%"
+						})
+					);
+				}
+			}
+
+			// Build axis based on provided z array
+			else {
+				var dz;
+				var dZ;
+
+				for (i = 0; i < z.length - 1; i++) {
+					// Compute dy, dY
+					dz = z[i + 1] - z[i];
+					dZ = z.max() - z.min();
+
+					// Add tick to axis node
+					axis.append($("<div class='graph-" + label + "-axis-tick'>" + z[i] + "</div>")
+						.css({
+							"height": (dz / dZ * 100) + "%"
+						})
+					);
+				}
+			}
+
+			// Format axis ticks if desired
+			if (format) {
+				axis.children().each(function() {
+					$(this).html(convertTime($(this).html(), format));
+				});
+			}
+
+			// Append axis to graph
+			this.e.append(axis);
+		}
+
+		this.show = function() {
+			this.container.append(this.e);
+		}
+	}
+
+	// New config
+	var now = new Date();
+	var x = [];
+	var x0 = 1474340548000;
+	var dx = 1 * 60 * 60 * 1000; // Time step (h)
+	var dX = 18 * 60 * 60 * 1000; // Time range (h)
+	var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
+	var y0BG;
+	var dyBG;
+	var dYBG;
+	var yTBR = [0, 100, 200]; // %
+	var y0TBR;
+	var dyTBR;
+	var dYTBR;
+
+	// Create graph object
+	var graph = new Graph();
+
+	// Build x-axis for time
+	graph.buildAxis(x, x0, dx, dX, "x", "t", "HH:MM");
+
+	// Build y-axis for BG
+	graph.buildAxis(yBG, y0BG, dyBG, dYBG, "y", "BG", false);
+
+	// Build y-axis for I
+	graph.buildAxis(yTBR, y0TBR, dyTBR, dYTBR, "y", "I", false);
+
+	// Build BG graph section
+	graph.e.append($("<div id='graph-BG'></div>"));
+
+	// Build I graph section
+	graph.e.append($("<div id='graph-I'></div>"));
+
+	// Build NA graph section
+	graph.e.append($("<div id='graph-NA'></div>"));
+
+	// Show graph
+	graph.container = $("#content");
+	graph.show();
+
+
+
+
+
 	// Config
 	var now = new Date();
 	var x0 = now.getTime() - 3 * 60 * 60 * 1000;
 	var x0 = 1474340548000;
 	var x = [];
 	var x_ = [];
-	var dx = 1; // Time step (h)
-	var dX = 18; // Time range (h)
+	var dx = 1 * 60 * 60 * 1000; // Time step (h)
+	var dX = 18 * 60 * 60 * 1000; // Time range (h)
 	var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
 	var yBGMin = yBG.min();
 	var yBGMax = yBG.max();
@@ -61,14 +179,11 @@ $(document).ready(function()
 
 	// Functions
 	function init() {
-		buildXAxis();
-		buildYAxis();
+		//buildXAxis();
+		//buildYAxis();
 		getBGs();
 		getTBRs();
 		getBs();
-		//simulateBG();
-		//simulateTBR();
-		//simulateBolus();
 		buildGraph();
 		buildDash();
 	}
@@ -480,110 +595,6 @@ $(document).ready(function()
 
 		// Toggle defining class
 		settings.toggleClass("is-active");
-	}
-
-	function simulateBG () {
-		var x0 = 1484760242000;
-		var x = [];
-		var y = [];
-		var dx = 5 * 60 * 1000; // ms
-		var dX = 12 * 60 * 60 * 1000; // ms
-		var u = 0;
-		var u_0 = 15;
-		var A = 23;
-		var B = 2;
-		var k = 2;
-		var ticks = [];
-
-		// Create epoch time scale
-		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x0 - i * dx);
-		}
-
-		x.unshift(x0 - dX);
-
-		for (i = 0; i < x.length; i++) {
-			u = (x[i] - (x0 - dX)) / 1000000;
-
-			if (u >= u_0) {
-				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
-			} else {
-				y.push(B);
-			}
-		}
-
-		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='BG' x='" + x[i] + "' y='" + roundBG(y[i]) + "'></div>"));
-		}
-
-		graphBG.append(ticks);
-	}
-
-	function simulateTBR () {
-		var x0 = 1484760242000;
-		var x = [];
-		var y = [];
-		var dx = 5 * 60 * 1000; // ms
-		var dX = 12 * 60 * 60 * 1000; // ms
-		var u = 0;
-		var u_0 = 15;
-		var A = 180;
-		var B = 100;
-		var k = 2;
-		var ticks = [];
-
-		// Create epoch time scale
-		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x0 - i * dx);
-		}
-
-		x.unshift(x0 - dX);
-
-		for (i = 0; i < x.length; i++) {
-			u = (x[i] - (x0 - dX)) / 1000000;
-
-			if (u >= u_0) {
-				y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
-			} else {
-				y.push(B);
-			}
-		}
-
-		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + roundTBR(y[i]) + "'></div>"));
-
-			for (j = 0; j < 2; j++) {
-				ticks.last().append($("<div class='innerTBRBar'></div>"));
-			}
-		}
-
-		graphI.append(ticks);
-	}
-
-	function simulateBolus () {
-		var x0 = 1484760242000;
-		var x = [];
-		var y = [];
-		var dx = 25 * 60 * 1000; // ms
-		var dX = 1 * 60 * 60 * 1000; // ms
-		var ticks = [];
-
-		// Create epoch time scale
-		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x0 - i * dx);
-		}
-
-		x.unshift(x0 - dX);
-
-		for (i = 0; i < x.length; i++) {
-			y.push(0);
-		}
-
-		for (i = 0; i < x.length; i++) {
-			ticks.push($("<div class='B' x='" + x[i] + "' y='" + y[i] + "'></div>"));
-		}
-
-		graphI.append(ticks);
 	}
 
 	function getBGs () {

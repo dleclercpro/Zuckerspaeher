@@ -71,14 +71,14 @@ Notes : -
 				</div>
 			</div>
 
-			<div id="graph">
+			<!--<div id="graph">
 				<div id="graph-BG"></div>
 				<div id="graph-I"></div>
 				<div id="graph-y-axis-BG"></div>
 				<div id="graph-y-axis-I"></div>
 				<div id="graph-x-axis"></div>
 				<div id="graph-NA"></div>
-			</div>
+			</div>-->
 
 			<div id="bubble">
 				<div class="info"></div>

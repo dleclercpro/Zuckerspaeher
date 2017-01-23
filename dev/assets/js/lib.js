@@ -1,4 +1,4 @@
-function range (start, stop, step) {
+function range(start, stop, step) {
     if (typeof stop == 'undefined') {
         stop = start;
         start = 0;
@@ -39,7 +39,7 @@ function sortWithIndices(x) {
   return indices;
 }
 
-function convertTime (t, format) {
+function convertTime(t, format) {
     if (parseInt(t) == t) {
         t = parseInt(t);
 
@@ -53,34 +53,56 @@ function convertTime (t, format) {
         var second = date.getSeconds();
         var millisecond = date.getMilliseconds(0);
 
-        if (format === "YYYY.MM.DD - HH:MM:SS") {
-            return year + "." + ("0" + month).slice(-2) + "." + ("0" + day).slice(-2) + " - " + ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + ":" + ("0" + second).slice(-2);
-        } else if (format === "HH:MM - DD.MM.YYYY") {
-            return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2) + " - " + ("0" + day).slice(-2) + "." + ("0" + month).slice(-2) + "." + year;
-        } else if (format === "HH:MM") {
-            return ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
+        switch(format) {
+            case "YYYY.MM.DD - HH:MM:SS":
+                return year + "." +
+                    ("0" + month).slice(-2) + "." +
+                    ("0" + day).slice(-2) + " - " +
+                    ("0" + hour).slice(-2) + ":" +
+                    ("0" + minute).slice(-2) + ":" +
+                    ("0" + second).slice(-2);
+
+            case "HH:MM - DD.MM.YYYY":
+                return ("0" + hour).slice(-2) + ":" +
+                    ("0" + minute).slice(-2) + " - " +
+                    ("0" + day).slice(-2) + "." +
+                    ("0" + month).slice(-2) + "." +
+                    year;
+
+            case "HH:MM":
+                return ("0" + hour).slice(-2) + ":" +
+                    ("0" + minute).slice(-2);
+
+            default:
+                alert("Time conversion error.");
         }
     } else {
         var date = new Date();
 
-        if (format === "YYYY.MM.DD - HH:MM:SS") {
-            var year = t.slice(0, 4);
-            var month = t.slice(5, 7);
-            var day = t.slice(8, 10);
-            var hour = t.slice(-8, -6);
-            var minute = t.slice(-5, -3);
-            var second = t.slice(-2);
-            var millisecond = 0;
-        } else {
-            var year = t.slice(-4);
-            var month = t.slice(-7, -5);
-            var day = t.slice(-10, -8);
-            var hour = t.slice(0, 2);
-            var minute = t.slice(3, 5);
-            var second = 0;
-            var millisecond = 0;
-        }
+        switch(format) {
+            case "YYYY.MM.DD - HH:MM:SS":
+                var year = t.slice(0, 4);
+                var month = t.slice(5, 7);
+                var day = t.slice(8, 10);
+                var hour = t.slice(-8, -6);
+                var minute = t.slice(-5, -3);
+                var second = t.slice(-2);
+                var millisecond = 0;
+                break;
 
+            case "HH:MM - DD.MM.YYYY":
+                var year = t.slice(-4);
+                var month = t.slice(-7, -5);
+                var day = t.slice(-10, -8);
+                var hour = t.slice(0, 2);
+                var minute = t.slice(3, 5);
+                var second = 0;
+                var millisecond = 0;
+                break;
+
+            default:
+                alert("Time conversion error.");
+        }
 
         date.setFullYear(year);
         date.setMonth(month - 1);
@@ -94,7 +116,7 @@ function convertTime (t, format) {
     }
 }
 
-function rankBG (BG, BGScale) {
+function rankBG(BG, BGScale) {
     BG = parseFloat(BG);
 
     if (BG < BGScale[0]) {
@@ -110,7 +132,7 @@ function rankBG (BG, BGScale) {
     }
 }
 
-function rankdBGdt (dBGdt, dBGdtScale) {
+function rankdBGdt(dBGdt, dBGdtScale) {
     dBGdt = parseFloat(dBGdt);
     
     var arrowUp = decodeEntity("&#8593;");
@@ -132,24 +154,131 @@ function rankdBGdt (dBGdt, dBGdtScale) {
     }
 }
 
-function roundBG (BG) {
+function roundBG(BG) {
     BG = parseFloat(BG);
 
     return (Math.round(BG * 10) / 10).toFixed(1);
 }
 
-function roundTBR (TBR) {
+function roundTBR(TBR) {
     TBR = parseInt(TBR);
 
     return Math.round(TBR).toFixed(0);
 }
 
-function roundB (B) {
+function roundB(B) {
     B = parseInt(B);
 
     return (Math.round(B * 10) / 10).toFixed(1);
 }
 
-function decodeEntity (str) {
+function decodeEntity(str) {
     return $("<textarea>").html(str).text();
+}
+
+
+
+// SHAME
+function simulateBG() {
+    var x0 = 1484760242000;
+    var x = [];
+    var y = [];
+    var dx = 5 * 60 * 1000; // ms
+    var dX = 12 * 60 * 60 * 1000; // ms
+    var u = 0;
+    var u_0 = 15;
+    var A = 23;
+    var B = 2;
+    var k = 2;
+    var ticks = [];
+
+    // Create epoch time scale
+    for (i = 0; i < (dX / dx); i++) {
+        x.unshift(x0 - i * dx);
+    }
+
+    x.unshift(x0 - dX);
+
+    for (i = 0; i < x.length; i++) {
+        u = (x[i] - (x0 - dX)) / 1000000;
+
+        if (u >= u_0) {
+            y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
+        } else {
+            y.push(B);
+        }
+    }
+
+    for (i = 0; i < x.length; i++) {
+        ticks.push($("<div class='BG' x='" + x[i] + "' y='" + roundBG(y[i]) + "'></div>"));
+    }
+
+    graphBG.append(ticks);
+}
+
+function simulateTBR() {
+    var x0 = 1484760242000;
+    var x = [];
+    var y = [];
+    var dx = 5 * 60 * 1000; // ms
+    var dX = 12 * 60 * 60 * 1000; // ms
+    var u = 0;
+    var u_0 = 15;
+    var A = 180;
+    var B = 100;
+    var k = 2;
+    var ticks = [];
+
+    // Create epoch time scale
+    for (i = 0; i < (dX / dx); i++) {
+        x.unshift(x0 - i * dx);
+    }
+
+    x.unshift(x0 - dX);
+
+    for (i = 0; i < x.length; i++) {
+        u = (x[i] - (x0 - dX)) / 1000000;
+
+        if (u >= u_0) {
+            y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
+        } else {
+            y.push(B);
+        }
+    }
+
+    for (i = 0; i < x.length; i++) {
+        ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + roundTBR(y[i]) + "'></div>"));
+
+        for (j = 0; j < 2; j++) {
+            ticks.last().append($("<div class='innerTBRBar'></div>"));
+        }
+    }
+
+    graphI.append(ticks);
+}
+
+function simulateBolus() {
+    var x0 = 1484760242000;
+    var x = [];
+    var y = [];
+    var dx = 25 * 60 * 1000; // ms
+    var dX = 1 * 60 * 60 * 1000; // ms
+    var ticks = [];
+
+    // Create epoch time scale
+    for (i = 0; i < (dX / dx); i++) {
+        x.unshift(x0 - i * dx);
+    }
+
+    x.unshift(x0 - dX);
+
+    for (i = 0; i < x.length; i++) {
+        y.push(0);
+    }
+
+    for (i = 0; i < x.length; i++) {
+        ticks.push($("<div class='B' x='" + x[i] + "' y='" + y[i] + "'></div>"));
+    }
+
+    graphI.append(ticks);
 }
