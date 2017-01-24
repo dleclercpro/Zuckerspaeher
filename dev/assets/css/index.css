@@ -606,7 +606,7 @@ footer {
       width: 10px;
       height: 10px;
       cursor: pointer;
-      z-index: 5; }
+      z-index: 10; }
       #graph > #graph-I > .B:hover {
         background-color: #001477; }
   #graph > #graph-BG-axis {

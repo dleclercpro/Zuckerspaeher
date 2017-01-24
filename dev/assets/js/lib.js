@@ -39,81 +39,154 @@ function sortWithIndices(x) {
   return indices;
 }
 
-function convertTime(t, format) {
-    if (parseInt(t) == t) {
-        t = parseInt(t);
+function getData(report, reportSection, format) {
+    // Create data arrays
+    var x = [];
+    var y = [];
 
-        var date = new Date(t);
+    // Turn off async AJAX
+    $.ajaxSetup({
+        async: false
+    });
 
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        var hour = date.getHours();
-        var minute = date.getMinutes();
-        var second = date.getSeconds();
-        var millisecond = date.getMilliseconds(0);
-
-        switch(format) {
-            case "YYYY.MM.DD - HH:MM:SS":
-                return year + "." +
-                    ("0" + month).slice(-2) + "." +
-                    ("0" + day).slice(-2) + " - " +
-                    ("0" + hour).slice(-2) + ":" +
-                    ("0" + minute).slice(-2) + ":" +
-                    ("0" + second).slice(-2);
-
-            case "HH:MM - DD.MM.YYYY":
-                return ("0" + hour).slice(-2) + ":" +
-                    ("0" + minute).slice(-2) + " - " +
-                    ("0" + day).slice(-2) + "." +
-                    ("0" + month).slice(-2) + "." +
-                    year;
-
-            case "HH:MM":
-                return ("0" + hour).slice(-2) + ":" +
-                    ("0" + minute).slice(-2);
-
-            default:
-                alert("Time conversion error.");
-        }
-    } else {
-        var date = new Date();
-
-        switch(format) {
-            case "YYYY.MM.DD - HH:MM:SS":
-                var year = t.slice(0, 4);
-                var month = t.slice(5, 7);
-                var day = t.slice(8, 10);
-                var hour = t.slice(-8, -6);
-                var minute = t.slice(-5, -3);
-                var second = t.slice(-2);
-                var millisecond = 0;
-                break;
-
-            case "HH:MM - DD.MM.YYYY":
-                var year = t.slice(-4);
-                var month = t.slice(-7, -5);
-                var day = t.slice(-10, -8);
-                var hour = t.slice(0, 2);
-                var minute = t.slice(3, 5);
-                var second = 0;
-                var millisecond = 0;
-                break;
-
-            default:
-                alert("Time conversion error.");
+    // Read report with AJAX
+    $.getJSON(report, function (data) {
+        // Get data from particular report section if desired
+        if (reportSection) {
+            data = data[reportSection];
         }
 
-        date.setFullYear(year);
-        date.setMonth(month - 1);
-        date.setDate(day);
-        date.setHours(hour);
-        date.setMinutes(minute);
-        date.setSeconds(second);
-        date.setMilliseconds(millisecond);
+        // Store data
+        $.each(data, function (key, value) {
+            x.push(key);
+            y.push(value);
+        });
+    });
 
-        return date.getTime();
+    // Turn on async AJAX
+    $.ajaxSetup({
+        async: true
+    });
+
+    // Format x-axis if desired
+    if(format) {
+        x = convertTime(x, format);
     }
+
+    // Return data
+    return [x, y];
+}
+
+function convertTime(t, format) {
+    // Identify type of input given
+    var isArray = true;
+
+    if (typeof(t) === "number" || typeof(t) === "string") {
+        isArray = false;
+
+        // Convert input to array
+        t = [t];
+    }
+
+    // Initialize result variable
+    var result = [];
+
+    // Loop on input
+    for(i = 0; i < t.length; i++) {
+        // Convert from epoch to string
+        if(parseInt(t[0]) == t[0]) {
+            t[i] = parseInt(t[i]);
+
+            var date = new Date(t[i]);
+
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            var millisecond = date.getMilliseconds(0);
+
+            // Store time conversion
+            switch(format) {
+                case "YYYY.MM.DD - HH:MM:SS":
+                    result.push(year + "." +
+                        ("0" + month).slice(-2) + "." +
+                        ("0" + day).slice(-2) + " - " +
+                        ("0" + hour).slice(-2) + ":" +
+                        ("0" + minute).slice(-2) + ":" +
+                        ("0" + second).slice(-2)
+                    );
+                    break;
+
+                case "HH:MM - DD.MM.YYYY":
+                    result.push(("0" + hour).slice(-2) + ":" +
+                        ("0" + minute).slice(-2) + " - " +
+                        ("0" + day).slice(-2) + "." +
+                        ("0" + month).slice(-2) + "." +
+                        year
+                    );
+                    break;
+
+                case "HH:MM":
+                    result.push(("0" + hour).slice(-2) + ":" +
+                        ("0" + minute).slice(-2)
+                    );
+                    break;
+
+                default:
+                    alert("Time conversion error.");
+            }
+        }
+
+        // Convert from string to epoch
+        else {
+            var date = new Date();
+
+            switch(format) {
+                case "YYYY.MM.DD - HH:MM:SS":
+                    var year = t[i].slice(0, 4);
+                    var month = t[i].slice(5, 7);
+                    var day = t[i].slice(8, 10);
+                    var hour = t[i].slice(-8, -6);
+                    var minute = t[i].slice(-5, -3);
+                    var second = t[i].slice(-2);
+                    var millisecond = 0;
+                    break;
+
+                case "HH:MM - DD.MM.YYYY":
+                    var year = t[i].slice(-4);
+                    var month = t[i].slice(-7, -5);
+                    var day = t[i].slice(-10, -8);
+                    var hour = t[i].slice(0, 2);
+                    var minute = t[i].slice(3, 5);
+                    var second = 0;
+                    var millisecond = 0;
+                    break;
+
+                default:
+                    alert("Time conversion error.");
+            }
+
+            date.setFullYear(year);
+            date.setMonth(month - 1);
+            date.setDate(day);
+            date.setHours(hour);
+            date.setMinutes(minute);
+            date.setSeconds(second);
+            date.setMilliseconds(millisecond);
+
+            // Store time conversion
+            result.push(date.getTime());
+        }
+    }
+
+    // Give back result based on input type
+    if (isArray) {
+        return result;
+    }
+
+    return result[0];
 }
 
 function rankBG(BG, BGScale) {
@@ -174,111 +247,4 @@ function roundB(B) {
 
 function decodeEntity(str) {
     return $("<textarea>").html(str).text();
-}
-
-
-
-// SHAME
-function simulateBG() {
-    var x0 = 1484760242000;
-    var x = [];
-    var y = [];
-    var dx = 5 * 60 * 1000; // ms
-    var dX = 12 * 60 * 60 * 1000; // ms
-    var u = 0;
-    var u_0 = 15;
-    var A = 23;
-    var B = 2;
-    var k = 2;
-    var ticks = [];
-
-    // Create epoch time scale
-    for (i = 0; i < (dX / dx); i++) {
-        x.unshift(x0 - i * dx);
-    }
-
-    x.unshift(x0 - dX);
-
-    for (i = 0; i < x.length; i++) {
-        u = (x[i] - (x0 - dX)) / 1000000;
-
-        if (u >= u_0) {
-            y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
-        } else {
-            y.push(B);
-        }
-    }
-
-    for (i = 0; i < x.length; i++) {
-        ticks.push($("<div class='BG' x='" + x[i] + "' y='" + roundBG(y[i]) + "'></div>"));
-    }
-
-    graphBG.append(ticks);
-}
-
-function simulateTBR() {
-    var x0 = 1484760242000;
-    var x = [];
-    var y = [];
-    var dx = 5 * 60 * 1000; // ms
-    var dX = 12 * 60 * 60 * 1000; // ms
-    var u = 0;
-    var u_0 = 15;
-    var A = 180;
-    var B = 100;
-    var k = 2;
-    var ticks = [];
-
-    // Create epoch time scale
-    for (i = 0; i < (dX / dx); i++) {
-        x.unshift(x0 - i * dx);
-    }
-
-    x.unshift(x0 - dX);
-
-    for (i = 0; i < x.length; i++) {
-        u = (x[i] - (x0 - dX)) / 1000000;
-
-        if (u >= u_0) {
-            y.push(A * Math.pow((u - u_0), k) * Math.exp(-(u - u_0)) + B);
-        } else {
-            y.push(B);
-        }
-    }
-
-    for (i = 0; i < x.length; i++) {
-        ticks.push($("<div class='TBR' x='" + x[i] + "' y='" + roundTBR(y[i]) + "'></div>"));
-
-        for (j = 0; j < 2; j++) {
-            ticks.last().append($("<div class='innerTBRBar'></div>"));
-        }
-    }
-
-    graphI.append(ticks);
-}
-
-function simulateBolus() {
-    var x0 = 1484760242000;
-    var x = [];
-    var y = [];
-    var dx = 25 * 60 * 1000; // ms
-    var dX = 1 * 60 * 60 * 1000; // ms
-    var ticks = [];
-
-    // Create epoch time scale
-    for (i = 0; i < (dX / dx); i++) {
-        x.unshift(x0 - i * dx);
-    }
-
-    x.unshift(x0 - dX);
-
-    for (i = 0; i < x.length; i++) {
-        y.push(0);
-    }
-
-    for (i = 0; i < x.length; i++) {
-        ticks.push($("<div class='B' x='" + x[i] + "' y='" + y[i] + "'></div>"));
-    }
-
-    graphI.append(ticks);
 }

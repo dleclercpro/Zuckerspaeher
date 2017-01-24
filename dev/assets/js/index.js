@@ -1,11 +1,31 @@
+/*==============================================================================
+
+	Title:    index.js
+
+	Author:   David Leclerc
+
+	Version:  0.1
+
+	Date:     24.01.2017
+
+	License:  GNU General Public License, Version 3
+	          (http://www.gnu.org/licenses/gpl.html)
+
+	Overview: ...
+
+	Notes:    ...
+
+==============================================================================*/
+
 $(document).ready(function() {
-	// Objects
+
 	function Graph() {
-		// Attributes
-		this.container;
+
 		this.e = $("<div id='graph'></div>");
 
-		// Methods
+		/*======================================================================
+			GENERATEAXIS
+		======================================================================*/
 		this.generateAxis = function(z0, dz, dZ) {
 			// Initialize empty array
 			var z = [];
@@ -21,39 +41,42 @@ $(document).ready(function() {
 			return z;
 		}
 
+		/*======================================================================
+			BUILDAXIS
+		======================================================================*/
 		this.buildAxis = function(z, z0, dz, dZ, label, name, format) {
 			// Create axis node
-			var axis = $("<div id='graph-" + name + "-axis' class='graph-" + label + "-axis'></div>");
+			var axis = $("<div id='graph-" + name + "-axis' class='graph-" +
+				label + "-axis'></div>");
 
 			// Build axis based on z0, dz and dZ
 			if (z.length == 0) {
-				var z = this.generateAxis(z0, dz, dZ);
+				z = this.generateAxis(z0, dz, dZ);
 
 				for (i = 0; i < z.length - 1; i++) {
-					// Add tick to axis node
-					axis.append($("<div class='graph-" + label + "-axis-tick'>" + z[i + 1] + "</div>")
-						.css({
-							"width": ((z[i + 1] - z[i]) / dZ * 100) + "%"
-						})
+					dz = z[i + 1] - z[i];
+
+					axis.append($("<div class='graph-" +
+						label +"-axis-tick'>" + z[i + 1] + "</div>")
+							.css({
+								"width": (dz / dZ * 100) + "%"
+							})
 					);
 				}
 			}
 
 			// Build axis based on provided z array
 			else {
-				var dz;
-				var dZ;
+				dZ = z.max() - z.min();
 
 				for (i = 0; i < z.length - 1; i++) {
-					// Compute dy, dY
 					dz = z[i + 1] - z[i];
-					dZ = z.max() - z.min();
 
-					// Add tick to axis node
-					axis.append($("<div class='graph-" + label + "-axis-tick'>" + z[i] + "</div>")
-						.css({
-							"height": (dz / dZ * 100) + "%"
-						})
+					axis.append($("<div class='graph-" +
+						label + "-axis-tick'>" + z[i] + "</div>")
+							.css({
+								"height": (dz / dZ * 100) + "%"
+							})
 					);
 				}
 			}
@@ -69,8 +92,55 @@ $(document).ready(function() {
 			this.e.append(axis);
 		}
 
-		this.show = function() {
-			this.container.append(this.e);
+		/*======================================================================
+			BUILDDOTS
+		======================================================================*/
+		this.buildDots = function(type, graph, report, reportSection, format,
+								  limits) {
+			// If section of graph does not already exist, create it
+			var exists = true;
+			var section = this.e.find("#graph-" + graph);
+
+			if (!section.length) {
+				exists = false;
+				section = ($("<div id='graph-" + graph + "'></div>"));
+			}
+
+			// Retrieve data
+			var data = getData(report, reportSection, format);
+
+			// Store data in arrays
+			var x = data[0];
+			var y = data[1];
+
+			// Initialize array for dot elements
+			var dots = [];
+
+			// Build dot elements
+			for (i = 0; i < x.length; i++) {
+				// Stop at desired limits
+				if (limits && (x[i] < limits[0] || x[i] > limits[1])) {
+					continue;
+				}
+
+				dots.push($("<div class='" + type + "' x='" + x[i] +
+					"' y='" + y[i] + "'></div>"));
+			}
+
+			// Append dots to graph section
+			section.append(dots);
+
+			// Append section to whole graph if it does not already exist
+			if (!exists) {
+				this.e.append(section);
+			}
+		}
+
+		/*======================================================================
+			SHOW
+		======================================================================*/
+		this.show = function(container) {
+			container.append(this.e);
 		}
 	}
 
@@ -101,18 +171,21 @@ $(document).ready(function() {
 	// Build y-axis for I
 	graph.buildAxis(yTBR, y0TBR, dyTBR, dYTBR, "y", "I", false);
 
-	// Build BG graph section
-	graph.e.append($("<div id='graph-BG'></div>"));
-
-	// Build I graph section
-	graph.e.append($("<div id='graph-I'></div>"));
-
 	// Build NA graph section
 	graph.e.append($("<div id='graph-NA'></div>"));
 
+	// Build BG dots
+	graph.buildDots("BG", "BG", "ajax/BG.json", false, "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+
+	// Build B dots
+	graph.buildDots("B", "I", "ajax/insulin.json", "Boluses", "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+
 	// Show graph
-	graph.container = $("#content");
-	graph.show();
+	graph.show($("#content"));
+
+	//var a = (new Date()).getTime();
+	//var b = (new Date()).getTime();
+	//alert((b - a) / 1000);
 
 
 
@@ -120,8 +193,8 @@ $(document).ready(function() {
 
 	// Config
 	var now = new Date();
-	var x0 = now.getTime() - 3 * 60 * 60 * 1000;
-	var x0 = 1474340548000;
+	//var x0 = now.getTime() - 3 * 60 * 60 * 1000;
+	//var x0 = 1474340548000;
 	var x = [];
 	var x_ = [];
 	var dx = 1 * 60 * 60 * 1000; // Time step (h)
@@ -179,81 +252,9 @@ $(document).ready(function() {
 
 	// Functions
 	function init() {
-		//buildXAxis();
-		//buildYAxis();
-		getBGs();
 		getTBRs();
-		getBs();
 		buildGraph();
 		buildDash();
-	}
-
-	function buildXAxis () {
-		// Convert time step and range from h to ms
-		dx *= 60 * 60 * 1000;
-		dX *= 60 * 60 * 1000;
-
-		// Create epoch time scale
-		for (i = 0; i < (dX / dx); i++) {
-			x.unshift(x0 - i * dx);
-		}
-
-		// Add last tick based on given dX
-		x.unshift(x0 - dX);
-
-		// Format epoch to string
-		for (i = 0; i < x.length; i++) {
-			x_.push(convertTime(x[i], "HH:MM"));
-		}
-
-		// Create X-Axis
-		for (i = 0; i < x.length - 1; i++) {
-			// Create tick
-			tick = $("<div class='graph-x-axis-tick'>" + x_[i + 1] + "</div>");
-
-			// Style tick
-			tick.css({
-				"width": ((x[i + 1] - x[i]) / dX * 100) + "%"
-			});
-
-			// Add tick to graph
-			xAxis.append(tick);
-		}
-	}
-
-	function buildYAxis () {
-		// Create Y-Axis
-		for (i = 0; i < yBG.length - 1; i++) {
-			// Compute dy
-			dy = yBG[i + 1] - yBG[i]; // BG step (mmol/L)
-
-			// Create tick
-			tick = $("<div class='graph-y-axis-tick'>" + yBG[i] + "</div>");
-
-			// Style tick
-			tick.css({
-				"height": (dy / dYBG * 100) + "%"
-			});
-
-			// Add tick to DOM
-			yAxisBG.append(tick);
-		}
-
-		for (i = 0; i < yTBR.length - 1; i++) {
-			// Compute dy
-			dy = yTBR[i + 1] - yTBR[i]; // TBR step (%)
-
-			// Create tick
-			tick = $("<div class='graph-y-axis-tick'>" + yTBR[i] + "</div>");
-
-			// Style tick
-			tick.css({
-				"height": (dy / dYTBR * 100) + "%"
-			});
-
-			// Add tick to DOM
-			yAxisTBR.append(tick);
-		}
 	}
 
 	function buildGraph () {
@@ -597,43 +598,6 @@ $(document).ready(function() {
 		settings.toggleClass("is-active");
 	}
 
-	function getBGs () {
-		// Create BG arrays
-		var BGTimes = [];
-		var BGs = [];
-
-		// Turn off async AJAX
-		$.ajaxSetup({
-			async: false
-		});
-
-		// Get boluses with AJAX
-		$.getJSON("ajax/BG.json", function (data) {
-			// Store boluses with epoch time
-			$.each(data, function (key, value) {
-				BGTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
-				BGs.push(value);
-			});
-		});
-
-		// Turn on async AJAX
-		$.ajaxSetup({
-			async: true
-		});
-
-		// Display BGs
-		for (i = 0; i < BGs.length; i++) {
-			if (BGTimes[i] > x0) {
-				break;
-			}
-			
-			graphBG.append($("<div class='BG' x='" + BGTimes[i] + "' y='" + roundBG(BGs[i]) + "'></div>"));
-		}
-
-		// Return boluses
-		return [BGTimes, BGs];
-	}
-
 	function getTBRs () {
 		// Create TBR arrays
 		var TBRTimes = [];
@@ -740,43 +704,6 @@ $(document).ready(function() {
 		return [TBRTimes, TBRs, TBRUnits];
 	}
 
-	function getBs () {
-		// Create bolus arrays
-		var BTimes = [];
-		var Bs = [];
-
-		// Turn off async AJAX
-		$.ajaxSetup({
-			async: false
-		});
-
-		// Get boluses with AJAX
-		$.getJSON("ajax/insulin.json", function (data) {
-			// Store boluses with epoch time
-			$.each(data["Boluses"], function (key, value) {
-				BTimes.push(convertTime(key, "YYYY.MM.DD - HH:MM:SS"));
-				Bs.push(value);
-			});
-		});
-
-		// Turn on async AJAX
-		$.ajaxSetup({
-			async: true
-		});
-
-		// Display boluses
-		for (i = 0; i < Bs.length; i++) {
-			if (BTimes[i] > x0) {
-				break;
-			}
-			
-			graphI.append($("<div class='B' x='" + BTimes[i] + "' y='" + roundB(Bs[i]) + "'></div>"));
-		}
-
-		// Return boluses
-		return [BTimes, Bs];
-	}
-
 
 
 	// Main
@@ -789,4 +716,5 @@ $(document).ready(function() {
 	settingsButton.on("click", function () {
 		toggleSettings();
 	});
+
 });

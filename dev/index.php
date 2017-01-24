@@ -92,16 +92,16 @@ Notes : -
 					<div class="fieldset">
 						<label>Time:</label>
 						<select id="settings-hour">
-							<option>0</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
+							<option>00</option>
+							<option>01</option>
+							<option>02</option>
+							<option>03</option>
+							<option>04</option>
+							<option>05</option>
+							<option>06</option>
+							<option>07</option>
+							<option>08</option>
+							<option>09</option>
 							<option>10</option>
 							<option>11</option>
 							<option>12</option>
@@ -119,16 +119,16 @@ Notes : -
 						</select>
 						<p>:</p>
 						<select id="settings-minute">
-							<option>0</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
+							<option>00</option>
+							<option>01</option>
+							<option>02</option>
+							<option>03</option>
+							<option>04</option>
+							<option>05</option>
+							<option>06</option>
+							<option>07</option>
+							<option>08</option>
+							<option>09</option>
 							<option>10</option>
 							<option>11</option>
 							<option>12</option>
@@ -182,16 +182,16 @@ Notes : -
 						</select>
 						<p>:</p>
 						<select id="settings-second">
-							<option>0</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
+							<option>00</option>
+							<option>01</option>
+							<option>02</option>
+							<option>03</option>
+							<option>04</option>
+							<option>05</option>
+							<option>06</option>
+							<option>07</option>
+							<option>08</option>
+							<option>09</option>
 							<option>10</option>
 							<option>11</option>
 							<option>12</option>
@@ -247,15 +247,15 @@ Notes : -
 					<div class="fieldset">
 						<label>Date:</label>
 						<select id="settings-day">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
+							<option>01</option>
+							<option>02</option>
+							<option>03</option>
+							<option>04</option>
+							<option>05</option>
+							<option>06</option>
+							<option>07</option>
+							<option>08</option>
+							<option>09</option>
 							<option>10</option>
 							<option>11</option>
 							<option>12</option>
@@ -281,15 +281,15 @@ Notes : -
 						</select>
 						<p>.</p>
 						<select id="settings-month">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
+							<option>01</option>
+							<option>02</option>
+							<option>03</option>
+							<option>04</option>
+							<option>05</option>
+							<option>06</option>
+							<option>07</option>
+							<option>08</option>
+							<option>09</option>
 							<option>10</option>
 							<option>11</option>
 							<option>12</option>
