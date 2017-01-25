@@ -97,6 +97,9 @@ $(document).ready(function() {
 		======================================================================*/
 		this.buildDots = function(type, graph, report, reportSection, format,
 								  limits) {
+			// FIXME: put limits in new getBGData (usw.) getData function?
+			// FIXME: arguments report, reportSection and format need to get out
+			// 		  of here.
 			// If section of graph does not already exist, create it
 			var exists = true;
 			var section = this.e.find("#graph-" + graph);
@@ -137,6 +140,43 @@ $(document).ready(function() {
 		}
 
 		/*======================================================================
+			BUILDBARS
+		======================================================================*/
+		this.buildBars = function(type, graph, profile) {
+			// If section of graph does not already exist, create it
+			var exists = true;
+			var section = this.e.find("#graph-" + graph);
+
+			if (!section.length) {
+				exists = false;
+				section = ($("<div id='graph-" + graph + "'></div>"));
+			}
+
+			// Initialize array for bar elements
+			var bars = [];
+
+			// Build bar elements
+			for (i = 0; i < profile[0].length; i++) {
+				bars.push($("<div class='" + type + "' x='" + profile[0][i] + 
+					"' y='" + profile[1][i] + "'></div>"));
+
+				// Add subelements inside bar
+				for (j = 0; j < 2; j++) {
+					bars.last()
+						.append($("<div class='inner" + type + "'></div>"));
+				}
+			}
+
+			// Append bars to graph section
+			section.append(bars);
+
+			// Append section to whole graph if it does not already exist
+			if (!exists) {
+				this.e.append(section);
+			}
+		}
+
+		/*======================================================================
 			SHOW
 		======================================================================*/
 		this.show = function(container) {
@@ -158,6 +198,8 @@ $(document).ready(function() {
 	var y0TBR;
 	var dyTBR;
 	var dYTBR;
+
+	// FIXME: reinsert rounding functions?
 
 	// Create graph object
 	var graph = new Graph();
@@ -627,81 +669,17 @@ $(document).ready(function() {
 			async: true
 		});
 
-		// Sort TBR times in case they aren't already
-		var indices = sortWithIndices(TBRTimes);
-
-		// Sort rest of TBR infos according to time sorted indices
-		var TBRs_ = [];
-		var TBRUnits_ = [];
-		var TBRDurations_ = [];
-
-		for (i = 0; i < TBRs.length; i++) {
-			TBRs_[i] = TBRs[indices[i]];
-			TBRUnits_[i] = TBRUnits[indices[i]];
-			TBRDurations_[i] = TBRDurations[indices[i]];
-		}
-
-		// Reassign TBRs with sorted ones
-		TBRs = TBRs_;
-		TBRUnits = TBRUnits_;
-		TBRDurations = TBRDurations_;
-
-		// Reconstruct TBR profile
-		// TBR Profiler
-		n = TBRs.length;
-		TBRTimes_ = [];
-		TBRs_ = [];
-		TBRUnits_ = [];
-
-		for (i = 0; i < n; i++) {
-			// Add current point in time to allow next comparisons
-			if (i == n - 1) {
-				TBRTimes.push(x0);
-				TBRs.push(TBRs_.last());
-				TBRUnits.push(TBRUnits_.last());
-			}
-
-			//Ignore TBR cancel associated with unit change
-			if (TBRs[i] == 0 && TBRDurations[i] == 0 && TBRUnits[i + 1] != TBRUnits[i] && TBRTimes[i + 1] - TBRTimes[i] < 5 * 60 * 1000) {
-				continue;
-			}
-
-			// Add TBR to profile if different than last
-			if (TBRs[i] != TBRs_.last() || TBRUnits[i] != TBRUnits_.last()) {
-				TBRTimes_.push(TBRTimes[i]);
-				TBRs_.push(TBRs[i]);
-				TBRUnits_.push(TBRUnits[i]);
-			}
-
-			// Add a point in time if current TBR ran completely
-			if (TBRDurations[i] != 0 && TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
-				TBRTimes_.push(TBRTimes[i] + TBRDurations[i]);
-				TBRs_.push(100);
-				TBRUnits_.push(TBRUnits_.last());
-			}
-		}
-
-		// Add first point left of graph
-		TBRTimes_.unshift(x0 - dX);
-		TBRs_.unshift(100);
-		TBRUnits_.unshift(TBRUnits.first());
-
-		// Add current point in time
-		TBRTimes_.push(TBRTimes.last());
-		TBRs_.push(TBRs.last());
-		TBRUnits_.push(TBRUnits.last());
+		// Compute TBR profile
+		var TBRProfile = profileTBR(x0, dX, TBRTimes, TBRs, TBRUnits, TBRDurations, 5 * 60 * 1000);
 
 		// Display TBRs
-		for (i = 0; i < TBRs_.length; i++) {
-			graphI.append($("<div class='TBR' x='" + TBRTimes_[i] + "' y='" + roundTBR(TBRs_[i]) + "'></div>"));
+		for (i = 0; i < TBRProfile[0].length; i++) {
+			graphI.append($("<div class='TBR' x='" + TBRProfile[0][i] + "' y='" + roundTBR(TBRProfile[1][i]) + "'></div>"));
 
 			for (j = 0; j < 2; j++) {
-				graphI.children().last().append($("<div class='innerTBRBar'></div>"));
+				graphI.children().last().append($("<div class='innerTBR'></div>"));
 			}
 		}
-
-		// Return boluses
-		return [TBRTimes, TBRs, TBRUnits];
 	}
 
 

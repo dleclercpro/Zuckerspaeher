@@ -250,7 +250,7 @@ footer {
 				display: none;
 			}
 
-			> .innerTBRBar {
+			> .innerTBR {
 				width: 50%;
 				border-left: 2px solid $black;
 				border-right: 2px solid $black;
@@ -379,7 +379,7 @@ footer {
 			}
 
 			> input, select {
-				width: 80px;
+				width: 20%;
 				margin-right: 8px;
 				background-color: $gray;
 				color: $white;

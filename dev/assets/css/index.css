@@ -595,7 +595,7 @@ footer {
         background-color: #2c0080; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
-      #graph > #graph-I > .TBR > .innerTBRBar {
+      #graph > #graph-I > .TBR > .innerTBR {
         width: 50%;
         border-left: 2px solid #090808;
         border-right: 2px solid #090808; }
@@ -679,7 +679,7 @@ footer {
       margin-right: 8px;
       font-weight: bold; }
     #settings > form > .fieldset > input, #settings > form > .fieldset select {
-      width: 80px;
+      width: 20%;
       margin-right: 8px;
       background-color: #252020;
       color: #eeeeee;
