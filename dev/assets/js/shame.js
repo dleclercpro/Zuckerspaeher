@@ -175,3 +175,20 @@ function getBs () {
     // Return boluses
     return [BTimes, Bs];
 }
+
+function getTBRs () {
+    // Get TBRs
+    var data = getData("ajax/insulin.json", "Temporary Basals", "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+
+    // Compute TBR profile
+    var TBRProfile = profileTBR(data, x0, dX, 5 * 60 * 1000);
+
+    // Display TBRs
+    for (i = 0; i < TBRProfile[0].length; i++) {
+        graphI.append($("<div class='TBR' x='" + TBRProfile[0][i] + "' y='" + roundTBR(TBRProfile[1][i]) + "'></div>"));
+
+        for (j = 0; j < 2; j++) {
+            graphI.children().last().append($("<div class='innerTBR'></div>"));
+        }
+    }
+}

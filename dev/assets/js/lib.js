@@ -93,18 +93,22 @@ function getData(report, reportSection, format = false, limits = []) {
         x = convertTime(x, format);
     }
 
+    // Initialize final arrays
+    var X = [];
+    var Y = [];
+
     // Exclude data out of limits
     if (limits.length != 0) {
         for (i = 0; i < x.length; i++) {
-            if (x[i] < limits[0] || x[i] > limits[1]) {
-                x.splice(i, 1);
-                y.splice(i, 1);
+            if (x[i] >= limits[0] && x[i] <= limits[1]) {
+                X.push(x[i]);
+                Y.push(y[i]);
             }
         }
     }
 
     // Return data
-    return [x, y];
+    return [X, Y];
 }
 
 function convertTime(t, format) {
@@ -273,56 +277,4 @@ function roundB(B) {
     B = parseInt(B);
 
     return (Math.round(B * 10) / 10).toFixed(1);
-}
-
-function profileTBR(x0, dX, TBRTimes, TBRs, TBRUnits, TBRDurations, TBRTimeThreshold) {
-    // Sort TBR times in case they aren't already
-    indexSort(TBRTimes, [TBRs, TBRUnits, TBRDurations]);
-
-    // Reconstruct TBR profile
-    var n = TBRTimes.length; // Number of entries
-    var x = []; // Times
-    var y = []; // Values
-    var z = []; // Units
-
-    for (i = 0; i < n; i++) {
-        // Add current point in time to allow next comparisons
-        if (i == n - 1) {
-            TBRTimes.push(x0);
-            TBRs.push(y.last());
-            TBRUnits.push(z.last());
-        }
-
-        //Ignore TBR cancel associated with unit change
-        if (TBRs[i] == 0 && TBRDurations[i] == 0 && TBRUnits[i + 1] != TBRUnits[i] && TBRTimes[i + 1] - TBRTimes[i] < TBRTimeThreshold) {
-            continue;
-        }
-
-        // Add TBR to profile if different than last
-        if (TBRs[i] != y.last() || TBRUnits[i] != z.last()) {
-            x.push(TBRTimes[i]);
-            y.push(TBRs[i]);
-            z.push(TBRUnits[i]);
-        }
-
-        // Add a point in time if current TBR ran completely
-        if (TBRDurations[i] != 0 && TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
-            x.push(TBRTimes[i] + TBRDurations[i]);
-            y.push(100);
-            z.push(z.last());
-        }
-    }
-
-    // Add first point left of graph
-    x.unshift(x0 - dX);
-    y.unshift(100);
-    z.unshift(TBRUnits.first());
-
-    // Add current point in time
-    x.push(TBRTimes.last());
-    y.push(TBRs.last());
-    z.push(TBRUnits.last());
-
-    // Give user TBR profile
-    return [x, y, z];
 }
