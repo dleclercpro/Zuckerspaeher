@@ -19,7 +19,7 @@
 
 $(document).ready(function() {
 
-    function Graph(e) {
+    function Graph(name, e) {
 
         /*======================================================================
             GENERATEAXIS
@@ -105,14 +105,14 @@ $(document).ready(function() {
         /*======================================================================
             BUILDDOTS
         ======================================================================*/
-        this.buildDots = function(type, graph, data) {
+        this.buildDots = function(type, data) {
             // If section of graph does not already exist, create it
             var exists = true;
-            var section = this.e.find("#graph-" + graph);
+            var section = this.e.find("#graph-" + this.name);
 
             if (!section.length) {
                 exists = false;
-                section = ($("<div id='graph-" + graph + "'></div>"));
+                section = ($("<div id='graph-" + this.name + "'></div>"));
             }
 
             // Store data in separate arrays
@@ -140,14 +140,14 @@ $(document).ready(function() {
         /*======================================================================
             BUILDBARS
         ======================================================================*/
-        this.buildBars = function(type, graph, data) {
+        this.buildBars = function(type, data) {
             // If section of graph does not already exist, create it
             var exists = true;
-            var section = this.e.find("#graph-" + graph);
+            var section = this.e.find("#graph-" + this.name);
 
             if (!section.length) {
                 exists = false;
-                section = ($("<div id='graph-" + graph + "'></div>"));
+                section = ($("<div id='graph-" + this.name + "'></div>"));
             }
 
             // Store data in separate arrays
@@ -181,23 +181,26 @@ $(document).ready(function() {
         /*======================================================================
             MAIN
         ======================================================================*/
-        // Store element to which future graph elements should be attached
+        // Store graph name
+        this.name = name;
+
+        // Store node to which future graph elements should be attached
         this.e = e;
 
         // Make sure dead corner exists
         this.buildCorner();
     }
 
-    function GraphBG(e) {
+    function GraphBG(name, e) {
 
         // Extend object
-        Graph.apply(this, [e]);
+        Graph.apply(this, [name, e]);
     }
 
-    function GraphI(e) {
+    function GraphI(name, e) {
 
         // Extend object
-        Graph.apply(this, [e]);
+        Graph.apply(this, [name, e]);
 
         /*======================================================================
             PROFILETBR
@@ -281,7 +284,7 @@ $(document).ready(function() {
             var TBRProfile = this.profileTBR(data, x0, dX);
 
             // Build TBRs
-            this.buildBars("TBR", "I", [TBRProfile[0], TBRProfile[1]]);
+            this.buildBars("TBR", [TBRProfile[0], TBRProfile[1]]);
         }
     }
 
@@ -303,8 +306,8 @@ $(document).ready(function() {
     // FIXME: reinsert rounding functions?
 
     // Create graph objects
-    var graphBG = new GraphBG($("#graph"));
-    var graphI = new GraphI($("#graph"));
+    var graphBG = new GraphBG("BG", $("#graph"));
+    var graphI = new GraphI("I", $("#graph"));
 
     // Build x-axis for time
     graphBG.buildAxis(x, x0, dx, dX, "x", "t", "HH:MM");
@@ -320,14 +323,14 @@ $(document).ready(function() {
         "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
 
     // Build BG dots
-    graphBG.buildDots("BG", "BG", BGs);
+    graphBG.buildDots("BG", BGs);
 
     // Get Bs
     var Bs = getData("ajax/insulin.json", "Boluses",
         "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
 
     // Build B dots
-    graphI.buildDots("B", "I", Bs);
+    graphI.buildDots("B", Bs);
 
     // Get TBRs
     var TBRs = getData("ajax/insulin.json", "Temporary Basals",
