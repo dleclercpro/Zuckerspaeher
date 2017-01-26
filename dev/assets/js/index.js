@@ -95,11 +95,7 @@ $(document).ready(function() {
 		/*======================================================================
 			BUILDDOTS
 		======================================================================*/
-		this.buildDots = function(type, graph, report, reportSection, format,
-								  limits) {
-			// FIXME: put limits in new getBGData (usw.) getData function?
-			// FIXME: arguments report, reportSection and format need to get out
-			// 		  of here.
+		this.buildDots = function(type, graph, data) {
 			// If section of graph does not already exist, create it
 			var exists = true;
 			var section = this.e.find("#graph-" + graph);
@@ -109,10 +105,7 @@ $(document).ready(function() {
 				section = ($("<div id='graph-" + graph + "'></div>"));
 			}
 
-			// Retrieve data
-			var data = getData(report, reportSection, format);
-
-			// Store data in arrays
+			// Store data in separate arrays
 			var x = data[0];
 			var y = data[1];
 
@@ -121,11 +114,6 @@ $(document).ready(function() {
 
 			// Build dot elements
 			for (i = 0; i < x.length; i++) {
-				// Stop at desired limits
-				if (limits && (x[i] < limits[0] || x[i] > limits[1])) {
-					continue;
-				}
-
 				dots.push($("<div class='" + type + "' x='" + x[i] +
 					"' y='" + y[i] + "'></div>"));
 			}
@@ -142,7 +130,7 @@ $(document).ready(function() {
 		/*======================================================================
 			BUILDBARS
 		======================================================================*/
-		this.buildBars = function(type, graph, profile) {
+		this.buildBars = function(type, graph, data) {
 			// If section of graph does not already exist, create it
 			var exists = true;
 			var section = this.e.find("#graph-" + graph);
@@ -152,13 +140,17 @@ $(document).ready(function() {
 				section = ($("<div id='graph-" + graph + "'></div>"));
 			}
 
+			// Store data in separate arrays
+			var x = data[0];
+			var y = data[1];
+
 			// Initialize array for bar elements
 			var bars = [];
 
 			// Build bar elements
 			for (i = 0; i < profile[0].length; i++) {
-				bars.push($("<div class='" + type + "' x='" + profile[0][i] + 
-					"' y='" + profile[1][i] + "'></div>"));
+				bars.push($("<div class='" + type + "' x='" + x[i] + 
+					"' y='" + y[i] + "'></div>"));
 
 				// Add subelements inside bar
 				for (j = 0; j < 2; j++) {
@@ -216,11 +208,17 @@ $(document).ready(function() {
 	// Build NA graph section
 	graph.e.append($("<div id='graph-NA'></div>"));
 
+	// Get BGs
+	var BGs = getData("ajax/BG.json", false, "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+
 	// Build BG dots
-	graph.buildDots("BG", "BG", "ajax/BG.json", false, "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+	graph.buildDots("BG", "BG", BGs);
+
+	// Get Bs
+	var Bs = getData("ajax/insulin.json", "Boluses", "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
 
 	// Build B dots
-	graph.buildDots("B", "I", "ajax/insulin.json", "Boluses", "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+	graph.buildDots("B", "I", Bs);
 
 	// Show graph
 	graph.show($("#content"));

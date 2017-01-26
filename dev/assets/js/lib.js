@@ -59,7 +59,7 @@ function indexSort(x, y = []) {
   }
 }
 
-function getData(report, reportSection, format) {
+function getData(report, reportSection, format = false, limits = []) {
     // Create data arrays
     var x = [];
     var y = [];
@@ -91,6 +91,16 @@ function getData(report, reportSection, format) {
     // Format x-axis if desired
     if(format) {
         x = convertTime(x, format);
+    }
+
+    // Exclude data out of limits
+    if (limits.length != 0) {
+        for (i = 0; i < x.length; i++) {
+            if (x[i] < limits[0] || x[i] > limits[1]) {
+                x.splice(i, 1);
+                y.splice(i, 1);
+            }
+        }
     }
 
     // Return data
