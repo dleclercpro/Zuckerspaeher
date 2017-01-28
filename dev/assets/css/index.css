@@ -448,6 +448,8 @@ header {
   z-index: 35; }
   @media all and (max-width: 1024px) {
     header {
+      width: 100vw;
+      height: 10vh;
       padding: 0 5%; } }
   header > #branding {
     height: 100%;
@@ -496,6 +498,7 @@ header {
   @media all and (max-width: 640px) {
     #user {
       width: 100vw;
+      height: auto;
       max-width: none;
       padding: 10px 2.5vw;
       justify-content: center;
@@ -563,6 +566,7 @@ header {
   @media all and (max-width: 640px) {
     #dash {
       width: 100vw;
+      height: auto;
       max-width: none;
       position: static;
       padding: 15px 2.5vw;
@@ -609,6 +613,11 @@ header {
   display: flex;
   flex-wrap: wrap;
   flex: 1; }
+  @media all and (max-width: 1024px) {
+    #graph {
+      flex: none;
+      width: 100vw;
+      height: 90vh; } }
   @media all and (max-width: 640px) {
     #graph {
       flex: none;
@@ -785,8 +794,7 @@ header {
   box-shadow: -3px 0 3px black;
   background-color: #090808;
   color: #eeeeee;
-  z-index: 30;
-  display: none; }
+  z-index: 30; }
   @media all and (max-width: 1024px) {
     #settings {
       width: 100vw; } }

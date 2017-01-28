@@ -48,6 +48,8 @@ header {
 	z-index: 35;
 
 	@include mq(tablet) {
+		width: 100vw;
+		height: 10vh;
 		padding: 0 5%;
 	}
 
@@ -100,6 +102,7 @@ header {
 
 	@include mq(mobile) {
 		width: 100vw;
+		height: auto;
 		max-width: none;
 		padding: 10px 2.5vw;
 		justify-content: center;
@@ -191,6 +194,7 @@ header {
 
 	@include mq(mobile) {
 		width: 100vw;
+		height: auto;
 		max-width: none;
 		position: static;
 		padding: 15px 2.5vw;
@@ -267,6 +271,12 @@ header {
 	display: flex;
 	flex-wrap: wrap;
 	flex: 1;
+
+	@include mq(tablet) {
+		flex: none;
+		width: 100vw;
+		height: 90vh;
+	}
 
 	@include mq(mobile) {
 		flex: none;
@@ -390,7 +400,6 @@ header {
 	background-color: $black;
 	color: $white;
 	z-index: 30;
-	display: none;
 
 	@include mq(tablet) {
 		width: 100vw;
