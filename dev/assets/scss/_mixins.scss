@@ -4,3 +4,115 @@
 		@content;
 	}
 }
+
+@mixin size($width: null, $height: null,
+	$tablet-width: null, $tablet-height: null,
+	$mobile-width: null, $mobile-height: null) {
+
+	width: $width;
+	height: $height;
+
+	@include mq(tablet) {
+		width: $tablet-width;
+		height: $tablet-height;
+	}
+
+	@include mq(mobile) {
+		width: $mobile-width;
+		height: $mobile-height;
+	}
+}
+
+@mixin position($position,
+	$top: null,
+	$right: null,
+	$bottom: null,
+	$left: null) {
+
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin absolute($args...) {
+	@include position(absolute, $args...);
+}
+
+@mixin relative($args...) {
+	@include position(relative, $args...);
+}
+
+@mixin fixed($args...) {
+	@include position(fixed, $args...);
+}
+
+@mixin box($color) {
+	display: flex;
+	flex: none;
+	border: none;
+	border-radius: $border-radius;
+	background-color: $color;
+	box-shadow: $shadow-radius $shadow-radius $shadow-radius $black-trans;
+}
+
+@mixin dot($color: null, $degree: null) {
+	@include absolute;
+	width: 2 * $radius-dot;
+	height: 2 * $radius-dot;
+	border: $border-radius-dot solid $black;
+	border-radius: 50%;
+	background-color: $color;
+	cursor: pointer;
+	z-index: 10;
+
+	@if $degree {
+		&:hover {
+			background-color: darken($color, $degree);
+		}
+	}
+
+	@include mq("tablet") {
+		width: 2 * $tablet-radius-dot;
+		height: 2 * $tablet-radius-dot;
+		border-size: $tablet-border-radius-dot;
+	}
+
+	@include mq("mobile") {
+		width: 2 * $mobile-radius-dot;
+		height: 2 * $mobile-radius-dot;
+		border-size: $mobile-border-radius-dot;
+	}
+}
+
+@mixin bar($bar, $color: null, $degree: null) {
+	@include absolute;
+	display: flex;
+	overflow: hidden;
+	border-top: 2px solid $black;
+	border-bottom: 2px solid $black;
+	background-color: $color;
+	cursor: pointer;
+	z-index: 5;
+
+	@if $degree {
+		&:hover {
+			background-color: darken($color, $degree);
+		}
+	}
+
+	&.first#{$bar} {
+
+	}
+
+	&.last#{$bar} {
+		display: none;
+	}
+
+	> .inner#{$bar} {
+		width: 50%;
+		border-left: 2px solid $black;
+		border-right: 2px solid $black;
+	}
+}

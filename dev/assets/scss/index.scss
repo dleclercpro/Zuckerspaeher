@@ -12,47 +12,42 @@ Notes : -
 @import "reset";
 @import "fonts";
 @import "config";
-@import "placeholders";
 @import "mixins";
+@import "placeholders";
 
 // STYLES
-html{
-	width: 100%;
-	height: 100%; // Setting height in percentages can cause trouble...
-}
-
 body {
-	width: 100%;
-	height: 100%;
-	font-family: $font_stack;
 	display: flex;
-	flex-wrap: wrap;
-	background-color: $gray;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
 	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: $gray;
+	font-family: $font_stack;
 }
 
 #loader {
+	@include absolute($top: 0, $left: 0);
+	@extend %center;
 	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	background-color: black;
 	z-index: 999;
-	@extend %center;
 }
 
 header {
-	width: 100%;
-	height: 100% - $height-content;
-	padding: 0 $padding-header;
 	display: flex;
+	flex: none;
+	width: 100vw;
+	height: 65px;
+	padding: 0 $padding-header;
 	background-color: $black-trans;
 	box-shadow: 0 $shadow-radius $shadow-radius black;
 	z-index: 35;
 
-	@include mq("tablet") {
+	@include mq(tablet) {
 		padding: 0 5%;
 	}
 
@@ -79,42 +74,36 @@ header {
 }
 
 #content {
-	width: 100%;
-	height: $height-content;
-	position: relative;
-
-}
-
-footer {
-	display: none;
-	width: 100%;
-	height: (100% - $height-content) / 2;
-	background-color: $black;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	@include relative;
 }
 
 #user {
-	width: 45%;
-	max-width: 450px;
-	padding: 30px 2.5%;
-	display: flex;
+	@include box($black-trans);
+	@include absolute($top: 5%, $left: $padding-header + 0.5%);
 	align-items: center;
-	position: absolute;
-	top: 5%;
-	left: $padding-header + 0.5%;
-	border-radius: $border-radius;
-	box-shadow: $shadow-radius $shadow-radius $shadow-radius black;
-	background-color: $black-trans;
-	z-index: 10;
+	width: 45vw;
+	max-width: 450px;
+	padding: 30px 2.5vw;
+	z-index: 15;
 
-	@include mq("tablet") {
-		width: 100%;
+	@include mq(tablet) {
+		width: 50vw;
+		height: 180px;
 		max-width: none;
-		position: static;
-		padding: 30px 5%;
+		top: 0;
+		left: 0;
+		padding: 15px 5vw;
 	}
 
-	@include mq("mobile") {
+	@include mq(mobile) {
+		width: 100vw;
+		max-width: none;
+		padding: 10px 2.5vw;
 		justify-content: center;
+		position: static;
 	}
 
 	> #user-img {
@@ -123,6 +112,18 @@ footer {
 		border-radius: 50%;
 		border: 5px solid $white;
 		object-fit: cover;
+
+		@include mq(tablet) {
+			width: 100px;
+			height: 100px;
+			border-width: 4px;
+		}
+
+		@include mq(mobile) {
+			width: 75px;
+			height: 75px;
+			border-width: 3px;
+		}
 	}
 
 	> #user-details {
@@ -132,6 +133,33 @@ footer {
 
 		> p {
 			line-height: 1.25em;
+
+			@include mq(tablet) {
+				font-size: 15px;
+			}
+
+			@include mq(mobile) {
+				font-size: 15px;
+			}
+		}
+
+		> #user-name {
+			@include mq(mobile) {
+				display: none;
+			}
+		}
+
+		> #user-birthday {
+			@extend #user-name;
+		}
+
+		> #user-cgm {
+			@extend #user-name;
+
+		}
+
+		> #user-pump {
+			@extend #user-name;
 		}
 
 		> #last-update {
@@ -142,26 +170,31 @@ footer {
 }
 
 #dash {
-	width: 45%;
-	max-width: 450px;
-	padding: 30px 2.5%;
-	display: flex;
+	@include box($black-trans);
+	@include absolute($top: 5%, $right: $padding-header + 0.5%);
 	flex-direction: column;
+	justify-content: center;
 	align-items: flex-end;
-	position: absolute;
-	top: 5%;
-	right: $padding-header + 0.5%;
-	border-radius: $border-radius;
-	box-shadow: $shadow-radius $shadow-radius $shadow-radius black;
-	background-color: $black-trans;
-	z-index: 10;
+	width: 45vw;
+	max-width: 450px;
+	padding: 30px 2.5vw;
+	z-index: 15;
 
-	@include mq("tablet") {
-		width: 100%;
+	@include mq(tablet) {
+		width: 50vw;
+		height: 180px;
+		max-width: none;
+		top: 0;
+		right: 0;
+		padding: 15px 5vw;
+	}
+
+	@include mq(mobile) {
+		width: 100vw;
 		max-width: none;
 		position: static;
-		padding: 30px 5%;
-		align-items: flex-start;
+		padding: 15px 2.5vw;
+		align-items: center;
 	}
 
 	> #dash-BG {
@@ -173,11 +206,12 @@ footer {
 		display: flex;
 		margin-bottom: 15px;
 
-		@include mq("tablet") {
-			font-size: 55px;
+		@include mq(tablet) {
+			font-size: 40px;
+			margin-bottom: 10px;
 		}
 
-		@include mq("mobile") {
+		@include mq(mobile) {
 			width: 100%;
 			display: flex;
 			justify-content: center;
@@ -202,6 +236,14 @@ footer {
 		> p {
 			margin-right: 15px;
 
+			@include mq(tablet) {
+				font-size: 16px;
+			}
+
+			@include mq(mobile) {
+				font-size: 15px;
+			}
+
 			&:last-child {
 				margin-right: 0;
 			}
@@ -222,138 +264,51 @@ footer {
 }
 
 #graph {
-	width: 100%;
-	height: 100%;
 	display: flex;
 	flex-wrap: wrap;
+	flex: 1;
+
+	@include mq(mobile) {
+		flex: none;
+		width: 100vw;
+		height: 100vh;
+	}
 
 	> #graph-BG {
-		width: $width-graph;
-		height: $height-graph-BG / 100% * $height-graph;
-		position: relative;
+		@include size($width-graph, $height-graph-BG / 100% * $height-graph,
+			$tablet-width-graph, $height-graph-BG / 100% * $tablet-height-graph,
+			$mobile-width-graph, $height-graph-BG / 100% * $mobile-height-graph);
+		@include relative;
 		order: 1;
 
-		@include mq("tablet") {
-			width: $tablet-width-graph;
-			height: $height-graph-BG / 100% * $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: $mobile-width-graph;
-			height: $height-graph-BG / 100% * $mobile-height-graph;
-		}
-
 		> .BG {
-			border: $border-radius-dot solid $black;
-			border-radius: 50%;
-			position: absolute;
-			width: 2 * $radius-dot;
-			height: 2 * $radius-dot;
-			cursor: pointer;
-			z-index: 5;
-
-			@include mq("tablet") {
-				border-size: $tablet-border-radius-dot;
-				width: 2 * $tablet-radius-dot;
-				height: 2 * $tablet-radius-dot;
-			}
-
-			@include mq("mobile") {
-				border-size: $mobile-border-radius-dot;
-				width: 2 * $mobile-radius-dot;
-				height: 2 * $mobile-radius-dot;
-			}
+			@include dot;
 		}
 	}
 
 	> #graph-I {
-		width: $width-graph;
-		height: $height-graph-I / 100% * $height-graph;
-		position: relative;
+		@include size($width-graph, $height-graph-I / 100% * $height-graph,
+			$tablet-width-graph, $height-graph-I / 100% * $tablet-height-graph,
+			$mobile-width-graph, $height-graph-I / 100% * $mobile-height-graph);
+		@include relative;
 		order: 3;
 
-		@include mq("tablet") {
-			width: $tablet-width-graph;
-			height: $height-graph-I / 100% * $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: $mobile-width-graph;
-			height: $height-graph-I / 100% * $mobile-height-graph;
-		}
-
 		> .TBR {
-			position: absolute;
-			cursor: pointer;
-			background-color: $purple;
-			display: flex;
-			z-index: 5;
-			overflow: hidden;
-			border-top: 2px solid $black;
-			border-bottom: 2px solid $black;
-
-			&:hover {
-				background-color: darken($purple, 3%);
-			}
-
-			&.firstTBR {
-
-			}
-
-			&.lastTBR {
-				display: none;
-			}
-
-			> .innerTBR {
-				width: 50%;
-				border-left: 2px solid $black;
-				border-right: 2px solid $black;
-			}
+			@include bar(TBR, $purple, 3%)
 		}
 
 		> .B {
-			border: $border-radius-dot solid $black;
-			background-color: $blue;
-			position: absolute;
-			width: 2 * $radius-dot;
-			height: 2 * $radius-dot;
-			cursor: pointer;
-			z-index: 10;
-
-			&:hover {
-				background-color: darken($blue, 20%);
-			}
-
-			@include mq("tablet") {
-				border-size: $tablet-border-radius-dot;
-				width: 2 * $tablet-radius-dot;
-				height: 2 * $tablet-radius-dot;
-			}
-
-			@include mq("mobile") {
-				border-size: $mobile-border-radius-dot;
-				width: 2 * $mobile-radius-dot;
-				height: 2 * $mobile-radius-dot;
-			}
+			@include dot($blue, 20%);
 		}
 	}
 
 	> #graph-BG-axis {
-		width: 100% - $width-graph;
-		height: $height-graph-BG / 100% * $height-graph;
+		@include size(100% - $width-graph, $height-graph-BG / 100% * $height-graph,
+			100% - $tablet-width-graph, $height-graph-BG / 100% * $tablet-height-graph,
+			100% - $mobile-width-graph, $height-graph-BG / 100% * $mobile-height-graph);
 		display: flex;
 		flex-direction: column-reverse;
 		order: 2;
-
-		@include mq("tablet") {
-			width: 100% - $tablet-width-graph;
-			height: $height-graph-BG / 100% * $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: 100% - $mobile-width-graph;
-			height: $height-graph-BG / 100% * $mobile-height-graph;
-		}
 
 		> .graph-y-axis-tick {
 			@extend %graph-y-axis-tick;
@@ -361,21 +316,12 @@ footer {
 	}
 
 	> #graph-I-axis {
-		width: 100% - $width-graph;
-		height: $height-graph-I / 100% * $height-graph;
+		@include size(100% - $width-graph, $height-graph-I / 100% * $height-graph,
+			100% - $tablet-width-graph, $height-graph-I / 100% * $tablet-height-graph,
+			100% - $mobile-width-graph, $height-graph-I / 100% * $mobile-height-graph);
 		display: flex;
 		flex-direction: column-reverse;
 		order: 4;
-
-		@include mq("tablet") {
-			width: 100% - $tablet-width-graph;
-			height: $height-graph-I / 100% * $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: 100% - $mobile-width-graph;
-			height: $height-graph-I / 100% * $mobile-height-graph;
-		}
 
 		> .graph-y-axis-tick {
 			@extend %graph-y-axis-tick;
@@ -383,21 +329,12 @@ footer {
 	}
 
 	> #graph-t-axis {
-		width: $width-graph;
-		height: 100% - $height-graph;
+		@include size($width-graph, 100% - $height-graph,
+			$tablet-width-graph, 100% - $tablet-height-graph,
+			$mobile-width-graph, 100% - $mobile-height-graph);
 		display: flex;
 		flex-direction: row;
 		order: 5;
-
-		@include mq("tablet") {
-			width: $tablet-width-graph;
-			height: 100% - $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: $mobile-width-graph;
-			height: 100% - $mobile-height-graph;
-		}
 
 		> .graph-x-axis-tick {
 			@extend %graph-x-axis-tick;
@@ -405,30 +342,20 @@ footer {
 	}
 
 	> #graph-NA {
-		width: 100% - $width-graph;
-		height: 100% - $height-graph;
+		@include size(100% - $width-graph, 100% - $height-graph,
+			100% - $tablet-width-graph, 100% - $tablet-height-graph,
+			100% - $mobile-width-graph, 100% - $mobile-height-graph);
 		order: 6;
-
-		@include mq("tablet") {
-			width: 100% - $tablet-width-graph;
-			height: 100% - $tablet-height-graph;
-		}
-
-		@include mq("mobile") {
-			width: 100% - $mobile-width-graph;
-			height: 100% - $mobile-height-graph;
-		}
 	}
 }
 
 #bubble {
-	display: none;
+	@include box($black);
+	@include absolute;
+	flex-direction: column;
 	padding: 10px;
-	position: absolute;
-	border-radius: $border-radius;
-	box-shadow: $shadow-radius $shadow-radius $shadow-radius black;
-	background-color: $black;
-	z-index: 15;
+	z-index: 30;
+	display: none;
 
 	> .info {
 		color: $white;
@@ -456,20 +383,17 @@ footer {
 }
 
 #settings {
+	@include absolute($top: 0, $right: -$width-settings);
 	width: $width-settings;
-	height: 100%;
 	padding: 0 $padding-settings;
 	box-shadow: -$shadow-radius 0 $shadow-radius black;
 	background-color: $black;
-	position: absolute;
-	top: 0;
-	right: -$width-settings;
 	color: $white;
 	z-index: 30;
+	display: none;
 
-	@include mq("tablet") {
-		width: 100%;
-		display: none; // FIXME
+	@include mq(tablet) {
+		width: 100vw;
 	}
 
 	> h1 {

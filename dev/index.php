@@ -40,10 +40,10 @@ Notes : -
 			<div id="user">
 				<img id="user-img" src="assets/img/me.jpg">
 				<div id="user-details">
-					<p>Leclerc, David</p>
-					<p>27.12.1991</p>
-					<p>Dexcom G5</p>
-					<p>MiniMed 640G</p>
+					<p id="user-name">Leclerc, David</p>
+					<p id="user-birthday">27.12.1991</p>
+					<p id="user-cgm">Dexcom G5</p>
+					<p id="user-pump">MiniMed 640G</p>
 					<p id="last-update">23:55 - 21.12.2016 (<span>50</span>%)</p>
 				</div>
 			</div>
@@ -327,8 +327,6 @@ Notes : -
 				</form>
 			</div>
 		</section>
-
-		<footer></footer>
 
 		<!-- JS -->
 		<script src="assets/js/helpers/jquery-3.1.1.js"></script>
