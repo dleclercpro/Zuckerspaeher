@@ -138,6 +138,59 @@ $(document).ready(function() {
         }
 
         /*======================================================================
+            SHOWDOTS
+        ======================================================================*/
+        this.showDots = function(type, k, xMin, yMin, dX, dY) {
+            // Get graph section in which dots must displayed
+            var section = this.e.find("#graph-" + this.name);
+
+            // Get dots and axis ticks
+            var dots = section.find("." + type);
+            var xTicks = this.e.find(".graph-x-axis-tick");
+            var yTicks = this.e.find(".graph-y-axis-tick");
+
+            // Get dot styles
+            var radiusDot = parseFloat(dots.first().outerWidth()) / 2;
+            var thicknessXTick = parseFloat(xTicks.first().css("border-width"));
+            var thicknessYTick = parseFloat(yTicks.first().css("border-width"));
+
+            // Extract information from dots
+            var X = [];
+            var Y = [];
+
+            for (i = 0; i < dots.length; i++) {
+                X[i] = parseFloat(dots.eq(i).attr("x"));
+                Y[i] = parseFloat(dots.eq(i).attr("y"));
+            }
+
+            // Compute coordinates of dots
+            var x = [];
+            var y = [];
+            var dx;
+            var dy;
+
+            for (i = 0; i < dots.length; i++) {
+                dx = X[i] - xMin;
+                dy = k ? k : Y[i] - yMin;
+
+                x[i] = dx / dX * section.outerWidth()
+                    - radiusDot
+                    - thicknessXTick / 2;
+                y[i] = dy / dY * section.outerHeight()
+                    - radiusDot
+                    + thicknessYTick / 2;
+            }
+
+            // Position dots on graph
+            for (i = 0; i < dots.length; i++) {
+                dots.eq(i).css({
+                    "left": x[i] + "px",
+                    "bottom": y[i] + "px"
+                });
+            }
+        }
+
+        /*======================================================================
             BUILDBARS
         ======================================================================*/
         this.buildBars = function(type, data) {
@@ -195,6 +248,26 @@ $(document).ready(function() {
 
         // Extend object
         Graph.apply(this, [name, e]);
+
+        /*======================================================================
+            COLORBGS
+        ======================================================================*/
+        this.colorBGs = function() {
+            // Get graph section in which are the BGs
+            var section = this.e.find("#graph-" + this.name);
+
+            // Get BGs
+            var BGs = section.find(".BG");
+
+            // Get BG scale
+            var BGScale = [3, 4, 7, 12]; // (mmol/L)
+
+            // Color BGs
+            for (i = 0; i < BGs.length; i++) {
+                BG = parseFloat(BGs.eq(i).attr("y"));
+                BGs.eq(i).addClass(rankBG(BG, BGScale));
+            }
+        }
     }
 
     function GraphI(name, e) {
@@ -203,9 +276,9 @@ $(document).ready(function() {
         Graph.apply(this, [name, e]);
 
         /*======================================================================
-            PROFILETBR
+            PROFILETBRS
         ======================================================================*/
-        this.profileTBR = function(data, x0, dX, dtMax = 5 * 60 * 1000) {
+        this.profileTBRs = function(data, x0, dX, dtMax = 5 * 60 * 1000) {
             // Store data in separate arrays
             var TBRTimes = [];
             var TBRs = [];
@@ -281,7 +354,7 @@ $(document).ready(function() {
         this.buildTBRs = function(data, x0, dX) {
 
             // Compute TBR profile
-            var TBRProfile = this.profileTBR(data, x0, dX);
+            var TBRProfile = this.profileTBRs(data, x0, dX);
 
             // Build TBRs
             this.buildBars("TBR", [TBRProfile[0], TBRProfile[1]]);
@@ -303,13 +376,13 @@ $(document).ready(function() {
     var dx = 1 * 60 * 60 * 1000; // Time step (h)
     var dX = 12 * 60 * 60 * 1000; // Time range (h)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
-    var y0BG;
-    var dyBG;
-    var dYBG;
-    var yTBR = [0, 100, 200]; // %
-    var y0TBR;
-    var dyTBR;
-    var dYTBR;
+    var yBGMin = yBG.min();
+    var yBGMax = yBG.max();
+    var dYBG = yBGMax - yBGMin;
+    var yI = [0, 100, 200]; // %
+    var yIMin = yI.min();
+    var yIMax = yI.max();
+    var dYI = yIMax - yIMin;
 
     // FIXME: reinsert rounding functions?
 
@@ -321,10 +394,10 @@ $(document).ready(function() {
     graphBG.buildAxis(x, x0, dx, dX, "x", "t", "HH:MM");
 
     // Build y-axis for BG
-    graphBG.buildAxis(yBG, y0BG, dyBG, dYBG, "y", "BG", false);
+    graphBG.buildAxis(yBG, null, null, null, "y", "BG", false);
 
     // Build y-axis for I
-    graphI.buildAxis(yTBR, y0TBR, dyTBR, dYTBR, "y", "I", false);
+    var yInfosI = graphI.buildAxis(yI, null, null, null, "y", "I", false);
 
     // Get BGs
     var BGs = getData("ajax/BG.json", false,
@@ -333,12 +406,21 @@ $(document).ready(function() {
     // Build BG dots
     graphBG.buildDots("BG", BGs);
 
+    // Show BG dots
+    graphBG.showDots("BG", false, x0 - dX, yBGMin, dX, yBGMax - yBGMin);
+
+    // Color BG dots
+    graphBG.colorBGs();
+
     // Get Bs
     var Bs = getData("ajax/insulin.json", "Boluses",
         "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
 
     // Build B dots
     graphI.buildDots("B", Bs);
+
+    // Show B dots
+    graphI.showDots("B", 100, x0 - dX, yIMin, dX, yIMax - yIMin);
 
     // Get TBRs
     var TBRs = getData("ajax/insulin.json", "Temporary Basals",
@@ -364,12 +446,12 @@ $(document).ready(function() {
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
     var yBGMin = yBG.min();
     var yBGMax = yBG.max();
-    var yTBR = [0, 100, 200]; // %
-    var yTBRMin = yTBR.min();
-    var yTBRMax = yTBR.max();
+    var yI = [0, 100, 200]; // %
+    var yIMin = yI.min();
+    var yIMax = yI.max();
     var dy;
     var dYBG = yBGMax - yBGMin; // BG range (mmol/L)
-    var dYTBR = yTBRMax - yTBRMin;
+    var dYTBR = yIMax - yIMin;
     var BGScale = [3, 4, 7, 12]; // (mmol/L)
     var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
@@ -406,8 +488,8 @@ $(document).ready(function() {
     var radiusBGDot;
     var radiusBDot;
     var thicknessTBRBarBorder;
-    var thicknessXAxisTick;
-    var thicknessYAxisTick;
+    var thicknessXTick;
+    var thicknessYTick;
 
     // Global variables
     var tick;
@@ -427,17 +509,17 @@ $(document).ready(function() {
         radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
         radiusBDot = parseInt(BDots.first().outerWidth()) / 2;
         thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-top-width")) || parseInt(TBRBars.first().css("border-bottom-width"));
-        thicknessXAxisTick = parseInt(xTicks.first().css("border-right-width"));
-        thicknessYAxisTick = parseInt(yTicks.first().css("border-bottom-width"));
+        thicknessXTick = parseInt(xTicks.first().css("border-right-width"));
+        thicknessYTick = parseInt(yTicks.first().css("border-bottom-width"));
 
         // BGs
-        for (i = 0; i < BGDots.length; i++) {
+        //for (i = 0; i < BGDots.length; i++) {
             // Actualize BG
-            var BGDot = BGDots.eq(i);
+            //var BGDot = BGDots.eq(i);
 
             // Build BG
-            buildElement(BGDot);
-        }
+            //buildElement(BGDot);
+        //}
 
         // TBRs
         for (i = 0; i < TBRBars.length; i++) {
@@ -455,13 +537,13 @@ $(document).ready(function() {
         }
 
         // Boluses
-        for (i = 0; i < BDots.length; i++) {
+        //for (i = 0; i < BDots.length; i++) {
             // Actualize bolus
-            var BDot = BDots.eq(i);
+            //var BDot = BDots.eq(i);
 
             // Build bolus
-            buildElement(BDot);
-        }
+            //buildElement(BDot);
+        //}
     }
 
     function buildElement(e) {
@@ -474,8 +556,8 @@ $(document).ready(function() {
             var BG = parseFloat(e.attr("y"));
 
             // Compute BG tick coordinates
-            var x = (t0 - (x0 - dX)) / dX * graphBG.outerWidth() - radiusBGDot - thicknessXAxisTick / 2;
-            var y = BG / yBGMax * graphBG.outerHeight() - radiusBGDot + thicknessYAxisTick / 2;
+            var x = (t0 - (x0 - dX)) / dX * graphBG.outerWidth() - radiusBGDot - thicknessXTick / 2;
+            var y = BG / yBGMax * graphBG.outerHeight() - radiusBGDot + thicknessYTick / 2;
 
             // Color BG tick
             e.addClass(rankBG(BG, BGScale));
@@ -493,11 +575,11 @@ $(document).ready(function() {
 
             // Compute TBR bar coordinates
             var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth();
-            var y = 100 / yTBRMax * graphI.outerHeight() - thicknessTBRBarBorder / 2;
+            var y = 100 / yIMax * graphI.outerHeight() - thicknessTBRBarBorder / 2;
             var w = (t1 - t0) / dX * graphI.outerWidth();
-            var h = Math.abs((TBR - 100) / yTBRMax * graphI.outerHeight());
-            var prevH = Math.abs((prevTBR - 100) / yTBRMax * graphI.outerHeight());
-            var nextH = Math.abs((nextTBR - 100) / yTBRMax * graphI.outerHeight());
+            var h = Math.abs((TBR - 100) / yIMax * graphI.outerHeight());
+            var prevH = Math.abs((prevTBR - 100) / yIMax * graphI.outerHeight());
+            var nextH = Math.abs((nextTBR - 100) / yIMax * graphI.outerHeight());
 
             // For high TBR
             if (TBR > 100) {
@@ -624,8 +706,8 @@ $(document).ready(function() {
             var B = parseFloat(e.attr("y"));
 
             // Compute BG tick coordinates
-            var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth() - radiusBDot - thicknessXAxisTick / 2;
-            var y = 100 / yTBRMax * graphI.outerHeight() - radiusBDot + thicknessYAxisTick / 2;
+            var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth() - radiusBDot - thicknessXTick / 2;
+            var y = 100 / yIMax * graphI.outerHeight() - radiusBDot + thicknessYTick / 2;
 
             // Position BG on graph
             e.css({

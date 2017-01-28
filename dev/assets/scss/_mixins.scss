@@ -86,6 +86,11 @@
 	}
 }
 
+@mixin square($color: null, $degree: null) {
+	@include dot($color, $degree);
+	border-radius: 0;
+}
+
 @mixin bar($bar, $color: null, $degree: null) {
 	@include absolute;
 	display: flex;

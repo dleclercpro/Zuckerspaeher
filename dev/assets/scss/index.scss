@@ -308,7 +308,7 @@ header {
 		}
 
 		> .B {
-			@include dot($blue, 20%);
+			@include square($blue, 20%);
 		}
 	}
 
@@ -396,7 +396,7 @@ header {
 	@include absolute($top: 0, $right: -$width-settings);
 	width: $width-settings;
 	padding: 0 $padding-settings;
-	box-shadow: -$shadow-radius 0 $shadow-radius black;
+	box-shadow: -$shadow-radius 0 $shadow-radius $black-trans;
 	background-color: $black;
 	color: $white;
 	z-index: 30;
