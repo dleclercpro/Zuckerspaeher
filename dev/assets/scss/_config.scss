@@ -1,37 +1,51 @@
 // Breakpoints
 $breakpoints: (
-	"phone": 640px,
-	"tablet": 768px,
+	"mobile": 480px,
+	"tablet": 900px,
 	"desktop": 1024px
 );
 
 // Fonts
-$font_stack: "Slabo 27px", serif;
+//$font_stack: "Slabo 27px", serif;
+$font_stack: 'Ubuntu Condensed', sans-serif;
 
 // Colors
 $black: #090808;
 $white: #eeeeee;
-$gray: #252020;
+$gray: #201d1d;
 //$gray: #1b1b1b;
 $green: #99e500;
-$orange: #ff8100;
+$orange: #ff7500;
 $red: #e50000;
 $burgundy: #3b0d21;
-$purple: #350099;
+$purple: #3b0085;
 $blue: #0025dd;
 $black-trans: rgba(0, 0, 0, 0.75);
 
 // Sizes
 $width-graph: 97.5%;
 $height-graph: 96%;
+$tablet-width-graph: 96%;
+$tablet-height-graph: 96%;
+$mobile-width-graph: 93%;
+$mobile-height-graph: 96%;
+
 $height-graph-BG: 85%;
-$height-graph-TBR: 100% - $height-graph-BG;
+$height-graph-I: 100% - $height-graph-BG;
+
 $height-content: 92.5%;
 $width-settings: 25%;
 $height-settings: 95%;
-$radius-BG: 5px;
-$radius-B: $radius-BG;
+
+$radius-dot: 5px;
+$tablet-radius-dot: 4.5px;
+$mobile-radius-dot: 4px;
+
+$border-radius-dot: 2px;
+$tablet-border-radius-dot: 1px;
+$mobile-border-radius-dot: 1px;
+
 $border-radius: 3px;
 $shadow-radius: 3px;
-$padding-header: 2.5%;
+$padding-header: 3%;
 $padding-settings: 2%;

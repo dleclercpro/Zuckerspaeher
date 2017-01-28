@@ -28,14 +28,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	background-color: $gray;
-
-	@include mq("tablet") {
-		background-color: red;
-	}
-
-	@include mq("phone") {
-		background-color: blue;
-	}
+	overflow-x: hidden;
 }
 
 #loader {
@@ -58,6 +51,10 @@ header {
 	background-color: $black-trans;
 	box-shadow: 0 $shadow-radius $shadow-radius black;
 	z-index: 35;
+
+	@include mq("tablet") {
+		padding: 0 5%;
+	}
 
 	> #branding {
 		height: 100%;
@@ -85,7 +82,7 @@ header {
 	width: 100%;
 	height: $height-content;
 	position: relative;
-	overflow: hidden;
+
 }
 
 footer {
@@ -110,11 +107,14 @@ footer {
 	z-index: 10;
 
 	@include mq("tablet") {
-		width: 60%;
+		width: 100%;
+		max-width: none;
+		position: static;
+		padding: 30px 5%;
 	}
 
-	@include mq("phone") {
-		width: 92%;
+	@include mq("mobile") {
+		justify-content: center;
 	}
 
 	> #user-img {
@@ -130,6 +130,10 @@ footer {
 		font-size: 18px;
 		color: $white;
 
+		> p {
+			line-height: 1.25em;
+		}
+
 		> #last-update {
 			font-weight: bold;
 			color: red;
@@ -142,8 +146,8 @@ footer {
 	max-width: 450px;
 	padding: 30px 2.5%;
 	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
+	flex-direction: column;
+	align-items: flex-end;
 	position: absolute;
 	top: 5%;
 	right: $padding-header + 0.5%;
@@ -152,16 +156,32 @@ footer {
 	background-color: $black-trans;
 	z-index: 10;
 
+	@include mq("tablet") {
+		width: 100%;
+		max-width: none;
+		position: static;
+		padding: 30px 5%;
+		align-items: flex-start;
+	}
+
 	> #dash-BG {
 		font-family: "Gloria Hallelujah";
 		font-size: 45px;
 		font-weight: bold;
-		line-height: 45px;
+		line-height: 1em;
 		color: $white;
-		width: 100%;
 		display: flex;
-		justify-content: flex-end;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
+
+		@include mq("tablet") {
+			font-size: 55px;
+		}
+
+		@include mq("mobile") {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
 
 		> .BG {
 			background: none;
@@ -169,20 +189,22 @@ footer {
 
 		> .arrow {
 			background: none;
-			margin-left: 8px;
+			margin-left: 5px;
 		}
 	}
 
 	> #dash-delta {
-		font-size: 16px;
-		color: $white;
-		width: 100%;
 		display: flex;
-		justify-content: flex-end;
-		margin-top: 2px;
+		font-size: 18px;
+		line-height: 1.25em;
+		color: $white;
 
 		> p {
-			margin-left: 10px;
+			margin-right: 15px;
+
+			&:last-child {
+				margin-right: 0;
+			}
 		}
 	}
 
@@ -211,27 +233,59 @@ footer {
 		position: relative;
 		order: 1;
 
+		@include mq("tablet") {
+			width: $tablet-width-graph;
+			height: $height-graph-BG / 100% * $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: $mobile-width-graph;
+			height: $height-graph-BG / 100% * $mobile-height-graph;
+		}
+
 		> .BG {
-			border: 2px solid $black;
+			border: $border-radius-dot solid $black;
 			border-radius: 50%;
 			position: absolute;
-			width: 2 * $radius-BG;
-			height: 2 * $radius-BG;
+			width: 2 * $radius-dot;
+			height: 2 * $radius-dot;
 			cursor: pointer;
 			z-index: 5;
+
+			@include mq("tablet") {
+				border-size: $tablet-border-radius-dot;
+				width: 2 * $tablet-radius-dot;
+				height: 2 * $tablet-radius-dot;
+			}
+
+			@include mq("mobile") {
+				border-size: $mobile-border-radius-dot;
+				width: 2 * $mobile-radius-dot;
+				height: 2 * $mobile-radius-dot;
+			}
 		}
 	}
 
 	> #graph-I {
 		width: $width-graph;
-		height: $height-graph-TBR / 100% * $height-graph;
+		height: $height-graph-I / 100% * $height-graph;
 		position: relative;
 		order: 3;
+
+		@include mq("tablet") {
+			width: $tablet-width-graph;
+			height: $height-graph-I / 100% * $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: $mobile-width-graph;
+			height: $height-graph-I / 100% * $mobile-height-graph;
+		}
 
 		> .TBR {
 			position: absolute;
 			cursor: pointer;
-			background-color: $purple;
+			background-color: $burgundy;
 			display: flex;
 			z-index: 5;
 			overflow: hidden;
@@ -239,7 +293,7 @@ footer {
 			border-bottom: 2px solid $black;
 
 			&:hover {
-				background-color: darken($purple, 5%);
+				background-color: darken($burgundy, 5%);
 			}
 
 			&.firstTBR {
@@ -258,16 +312,28 @@ footer {
 		}
 
 		> .B {
-			border: 2px solid $black;
+			border: $border-radius-dot solid $black;
 			background-color: $blue;
 			position: absolute;
-			width: 2 * $radius-B;
-			height: 2 * $radius-B;
+			width: 2 * $radius-dot;
+			height: 2 * $radius-dot;
 			cursor: pointer;
 			z-index: 10;
 
 			&:hover {
 				background-color: darken($blue, 20%);
+			}
+
+			@include mq("tablet") {
+				border-size: $tablet-border-radius-dot;
+				width: 2 * $tablet-radius-dot;
+				height: 2 * $tablet-radius-dot;
+			}
+
+			@include mq("mobile") {
+				border-size: $mobile-border-radius-dot;
+				width: 2 * $mobile-radius-dot;
+				height: 2 * $mobile-radius-dot;
 			}
 		}
 	}
@@ -279,6 +345,16 @@ footer {
 		flex-direction: column-reverse;
 		order: 2;
 
+		@include mq("tablet") {
+			width: 100% - $tablet-width-graph;
+			height: $height-graph-BG / 100% * $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: 100% - $mobile-width-graph;
+			height: $height-graph-BG / 100% * $mobile-height-graph;
+		}
+
 		> .graph-y-axis-tick {
 			@extend %graph-y-axis-tick;
 		}
@@ -286,10 +362,20 @@ footer {
 
 	> #graph-I-axis {
 		width: 100% - $width-graph;
-		height: $height-graph-TBR / 100% * $height-graph;
+		height: $height-graph-I / 100% * $height-graph;
 		display: flex;
 		flex-direction: column-reverse;
 		order: 4;
+
+		@include mq("tablet") {
+			width: 100% - $tablet-width-graph;
+			height: $height-graph-I / 100% * $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: 100% - $mobile-width-graph;
+			height: $height-graph-I / 100% * $mobile-height-graph;
+		}
 
 		> .graph-y-axis-tick {
 			@extend %graph-y-axis-tick;
@@ -303,6 +389,16 @@ footer {
 		flex-direction: row;
 		order: 5;
 
+		@include mq("tablet") {
+			width: $tablet-width-graph;
+			height: 100% - $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: $mobile-width-graph;
+			height: 100% - $mobile-height-graph;
+		}
+
 		> .graph-x-axis-tick {
 			@extend %graph-x-axis-tick;
 		}
@@ -312,6 +408,16 @@ footer {
 		width: 100% - $width-graph;
 		height: 100% - $height-graph;
 		order: 6;
+
+		@include mq("tablet") {
+			width: 100% - $tablet-width-graph;
+			height: 100% - $tablet-height-graph;
+		}
+
+		@include mq("mobile") {
+			width: 100% - $mobile-width-graph;
+			height: 100% - $mobile-height-graph;
+		}
 	}
 }
 
@@ -324,11 +430,16 @@ footer {
 	background-color: $black;
 	z-index: 15;
 
-	> .info, .time {
+	> .info {
 		color: $white;
-		font-size: 16px;
+		font-size: 18px;
+		line-height: 1.25em;
 		font-weight: bold;
 		white-space: nowrap;
+	}
+
+	> .time {
+		@extend .info;
 	}
 
 	.BG {
@@ -336,7 +447,7 @@ footer {
 	}
 
 	.TBR {
-		color: $purple;
+		color: $burgundy;
 	}
 
 	.B {
@@ -355,6 +466,11 @@ footer {
 	right: -$width-settings;
 	color: $white;
 	z-index: 30;
+
+	@include mq("tablet") {
+		width: 100%;
+		display: none; // FIXME
+	}
 
 	> h1 {
 		width: 50%;

@@ -11,6 +11,7 @@ Notes : -
  * 1. Change the default font family in all browsers (opinionated).
  * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
+@import url("https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu+Condensed|Gloria+Hallelujah");
 html {
   font-family: sans-serif;
   /* 1 */
@@ -382,14 +383,6 @@ p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
 * {
   box-sizing: border-box; }
 
-@font-face {
-  font-family: "Slabo 27px";
-  src: url("../fonts/Slabo27px-Regular.ttf"); }
-
-@font-face {
-  font-family: "Gloria Hallelujah";
-  src: url("../fonts/GloriaHallelujah.ttf"); }
-
 #loader, header > #buttons {
   display: flex;
   justify-content: center;
@@ -431,16 +424,11 @@ html {
 body {
   width: 100%;
   height: 100%;
-  font-family: "Slabo 27px", serif;
+  font-family: "Ubuntu Condensed", sans-serif;
   display: flex;
   flex-wrap: wrap;
-  background-color: #252020; }
-  @media all and (max-width: 768px) {
-    body {
-      background-color: red; } }
-  @media all and (max-width: 640px) {
-    body {
-      background-color: blue; } }
+  background-color: #201d1d;
+  overflow-x: hidden; }
 
 #loader {
   display: none;
@@ -455,11 +443,14 @@ body {
 header {
   width: 100%;
   height: 7.5%;
-  padding: 0 2.5%;
+  padding: 0 3%;
   display: flex;
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 3px 3px black;
   z-index: 35; }
+  @media all and (max-width: 900px) {
+    header {
+      padding: 0 5%; } }
   header > #branding {
     height: 100%;
     color: #eeeeee;
@@ -478,8 +469,7 @@ header {
 #content {
   width: 100%;
   height: 92.5%;
-  position: relative;
-  overflow: hidden; }
+  position: relative; }
 
 footer {
   display: none;
@@ -495,17 +485,20 @@ footer {
   align-items: center;
   position: absolute;
   top: 5%;
-  left: 3%;
+  left: 3.5%;
   border-radius: 3px;
   box-shadow: 3px 3px 3px black;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10; }
-  @media all and (max-width: 768px) {
+  @media all and (max-width: 900px) {
     #user {
-      width: 60%; } }
-  @media all and (max-width: 640px) {
+      width: 100%;
+      max-width: none;
+      position: static;
+      padding: 30px 5%; } }
+  @media all and (max-width: 480px) {
     #user {
-      width: 92%; } }
+      justify-content: center; } }
   #user > #user-img {
     width: 125px;
     height: 125px;
@@ -516,6 +509,8 @@ footer {
     margin-left: 5%;
     font-size: 18px;
     color: #eeeeee; }
+    #user > #user-details > p {
+      line-height: 1.25em; }
     #user > #user-details > #last-update {
       font-weight: bold;
       color: red; }
@@ -525,39 +520,52 @@ footer {
   max-width: 450px;
   padding: 30px 2.5%;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   position: absolute;
   top: 5%;
-  right: 3%;
+  right: 3.5%;
   border-radius: 3px;
   box-shadow: 3px 3px 3px black;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10; }
+  @media all and (max-width: 900px) {
+    #dash {
+      width: 100%;
+      max-width: none;
+      position: static;
+      padding: 30px 5%;
+      align-items: flex-start; } }
   #dash > #dash-BG {
     font-family: "Gloria Hallelujah";
     font-size: 45px;
     font-weight: bold;
-    line-height: 45px;
+    line-height: 1em;
     color: #eeeeee;
-    width: 100%;
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px; }
+    margin-bottom: 15px; }
+    @media all and (max-width: 900px) {
+      #dash > #dash-BG {
+        font-size: 55px; } }
+    @media all and (max-width: 480px) {
+      #dash > #dash-BG {
+        width: 100%;
+        display: flex;
+        justify-content: center; } }
     #dash > #dash-BG > .BG {
       background: none; }
     #dash > #dash-BG > .arrow {
       background: none;
-      margin-left: 8px; }
+      margin-left: 5px; }
   #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors {
-    font-size: 16px;
-    color: #eeeeee;
-    width: 100%;
     display: flex;
-    justify-content: flex-end;
-    margin-top: 2px; }
+    font-size: 18px;
+    line-height: 1.25em;
+    color: #eeeeee; }
     #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p {
-      margin-left: 10px; }
+      margin-right: 15px; }
+      #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child {
+        margin-right: 0; }
 
 #graph {
   width: 100%;
@@ -569,6 +577,14 @@ footer {
     height: 81.6%;
     position: relative;
     order: 1; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-BG {
+        width: 96%;
+        height: 81.6%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-BG {
+        width: 93%;
+        height: 81.6%; } }
     #graph > #graph-BG > .BG {
       border: 2px solid #090808;
       border-radius: 50%;
@@ -577,22 +593,40 @@ footer {
       height: 10px;
       cursor: pointer;
       z-index: 5; }
+      @media all and (max-width: 900px) {
+        #graph > #graph-BG > .BG {
+          border-size: 1px;
+          width: 9px;
+          height: 9px; } }
+      @media all and (max-width: 480px) {
+        #graph > #graph-BG > .BG {
+          border-size: 1px;
+          width: 8px;
+          height: 8px; } }
   #graph > #graph-I {
     width: 97.5%;
     height: 14.4%;
     position: relative;
     order: 3; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-I {
+        width: 96%;
+        height: 14.4%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-I {
+        width: 93%;
+        height: 14.4%; } }
     #graph > #graph-I > .TBR {
       position: absolute;
       cursor: pointer;
-      background-color: #350099;
+      background-color: #3b0d21;
       display: flex;
       z-index: 5;
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808; }
       #graph > #graph-I > .TBR:hover {
-        background-color: #2c0080; }
+        background-color: #260815; }
       #graph > #graph-I > .TBR.lastTBR {
         display: none; }
       #graph > #graph-I > .TBR > .innerTBR {
@@ -609,28 +643,70 @@ footer {
       z-index: 10; }
       #graph > #graph-I > .B:hover {
         background-color: #001477; }
+      @media all and (max-width: 900px) {
+        #graph > #graph-I > .B {
+          border-size: 1px;
+          width: 9px;
+          height: 9px; } }
+      @media all and (max-width: 480px) {
+        #graph > #graph-I > .B {
+          border-size: 1px;
+          width: 8px;
+          height: 8px; } }
   #graph > #graph-BG-axis {
     width: 2.5%;
     height: 81.6%;
     display: flex;
     flex-direction: column-reverse;
     order: 2; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-BG-axis {
+        width: 4%;
+        height: 81.6%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-BG-axis {
+        width: 7%;
+        height: 81.6%; } }
   #graph > #graph-I-axis {
     width: 2.5%;
     height: 14.4%;
     display: flex;
     flex-direction: column-reverse;
     order: 4; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-I-axis {
+        width: 4%;
+        height: 14.4%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-I-axis {
+        width: 7%;
+        height: 14.4%; } }
   #graph > #graph-t-axis {
     width: 97.5%;
     height: 4%;
     display: flex;
     flex-direction: row;
     order: 5; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-t-axis {
+        width: 96%;
+        height: 4%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-t-axis {
+        width: 93%;
+        height: 4%; } }
   #graph > #graph-NA {
     width: 2.5%;
     height: 4%;
     order: 6; }
+    @media all and (max-width: 900px) {
+      #graph > #graph-NA {
+        width: 4%;
+        height: 4%; } }
+    @media all and (max-width: 480px) {
+      #graph > #graph-NA {
+        width: 7%;
+        height: 4%; } }
 
 #bubble {
   display: none;
@@ -640,15 +716,16 @@ footer {
   box-shadow: 3px 3px 3px black;
   background-color: #090808;
   z-index: 15; }
-  #bubble > .info, #bubble .time {
+  #bubble > .info, #bubble > .time {
     color: #eeeeee;
-    font-size: 16px;
+    font-size: 18px;
+    line-height: 1.25em;
     font-weight: bold;
     white-space: nowrap; }
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #350099; }
+    color: #3b0d21; }
   #bubble .B {
     color: #0025dd; }
 
@@ -663,6 +740,10 @@ footer {
   right: -25%;
   color: #eeeeee;
   z-index: 30; }
+  @media all and (max-width: 900px) {
+    #settings {
+      width: 100%;
+      display: none; } }
   #settings > h1 {
     width: 50%;
     margin: 15px 0;
@@ -681,14 +762,14 @@ footer {
     #settings > form > .fieldset > input, #settings > form > .fieldset select {
       width: 20%;
       margin-right: 8px;
-      background-color: #252020;
+      background-color: #201d1d;
       color: #eeeeee;
       border: none;
       border-radius: 3px; }
     #settings > form > .fieldset > #settings-save {
       width: 100%;
       height: 45px;
-      background-color: #252020;
+      background-color: #201d1d;
       color: #eeeeee; }
       #settings > form > .fieldset > #settings-save:hover, #settings > form > .fieldset > #settings-save:active {
         background-color: #eeeeee;
@@ -701,10 +782,10 @@ footer {
     background-color: #660000; }
 
 .BG-low, .BG-high {
-  background-color: #ff8100;
-  color: #ff8100; }
+  background-color: #ff7500;
+  color: #ff7500; }
   .BG-low:hover, .BG-high:hover {
-    background-color: #804100; }
+    background-color: #803b00; }
 
 .BG-normal {
   background-color: #99e500;
