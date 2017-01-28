@@ -301,7 +301,7 @@ $(document).ready(function() {
     var x = [];
     var x0 = 1474340548000;
     var dx = 1 * 60 * 60 * 1000; // Time step (h)
-    var dX = 6 * 60 * 60 * 1000; // Time range (h)
+    var dX = 12 * 60 * 60 * 1000; // Time range (h)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
     var y0BG;
     var dyBG;

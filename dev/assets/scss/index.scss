@@ -285,7 +285,7 @@ footer {
 		> .TBR {
 			position: absolute;
 			cursor: pointer;
-			background-color: $burgundy;
+			background-color: $purple;
 			display: flex;
 			z-index: 5;
 			overflow: hidden;
@@ -293,7 +293,7 @@ footer {
 			border-bottom: 2px solid $black;
 
 			&:hover {
-				background-color: darken($burgundy, 5%);
+				background-color: darken($purple, 3%);
 			}
 
 			&.firstTBR {
@@ -447,7 +447,7 @@ footer {
 	}
 
 	.TBR {
-		color: $burgundy;
+		color: $purple;
 	}
 
 	.B {
