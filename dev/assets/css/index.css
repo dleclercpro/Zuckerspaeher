@@ -448,17 +448,19 @@ header {
   z-index: 35; }
   @media all and (max-width: 1024px) {
     header {
-      width: 100vw;
-      height: 10vh;
+      height: 8vh;
       padding: 0 5%; } }
+  @media all and (max-width: 640px) {
+    header {
+      height: 65px; } }
   header > #branding {
+    display: flex;
+    align-items: center;
     height: 100%;
     color: #eeeeee;
     font-family: "Gloria Hallelujah";
     font-size: 30px;
-    font-weight: bold;
-    display: flex;
-    align-items: center; }
+    font-weight: bold; }
   header > #buttons {
     width: 20px;
     margin-left: auto; }
@@ -468,8 +470,8 @@ header {
 
 #content {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
   position: relative; }
 
 #user {
@@ -572,22 +574,22 @@ header {
       padding: 15px 2.5vw;
       align-items: center; } }
   #dash > #dash-BG {
+    display: flex;
+    margin-bottom: 15px;
     font-family: "Gloria Hallelujah";
     font-size: 45px;
     font-weight: bold;
     line-height: 1em;
-    color: #eeeeee;
-    display: flex;
-    margin-bottom: 15px; }
+    color: #eeeeee; }
     @media all and (max-width: 1024px) {
       #dash > #dash-BG {
         font-size: 40px;
         margin-bottom: 10px; } }
     @media all and (max-width: 640px) {
       #dash > #dash-BG {
-        width: 100%;
         display: flex;
-        justify-content: center; } }
+        justify-content: center;
+        width: 100%; } }
     #dash > #dash-BG > .BG {
       background: none; }
     #dash > #dash-BG > .arrow {
@@ -611,18 +613,16 @@ header {
 
 #graph {
   display: flex;
-  flex-wrap: wrap;
-  flex: 1; }
+  flex: 1;
+  flex-wrap: wrap; }
   @media all and (max-width: 1024px) {
     #graph {
       flex: none;
       width: 100vw;
-      height: 90vh; } }
+      height: 92vh; } }
   @media all and (max-width: 640px) {
     #graph {
-      flex: none;
-      width: 100vw;
-      height: 100vh; } }
+      flex: 1; } }
   #graph > #graph-BG {
     width: 97.5%;
     height: 81.6%;
@@ -658,7 +658,9 @@ header {
     width: 97.5%;
     height: 14.4%;
     position: relative;
-    order: 3; }
+    order: 3;
+    display: flex;
+    align-items: flex-end; }
     @media all and (max-width: 1024px) {
       #graph > #graph-I {
         width: 96.5%;
@@ -668,7 +670,6 @@ header {
         width: 91%;
         height: 14.4%; } }
     #graph > #graph-I > .TBR {
-      position: absolute;
       display: flex;
       overflow: hidden;
       border-top: 2px solid #090808;
@@ -789,6 +790,7 @@ header {
     color: #0025dd; }
 
 #settings {
+  display: none;
   position: absolute;
   top: 0;
   right: -25vw;

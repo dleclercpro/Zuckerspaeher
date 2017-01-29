@@ -277,22 +277,17 @@ $(document).ready(function() {
             }
 
             // Compute bar coordinates
-            var x = [];
-            var y = [];
             var w = [];
             var h = [];
+            var y = [];
 
             for (i = 0; i < bars.length - 1; i++) {
                 dw = X[i + 1] - X[i];
                 dh = Math.abs(Y[i] - y0);
+                dy = y0;
 
                 w[i] = dw / dX * section.outerWidth();
                 h[i] = dh / dY * section.outerHeight();
-
-                dx = X[i] - xMin;
-                dy = y0;
-
-                x[i] = dx / dX * section.outerWidth();
                 y[i] = dy / dY * section.outerHeight() - thicknessBarBorder / 2;
 
                 // If low bar
@@ -386,10 +381,9 @@ $(document).ready(function() {
             // Position bars on graph
             for (i = 0; i < bars.length; i++) {
                 bars.eq(i).css({
-                    "left": x[i] + "px",
-                    "bottom": y[i] + "px",
                     "width": w[i] + "px",
-                    "height": h[i] + "px"
+                    "height": h[i] + "px",
+                    "margin-bottom": y[i] + "px"
                 });
             }
 
@@ -630,6 +624,9 @@ $(document).ready(function() {
     var bubble = $("#bubble");
     var bubbleInfo = bubble.find(".info");
     var bubbleTime = bubble.find(".time");
+    var BGDots = graphBG.find(".BG");
+    var TBRBars = graphI.find(".TBR");
+    var BDots = graphI.find(".B");
 
     // Functions
     function buildBubble (e) {
@@ -749,6 +746,8 @@ $(document).ready(function() {
 
 
     // Main
+    buildDash();
+
     $(window).resize(function () {
 
     });

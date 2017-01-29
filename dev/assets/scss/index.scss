@@ -48,19 +48,22 @@ header {
 	z-index: 35;
 
 	@include mq(tablet) {
-		width: 100vw;
-		height: 10vh;
+		height: 8vh;
 		padding: 0 5%;
 	}
 
+	@include mq(mobile) {
+		height: 65px;
+	}
+
 	> #branding {
+		display: flex;
+		align-items: center;
 		height: 100%;
 		color: $white;
 		font-family: "Gloria Hallelujah";
 		font-size: 30px;
 		font-weight: bold;
-		display: flex;
-		align-items: center;
 	}
 
 	> #buttons {
@@ -77,8 +80,8 @@ header {
 
 #content {
 	display: flex;
-	flex-direction: column;
 	flex: 1;
+	flex-direction: column;
 	@include relative;
 }
 
@@ -202,13 +205,13 @@ header {
 	}
 
 	> #dash-BG {
+		display: flex;
+		margin-bottom: 15px;
 		font-family: "Gloria Hallelujah";
 		font-size: 45px;
 		font-weight: bold;
 		line-height: 1em;
 		color: $white;
-		display: flex;
-		margin-bottom: 15px;
 
 		@include mq(tablet) {
 			font-size: 40px;
@@ -216,9 +219,9 @@ header {
 		}
 
 		@include mq(mobile) {
-			width: 100%;
 			display: flex;
 			justify-content: center;
+			width: 100%;
 		}
 
 		> .BG {
@@ -269,19 +272,17 @@ header {
 
 #graph {
 	display: flex;
-	flex-wrap: wrap;
 	flex: 1;
+	flex-wrap: wrap;
 
 	@include mq(tablet) {
 		flex: none;
 		width: 100vw;
-		height: 90vh;
+		height: 92vh;
 	}
 
 	@include mq(mobile) {
-		flex: none;
-		width: 100vw;
-		height: 100vh;
+		flex: 1;
 	}
 
 	> #graph-BG {
@@ -302,6 +303,11 @@ header {
 			$mobile-width-graph, $height-graph-I / 100% * $mobile-height-graph);
 		@include relative;
 		order: 3;
+
+		// Use flexbox to ensure no horizontal gaps between bars due to rounding
+		// errors
+		display: flex;
+		align-items: flex-end;
 
 		> .TBR {
 			@include bar(TBR, $purple, 3%)
@@ -393,6 +399,7 @@ header {
 }
 
 #settings {
+	display: none;
 	@include absolute($top: 0, $right: -$width-settings);
 	width: $width-settings;
 	padding: 0 $padding-settings;

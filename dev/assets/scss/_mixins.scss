@@ -92,7 +92,6 @@
 }
 
 @mixin bar($bar, $color: null, $degree: null) {
-	@include absolute;
 	display: flex;
 	overflow: hidden;
 	border-top: 2px solid $black;
