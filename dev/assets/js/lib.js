@@ -261,6 +261,13 @@ function rankdBGdt(dBGdt, dBGdtScale) {
     }
 }
 
+function round(x, n) {
+    x = parseFloat(x);
+    e = Math.pow(10, n);
+
+    return (Math.round(x * e) / e).toFixed(n);
+}
+
 function roundBG(BG) {
     BG = parseFloat(BG);
 

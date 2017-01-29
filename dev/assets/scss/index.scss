@@ -276,6 +276,7 @@ header {
 	flex-wrap: wrap;
 
 	@include mq(tablet) {
+		// iPad needs dimensions in order to display correctly?
 		flex: none;
 		width: 100vw;
 		height: 92vh;

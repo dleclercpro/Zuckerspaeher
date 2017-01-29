@@ -399,3 +399,60 @@ function buildElement(e) {
         bubble.hide();
     });
 }
+
+function buildBubble (e) {
+    // Get time
+    var t = convertTime(e.attr("x"), "HH:MM - DD.MM.YYYY");
+
+    // Add time
+    bubbleTime.html(t);
+
+    if (e.hasClass("BG")) {
+        // Get info
+        var BG = roundBG(e.attr("y"));
+        var BGType = rankBG(BG, BGScale);
+
+        // Add info to bubble
+        bubbleInfo.html("<span class='BG " + BGType + "'>" + BG + "</span> mmol/L");
+    } else if (e.hasClass("TBR")) {
+        // Get info
+        var TBR = roundTBR(e.attr("y"));
+
+        // Add info to bubble
+        bubbleInfo.html("<span class='TBR'>" + TBR + "</span>%");
+    } else if (e.hasClass("B")) {
+        // Get info
+        var B = roundB(e.attr("y"));
+
+        // Add info to bubble
+        bubbleInfo.html("<span class='B'>" + B + "</span> U");
+    }
+
+    // Define bubble coordinates
+    var x = parseFloat(e.offset().left) + parseFloat(e.css("width")) + 5;
+    var y = parseFloat(e.offset().top) - header.outerHeight();
+
+
+    // Position bubble on graph
+    bubble.css({
+        "left": x + "px",
+        "top": y + "px"
+    });
+
+    // If bubble exceeds width of graph
+    if (x + bubble.outerWidth() > graph.outerWidth()) {
+        bubble.css({
+            "left": x - 1.5 * 10 - bubble.outerWidth() + "px"
+        });
+    }
+
+    // If bubble exceeds height of graph
+    if (y + bubble.outerHeight() > graph.outerHeight()) {
+        bubble.css({
+            "top": y - 1.5 * 10 - bubble.outerHeight() + "px"
+        });
+    }
+
+    // Show bubble
+    bubble.show();
+}

@@ -145,9 +145,56 @@ $(document).ready(function() {
         }
 
         /*======================================================================
+            BUILDBARS
+        ======================================================================*/
+        this.buildBars = function(type, data) {
+            // If section of graph does not already exist, create it
+            var exists = true;
+            var section = this.e.find("#graph-" + this.name);
+
+            if (!section.length) {
+                exists = false;
+                section = ($("<div id='graph-" + this.name + "'></div>"));
+            }
+
+            // Store data in separate arrays
+            var x = data[0];
+            var y = data[1];
+
+            // Initialize array for bar elements
+            var bars = [];
+
+            // Build bar elements
+            for (i = 0; i < x.length; i++) {
+                bars[i] = $("<div class='" + type + 
+                    "' x='" + x[i] + "' y='" + y[i] + "'></div>");
+
+                // Add subelements inside bar
+                for (j = 0; j < 2; j++) {
+                    bars[i].append($("<div class='inner-" + type + "'></div>"));
+                }
+
+                // Add first and last classes
+                if (i == 0) {
+                    bars[i].addClass("first-" + type);
+                } else if (i == x.length - 1) {
+                    bars[i].addClass("last-" + type);
+                }
+            }
+
+            // Append bars to graph section
+            section.append(bars);
+
+            // Append section to whole graph if it does not already exist
+            if (!exists) {
+                this.e.append(section);
+            }
+        }
+
+        /*======================================================================
             SHOWDOTS
         ======================================================================*/
-        this.showDots = function(type, y0, xMin, yMin, dX, dY) {
+        this.showDots = function(type, units, round, y0, xMin, yMin, dX, dY) {
             // Get graph section in which dots must displayed
             var section = this.e.find("#graph-" + this.name);
 
@@ -197,9 +244,12 @@ $(document).ready(function() {
             }
 
             // Show bubble
+            var bubble = this.bubble;
+
             for (i = 0; i < dots.length; i++) {
                 dots.eq(i).on("mouseenter", function () {
-                    buildBubble($(this));
+                    bubble.init($(this), units, round);
+                    bubble.show();
                 });
 
                 // Hide bubble
@@ -210,56 +260,9 @@ $(document).ready(function() {
         }
 
         /*======================================================================
-            BUILDBARS
-        ======================================================================*/
-        this.buildBars = function(type, data) {
-            // If section of graph does not already exist, create it
-            var exists = true;
-            var section = this.e.find("#graph-" + this.name);
-
-            if (!section.length) {
-                exists = false;
-                section = ($("<div id='graph-" + this.name + "'></div>"));
-            }
-
-            // Store data in separate arrays
-            var x = data[0];
-            var y = data[1];
-
-            // Initialize array for bar elements
-            var bars = [];
-
-            // Build bar elements
-            for (i = 0; i < x.length; i++) {
-                bars[i] = $("<div class='" + type + 
-                    "' x='" + x[i] + "' y='" + y[i] + "'></div>");
-
-                // Add subelements inside bar
-                for (j = 0; j < 2; j++) {
-                    bars[i].append($("<div class='inner-" + type + "'></div>"));
-                }
-
-                // Add first and last classes
-                if (i == 0) {
-                    bars[i].addClass("first-" + type);
-                } else if (i == x.length - 1) {
-                    bars[i].addClass("last-" + type);
-                }
-            }
-
-            // Append bars to graph section
-            section.append(bars);
-
-            // Append section to whole graph if it does not already exist
-            if (!exists) {
-                this.e.append(section);
-            }
-        }
-
-        /*======================================================================
             SHOWBARS
         ======================================================================*/
-        this.showBars = function(type, y0, xMin, dX, dY) {
+        this.showBars = function(type, units, round, y0, xMin, dX, dY) {
             // Get graph section in which bars must displayed
             var section = this.e.find("#graph-" + this.name);
             var bars = section.find("." + type);
@@ -388,9 +391,12 @@ $(document).ready(function() {
             }
 
             // Show bubble
+            var bubble = this.bubble;
+
             for (i = 0; i < bars.length; i++) {
                 bars.eq(i).on("mouseenter", function () {
-                    buildBubble($(this));
+                    bubble.init($(this), units, round);
+                    bubble.show();
                 });
 
                 // Hide bubble
@@ -411,6 +417,127 @@ $(document).ready(function() {
 
         // Make sure dead corner exists
         this.buildCorner();
+
+        // Generate a bubble for graph
+        this.bubble = new Bubble();
+    }
+
+    function Bubble() {
+
+        /*======================================================================
+            INIT
+        ======================================================================*/
+        this.init = function(element, units, round,
+            format = "HH:MM - DD.MM.YYYY") {
+            // Store element corresponding to bubble
+            this.element = element;
+
+            // Store element units
+            this.units = units;
+
+            // Store rounding position
+            this.round = round;
+
+            // Store time format
+            this.format = format;
+
+            // Build bubble element
+            this.build();
+
+            // Update bubble
+            this.update();
+        }
+
+        /*======================================================================
+            BUILD
+        ======================================================================*/
+        this.build = function() {
+            // If bubble does not already exist, create it
+            var exists = true;
+            var bubble = $("#bubble");
+
+            if (!bubble.length) {
+                exists = false;
+                bubble = $("<div id='bubble'></div>");
+                bubble.append("<div class='info'></div>");
+                bubble.append("<div class='time'></div>");
+            }
+
+            // Store bubble and its infos
+            this.e = bubble;
+            this.info = bubble.find(".info");
+            this.time = bubble.find(".time");
+        }
+
+        /*======================================================================
+            UPDATE
+        ======================================================================*/
+        this.update = function() {
+            // Get bubble info
+            var x = this.element.attr("x");
+            var y = this.element.attr("y");
+            var type = this.element.attr("class");
+
+            // Convert time if desired
+            if (this.format) {
+                x = convertTime(x, this.format);    
+            }
+
+            // Round info if desired
+            if (this.round) {
+                y = round(y, this.round);
+            }
+
+            // Update infos in bubble
+            this.time.html(x);
+            this.info.html("<span class='" + type + "'>" + y + "</span>" +
+                " " + this.units);
+        }
+
+        /*======================================================================
+            SHOW
+        ======================================================================*/
+        this.show = function(offsetX = 5, offsetY = 5) {
+            // Define bubble coordinates
+            var x = parseFloat(this.element.offset().left) +
+                    parseFloat(this.element.css("width")) + offsetX;
+            var y = parseFloat(this.element.offset().top) + offsetY -
+                    $("header").outerHeight(); // FIXME
+            
+            // Define bubble size
+            var w = this.element.outerWidth();
+            var h = this.element.outerHeight();
+
+            // Position bubble on graph
+            this.e.css({
+                "left": x + "px",
+                "top": y + "px"
+            });
+
+            // If bubble exceeds width of graph
+            if (x + w > this.e.parent().outerWidth()) {
+                this.e.css({
+                    "left": x - 3 * offsetX - w + "px"
+                });
+            }
+
+            // If bubble exceeds height of graph
+            if (y + h > this.e.parent().outerHeight()) {
+                this.e.css({
+                    "top": y - 3 * offsetY - h + "px"
+                });
+            }
+
+            // Show bubble
+            this.e.show();
+        }
+
+        /*======================================================================
+            HIDE
+        ======================================================================*/
+        this.hide = function() {
+            this.e.hide();
+        }
     }
 
     function GraphBG(name, e) {
@@ -531,10 +658,6 @@ $(document).ready(function() {
 
     }
 
-    function Bubble() {
-
-    }
-
     // New config
     var now = new Date();
     var x = [];
@@ -572,7 +695,7 @@ $(document).ready(function() {
     graphBG.buildDots("BG", BGs);
 
     // Show BG dots
-    graphBG.showDots("BG", false, x0 - dX, yBG.min(), dX, dYBG);
+    graphBG.showDots("BG", "mmol/L", 1, false, x0 - dX, yBG.min(), dX, dYBG);
 
     // Color BG dots
     graphBG.colorBGs(BGScale);
@@ -585,7 +708,7 @@ $(document).ready(function() {
     graphI.buildDots("B", Bs);
 
     // Show B dots
-    graphI.showDots("B", y0, x0 - dX, yI.min(), dX, dYI);
+    graphI.showDots("B", "U", 1, y0, x0 - dX, yI.min(), dX, dYI);
 
     // Get TBRs
     var TBRs = getData("ajax/insulin.json", "Temporary Basals",
@@ -595,7 +718,7 @@ $(document).ready(function() {
     graphI.buildTBRs(TBRs, x0, dX);
 
     // Show TBR bars
-    graphI.showBars("TBR", y0, x0 - dX, dX, dYI);
+    graphI.showBars("TBR", "%", 0, y0, x0 - dX, dX, dYI);
 
 
 
@@ -629,63 +752,6 @@ $(document).ready(function() {
     var BDots = graphI.find(".B");
 
     // Functions
-    function buildBubble (e) {
-        // Get time
-        var t = convertTime(e.attr("x"), "HH:MM - DD.MM.YYYY");
-
-        // Add time
-        bubbleTime.html(t);
-
-        if (e.hasClass("BG")) {
-            // Get info
-            var BG = roundBG(e.attr("y"));
-            var BGType = rankBG(BG, BGScale);
-
-            // Add info to bubble
-            bubbleInfo.html("<span class='BG " + BGType + "'>" + BG + "</span> mmol/L");
-        } else if (e.hasClass("TBR")) {
-            // Get info
-            var TBR = roundTBR(e.attr("y"));
-
-            // Add info to bubble
-            bubbleInfo.html("<span class='TBR'>" + TBR + "</span>%");
-        } else if (e.hasClass("B")) {
-            // Get info
-            var B = roundB(e.attr("y"));
-
-            // Add info to bubble
-            bubbleInfo.html("<span class='B'>" + B + "</span> U");
-        }
-
-        // Define bubble coordinates
-        var x = parseFloat(e.offset().left) + parseFloat(e.css("width")) + 5;
-        var y = parseFloat(e.offset().top) - header.outerHeight();
-
-
-        // Position bubble on graph
-        bubble.css({
-            "left": x + "px",
-            "top": y + "px"
-        });
-
-        // If bubble exceeds width of graph
-        if (x + bubble.outerWidth() > graph.outerWidth()) {
-            bubble.css({
-                "left": x - 1.5 * 10 - bubble.outerWidth() + "px"
-            });
-        }
-
-        // If bubble exceeds height of graph
-        if (y + bubble.outerHeight() > graph.outerHeight()) {
-            bubble.css({
-                "top": y - 1.5 * 10 - bubble.outerHeight() + "px"
-            });
-        }
-
-        // Show bubble
-        bubble.show();
-    }
-
     function buildDash () {
         // Get last BG
         var lastBG = roundBG(BGDots.eq(-1).attr("y"));
