@@ -126,6 +126,13 @@ $(document).ready(function() {
             for (i = 0; i < x.length; i++) {
                 dots.push($("<div class='" + type + "' x='" + x[i] +
                     "' y='" + y[i] + "'></div>"));
+
+                // Add first and last classes
+                if (i == 0) {
+                    dots[i].addClass("first-" + type);
+                } else if (i == x.length - 1) {
+                    dots[i].addClass("last-" + type);
+                }
             }
 
             // Append dots to graph section
@@ -140,7 +147,7 @@ $(document).ready(function() {
         /*======================================================================
             SHOWDOTS
         ======================================================================*/
-        this.showDots = function(type, k, xMin, yMin, dX, dY) {
+        this.showDots = function(type, y0, xMin, yMin, dX, dY) {
             // Get graph section in which dots must displayed
             var section = this.e.find("#graph-" + this.name);
 
@@ -171,7 +178,7 @@ $(document).ready(function() {
 
             for (i = 0; i < dots.length; i++) {
                 dx = X[i] - xMin;
-                dy = k ? k : Y[i] - yMin;
+                dy = y0 ? y0 : Y[i] - yMin;
 
                 x[i] = dx / dX * section.outerWidth()
                     - radiusDot
@@ -186,6 +193,18 @@ $(document).ready(function() {
                 dots.eq(i).css({
                     "left": x[i] + "px",
                     "bottom": y[i] + "px"
+                });
+            }
+
+            // Show bubble
+            for (i = 0; i < dots.length; i++) {
+                dots.eq(i).on("mouseenter", function () {
+                    buildBubble($(this));
+                });
+
+                // Hide bubble
+                dots.eq(i).on("mouseleave", function () {
+                    bubble.hide();
                 });
             }
         }
@@ -212,13 +231,19 @@ $(document).ready(function() {
 
             // Build bar elements
             for (i = 0; i < x.length; i++) {
-                bars.push($("<div class='" + type + "' x='" + x[i] + 
-                    "' y='" + y[i] + "'></div>"));
+                bars[i] = $("<div class='" + type + 
+                    "' x='" + x[i] + "' y='" + y[i] + "'></div>");
 
                 // Add subelements inside bar
                 for (j = 0; j < 2; j++) {
-                    bars.last()
-                        .append($("<div class='inner" + type + "'></div>"));
+                    bars[i].append($("<div class='inner-" + type + "'></div>"));
+                }
+
+                // Add first and last classes
+                if (i == 0) {
+                    bars[i].addClass("first-" + type);
+                } else if (i == x.length - 1) {
+                    bars[i].addClass("last-" + type);
                 }
             }
 
@@ -228,6 +253,156 @@ $(document).ready(function() {
             // Append section to whole graph if it does not already exist
             if (!exists) {
                 this.e.append(section);
+            }
+        }
+
+        /*======================================================================
+            SHOWBARS
+        ======================================================================*/
+        this.showBars = function(type, y0, xMin, dX, dY) {
+            // Get graph section in which bars must displayed
+            var section = this.e.find("#graph-" + this.name);
+            var bars = section.find("." + type);
+
+            // Get bar styles
+            thicknessBarBorder = parseFloat(bars.first().css("border-width"));
+
+            // Extract information from bars
+            var X = [];
+            var Y = [];
+
+            for (i = 0; i < bars.length; i++) {
+                X[i] = parseFloat(bars.eq(i).attr("x"));
+                Y[i] = parseFloat(bars.eq(i).attr("y"));
+            }
+
+            // Compute bar coordinates
+            var x = [];
+            var y = [];
+            var w = [];
+            var h = [];
+
+            for (i = 0; i < bars.length - 1; i++) {
+                dw = X[i + 1] - X[i];
+                dh = Math.abs(Y[i] - y0);
+
+                w[i] = dw / dX * section.outerWidth();
+                h[i] = dh / dY * section.outerHeight();
+
+                dx = X[i] - xMin;
+                dy = y0;
+
+                x[i] = dx / dX * section.outerWidth();
+                y[i] = dy / dY * section.outerHeight() - thicknessBarBorder / 2;
+
+                // If low bar
+                if (Y[i] < y0) {
+                    // Move bar under baseline
+                    y[i] -= h[i];
+
+                    // Recenter bar with axis
+                    y[i] += thicknessBarBorder;
+                }
+            }
+
+            // Style bars
+            for (i = 0; i < bars.length; i++) {
+                // Define type of bar
+                if (Y[i] > y0) {
+                    bars.eq(i).addClass("high-" + type);
+                } else if (Y[i] < y0) {
+                    bars.eq(i).addClass("low-" + type);
+                } else {
+                    bars.eq(i).addClass("no-" + type);
+                }
+
+                // Push inner bars
+                if (Y[i] > y0) {
+                    bars.eq(i).children().css("margin-bottom", "auto");
+                } else if (Y[i] < y0) {
+                    bars.eq(i).children().css("margin-top", "auto");
+                }
+
+                // Draw contours
+                // Higher than baseline
+                if(Y[i] > y0) {
+                    if(i != 0 && Y[i] > Y[i - 1]) {
+                        bars.eq(i).children().first().css({
+                            "height": h[i] - h[i - 1]
+                        });
+                    }
+
+                    if(i != bars.length - 1 && Y[i] > Y[i + 1]) {
+                        bars.eq(i).children().last().css({
+                            "height": h[i] - h[i + 1]
+                        });
+                    }
+                }
+                // Lower than baseline
+                else if (Y[i] < y0) {
+                    if (i != 0 && Y[i] < Y[i - 1]) {
+                        bars.eq(i).children().first().css({
+                            "height": h[i] - h[i - 1]
+                        });
+                    }
+
+                    if (i != bars.length - 1 && Y[i] < Y[i + 1]) {
+                        bars.eq(i).children().last().css({
+                            "height": h[i] - h[i + 1]
+                        });
+
+                    }
+                }
+
+                // Baseline crossed
+                // From -1 to 1
+                if (i != 0 && (
+                    Y[i - 1] < y0 && Y[i] > y0 ||
+                    Y[i - 1] > y0 && Y[i] < y0)) {
+                    bars.eq(i).children().first().css("height", "100%");
+                // From 1 to -1
+                } else if (i != bars.length - 1 && (
+                    Y[i + 1] < y0 && Y[i] > y0 ||
+                    Y[i + 1] > y0 && Y[i] < y0)) {
+                    bars.eq(i).children().last().css("height", "100%");
+                }
+
+                // Minor bars
+                if (h[i] < 2 * thicknessBarBorder) {
+                    // Only keep one line for minor bars
+                    h[i] = thicknessBarBorder;
+                    
+                    if (Y[i] >= y0) {
+                        bars.eq(i).css("border-top", "none");
+                    } else if (Y[i] < y0) {
+                        bars.eq(i).css("border-bottom", "none");
+                    }
+
+                    // Remove borders on inner bars
+                    bars.eq(i).children().css("border", "none");
+                }
+            }
+
+            // Position bars on graph
+            for (i = 0; i < bars.length; i++) {
+                bars.eq(i).css({
+                    "left": x[i] + "px",
+                    "bottom": y[i] + "px",
+                    "width": w[i] + "px",
+                    "height": h[i] + "px"
+                });
+            }
+
+            // Show bubble
+            for (i = 0; i < bars.length; i++) {
+                bars.eq(i).on("mouseenter", function () {
+                    buildBubble($(this));
+                });
+
+                // Hide bubble
+                bars.eq(i).on("mouseleave", function () {
+                    bubble.hide();
+                });
             }
         }
 
@@ -252,15 +427,12 @@ $(document).ready(function() {
         /*======================================================================
             COLORBGS
         ======================================================================*/
-        this.colorBGs = function() {
+        this.colorBGs = function(BGScale) {
             // Get graph section in which are the BGs
             var section = this.e.find("#graph-" + this.name);
 
             // Get BGs
             var BGs = section.find(".BG");
-
-            // Get BG scale
-            var BGScale = [3, 4, 7, 12]; // (mmol/L)
 
             // Color BGs
             for (i = 0; i < BGs.length; i++) {
@@ -375,14 +547,13 @@ $(document).ready(function() {
     var x0 = 1474340548000;
     var dx = 1 * 60 * 60 * 1000; // Time step (h)
     var dX = 12 * 60 * 60 * 1000; // Time range (h)
+    var y0 = 100; // Basal baseline (%)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
-    var yBGMin = yBG.min();
-    var yBGMax = yBG.max();
-    var dYBG = yBGMax - yBGMin;
+    var dYBG = yBG.max() - yBG.min();
     var yI = [0, 100, 200]; // %
-    var yIMin = yI.min();
-    var yIMax = yI.max();
-    var dYI = yIMax - yIMin;
+    var dYI = yI.max() - yI.min();
+    var BGScale = [3, 4, 7, 12]; // (mmol/L)
+    var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
     // FIXME: reinsert rounding functions?
 
@@ -397,7 +568,7 @@ $(document).ready(function() {
     graphBG.buildAxis(yBG, null, null, null, "y", "BG", false);
 
     // Build y-axis for I
-    var yInfosI = graphI.buildAxis(yI, null, null, null, "y", "I", false);
+    graphI.buildAxis(yI, null, null, null, "y", "I", false);
 
     // Get BGs
     var BGs = getData("ajax/BG.json", false,
@@ -407,10 +578,10 @@ $(document).ready(function() {
     graphBG.buildDots("BG", BGs);
 
     // Show BG dots
-    graphBG.showDots("BG", false, x0 - dX, yBGMin, dX, yBGMax - yBGMin);
+    graphBG.showDots("BG", false, x0 - dX, yBG.min(), dX, dYBG);
 
     // Color BG dots
-    graphBG.colorBGs();
+    graphBG.colorBGs(BGScale);
 
     // Get Bs
     var Bs = getData("ajax/insulin.json", "Boluses",
@@ -420,7 +591,7 @@ $(document).ready(function() {
     graphI.buildDots("B", Bs);
 
     // Show B dots
-    graphI.showDots("B", 100, x0 - dX, yIMin, dX, yIMax - yIMin);
+    graphI.showDots("B", y0, x0 - dX, yI.min(), dX, dYI);
 
     // Get TBRs
     var TBRs = getData("ajax/insulin.json", "Temporary Basals",
@@ -429,31 +600,12 @@ $(document).ready(function() {
     // Build TBR bars
     graphI.buildTBRs(TBRs, x0, dX);
 
-    //var a = (new Date()).getTime();
-    //var b = (new Date()).getTime();
-    //alert((b - a) / 1000);
+    // Show TBR bars
+    graphI.showBars("TBR", y0, x0 - dX, dX, dYI);
 
 
 
 
-
-    // Config
-    var now = new Date();
-    //var x0 = now.getTime() - 3 * 60 * 60 * 1000;
-    //var x0 = 1474340548000;
-    var x = [];
-    var x_ = [];
-    var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
-    var yBGMin = yBG.min();
-    var yBGMax = yBG.max();
-    var yI = [0, 100, 200]; // %
-    var yIMin = yI.min();
-    var yIMax = yI.max();
-    var dy;
-    var dYBG = yBGMax - yBGMin; // BG range (mmol/L)
-    var dYTBR = yIMax - yIMin;
-    var BGScale = [3, 4, 7, 12]; // (mmol/L)
-    var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
     // Elements
     var header = $("header");
@@ -464,8 +616,6 @@ $(document).ready(function() {
     var xAxis = $("#graph-x-axis");
     var yAxisBG = $("#graph-y-axis-BG");
     var yAxisTBR = $("#graph-y-axis-I");
-    var xTicks;
-    var yTicks;
     var dash = $("#dash");
     var dashBG = dash.find(".BG");
     var dashArrow = dash.find(".arrow");
@@ -480,253 +630,8 @@ $(document).ready(function() {
     var bubble = $("#bubble");
     var bubbleInfo = bubble.find(".info");
     var bubbleTime = bubble.find(".time");
-    var BGDots;
-    var BDots;
-    var TBRBars;
-    
-    // Sizes
-    var radiusBGDot;
-    var radiusBDot;
-    var thicknessTBRBarBorder;
-    var thicknessXTick;
-    var thicknessYTick;
-
-    // Global variables
-    var tick;
 
     // Functions
-    function init() {
-        buildGraph();
-        buildDash();
-    }
-
-    function buildGraph () {
-        BGDots = graphBG.find(".BG");
-        TBRBars = graphI.find(".TBR");
-        BDots = graphI.find(".B");
-        xTicks = $(".graph-x-axis-tick");
-        yTicks = $(".graph-y-axis-tick");
-        radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
-        radiusBDot = parseInt(BDots.first().outerWidth()) / 2;
-        thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-top-width")) || parseInt(TBRBars.first().css("border-bottom-width"));
-        thicknessXTick = parseInt(xTicks.first().css("border-right-width"));
-        thicknessYTick = parseInt(yTicks.first().css("border-bottom-width"));
-
-        // BGs
-        //for (i = 0; i < BGDots.length; i++) {
-            // Actualize BG
-            //var BGDot = BGDots.eq(i);
-
-            // Build BG
-            //buildElement(BGDot);
-        //}
-
-        // TBRs
-        for (i = 0; i < TBRBars.length; i++) {
-            // Actualize TBR
-            var TBRBar = TBRBars.eq(i);
-
-            if (i == 0) {
-                TBRBar.addClass("firstTBR");
-            } else if (i == TBRBars.length - 1) {
-                TBRBar.addClass("lastTBR");
-            }
-
-            // Build TBR
-            buildElement(TBRBar);
-        }
-
-        // Boluses
-        //for (i = 0; i < BDots.length; i++) {
-            // Actualize bolus
-            //var BDot = BDots.eq(i);
-
-            // Build bolus
-            //buildElement(BDot);
-        //}
-    }
-
-    function buildElement(e) {
-        // Get time
-        var t0 = parseInt(e.attr("x"));
-        var t1 = parseInt(e.next().attr("x"));
-
-        if (e.hasClass("BG")) {
-            // Get BG
-            var BG = parseFloat(e.attr("y"));
-
-            // Compute BG tick coordinates
-            var x = (t0 - (x0 - dX)) / dX * graphBG.outerWidth() - radiusBGDot - thicknessXTick / 2;
-            var y = BG / yBGMax * graphBG.outerHeight() - radiusBGDot + thicknessYTick / 2;
-
-            // Color BG tick
-            e.addClass(rankBG(BG, BGScale));
-
-            // Position BG on graph
-            e.css({
-                "left": x + "px",
-                "bottom": y + "px"
-            });
-        } else if (e.hasClass("TBR")) {
-            // Get TBRs
-            var prevTBR = parseInt(e.prev().attr("y"));
-            var TBR = parseInt(e.attr("y"));
-            var nextTBR = parseInt(e.next().attr("y"));
-
-            // Compute TBR bar coordinates
-            var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth();
-            var y = 100 / yIMax * graphI.outerHeight() - thicknessTBRBarBorder / 2;
-            var w = (t1 - t0) / dX * graphI.outerWidth();
-            var h = Math.abs((TBR - 100) / yIMax * graphI.outerHeight());
-            var prevH = Math.abs((prevTBR - 100) / yIMax * graphI.outerHeight());
-            var nextH = Math.abs((nextTBR - 100) / yIMax * graphI.outerHeight());
-
-            // For high TBR
-            if (TBR > 100) {
-                // Add class to TBR
-                e.addClass("highTBR");
-
-                // Push inner bars up
-                e.children().css({
-                    "margin-bottom": "auto"
-                });
-
-                // Draw contour
-                if (TBR > prevTBR) {
-                    e.children().first().css({
-                        "height": h - prevH,
-                        "border-right": "none"
-                    });
-                }
-
-                if (TBR > nextTBR) {
-                    e.children().last().css({
-                        "height": h - nextH,
-                        "border-left": "none"
-                    });
-                }
-            } 
-            // For low TBR
-            else if (TBR < 100) {
-                // Add class to TBR
-                e.addClass("lowTBR");
-
-                // Push inner bars down
-                e.children().css({
-                    "margin-top": "auto"
-                });
-
-                // Draw contour
-                if (TBR < prevTBR) {
-                    e.children().first().css({
-                        "height": h - prevH,
-                        "border-right": "none"
-                    });
-                }
-
-                if (TBR < nextTBR) {
-                    e.children().last().css({
-                        "height": h - nextH,
-                        "border-left": "none"
-                    });
-                }
-            }
-            // For no TBR
-            else {
-                // Add class to TBR
-                e.addClass("noTBR");
-
-                // Baseline should only be one line
-                e.css({
-                    "border-top": "none"
-                });
-
-                // No side-borders needed on inner bars
-                e.children().css({
-                    "border": "none"
-                });
-            }
-
-            // TBR crosses baseline
-            if (prevTBR < 100 && TBR > 100) {
-                e.children().first().css({
-                    "height": h - thicknessTBRBarBorder,
-                });
-
-                e.prev().children().last().css({
-                    "height": prevH - thicknessTBRBarBorder,
-                });
-            } else if (nextTBR < 100 && TBR > 100) {
-                e.children().last().css({
-                    "height": h - thicknessTBRBarBorder,
-                });
-
-                e.next().children().first().css({
-                    "height": nextH - thicknessTBRBarBorder,
-                });
-            }
-
-            // Minor TBRs
-            if (h < 2 * thicknessTBRBarBorder) {
-                h = thicknessTBRBarBorder;
-
-                e.children().css({
-                    "border": "none"
-                });
-
-                if (TBR > 100) {
-                    e.css({
-                        "border-top": "none"
-                    });
-                } else if (TBR < 100) {
-                    e.css({
-                        "border-bottom": "none"
-                    });
-                }
-            }
-
-            // Low TBRs
-            if (TBR < 100) {
-                // Move bar under baseline
-                y -= h;
-
-                // Recenter bar with Y-Axis
-                y += thicknessTBRBarBorder;
-            }
-
-            // Position TBR on graph
-            e.css({
-                "left": x + "px",
-                "bottom": y + "px",
-                "width": w + "px",
-                "height": h + "px"
-            });
-        } else if (e.hasClass("B")) {
-            // Get bolus
-            var B = parseFloat(e.attr("y"));
-
-            // Compute BG tick coordinates
-            var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth() - radiusBDot - thicknessXTick / 2;
-            var y = 100 / yIMax * graphI.outerHeight() - radiusBDot + thicknessYTick / 2;
-
-            // Position BG on graph
-            e.css({
-                "left": x + "px",
-                "bottom": y + "px"
-            });
-        }
-
-        // Show bubble
-        e.on("mouseenter", function () {
-            buildBubble($(this));
-        });
-
-        // Hide bubble
-        e.on("mouseleave", function () {
-            bubble.hide();
-        });
-    }
-
     function buildBubble (e) {
         // Get time
         var t = convertTime(e.attr("x"), "HH:MM - DD.MM.YYYY");
@@ -844,10 +749,8 @@ $(document).ready(function() {
 
 
     // Main
-    init();
-
     $(window).resize(function () {
-        buildGraph();
+
     });
 
     settingsButton.on("click", function () {

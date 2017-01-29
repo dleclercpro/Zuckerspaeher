@@ -678,12 +678,14 @@ header {
       z-index: 5; }
       #graph > #graph-I > .TBR:hover {
         background-color: #23071b; }
-      #graph > #graph-I > .TBR.lastTBR {
+      #graph > #graph-I > .TBR.last-TBR {
         display: none; }
-      #graph > #graph-I > .TBR > .innerTBR {
-        width: 50%;
-        border-left: 2px solid #090808;
-        border-right: 2px solid #090808; }
+      #graph > #graph-I > .TBR > .inner-TBR {
+        width: 50%; }
+        #graph > #graph-I > .TBR > .inner-TBR:first-child {
+          border-left: 2px solid #090808; }
+        #graph > #graph-I > .TBR > .inner-TBR:last-child {
+          border-right: 2px solid #090808; }
     #graph > #graph-I > .B {
       position: absolute;
       width: 10px;

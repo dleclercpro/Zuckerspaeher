@@ -192,3 +192,210 @@ function getTBRs () {
         }
     }
 }
+
+function buildGraph () {
+    BGDots = graphBG.find(".BG");
+    TBRBars = graphI.find(".TBR");
+    BDots = graphI.find(".B");
+    xTicks = $(".graph-x-axis-tick");
+    yTicks = $(".graph-y-axis-tick");
+    radiusBGDot = parseInt(BGDots.first().outerWidth()) / 2;
+    radiusBDot = parseInt(BDots.first().outerWidth()) / 2;
+    thicknessTBRBarBorder = parseInt(TBRBars.first().css("border-top-width")) || parseInt(TBRBars.first().css("border-bottom-width"));
+    thicknessXTick = parseInt(xTicks.first().css("border-right-width"));
+    thicknessYTick = parseInt(yTicks.first().css("border-bottom-width"));
+
+    // BGs
+    //for (i = 0; i < BGDots.length; i++) {
+        // Actualize BG
+        //var BGDot = BGDots.eq(i);
+
+        // Build BG
+        //buildElement(BGDot);
+    //}
+
+    // TBRs
+    //for (i = 0; i < TBRBars.length; i++) {
+        // Actualize TBR
+        //var TBRBar = TBRBars.eq(i);
+
+        // Build TBR
+        //buildElement(TBRBar);
+    //}
+
+    // Boluses
+    //for (i = 0; i < BDots.length; i++) {
+        // Actualize bolus
+        //var BDot = BDots.eq(i);
+
+        // Build bolus
+        //buildElement(BDot);
+    //}
+}
+
+function buildElement(e) {
+    // Get time
+    var t0 = parseInt(e.attr("x"));
+    var t1 = parseInt(e.next().attr("x"));
+
+    if (e.hasClass("BG")) {
+        // Get BG
+        var BG = parseFloat(e.attr("y"));
+
+        // Compute BG tick coordinates
+        var x = (t0 - (x0 - dX)) / dX * graphBG.outerWidth() - radiusBGDot - thicknessXTick / 2;
+        var y = BG / yBGMax * graphBG.outerHeight() - radiusBGDot + thicknessYTick / 2;
+
+        // Color BG tick
+        e.addClass(rankBG(BG, BGScale));
+
+        // Position BG on graph
+        e.css({
+            "left": x + "px",
+            "bottom": y + "px"
+        });
+    } else if (e.hasClass("TBR")) {
+        // Get TBRs
+        var prevTBR = parseInt(e.prev().attr("y"));
+        var TBR = parseInt(e.attr("y"));
+        var nextTBR = parseInt(e.next().attr("y"));
+
+        // Compute TBR bar coordinates
+        var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth();
+        var y = 100 / yIMax * graphI.outerHeight() - thicknessTBRBarBorder / 2;
+        var w = (t1 - t0) / dX * graphI.outerWidth();
+        var h = Math.abs((TBR - 100) / yIMax * graphI.outerHeight());
+        var prevH = Math.abs((prevTBR - 100) / yIMax * graphI.outerHeight());
+        var nextH = Math.abs((nextTBR - 100) / yIMax * graphI.outerHeight());
+
+        // For high TBR
+        if (TBR > 100) {
+            // Add class to TBR
+            e.addClass("high-TBR");
+
+            // Push inner bars up
+            e.children().css({
+                "margin-bottom": "auto"
+            });
+
+            // Draw contour
+            if (TBR > prevTBR) {
+                e.children().first().css({
+                    "height": h - prevH
+                });
+            }
+
+            if (TBR > nextTBR) {
+                e.children().last().css({
+                    "height": h - nextH
+                });
+            }
+        } 
+        // For low TBR
+        else if (TBR < 100) {
+            // Add class to TBR
+            e.addClass("low-TBR");
+
+            // Push inner bars down
+            e.children().css({
+                "margin-top": "auto"
+            });
+
+            // Draw contour
+            if (TBR < prevTBR) {
+                e.children().first().css({
+                    "height": h - prevH
+                });
+            }
+
+            if (TBR < nextTBR) {
+                e.children().last().css({
+                    "height": h - nextH
+                });
+            }
+        }
+        // For no TBR
+        else {
+            // Add class to TBR
+            e.addClass("no-TBR");
+        }
+
+        // TBR crosses baseline
+        if (prevTBR < 100 && TBR > 100) {
+            e.children().first().css({
+                "height": "100%",
+            });
+
+            e.prev().children().last().css({
+                "height": "100%",
+            });
+        } else if (nextTBR < 100 && TBR > 100) {
+            e.children().last().css({
+                "height": "100%",
+            });
+
+            e.next().children().first().css({
+                "height": "100%",
+            });
+        }
+
+        // Minor TBRs
+        if (h < 2 * thicknessTBRBarBorder) {
+            h = thicknessTBRBarBorder;
+
+            e.children().css({
+                "border": "none"
+            });
+
+            if (TBR >= 100) {
+                e.css({
+                    "border-top": "none"
+                });
+            } else if (TBR < 100) {
+                e.css({
+                    "border-bottom": "none"
+                });
+            }
+        }
+
+        // Low TBRs
+        if (TBR < 100) {
+            // Move bar under baseline
+            y -= h;
+
+            // Recenter bar with Y-Axis
+            y += thicknessTBRBarBorder;
+        }
+
+        // Position TBR on graph
+        e.css({
+            "left": x + "px",
+            "bottom": y + "px",
+            "width": w + "px",
+            "height": h + "px"
+        });
+    } else if (e.hasClass("B")) {
+        // Get bolus
+        var B = parseFloat(e.attr("y"));
+
+        // Compute BG tick coordinates
+        var x = (t0 - (x0 - dX)) / dX * graphI.outerWidth() - radiusBDot - thicknessXTick / 2;
+        var y = 100 / yIMax * graphI.outerHeight() - radiusBDot + thicknessYTick / 2;
+
+        // Position BG on graph
+        e.css({
+            "left": x + "px",
+            "bottom": y + "px"
+        });
+    }
+
+    // Show bubble
+    e.on("mouseenter", function () {
+        buildBubble($(this));
+    });
+
+    // Hide bubble
+    e.on("mouseleave", function () {
+        bubble.hide();
+    });
+}

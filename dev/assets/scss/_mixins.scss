@@ -107,17 +107,23 @@
 		}
 	}
 
-	&.first#{$bar} {
+	&.first-#{$bar} {
 
 	}
 
-	&.last#{$bar} {
+	&.last-#{$bar} {
 		display: none;
 	}
 
-	> .inner#{$bar} {
+	> .inner-#{$bar} {
 		width: 50%;
-		border-left: 2px solid $black;
-		border-right: 2px solid $black;
+
+		&:first-child {
+			border-left: 2px solid $black;
+		}
+
+		&:last-child {
+			border-right: 2px solid $black;
+		}
 	}
 }
