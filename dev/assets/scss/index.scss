@@ -286,7 +286,7 @@ header {
 	}
 
 	@include mq(mobile) {
-		flex: 1;
+		height: 100vh;
 	}
 
 	> #graph-BG {

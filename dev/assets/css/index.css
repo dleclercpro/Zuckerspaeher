@@ -625,7 +625,7 @@ header {
       height: 92vh; } }
   @media all and (max-width: 640px) {
     #graph {
-      flex: 1; } }
+      height: 100vh; } }
   #graph > #graph-BG {
     width: 97.5%;
     height: 81.6%;
