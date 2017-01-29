@@ -204,7 +204,7 @@ header {
 		align-items: center;
 	}
 
-	> #dash-BG {
+	> #dash-live {
 		display: flex;
 		margin-bottom: 15px;
 		font-family: "Gloria Hallelujah";
@@ -224,11 +224,11 @@ header {
 			width: 100%;
 		}
 
-		> .BG {
+		> #dash-BG {
 			background: none;
 		}
 
-		> .arrow {
+		> #dash-arrow {
 			background: none;
 			margin-left: 5px;
 		}
@@ -374,7 +374,7 @@ header {
 	z-index: 30;
 	display: none;
 
-	> .info {
+	> #bubble-info {
 		color: $white;
 		font-size: 18px;
 		line-height: 1.25em;
@@ -382,8 +382,8 @@ header {
 		white-space: nowrap;
 	}
 
-	> .time {
-		@extend .info;
+	> #bubble-time {
+		@extend #bubble-info;
 	}
 
 	.BG {

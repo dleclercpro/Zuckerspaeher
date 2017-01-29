@@ -113,6 +113,9 @@ $(document).ready(function() {
             if (!section.length) {
                 exists = false;
                 section = ($("<div id='graph-" + this.name + "'></div>"));
+
+                // Append section to graph
+                this.e.append(section);
             }
 
             // Store data in separate arrays
@@ -137,11 +140,6 @@ $(document).ready(function() {
 
             // Append dots to graph section
             section.append(dots);
-
-            // Append section to whole graph if it does not already exist
-            if (!exists) {
-                this.e.append(section);
-            }
         }
 
         /*======================================================================
@@ -155,6 +153,9 @@ $(document).ready(function() {
             if (!section.length) {
                 exists = false;
                 section = ($("<div id='graph-" + this.name + "'></div>"));
+
+                // Append section to graph
+                this.e.append(section);
             }
 
             // Store data in separate arrays
@@ -184,11 +185,6 @@ $(document).ready(function() {
 
             // Append bars to graph section
             section.append(bars);
-
-            // Append section to whole graph if it does not already exist
-            if (!exists) {
-                this.e.append(section);
-            }
         }
 
         /*======================================================================
@@ -205,8 +201,12 @@ $(document).ready(function() {
 
             // Get dot styles
             var radiusDot = parseFloat(dots.first().outerWidth()) / 2;
-            var thicknessXTick = parseFloat(xTicks.first().css("border-width"));
-            var thicknessYTick = parseFloat(yTicks.first().css("border-width"));
+            var thicknessXTick = parseFloat(
+                xTicks.first().css("border-left-width") ||
+                xTicks.first().css("border-right-width"));
+            var thicknessYTick = parseFloat(
+                yTicks.first().css("border-top-width") ||
+                yTicks.first().css("border-bottom-width")); // FIXME
 
             // Extract information from dots
             var X = [];
@@ -268,7 +268,9 @@ $(document).ready(function() {
             var bars = section.find("." + type);
 
             // Get bar styles
-            thicknessBarBorder = parseFloat(bars.first().css("border-width"));
+            thicknessBarBorder = parseFloat(
+                bars.first().css("border-top-width") ||
+                bars.first().css("border-bottom-width"));
 
             // Extract information from bars
             var X = [];
@@ -429,7 +431,7 @@ $(document).ready(function() {
         ======================================================================*/
         this.init = function(element, units, round,
             format = "HH:MM - DD.MM.YYYY") {
-            // Store element corresponding to bubble
+            // Store element on which bubble will give infos
             this.element = element;
 
             // Store element units
@@ -459,14 +461,19 @@ $(document).ready(function() {
             if (!bubble.length) {
                 exists = false;
                 bubble = $("<div id='bubble'></div>");
-                bubble.append("<div class='info'></div>");
-                bubble.append("<div class='time'></div>");
+
+                // Add subsections to bubble
+                bubble.append("<div id='bubble-info'></div>");
+                bubble.append("<div id='bubble-time'></div>");
+
+                // Append bubble to page
+                $("#content").append(bubble); // FIXME
             }
 
             // Store bubble and its infos
             this.e = bubble;
-            this.info = bubble.find(".info");
-            this.time = bubble.find(".time");
+            this.info = bubble.find("#bubble-info");
+            this.time = bubble.find("#bubble-time");
         }
 
         /*======================================================================
@@ -497,16 +504,22 @@ $(document).ready(function() {
         /*======================================================================
             SHOW
         ======================================================================*/
-        this.show = function(offsetX = 5, offsetY = 5) {
+        this.show = function(offsetX = 8, offsetY = 0) {
             // Define bubble coordinates
-            var x = parseFloat(this.element.offset().left) +
+            var offsetTop = parseFloat(this.element.parent().position().top);
+            var x = parseFloat(this.element.position().left) +
                     parseFloat(this.element.css("width")) + offsetX;
-            var y = parseFloat(this.element.offset().top) + offsetY -
-                    $("header").outerHeight(); // FIXME
+            var y = parseFloat(this.element.position().top) + offsetY +
+                    offsetTop;
             
             // Define bubble size
-            var w = this.element.outerWidth();
-            var h = this.element.outerHeight();
+            var w = this.e.outerWidth();
+            var h = this.e.outerHeight();
+
+            // Adjust position of bubble due to it being in content element
+            if (offsetTop) {
+                y += h; // FIXME
+            }
 
             // Position bubble on graph
             this.e.css({
@@ -515,14 +528,14 @@ $(document).ready(function() {
             });
 
             // If bubble exceeds width of graph
-            if (x + w > this.e.parent().outerWidth()) {
+            if (x + w > this.element.parent().outerWidth()) {
                 this.e.css({
                     "left": x - 3 * offsetX - w + "px"
                 });
             }
 
             // If bubble exceeds height of graph
-            if (y + h > this.e.parent().outerHeight()) {
+            if (y + h > this.element.parent().outerHeight()) {
                 this.e.css({
                     "top": y - 3 * offsetY - h + "px"
                 });
@@ -656,9 +669,115 @@ $(document).ready(function() {
 
     function Dash() {
 
+        /*======================================================================
+            INIT
+        ======================================================================*/
+        this.init = function(element) {
+            // Store element to which dash must be appended
+            this.element = element;
+
+            // Build bubble element
+            this.build();
+
+            // Update bubble
+            this.update();
+        }
+
+        /*======================================================================
+            BUILD
+        ======================================================================*/
+        this.build = function() {
+            // If dash does not already exist, create it
+            var dash = $("#dash");
+
+            if (!dash.length) {
+                dash = $("<div id='dash'></div>");
+
+                // Add subsections to dash
+                dash.append("<div id='dash-live'>" +
+                    "<span id='dash-BG'>---</span>" +
+                    "<span id='dash-arrow'></span>" +
+                    "</div>");
+                dash.append("<div id='dash-delta'>" + 
+                    "<p><b>&Delta;BG:</b> " +
+                    "<span id='dash-dBG'>---</span> mmol/L</p>" +
+                    "<p><b>&Delta;BG/&Delta;t:</b> " +
+                    "<span id='dash-dBG-dt'>---</span> mmol/L/m</p>" +
+                    "</div>");
+                dash.append("<div id='dash-basal'>" +
+                    "<p><b>TBR:</b> <span id='dash-TBR'>---</span> %</p>" +
+                    "<p><b>BR:</b> <span id='dash-BR'>---</span> U/h</p>" +
+                    "</div>");
+                dash.append("<div id='dash-on-board'>" +
+                    "<p><b>IOB:</b> <span id='dash-IOB'>---</span> U</p>" +
+                    "<p><b>COB:</b> <span id='dash-COB'>---</span> g</p>" +
+                    "</div>");
+                dash.append("<div id='dash-factors'>" +
+                    "<p><b>ISF:</b> <span id='dash-ISF'>---</span>" +
+                    " mmol/L/U</p>" +
+                    "<p><b>CSF:</b> <span id='dash-CSF'>---</span>" +
+                    " U/g</p>" +
+                    "</div>");
+
+                // Append dash to page
+                this.element.append(dash);
+            }
+
+            // Store dash and its infos
+            this.e = dash;
+            this.live = dash.find("#dash-live");
+            this.delta = dash.find("#dash-delta");
+            this.basal = dash.find("#dash-basal");
+            this.onBoard = dash.find("#dash-on-board");
+            this.factors = dash.find("#dash-factors");
+            //this.age = dash.find("#dash-age");
+            this.BG = this.e.find("#dash-BG");
+            this.arrow = this.e.find("#dash-arrow");
+            this.dBG = this.e.find("#dash-dBG");
+            this.dBGdt = this.e.find("#dash-dBG-dt");
+            this.TBR = this.e.find("#dash-TBR");
+            this.BR = this.e.find("#dash-BR");
+            this.IOB = this.e.find("#dash-IOB");
+            this.COB = this.e.find("#dash-COB");
+        }
+
+        /*======================================================================
+            UPDATE
+        ======================================================================*/
+        this.update = function() {
+            // Get BGs and TBRs
+            var BGs = this.element.find(".BG");
+            var TBRs = this.element.find(".TBR");
+
+            // Get last BG infos
+            var lastBG = BGs.eq(-1).attr("y");
+            var lastBGType = BGs.eq(-1).attr("class");
+            var dBG = round(BGs.eq(-1).attr("y") - BGs.eq(-2).attr("y"), 1);
+            var dt = (parseInt(BGs.eq(-1).attr("x")) -
+                parseInt(BGs.eq(-2).attr("x"))) / 1000 / 60; // (m)
+            var dBGdt = round(dBG / dt, 1);
+
+            // Update infos in dash
+            this.BG.text(round(lastBG, 1));
+            this.BG.addClass(lastBGType);
+            this.dBG.text(dBG);
+            this.dBGdt.text(dBGdt);
+            this.arrow.text(rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
+            this.TBR.text(round(TBRs.eq(-2).attr("y"), 1));
+        }
+
+        /*======================================================================
+            SHOW
+        ======================================================================*/
+        this.show = function() {
+            // Show dash
+            this.element.append(this.e);
+        }
     }
 
-    // New config
+
+
+    // Config
     var now = new Date();
     var x = [];
     var x0 = 1474340548000;
@@ -671,8 +790,6 @@ $(document).ready(function() {
     var dYI = yI.max() - yI.min();
     var BGScale = [3, 4, 7, 12]; // (mmol/L)
     var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
-
-    // FIXME: reinsert rounding functions?
 
     // Create graph objects
     var graphBG = new GraphBG("BG", $("#graph"));
@@ -720,75 +837,20 @@ $(document).ready(function() {
     // Show TBR bars
     graphI.showBars("TBR", "%", 0, y0, x0 - dX, dX, dYI);
 
+    // Create dash object
+    var dash = new Dash();
 
+    // Add dash to page
+    dash.init($("#content"));
+    dash.show();
 
 
 
     // Elements
-    var header = $("header");
-    var loader = $("#loader");
-    var graph = $("#graph");
-    var graphBG = $("#graph-BG");
-    var graphI = $("#graph-I");
-    var xAxis = $("#graph-x-axis");
-    var yAxisBG = $("#graph-y-axis-BG");
-    var yAxisTBR = $("#graph-y-axis-I");
-    var dash = $("#dash");
-    var dashBG = dash.find(".BG");
-    var dashArrow = dash.find(".arrow");
-    var dashdBG = dash.find(".dBG");
-    var dashdBGdt = dash.find(".dBG-dt");
-    var dashTBR = dash.find(".TBR");
-    var dashBR = dash.find(".BR");
-    var dashIOB = dash.find(".IOB");
-    var dashCOB = dash.find(".COB");
     var settings = $("#settings");
     var settingsButton = $("#settings-button");
-    var bubble = $("#bubble");
-    var bubbleInfo = bubble.find(".info");
-    var bubbleTime = bubble.find(".time");
-    var BGDots = graphBG.find(".BG");
-    var TBRBars = graphI.find(".TBR");
-    var BDots = graphI.find(".B");
 
     // Functions
-    function buildDash () {
-        // Get last BG
-        var lastBG = roundBG(BGDots.eq(-1).attr("y"));
-        var lastBGType = rankBG(lastBG, BGScale);
-
-        // Add to dash
-        dashBG.text(lastBG);
-
-        // Color last BG
-        dashBG.addClass(lastBGType);
-
-        // Get dBG over last 5 minutes
-        var dBG = roundBG(BGDots.eq(-1).attr("y") - BGDots.eq(-2).attr("y"));
-
-        // Add to dash
-        dashdBG.text(dBG);
-
-        // Get dBG/dt over last 5 minutes
-        var dt = (parseInt(BGDots.eq(-1).attr("x")) - parseInt(BGDots.eq(-2).attr("x"))) / 1000 / 60; // (m)
-        var dBGdt = roundBG(dBG / dt);
-
-        // Add to dash
-        dashdBGdt.text(dBGdt);
-
-        // Select arrow and add it to dash
-        dashArrow.text(rankdBGdt(dBGdt, dBGdtScale));
-
-        // Color arrow
-        dashArrow.addClass(lastBGType);
-
-        // Get current TBR
-        var TBR = roundTBR(TBRBars.eq(-2).attr("y"));
-
-        // Add to dash
-        dashTBR.text(TBR);
-    }
-
     function toggleSettings () {
         // Get coordinates and size of settings menu
         var x = Math.abs(parseFloat(settings.css("right")));
@@ -812,8 +874,6 @@ $(document).ready(function() {
 
 
     // Main
-    buildDash();
-
     $(window).resize(function () {
 
     });

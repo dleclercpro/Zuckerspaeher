@@ -456,3 +456,40 @@ function buildBubble (e) {
     // Show bubble
     bubble.show();
 }
+
+function buildDash () {
+    // Get last BG
+    var lastBG = roundBG(BGDots.eq(-1).attr("y"));
+    var lastBGType = rankBG(lastBG, BGScale);
+
+    // Add to dash
+    dashBG.text(lastBG);
+
+    // Color last BG
+    dashBG.addClass(lastBGType);
+
+    // Get dBG over last 5 minutes
+    var dBG = roundBG(BGDots.eq(-1).attr("y") - BGDots.eq(-2).attr("y"));
+
+    // Add to dash
+    dashdBG.text(dBG);
+
+    // Get dBG/dt over last 5 minutes
+    var dt = (parseInt(BGDots.eq(-1).attr("x")) - parseInt(BGDots.eq(-2).attr("x"))) / 1000 / 60; // (m)
+    var dBGdt = roundBG(dBG / dt);
+
+    // Add to dash
+    dashdBGdt.text(dBGdt);
+
+    // Select dash-arrow and add it to dash
+    dashArrow.text(rankdBGdt(dBGdt, dBGdtScale));
+
+    // Color dash-arrow
+    dashArrow.addClass(lastBGType);
+
+    // Get current TBR
+    var TBR = roundTBR(TBRBars.eq(-2).attr("y"));
+
+    // Add to dash
+    dashTBR.text(TBR);
+}

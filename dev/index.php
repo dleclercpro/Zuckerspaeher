@@ -48,35 +48,7 @@ Notes : -
 				</div>
 			</div>
 
-			<div id="dash">
-				<div id="dash-BG">
-					<span class="BG">---</span>
-					<span class="arrow"></span>
-				</div>
-				<div id="dash-delta">
-					<p><b>&Delta;BG:</b> <span class="dBG">---</span> mmol/L</p>
-					<p><b>&Delta;BG/&Delta;t:</b> <span class="dBG-dt">---</span> mmol/L/m</p>
-				</div>
-				<div id="dash-basal">
-					<p><b>TBR:</b> <span class="TBR">---</span>%</p>
-					<p><b>BR:</b> <span class="BR">---</span> U/h</p>
-				</div>
-				<div id="dash-on-board">
-					<p><b>IOB:</b> <span class="IOB">---</span> U</p>
-					<p><b>COB:</b> <span class="COB">---</span> g</p>
-				</div>
-				<div id="dash-factors">
-					<p><b>ISF:</b> <span class="ISF">---</span> mmol/L/U</p>
-					<p><b>CSF:</b> <span class="CSF">---</span> U/g</p>
-				</div>
-			</div>
-
 			<div id="graph"></div>
-
-			<div id="bubble">
-				<div class="info"></div>
-				<div class="time"></div>
-			</div>
 
 			<div id="settings">
 				<h1>Settings</h1>
