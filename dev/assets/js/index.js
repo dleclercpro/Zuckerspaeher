@@ -791,6 +791,11 @@ $(document).ready(function() {
     var BGScale = [3, 4, 7, 12]; // (mmol/L)
     var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
+    if ($(window).outerWidth() < 640) {
+        x0 = 1474340548000 - 6 * 60 * 60 * 1000;
+        dX = 6 * 60 * 60 * 1000; // Time range (h)
+    }
+
     // Create graph objects
     var graphBG = new GraphBG("BG", $("#graph"));
     var graphI = new GraphI("I", $("#graph"));

@@ -93,6 +93,7 @@ header {
 	max-width: 450px;
 	padding: 30px 2.5vw;
 	z-index: 15;
+	order: 1;
 
 	@include mq(tablet) {
 		width: 50vw;
@@ -185,6 +186,7 @@ header {
 	max-width: 450px;
 	padding: 30px 2.5vw;
 	z-index: 15;
+	order: 2;
 
 	@include mq(tablet) {
 		width: 50vw;
@@ -274,6 +276,7 @@ header {
 	display: flex;
 	flex: 1;
 	flex-wrap: wrap;
+	order: 3;
 
 	@include mq(tablet) {
 		// iPad needs dimensions in order to display correctly?

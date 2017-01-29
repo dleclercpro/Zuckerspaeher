@@ -488,7 +488,8 @@ header {
   width: 45vw;
   max-width: 450px;
   padding: 30px 2.5vw;
-  z-index: 15; }
+  z-index: 15;
+  order: 1; }
   @media all and (max-width: 1024px) {
     #user {
       width: 50vw;
@@ -556,7 +557,8 @@ header {
   width: 45vw;
   max-width: 450px;
   padding: 30px 2.5vw;
-  z-index: 15; }
+  z-index: 15;
+  order: 2; }
   @media all and (max-width: 1024px) {
     #dash {
       width: 50vw;
@@ -614,7 +616,8 @@ header {
 #graph {
   display: flex;
   flex: 1;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  order: 3; }
   @media all and (max-width: 1024px) {
     #graph {
       flex: none;
