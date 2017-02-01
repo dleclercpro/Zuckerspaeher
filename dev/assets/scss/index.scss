@@ -27,33 +27,19 @@ body {
 	font-family: $font_stack;
 }
 
-#loader {
-	@include absolute($top: 0, $left: 0);
-	@extend %center;
-	display: none;
-	width: 100vw;
-	height: 100vh;
-	background-color: black;
-	z-index: 999;
-}
-
 header {
 	display: flex;
 	flex: none;
 	width: 100vw;
-	height: 65px;
+	height: $height-header;
 	padding: 0 $padding-header;
 	background-color: $black-trans;
 	box-shadow: 0 $shadow-radius $shadow-radius black;
 	z-index: 35;
 
 	@include mq(tablet) {
-		height: 8vh;
+		height: $height-header;
 		padding: 0 5%;
-	}
-
-	@include mq(mobile) {
-		height: 65px;
 	}
 
 	> #branding {
@@ -78,7 +64,7 @@ header {
 	}
 }
 
-#content {
+main {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
@@ -107,7 +93,6 @@ header {
 	@include mq(mobile) {
 		width: 100vw;
 		height: auto;
-		max-width: none;
 		padding: 10px 2.5vw;
 		justify-content: center;
 		position: static;
@@ -272,100 +257,28 @@ header {
 	}
 }
 
-#graph {
-	display: flex;
-	flex: 1;
-	flex-wrap: wrap;
+#graphBG {
+	@include graph($width-y-axis, 0px);
+	flex: none;
+	width: 100vw;
+	height: 75vh;
 	order: 3;
 
 	@include mq(tablet) {
-		// iPad needs dimensions in order to display correctly?
+		width: 100vw;
+		height: calc(100vh - #{$height-header});
+	}
+}
+
+#graphI {
+	@include graph($width-y-axis, $height-x-axis);
+	flex: 1;
+	order: 4;
+
+	@include mq(tablet) {
 		flex: none;
 		width: 100vw;
-		height: 92vh;
-	}
-
-	@include mq(mobile) {
-		height: 100vh;
-	}
-
-	> #graph-BG {
-		@include size($width-graph, $height-graph-BG / 100% * $height-graph,
-			$tablet-width-graph, $height-graph-BG / 100% * $tablet-height-graph,
-			$mobile-width-graph, $height-graph-BG / 100% * $mobile-height-graph);
-		@include relative;
-		order: 1;
-
-		> .BG {
-			@include dot;
-		}
-	}
-
-	> #graph-I {
-		@include size($width-graph, $height-graph-I / 100% * $height-graph,
-			$tablet-width-graph, $height-graph-I / 100% * $tablet-height-graph,
-			$mobile-width-graph, $height-graph-I / 100% * $mobile-height-graph);
-		@include relative;
-		order: 3;
-
-		// Use flexbox to ensure no horizontal gaps between bars due to rounding
-		// errors
-		display: flex;
-		align-items: flex-end;
-
-		> .TBR {
-			@include bar(TBR, $purple, 3%)
-		}
-
-		> .B {
-			@include square($blue, 20%);
-		}
-	}
-
-	> #graph-BG-axis {
-		@include size(100% - $width-graph, $height-graph-BG / 100% * $height-graph,
-			100% - $tablet-width-graph, $height-graph-BG / 100% * $tablet-height-graph,
-			100% - $mobile-width-graph, $height-graph-BG / 100% * $mobile-height-graph);
-		display: flex;
-		flex-direction: column-reverse;
-		order: 2;
-
-		> .graph-y-axis-tick {
-			@extend %graph-y-axis-tick;
-		}
-	}
-
-	> #graph-I-axis {
-		@include size(100% - $width-graph, $height-graph-I / 100% * $height-graph,
-			100% - $tablet-width-graph, $height-graph-I / 100% * $tablet-height-graph,
-			100% - $mobile-width-graph, $height-graph-I / 100% * $mobile-height-graph);
-		display: flex;
-		flex-direction: column-reverse;
-		order: 4;
-
-		> .graph-y-axis-tick {
-			@extend %graph-y-axis-tick;
-		}
-	}
-
-	> #graph-t-axis {
-		@include size($width-graph, 100% - $height-graph,
-			$tablet-width-graph, 100% - $tablet-height-graph,
-			$mobile-width-graph, 100% - $mobile-height-graph);
-		display: flex;
-		flex-direction: row;
-		order: 5;
-
-		> .graph-x-axis-tick {
-			@extend %graph-x-axis-tick;
-		}
-	}
-
-	> #graph-NA {
-		@include size(100% - $width-graph, 100% - $height-graph,
-			100% - $tablet-width-graph, 100% - $tablet-height-graph,
-			100% - $mobile-width-graph, 100% - $mobile-height-graph);
-		order: 6;
+		height: 30vh;
 	}
 }
 

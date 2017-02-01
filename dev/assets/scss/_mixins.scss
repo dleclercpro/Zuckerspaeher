@@ -57,6 +57,65 @@
 	box-shadow: $shadow-radius $shadow-radius $shadow-radius $black-trans;
 }
 
+@mixin graph($w, $h) {
+	display: flex;
+	flex-wrap: wrap;
+
+	.graph-x-axis {
+		display: flex;
+		flex-direction: row;
+		width: calc(100% - #{$w});
+		height: $h;
+		order: 3;
+
+		> .graph-x-axis-tick {
+			@extend %graph-x-axis-tick;
+		}
+	}
+
+	.graph-y-axis {
+		display: flex;
+		flex-direction: column-reverse;
+		width: $w;
+		height: calc(100% - #{$h});
+		order: 2;
+
+		> .graph-y-axis-tick {
+			@extend %graph-y-axis-tick;
+		}
+	}
+
+	.graph {
+		width: calc(100% - #{$w});
+		height: calc(100% - #{$h});
+		order: 1;
+		@include relative;
+
+		// Use flexbox to ensure no horizontal gaps between bars due to rounding
+		// errors
+		display: flex;
+		align-items: flex-end;
+
+		> .BG {
+			@include dot;
+		}
+
+		> .TBR {
+			@include bar(TBR, $purple, 3%)
+		}
+
+		> .B {
+			@include square($blue, 20%);
+		}
+	}
+
+	.graph-NA {
+		width: $w;
+		height: $h;
+		order: 4;
+	}
+}
+
 @mixin dot($color: null, $degree: null) {
 	@include absolute;
 	width: 2 * $radius-dot;

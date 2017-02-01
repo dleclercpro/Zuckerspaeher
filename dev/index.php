@@ -23,10 +23,6 @@ Notes : -
 
 	<body>
 
-		<div id="loader">
-			<img src="assets/img/loader.gif">
-		</div>
-
 		<header>
 			<div id="branding">
 				<p>MeinNS</p>
@@ -36,7 +32,7 @@ Notes : -
 			</div>
 		</header>
 
-		<section id=content>
+		<main>
 			<div id="user">
 				<img id="user-img" src="assets/img/me.jpg">
 				<div id="user-details">
@@ -71,7 +67,13 @@ Notes : -
 				</div>
 			</div>
 
-			<div id="graph"></div>
+			<div id="graphBG"></div>
+			<div id="graphI"></div>
+
+			<div id="bubble">
+				<div id="bubble-info"></div>
+				<div id="bubble-time"></div>
+			</div>
 
 			<div id="settings">
 				<h1>Settings</h1>
@@ -80,240 +82,75 @@ Notes : -
 					<div class="fieldset">
 						<label>Time:</label>
 						<select id="settings-hour">
-							<option>00</option>
-							<option>01</option>
-							<option>02</option>
-							<option>03</option>
-							<option>04</option>
-							<option>05</option>
-							<option>06</option>
-							<option>07</option>
-							<option>08</option>
-							<option>09</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
-							<option>13</option>
-							<option>14</option>
-							<option>15</option>
-							<option>16</option>
-							<option>17</option>
-							<option>18</option>
-							<option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
+						<?php
+							for ($i = 0; $i < 24; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 						<p>:</p>
 						<select id="settings-minute">
-							<option>00</option>
-							<option>01</option>
-							<option>02</option>
-							<option>03</option>
-							<option>04</option>
-							<option>05</option>
-							<option>06</option>
-							<option>07</option>
-							<option>08</option>
-							<option>09</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
-							<option>13</option>
-							<option>14</option>
-							<option>15</option>
-							<option>16</option>
-							<option>17</option>
-							<option>18</option>
-							<option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-							<option>24</option>
-							<option>25</option>
-							<option>26</option>
-							<option>27</option>
-							<option>28</option>
-							<option>29</option>
-							<option>30</option>
-							<option>31</option>
-							<option>32</option>
-							<option>33</option>
-							<option>34</option>
-							<option>35</option>
-							<option>36</option>
-							<option>37</option>
-							<option>38</option>
-							<option>39</option>
-							<option>40</option>
-							<option>41</option>
-							<option>42</option>
-							<option>43</option>
-							<option>44</option>
-							<option>45</option>
-							<option>46</option>
-							<option>47</option>
-							<option>48</option>
-							<option>49</option>
-							<option>50</option>
-							<option>51</option>
-							<option>52</option>
-							<option>53</option>
-							<option>54</option>
-							<option>55</option>
-							<option>56</option>
-							<option>57</option>
-							<option>58</option>
-							<option>59</option>
+						<?php
+							for ($i = 0; $i < 60; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 						<p>:</p>
 						<select id="settings-second">
-							<option>00</option>
-							<option>01</option>
-							<option>02</option>
-							<option>03</option>
-							<option>04</option>
-							<option>05</option>
-							<option>06</option>
-							<option>07</option>
-							<option>08</option>
-							<option>09</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
-							<option>13</option>
-							<option>14</option>
-							<option>15</option>
-							<option>16</option>
-							<option>17</option>
-							<option>18</option>
-							<option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-							<option>24</option>
-							<option>25</option>
-							<option>26</option>
-							<option>27</option>
-							<option>28</option>
-							<option>29</option>
-							<option>30</option>
-							<option>31</option>
-							<option>32</option>
-							<option>33</option>
-							<option>34</option>
-							<option>35</option>
-							<option>36</option>
-							<option>37</option>
-							<option>38</option>
-							<option>39</option>
-							<option>40</option>
-							<option>41</option>
-							<option>42</option>
-							<option>43</option>
-							<option>44</option>
-							<option>45</option>
-							<option>46</option>
-							<option>47</option>
-							<option>48</option>
-							<option>49</option>
-							<option>50</option>
-							<option>51</option>
-							<option>52</option>
-							<option>53</option>
-							<option>54</option>
-							<option>55</option>
-							<option>56</option>
-							<option>57</option>
-							<option>58</option>
-							<option>59</option>
+						<?php
+							for ($i = 0; $i < 60; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 					</div>
 					<div class="fieldset">
 						<label>Date:</label>
 						<select id="settings-day">
-							<option>01</option>
-							<option>02</option>
-							<option>03</option>
-							<option>04</option>
-							<option>05</option>
-							<option>06</option>
-							<option>07</option>
-							<option>08</option>
-							<option>09</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
-							<option>13</option>
-							<option>14</option>
-							<option>15</option>
-							<option>16</option>
-							<option>17</option>
-							<option>18</option>
-							<option>19</option>
-							<option>20</option>
-							<option>21</option>
-							<option>22</option>
-							<option>23</option>
-							<option>24</option>
-							<option>25</option>
-							<option>26</option>
-							<option>27</option>
-							<option>28</option>
-							<option>29</option>
-							<option>30</option>
-							<option>31</option>
+						<?php
+							for ($i = 1; $i <= 31; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 						<p>.</p>
 						<select id="settings-month">
-							<option>01</option>
-							<option>02</option>
-							<option>03</option>
-							<option>04</option>
-							<option>05</option>
-							<option>06</option>
-							<option>07</option>
-							<option>08</option>
-							<option>09</option>
-							<option>10</option>
-							<option>11</option>
-							<option>12</option>
+						<?php
+							for ($i = 1; $i <= 12; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 						<p>.</p>
 						<select id="settings-year">
-							<option>2015</option>
-							<option>2016</option>
-							<option>2017</option>
+						<?php
+							for ($i = 2015; $i <= 2017; $i++) { 
+								echo "<option>" . $i . "</option>";
+							}
+						?>
 						</select>
 					</div>
 					<div class="fieldset">
 						<label for="dx">Time step (h):</label>
 						<select id="settings-dx" name="dx">
-							<option>0.25</option>
-							<option>0.5</option>
-							<option>0.75</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>6</option>
-							<option>12</option>
+							<?php
+							$dx = [0.25, 0.5, 0.75, 1, 2, 3, 4, 6, 12];
+
+							foreach ($dx as $i) {
+								echo "<option>" . $i . "</option>";
+							}
+							?>
 						</select>
 						<label for="dX">Time range (h):</label>
 						<select id="settings-dX" name="dX">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>12</option>
-							<option>24</option>
-							<option>48</option>
-							<option>72</option>
+						<?php
+						$dX = [1, 2, 3, 4, 5, 6, 12, 24, 48, 72];
+
+						foreach ($dX as $i) {
+							echo "<option>" . $i . "</option>";
+						}
+						?>
 						</select>
 					</div>
 					<div class="fieldset">
@@ -321,7 +158,7 @@ Notes : -
 					</div>
 				</form>
 			</div>
-		</section>
+		</main>
 
 		<!-- JS -->
 		<script src="assets/js/helpers/jquery-3.1.1.js"></script>

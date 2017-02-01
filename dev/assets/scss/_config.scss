@@ -23,19 +23,10 @@ $blue: #0025dd;
 $black-trans: rgba(0, 0, 0, 0.75);
 
 // Sizes
-$width-graph: 97.5%;
-$height-graph: 96%;
-$tablet-width-graph: 96.5%;
-$tablet-height-graph: 96%;
-$mobile-width-graph: 91%;
-$mobile-height-graph: 96%;
+$width-y-axis: 26px;
+$height-x-axis: $width-y-axis;
 
-$height-graph-BG: 85%;
-$height-graph-I: 100% - $height-graph-BG;
-
-$height-content: 92.5%;
-$mobile-height-content: 90%;
-
+$height-header: 65px;
 $width-settings: 25vw;
 
 $radius-dot: 5px;

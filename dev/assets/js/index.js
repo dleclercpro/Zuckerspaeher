@@ -19,7 +19,9 @@
 
 $(document).ready(function() {
 
-    function Graph(name, e) {
+    // OBJECTS
+
+    function Graph(name) {
 
         /*======================================================================
             GENERATEAXIS
@@ -42,10 +44,9 @@ $(document).ready(function() {
         /*======================================================================
             BUILDAXIS
         ======================================================================*/
-        this.buildAxis = function(z, z0, dz, dZ, label, name, format) {
+        this.buildAxis = function(z, z0, dz, dZ, label, format) {
             // Create axis node
-            var axis = $("<div id='graph-" + name + "-axis' class='graph-" +
-                label + "-axis'></div>");
+            var axis = $("<div class='graph-" + label + "-axis'></div>");
 
             // Build axis based on z0, dz and dZ
             if (z.length == 0) {
@@ -86,6 +87,11 @@ $(document).ready(function() {
                 });
             }
 
+            // If x-axis, add dead corner
+            if (label == "x") {
+                this.buildCorner();
+            }
+
             // Append axis to graph
             this.e.append(axis);
         }
@@ -94,28 +100,23 @@ $(document).ready(function() {
             BUILDCORNER
         ======================================================================*/
         this.buildCorner = function() {
-            // If graph corner does not already exist, create it
-            var exists = this.e.find("#graph-NA").length;
-
-            if (!exists) {
-                this.e.append($("<div id='graph-NA'></div>"));
-            }
+            this.e.append($("<div class='graph-NA'></div>"));
         }
 
         /*======================================================================
             BUILDDOTS
         ======================================================================*/
         this.buildDots = function(type, data) {
-            // If section of graph does not already exist, create it
+            // If inside section of graph does not already exist, create it
             var exists = true;
-            var section = this.e.find("#graph-" + this.name);
+            var graph = this.e.find(".graph");
 
-            if (!section.length) {
+            if (!graph.length) {
                 exists = false;
-                section = ($("<div id='graph-" + this.name + "'></div>"));
+                graph = ($("<div class='graph'></div>"));
 
                 // Append section to graph
-                this.e.append(section);
+                this.e.append(graph);
             }
 
             // Store data in separate arrays
@@ -138,8 +139,8 @@ $(document).ready(function() {
                 }
             }
 
-            // Append dots to graph section
-            section.append(dots);
+            // Append dots to inside section of graph
+            graph.append(dots);
         }
 
         /*======================================================================
@@ -148,14 +149,14 @@ $(document).ready(function() {
         this.buildBars = function(type, data) {
             // If section of graph does not already exist, create it
             var exists = true;
-            var section = this.e.find("#graph-" + this.name);
+            var graph = this.e.find(".graph");
 
-            if (!section.length) {
+            if (!graph.length) {
                 exists = false;
-                section = ($("<div id='graph-" + this.name + "'></div>"));
+                graph = ($("<div id='graph'></div>"));
 
                 // Append section to graph
-                this.e.append(section);
+                this.e.append(graph);
             }
 
             // Store data in separate arrays
@@ -183,8 +184,8 @@ $(document).ready(function() {
                 }
             }
 
-            // Append bars to graph section
-            section.append(bars);
+            // Append bars to inside section of graph
+            graph.append(bars);
         }
 
         /*======================================================================
@@ -192,12 +193,14 @@ $(document).ready(function() {
         ======================================================================*/
         this.showDots = function(type, units, round, y0, xMin, yMin, dX, dY) {
             // Get graph section in which dots must displayed
-            var section = this.e.find("#graph-" + this.name);
+            var graph = this.e.find(".graph");
 
-            // Get dots and axis ticks
-            var dots = section.find("." + type);
-            var xTicks = this.e.find(".graph-x-axis-tick");
-            var yTicks = this.e.find(".graph-y-axis-tick");
+            // Get axis ticks
+            var xTicks = $(".graph-x-axis-tick");
+            var yTicks = $(".graph-y-axis-tick");
+
+            // Get dots
+            var dots = graph.find("." + type);
 
             // Get dot styles
             var radiusDot = parseFloat(dots.first().outerWidth()) / 2;
@@ -227,10 +230,10 @@ $(document).ready(function() {
                 dx = X[i] - xMin;
                 dy = y0 ? y0 : Y[i] - yMin;
 
-                x[i] = dx / dX * section.outerWidth()
+                x[i] = dx / dX * graph.outerWidth()
                     - radiusDot
                     - thicknessXTick / 2;
-                y[i] = dy / dY * section.outerHeight()
+                y[i] = dy / dY * graph.outerHeight()
                     - radiusDot
                     + thicknessYTick / 2;
             }
@@ -264,13 +267,14 @@ $(document).ready(function() {
         ======================================================================*/
         this.showBars = function(type, units, round, y0, xMin, dX, dY) {
             // Get graph section in which bars must displayed
-            var section = this.e.find("#graph-" + this.name);
-            var bars = section.find("." + type);
+            var graph = this.e.find(".graph");
+
+            // Get bars
+            var bars = graph.find("." + type);
 
             // Get bar styles
-            thicknessBarBorder = parseFloat(
-                bars.first().css("border-top-width") ||
-                bars.first().css("border-bottom-width"));
+            thicknessBorder = parseFloat(bars.first().css("border-top-width"))
+                || parseFloat(bars.first().css("border-bottom-width"));
 
             // Extract information from bars
             var X = [];
@@ -291,9 +295,9 @@ $(document).ready(function() {
                 dh = Math.abs(Y[i] - y0);
                 dy = y0;
 
-                w[i] = dw / dX * section.outerWidth();
-                h[i] = dh / dY * section.outerHeight();
-                y[i] = dy / dY * section.outerHeight() - thicknessBarBorder / 2;
+                w[i] = dw / dX * graph.outerWidth();
+                h[i] = dh / dY * graph.outerHeight();
+                y[i] = dy / dY * graph.outerHeight() - thicknessBorder / 2;
 
                 // If low bar
                 if (Y[i] < y0) {
@@ -301,7 +305,7 @@ $(document).ready(function() {
                     y[i] -= h[i];
 
                     // Recenter bar with axis
-                    y[i] += thicknessBarBorder;
+                    y[i] += thicknessBorder;
                 }
             }
 
@@ -368,9 +372,9 @@ $(document).ready(function() {
                 }
 
                 // Minor bars
-                if (h[i] < 2 * thicknessBarBorder) {
+                if (h[i] < 2 * thicknessBorder) {
                     // Only keep one line for minor bars
-                    h[i] = thicknessBarBorder;
+                    h[i] = thicknessBorder;
                     
                     if (Y[i] >= y0) {
                         bars.eq(i).css("border-top", "none");
@@ -411,14 +415,8 @@ $(document).ready(function() {
         /*======================================================================
             MAIN
         ======================================================================*/
-        // Store graph name
-        this.name = name;
-
         // Store node to which future graph elements should be attached
-        this.e = e;
-
-        // Make sure dead corner exists
-        this.buildCorner();
+        this.e = $("#graph" + name);
 
         // Generate a bubble for graph
         this.bubble = new Bubble();
@@ -443,32 +441,19 @@ $(document).ready(function() {
             // Store time format
             this.format = format;
 
-            // Build bubble element
-            this.build();
+            // Get bubble element
+            this.get();
 
             // Update bubble
             this.update();
         }
 
         /*======================================================================
-            BUILD
+            GET
         ======================================================================*/
-        this.build = function() {
-            // If bubble does not already exist, create it
-            var exists = true;
+        this.get = function() {
+            // Get bubble
             var bubble = $("#bubble");
-
-            if (!bubble.length) {
-                exists = false;
-                bubble = $("<div id='bubble'></div>");
-
-                // Add subsections to bubble
-                bubble.append("<div id='bubble-info'></div>");
-                bubble.append("<div id='bubble-time'></div>");
-
-                // Append bubble to page
-                $("#content").append(bubble); // FIXME
-            }
 
             // Store bubble and its infos
             this.e = bubble;
@@ -553,20 +538,20 @@ $(document).ready(function() {
         }
     }
 
-    function GraphBG(name, e) {
+    function GraphBG(name) {
 
         // Extend object
-        Graph.apply(this, [name, e]);
+        Graph.apply(this, [name]);
 
         /*======================================================================
             COLORBGS
         ======================================================================*/
         this.colorBGs = function(BGScale) {
             // Get graph section in which are the BGs
-            var section = this.e.find("#graph-" + this.name);
+            var graph = this.e.find(".graph");
 
             // Get BGs
-            var BGs = section.find(".BG");
+            var BGs = graph.find(".BG");
 
             // Color BGs
             for (i = 0; i < BGs.length; i++) {
@@ -576,10 +561,10 @@ $(document).ready(function() {
         }
     }
 
-    function GraphI(name, e) {
+    function GraphI(name) {
 
         // Extend object
-        Graph.apply(this, [name, e]);
+        Graph.apply(this, [name]);
 
         /*======================================================================
             PROFILETBRS
@@ -670,67 +655,17 @@ $(document).ready(function() {
     function Dash() {
 
         /*======================================================================
-            INIT
+            GET
         ======================================================================*/
-        this.init = function(element) {
-            // Store element to which dash must be appended
-            this.element = element;
-
-            // Build bubble element
-            this.build();
-
-            // Update bubble
-            this.update();
-        }
-
-        /*======================================================================
-            BUILD
-        ======================================================================*/
-        this.build = function() {
-            // If dash does not already exist, create it
-            var dash = $("#dash");
-
-            if (!dash.length) {
-                dash = $("<div id='dash'></div>");
-
-                // Add subsections to dash
-                dash.append("<div id='dash-live'>" +
-                    "<span id='dash-BG'>---</span>" +
-                    "<span id='dash-arrow'></span>" +
-                    "</div>");
-                dash.append("<div id='dash-delta'>" + 
-                    "<p><b>&Delta;BG:</b> " +
-                    "<span id='dash-dBG'>---</span> mmol/L</p>" +
-                    "<p><b>&Delta;BG/&Delta;t:</b> " +
-                    "<span id='dash-dBG-dt'>---</span> mmol/L/m</p>" +
-                    "</div>");
-                dash.append("<div id='dash-basal'>" +
-                    "<p><b>TBR:</b> <span id='dash-TBR'>---</span> %</p>" +
-                    "<p><b>BR:</b> <span id='dash-BR'>---</span> U/h</p>" +
-                    "</div>");
-                dash.append("<div id='dash-on-board'>" +
-                    "<p><b>IOB:</b> <span id='dash-IOB'>---</span> U</p>" +
-                    "<p><b>COB:</b> <span id='dash-COB'>---</span> g</p>" +
-                    "</div>");
-                dash.append("<div id='dash-factors'>" +
-                    "<p><b>ISF:</b> <span id='dash-ISF'>---</span>" +
-                    " mmol/L/U</p>" +
-                    "<p><b>CSF:</b> <span id='dash-CSF'>---</span>" +
-                    " U/g</p>" +
-                    "</div>");
-
-                // Append dash to page
-                this.element.append(dash);
-            }
-
+        this.get = function() {
             // Store dash and its infos
-            this.e = dash;
-            this.live = dash.find("#dash-live");
-            this.delta = dash.find("#dash-delta");
-            this.basal = dash.find("#dash-basal");
-            this.onBoard = dash.find("#dash-on-board");
-            this.factors = dash.find("#dash-factors");
-            //this.age = dash.find("#dash-age");
+            this.e = $("#dash");
+            this.live = this.e.find("#dash-live");
+            this.delta = this.e.find("#dash-delta");
+            this.basal = this.e.find("#dash-basal");
+            this.onBoard = this.e.find("#dash-on-board");
+            this.factors = this.e.find("#dash-factors");
+            //this.age = this.e.find("#dash-age");
             this.BG = this.e.find("#dash-BG");
             this.arrow = this.e.find("#dash-arrow");
             this.dBG = this.e.find("#dash-dBG");
@@ -746,8 +681,8 @@ $(document).ready(function() {
         ======================================================================*/
         this.update = function() {
             // Get BGs and TBRs
-            var BGs = this.element.find(".BG");
-            var TBRs = this.element.find(".TBR");
+            var BGs = $("#graphBG").find(".BG");
+            var TBRs = $("#graphI").find(".TBR");
 
             // Get last BG infos
             var lastBG = BGs.eq(-1).attr("y");
@@ -765,18 +700,18 @@ $(document).ready(function() {
             this.arrow.text(rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
             this.TBR.text(round(TBRs.eq(-2).attr("y"), 1));
         }
-
-        /*======================================================================
-            SHOW
-        ======================================================================*/
-        this.show = function() {
-            // Show dash
-            this.element.append(this.e);
-        }
     }
 
 
 
+    // FUNCTIONS
+    function init() {
+
+    }
+
+
+
+    // MAIN
     // Config
     var now = new Date();
     var x = [];
@@ -791,23 +726,24 @@ $(document).ready(function() {
     var BGScale = [3, 4, 7, 12]; // (mmol/L)
     var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
 
-    if ($(window).outerWidth() < 640) {
+    // Resizing
+    if ($(window).outerWidth() < 800) {
         x0 = 1474340548000 - 6 * 60 * 60 * 1000;
         dX = 6 * 60 * 60 * 1000; // Time range (h)
     }
 
     // Create graph objects
-    var graphBG = new GraphBG("BG", $("#graph"));
-    var graphI = new GraphI("I", $("#graph"));
+    var graphBG = new GraphBG("BG");
+    var graphI = new GraphI("I");
 
     // Build x-axis for time
-    graphBG.buildAxis(x, x0, dx, dX, "x", "t", "HH:MM");
-
-    // Build y-axis for BG
-    graphBG.buildAxis(yBG, null, null, null, "y", "BG", false);
+    graphI.buildAxis(x, x0, dx, dX, "x", "HH:MM");
 
     // Build y-axis for I
-    graphI.buildAxis(yI, null, null, null, "y", "I", false);
+    graphI.buildAxis(yI, null, null, null, "y", false);
+
+    // Build y-axis for BG
+    graphBG.buildAxis(yBG, null, null, null, "y", false);
 
     // Get BGs
     var BGs = getData("ajax/BG.json", false,
@@ -846,8 +782,8 @@ $(document).ready(function() {
     var dash = new Dash();
 
     // Add dash to page
-    dash.init($("#content"));
-    dash.show();
+    dash.get();
+    dash.update();
 
 
 
@@ -880,7 +816,14 @@ $(document).ready(function() {
 
     // Main
     $(window).resize(function () {
+        // Show BG dots
+        graphBG.showDots("BG", "mmol/L", 1, false, x0 - dX, yBG.min(), dX, dYBG);
 
+        // Show B dots
+        graphI.showDots("B", "U", 1, y0, x0 - dX, yI.min(), dX, dYI);
+
+        // Show TBR bars
+        graphI.showBars("TBR", "%", 0, y0, x0 - dX, dX, dYI);
     });
 
     settingsButton.on("click", function () {
