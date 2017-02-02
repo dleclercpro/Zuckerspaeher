@@ -82,7 +82,7 @@ main {
 
 	@include mq(tablet) {
 		width: 50vw;
-		height: 180px;
+		height: $tablet-height-dash;
 		max-width: none;
 		top: 0;
 		left: 0;
@@ -93,6 +93,7 @@ main {
 		width: 100vw;
 		height: $mobile-height-user;
 		justify-content: center;
+		cursor: pointer;
 	}
 
 	> #user-img {
@@ -130,7 +131,7 @@ main {
 			line-height: 1.25em;
 
 			@include mq(tablet) {
-				font-size: 15px;
+				font-size: 16px;
 			}
 
 			@include mq(mobile) {
@@ -199,7 +200,7 @@ main {
 
 	@include mq(tablet) {
 		width: 50vw;
-		height: 180px;
+		height: $tablet-height-dash;
 		max-width: none;
 		top: 0;
 		right: 0;
@@ -207,13 +208,12 @@ main {
 	}
 
 	@include mq(mobile) {
-		display: none; // FIXME
+		display: none;
 		width: 100vw;
 		height: auto;
 		align-items: center;
 		top: $mobile-height-user;
 		left: 0;
-		padding: 15px 2.5vw;
 	}
 
 	> #dash-live {
@@ -352,9 +352,11 @@ main {
 
 #settings {
 	display: none;
-	@include absolute($top: 0, $right: -$width-settings);
-	width: $width-settings;
-	padding: 0 $padding-settings;
+	flex-direction: column;
+	@include absolute($top: 0, $right: 0);
+	width: 30vw;
+	height: 100%;
+	padding: 15px 2%;
 	box-shadow: -$shadow-radius 0 $shadow-radius $black-trans;
 	background-color: $black;
 	color: $white;
@@ -362,11 +364,13 @@ main {
 
 	@include mq(tablet) {
 		width: 100vw;
+		height: auto;
+		padding: 15px 5%;
 	}
 
 	> h1 {
 		width: 50%;
-		margin: 15px 0;
+		margin: 0 0 15px 0;
 		font-weight: bold;
 		font-size: 22px;
 		font-family: "Gloria Hallelujah";
@@ -378,6 +382,10 @@ main {
 			display: flex;
 			flex-wrap: wrap;
 			margin-bottom: 15px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
 
 			> label, p {
 				display: flex;

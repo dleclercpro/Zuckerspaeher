@@ -17,7 +17,7 @@
 
 ==============================================================================*/
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // OBJECTS
 
@@ -26,7 +26,7 @@ $(document).ready(function() {
         /*======================================================================
             GENERATEAXIS
         ======================================================================*/
-        this.generateAxis = function(z0, dz, dZ) {
+        this.generateAxis = function (z0, dz, dZ) {
             // Initialize empty array
             var z = [];
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
         /*======================================================================
             BUILDAXIS
         ======================================================================*/
-        this.buildAxis = function(z, z0, dz, dZ, label, format) {
+        this.buildAxis = function (z, z0, dz, dZ, label, format) {
             // Create axis node
             var axis = $("<div class='graph-" + label + "-axis'></div>");
 
@@ -82,7 +82,7 @@ $(document).ready(function() {
 
             // Format axis ticks if desired
             if (format) {
-                axis.children().each(function() {
+                axis.children().each(function () {
                     $(this).html(convertTime($(this).html(), format));
                 });
             }
@@ -99,14 +99,14 @@ $(document).ready(function() {
         /*======================================================================
             BUILDCORNER
         ======================================================================*/
-        this.buildCorner = function() {
+        this.buildCorner = function () {
             this.e.append($("<div class='graph-NA'></div>"));
         }
 
         /*======================================================================
             BUILDDOTS
         ======================================================================*/
-        this.buildDots = function(type, data) {
+        this.buildDots = function (type, data) {
             // If inside section of graph does not already exist, create it
             var exists = true;
             var graph = this.e.find(".graph");
@@ -146,7 +146,7 @@ $(document).ready(function() {
         /*======================================================================
             BUILDBARS
         ======================================================================*/
-        this.buildBars = function(type, data) {
+        this.buildBars = function (type, data) {
             // If section of graph does not already exist, create it
             var exists = true;
             var graph = this.e.find(".graph");
@@ -191,7 +191,7 @@ $(document).ready(function() {
         /*======================================================================
             SHOWDOTS
         ======================================================================*/
-        this.showDots = function(type, units, round, y0, xMin, yMin, dX, dY) {
+        this.showDots = function (type, units, round, y0, xMin, yMin, dX, dY) {
             // Get graph section in which dots must displayed
             var graph = this.e.find(".graph");
 
@@ -265,7 +265,7 @@ $(document).ready(function() {
         /*======================================================================
             SHOWBARS
         ======================================================================*/
-        this.showBars = function(type, units, round, y0, xMin, dX, dY) {
+        this.showBars = function (type, units, round, y0, xMin, dX, dY) {
             // Get graph section in which bars must displayed
             var graph = this.e.find(".graph");
 
@@ -427,7 +427,7 @@ $(document).ready(function() {
         /*======================================================================
             INIT
         ======================================================================*/
-        this.init = function(element, units, round,
+        this.init = function (element, units, round,
             format = "HH:MM - DD.MM.YYYY") {
             // Store element on which bubble will give infos
             this.element = element;
@@ -451,7 +451,7 @@ $(document).ready(function() {
         /*======================================================================
             GET
         ======================================================================*/
-        this.get = function() {
+        this.get = function () {
             // Get bubble
             var bubble = $("#bubble");
 
@@ -464,7 +464,7 @@ $(document).ready(function() {
         /*======================================================================
             UPDATE
         ======================================================================*/
-        this.update = function() {
+        this.update = function () {
             // Get bubble info
             var x = this.element.attr("x");
             var y = this.element.attr("y");
@@ -489,7 +489,7 @@ $(document).ready(function() {
         /*======================================================================
             SHOW
         ======================================================================*/
-        this.show = function(offsetX = 8, offsetY = 0) {
+        this.show = function (offsetX = 8, offsetY = 0) {
             // Define bubble coordinates
             var offsetTop = parseFloat(this.element.parent().position().top);
             var x = parseFloat(this.element.position().left) +
@@ -533,7 +533,7 @@ $(document).ready(function() {
         /*======================================================================
             HIDE
         ======================================================================*/
-        this.hide = function() {
+        this.hide = function () {
             this.e.hide();
         }
     }
@@ -546,7 +546,7 @@ $(document).ready(function() {
         /*======================================================================
             COLORBGS
         ======================================================================*/
-        this.colorBGs = function(BGScale) {
+        this.colorBGs = function (BGScale) {
             // Get graph section in which are the BGs
             var graph = this.e.find(".graph");
 
@@ -569,7 +569,7 @@ $(document).ready(function() {
         /*======================================================================
             PROFILETBRS
         ======================================================================*/
-        this.profileTBRs = function(data, x0, dX, dtMax = 5 * 60 * 1000) {
+        this.profileTBRs = function (data, x0, dX, dtMax = 5 * 60 * 1000) {
             // Store data in separate arrays
             var TBRTimes = [];
             var TBRs = [];
@@ -642,7 +642,7 @@ $(document).ready(function() {
         /*======================================================================
             BUILDTBRS
         ======================================================================*/
-        this.buildTBRs = function(data, x0, dX) {
+        this.buildTBRs = function (data, x0, dX) {
 
             // Compute TBR profile
             var TBRProfile = this.profileTBRs(data, x0, dX);
@@ -657,7 +657,7 @@ $(document).ready(function() {
         /*======================================================================
             GET
         ======================================================================*/
-        this.get = function() {
+        this.get = function () {
             // Store dash and its infos
             this.e = $("#dash");
             this.live = this.e.find("#dash-live");
@@ -681,7 +681,7 @@ $(document).ready(function() {
         /*======================================================================
             UPDATE
         ======================================================================*/
-        this.update = function() {
+        this.update = function () {
             // Get BGs and TBRs
             var BGs = $("#graphBG").find(".BG");
             var TBRs = $("#graphI").find(".TBR");
@@ -790,31 +790,12 @@ $(document).ready(function() {
 
 
     // Elements
+    var user = $("#user");
+    var dash = $("#dash");
     var settings = $("#settings");
     var settingsButton = $("#settings-button");
 
     // Functions
-    function toggleSettings () {
-        // Get coordinates and size of settings menu
-        var x = Math.abs(parseFloat(settings.css("right")));
-        var X = settings.outerWidth();
-
-        // Decide on sliding direction
-        if (settings.hasClass("is-active")) {
-            settings.stop().animate({
-                right: "-=" + (X - x)
-            });
-        } else {
-            settings.stop().animate({
-                right: "+=" + x
-            });         
-        }
-
-        // Toggle defining class
-        settings.toggleClass("is-active");
-    }
-
-
 
     // Main
     $(window).resize(function () {
@@ -829,7 +810,26 @@ $(document).ready(function() {
     });
 
     settingsButton.on("click", function () {
-        toggleSettings();
+        if (settings.css("display") == "none") {
+            settings.css("display", "flex");
+            settings.hide();
+            settings.stop().fadeIn();
+        } else {
+            settings.stop().fadeOut();
+        }
+    });
+
+    user.on("click", function () {
+        if ($(window).outerWidth() < 640) {
+            if (dash.css("display") == "none") {
+                dash.css("display", "flex");
+                dash.hide();
+                dash.stop().fadeIn();
+            } else {
+                dash.stop().fadeOut();
+            }
+
+        }
     });
 
 });
