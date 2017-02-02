@@ -388,7 +388,7 @@ header > #buttons {
   justify-content: center;
   align-items: center; }
 
-#graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick, #graphBG .graph-x-axis > .graph-x-axis-tick, #graphI .graph-x-axis > .graph-x-axis-tick {
+#graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick, #graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
   display: flex;
   justify-content: flex-end;
   flex: none;
@@ -396,18 +396,18 @@ header > #buttons {
   font-weight: bold;
   color: #eeeeee; }
   @media all and (max-width: 640px) {
-    #graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick, #graphBG .graph-x-axis > .graph-x-axis-tick, #graphI .graph-x-axis > .graph-x-axis-tick {
+    #graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick, #graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
       font-size: 14px; } }
 
-#graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick {
+#graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick {
   flex-direction: column;
   padding-bottom: 2px;
   border-bottom: 1px dashed #eeeeee; }
   @media all and (max-width: 640px) {
-    #graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick {
+    #graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick {
       padding-left: 3px; } }
 
-#graphBG .graph-x-axis > .graph-x-axis-tick, #graphI .graph-x-axis > .graph-x-axis-tick {
+#graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
   padding-right: 4px;
   border-right: 1px dashed #eeeeee; }
 
@@ -547,7 +547,7 @@ main {
       #user > #user-details > #user-live > #user-BG, #user > #user-details > #user-live > #user-arrow {
         background: none; }
       #user > #user-details > #user-live > #user-arrow {
-        margin-left: -15px; }
+        margin-left: -5px; }
 
 #dash {
   display: flex;
@@ -619,33 +619,33 @@ main {
       #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child, #dash > #dash-age > p:last-child {
         margin-right: 0; }
 
-#graphBG {
+#graph-BG {
   display: flex;
   flex-wrap: wrap;
   flex: none;
   width: 100vw;
   height: 75vh;
   order: 3; }
-  #graphBG .graph-x-axis {
+  #graph-BG .graph-x-axis {
     display: flex;
     flex-direction: row;
     width: calc(100% - 24px);
     height: 0px;
     order: 3; }
-  #graphBG .graph-y-axis {
+  #graph-BG .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
     width: 24px;
     height: calc(100% - 0px);
     order: 2; }
-  #graphBG .graph {
+  #graph-BG .graph {
     width: calc(100% - 24px);
     height: calc(100% - 0px);
     order: 1;
     position: relative;
     display: flex;
     align-items: flex-end; }
-    #graphBG .graph > .BG {
+    #graph-BG .graph > .BG {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -654,16 +654,16 @@ main {
       cursor: pointer;
       z-index: 10; }
       @media all and (max-width: 1024px) {
-        #graphBG .graph > .BG {
+        #graph-BG .graph > .BG {
           width: 9px;
           height: 9px;
           border-size: 1px; } }
       @media all and (max-width: 640px) {
-        #graphBG .graph > .BG {
+        #graph-BG .graph > .BG {
           width: 8px;
           height: 8px;
           border-size: 1px; } }
-    #graphBG .graph > .TBR {
+    #graph-BG .graph > .TBR {
       display: flex;
       overflow: hidden;
       border-top: 2px solid #090808;
@@ -671,17 +671,17 @@ main {
       background-color: #3b0d21;
       cursor: pointer;
       z-index: 5; }
-      #graphBG .graph > .TBR:hover {
+      #graph-BG .graph > .TBR:hover {
         background-color: #2e0a1a; }
-      #graphBG .graph > .TBR.last-TBR {
+      #graph-BG .graph > .TBR.last-TBR {
         display: none; }
-      #graphBG .graph > .TBR > .inner-TBR {
+      #graph-BG .graph > .TBR > .inner-TBR {
         width: 50%; }
-        #graphBG .graph > .TBR > .inner-TBR:first-child {
+        #graph-BG .graph > .TBR > .inner-TBR:first-child {
           border-left: 2px solid #090808; }
-        #graphBG .graph > .TBR > .inner-TBR:last-child {
+        #graph-BG .graph > .TBR > .inner-TBR:last-child {
           border-right: 2px solid #090808; }
-    #graphBG .graph > .B {
+    #graph-BG .graph > .B {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -691,52 +691,52 @@ main {
       cursor: pointer;
       z-index: 10;
       border-radius: 0; }
-      #graphBG .graph > .B:hover {
+      #graph-BG .graph > .B:hover {
         background-color: #001477; }
       @media all and (max-width: 1024px) {
-        #graphBG .graph > .B {
+        #graph-BG .graph > .B {
           width: 9px;
           height: 9px;
           border-size: 1px; } }
       @media all and (max-width: 640px) {
-        #graphBG .graph > .B {
+        #graph-BG .graph > .B {
           width: 8px;
           height: 8px;
           border-size: 1px; } }
-  #graphBG .graph-NA {
+  #graph-BG .graph-NA {
     width: 24px;
     height: 0px;
     order: 4; }
   @media all and (max-width: 1024px) {
-    #graphBG {
+    #graph-BG {
       width: 100vw;
       height: calc(100vh - 65px - 25vh); } }
 
-#graphI {
+#graph-I {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
   order: 4; }
-  #graphI .graph-x-axis {
+  #graph-I .graph-x-axis {
     display: flex;
     flex-direction: row;
     width: calc(100% - 24px);
     height: 24px;
     order: 3; }
-  #graphI .graph-y-axis {
+  #graph-I .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
     width: 24px;
     height: calc(100% - 24px);
     order: 2; }
-  #graphI .graph {
+  #graph-I .graph {
     width: calc(100% - 24px);
     height: calc(100% - 24px);
     order: 1;
     position: relative;
     display: flex;
     align-items: flex-end; }
-    #graphI .graph > .BG {
+    #graph-I .graph > .BG {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -745,16 +745,16 @@ main {
       cursor: pointer;
       z-index: 10; }
       @media all and (max-width: 1024px) {
-        #graphI .graph > .BG {
+        #graph-I .graph > .BG {
           width: 9px;
           height: 9px;
           border-size: 1px; } }
       @media all and (max-width: 640px) {
-        #graphI .graph > .BG {
+        #graph-I .graph > .BG {
           width: 8px;
           height: 8px;
           border-size: 1px; } }
-    #graphI .graph > .TBR {
+    #graph-I .graph > .TBR {
       display: flex;
       overflow: hidden;
       border-top: 2px solid #090808;
@@ -762,17 +762,17 @@ main {
       background-color: #3b0d21;
       cursor: pointer;
       z-index: 5; }
-      #graphI .graph > .TBR:hover {
+      #graph-I .graph > .TBR:hover {
         background-color: #2e0a1a; }
-      #graphI .graph > .TBR.last-TBR {
+      #graph-I .graph > .TBR.last-TBR {
         display: none; }
-      #graphI .graph > .TBR > .inner-TBR {
+      #graph-I .graph > .TBR > .inner-TBR {
         width: 50%; }
-        #graphI .graph > .TBR > .inner-TBR:first-child {
+        #graph-I .graph > .TBR > .inner-TBR:first-child {
           border-left: 2px solid #090808; }
-        #graphI .graph > .TBR > .inner-TBR:last-child {
+        #graph-I .graph > .TBR > .inner-TBR:last-child {
           border-right: 2px solid #090808; }
-    #graphI .graph > .B {
+    #graph-I .graph > .B {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -782,24 +782,24 @@ main {
       cursor: pointer;
       z-index: 10;
       border-radius: 0; }
-      #graphI .graph > .B:hover {
+      #graph-I .graph > .B:hover {
         background-color: #001477; }
       @media all and (max-width: 1024px) {
-        #graphI .graph > .B {
+        #graph-I .graph > .B {
           width: 9px;
           height: 9px;
           border-size: 1px; } }
       @media all and (max-width: 640px) {
-        #graphI .graph > .B {
+        #graph-I .graph > .B {
           width: 8px;
           height: 8px;
           border-size: 1px; } }
-  #graphI .graph-NA {
+  #graph-I .graph-NA {
     width: 24px;
     height: 24px;
     order: 4; }
   @media all and (max-width: 1024px) {
-    #graphI {
+    #graph-I {
       flex: none;
       width: 100vw;
       height: 25vh; } }

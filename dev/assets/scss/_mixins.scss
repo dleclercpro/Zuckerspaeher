@@ -101,7 +101,8 @@
 		}
 
 		> .TBR {
-			@include bar(TBR, $purple, 3%)
+
+			@include bar(TBR, $purple, 3%);
 		}
 
 		> .B {

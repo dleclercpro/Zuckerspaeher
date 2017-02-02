@@ -416,7 +416,7 @@ $(document).ready(function () {
             MAIN
         ======================================================================*/
         // Store node to which future graph elements should be attached
-        this.e = $("#graph" + name);
+        this.e = $("#graph-" + name);
 
         // Generate a bubble for graph
         this.bubble = new Bubble();
@@ -683,8 +683,8 @@ $(document).ready(function () {
         ======================================================================*/
         this.update = function () {
             // Get BGs and TBRs
-            var BGs = $("#graphBG").find(".BG");
-            var TBRs = $("#graphI").find(".TBR");
+            var BGs = $("#graph-BG").find(".BG");
+            var TBRs = $("#graph-I").find(".TBR");
 
             // Get last BG infos
             var lastBG = BGs.eq(-1).attr("y");

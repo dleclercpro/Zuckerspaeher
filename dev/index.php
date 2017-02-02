@@ -75,8 +75,8 @@ Notes : -
 				</div>
 			</div>
 
-			<div id="graphBG"></div>
-			<div id="graphI"></div>
+			<div id="graph-BG"></div>
+			<div id="graph-I"></div>
 
 			<div id="bubble">
 				<div id="bubble-info"></div>

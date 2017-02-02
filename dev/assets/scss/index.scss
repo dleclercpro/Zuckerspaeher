@@ -180,7 +180,7 @@ main {
 
 			> #user-arrow {
 				@extend #user-BG;
-				margin-left: -15px;
+				margin-left: -5px;
 			}
 		}
 	}
@@ -284,7 +284,7 @@ main {
 	}
 }
 
-#graphBG {
+#graph-BG {
 	@include graph($width-y-axis, 0px);
 	flex: none;
 	width: 100vw;
@@ -297,7 +297,7 @@ main {
 	}
 }
 
-#graphI {
+#graph-I {
 	@include graph($width-y-axis, $height-x-axis);
 	flex: 1;
 	order: 4;
