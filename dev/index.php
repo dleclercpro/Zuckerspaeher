@@ -40,14 +40,18 @@ Notes : -
 					<p id="user-birthday">27.12.1991</p>
 					<p id="user-cgm">Dexcom G5</p>
 					<p id="user-pump">MiniMed 640G</p>
-					<p id="last-update">23:55 - 21.12.2016 (<span>50</span>%)</p>
+					<p id="user-status">23:55 - 21.12.2016 (<span>50</span>%)</p>
+					<p id="user-live">
+						<span id="user-BG" class="last-BG">---</span>
+						<span id="user-arrow" class="last-arrow"></span>
+					</p>
 				</div>
 			</div>
 
 			<div id="dash">
 				<div id="dash-live">
-					<span id="dash-BG">---</span>
-					<span id="dash-arrow"></span>
+					<span id="dash-BG" class="last-BG">---</span>
+					<span id="dash-arrow" class="last-arrow"></span>
 				</div>
 				<div id="dash-delta">
 					<p><b>&Delta;BG:</b> <span id="dash-dBG">---</span> mmol/L</p>
@@ -64,6 +68,10 @@ Notes : -
 				<div id="dash-factors">
 					<p><b>ISF:</b> <span id="dash-ISF">---</span> mmol/L/U</p>
 					<p><b>CSF:</b> <span id="dash-CSF">---</span> U/g</p>
+				</div>
+				<div id="dash-age">
+					<p><b>SAGE:</b> <span id="dash-SAGE">---</span> h</p>
+					<p><b>CAGE:</b> <span id="dash-CAGE">---</span> h</p>
 				</div>
 			</div>
 

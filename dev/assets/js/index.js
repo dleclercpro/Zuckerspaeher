@@ -666,8 +666,10 @@ $(document).ready(function() {
             this.onBoard = this.e.find("#dash-on-board");
             this.factors = this.e.find("#dash-factors");
             //this.age = this.e.find("#dash-age");
-            this.BG = this.e.find("#dash-BG");
-            this.arrow = this.e.find("#dash-arrow");
+
+            this.BG = $("#dash-BG").add("#user-BG");
+            this.arrow = $("#dash-arrow").add("#user-arrow");
+
             this.dBG = this.e.find("#dash-dBG");
             this.dBGdt = this.e.find("#dash-dBG-dt");
             this.TBR = this.e.find("#dash-TBR");

@@ -20,9 +20,12 @@
 %graph-y-axis-tick {
 	@extend %graph-axis-tick;
 	flex-direction: column;
-	padding-left: 2px;
 	padding-bottom: 2px;
 	border-bottom: 1px dashed $white;
+
+	@include mq(mobile) {
+		padding-left: 3px;
+	}
 }
 
 %graph-x-axis-tick {

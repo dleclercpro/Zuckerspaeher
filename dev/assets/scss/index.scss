@@ -38,7 +38,6 @@ header {
 	z-index: 35;
 
 	@include mq(tablet) {
-		height: $height-header;
 		padding: 0 5%;
 	}
 
@@ -92,10 +91,8 @@ main {
 
 	@include mq(mobile) {
 		width: 100vw;
-		height: auto;
-		padding: 10px 2.5vw;
+		height: $mobile-height-user;
 		justify-content: center;
-		position: static;
 	}
 
 	> #user-img {
@@ -119,9 +116,15 @@ main {
 	}
 
 	> #user-details {
+		display: flex;
+		flex-direction: column;
 		margin-left: 5%;
 		font-size: 18px;
 		color: $white;
+
+		@include mq(mobile) {
+			flex-direction: column-reverse;
+		}
 
 		> p {
 			line-height: 1.25em;
@@ -154,9 +157,30 @@ main {
 			@extend #user-name;
 		}
 
-		> #last-update {
+		> #user-status {
 			font-weight: bold;
 			color: red;
+		}
+
+		> #user-live {
+			display: none;
+
+			@include mq(mobile) {
+				display: block;
+				text-align: center;
+				font-size: 45px;
+				font-weight: bold;
+				font-family: "Gloria Hallelujah";
+			}
+			
+			> #user-BG {
+				background: none;
+			}
+
+			> #user-arrow {
+				@extend #user-BG;
+				margin-left: -15px;
+			}
 		}
 	}
 }
@@ -183,12 +207,13 @@ main {
 	}
 
 	@include mq(mobile) {
+		display: none; // FIXME
 		width: 100vw;
 		height: auto;
-		max-width: none;
-		position: static;
-		padding: 15px 2.5vw;
 		align-items: center;
+		top: $mobile-height-user;
+		left: 0;
+		padding: 15px 2.5vw;
 	}
 
 	> #dash-live {
@@ -206,9 +231,7 @@ main {
 		}
 
 		@include mq(mobile) {
-			display: flex;
-			justify-content: center;
-			width: 100%;
+			display: none;
 		}
 
 		> #dash-BG {
@@ -255,6 +278,10 @@ main {
 	> #dash-factors {
 		@extend #dash-delta;
 	}
+
+	> #dash-age {
+		@extend #dash-delta;
+	}
 }
 
 #graphBG {
@@ -266,7 +293,7 @@ main {
 
 	@include mq(tablet) {
 		width: 100vw;
-		height: calc(100vh - #{$height-header});
+		height: calc(100vh - #{$height-header} - 25vh);
 	}
 }
 
@@ -278,7 +305,7 @@ main {
 	@include mq(tablet) {
 		flex: none;
 		width: 100vw;
-		height: 30vh;
+		height: 25vh;
 	}
 }
 
@@ -296,6 +323,14 @@ main {
 		line-height: 1.25em;
 		font-weight: bold;
 		white-space: nowrap;
+
+		@include mq(tablet) {
+			font-size: 16px;
+		}
+
+		@include mq(mobile) {
+			font-size: 14px;
+		}
 	}
 
 	> #bubble-time {

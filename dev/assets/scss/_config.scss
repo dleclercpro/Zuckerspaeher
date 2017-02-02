@@ -17,26 +17,23 @@ $green: #99e500;
 $orange: #ff7500;
 $red: #e50000;
 //$purple: #3b0085;
-//$purple: #3b0d21;
-$purple: #300a24;
+$purple: #3b0d21;
+//$purple: #300a24;
 $blue: #0025dd;
 $black-trans: rgba(0, 0, 0, 0.75);
 
 // Sizes
-$width-y-axis: 26px;
+$width-y-axis: 24px;
 $height-x-axis: $width-y-axis;
-
 $height-header: 65px;
 $width-settings: 25vw;
-
+$mobile-height-user: 100px;
 $radius-dot: 5px;
 $tablet-radius-dot: 4.5px;
 $mobile-radius-dot: 4px;
-
 $border-radius-dot: 2px;
 $tablet-border-radius-dot: 1px;
 $mobile-border-radius-dot: 1px;
-
 $border-radius: 3px;
 $shadow-radius: 3px;
 $padding-header: 3%;

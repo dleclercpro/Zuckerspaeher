@@ -401,9 +401,11 @@ header > #buttons {
 
 #graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick {
   flex-direction: column;
-  padding-left: 2px;
   padding-bottom: 2px;
   border-bottom: 1px dashed #eeeeee; }
+  @media all and (max-width: 640px) {
+    #graphBG .graph-y-axis > .graph-y-axis-tick, #graphI .graph-y-axis > .graph-y-axis-tick {
+      padding-left: 3px; } }
 
 #graphBG .graph-x-axis > .graph-x-axis-tick, #graphI .graph-x-axis > .graph-x-axis-tick {
   padding-right: 4px;
@@ -442,7 +444,6 @@ header {
   z-index: 35; }
   @media all and (max-width: 1024px) {
     header {
-      height: 65px;
       padding: 0 5%; } }
   header > #branding {
     display: flex;
@@ -492,10 +493,8 @@ main {
   @media all and (max-width: 640px) {
     #user {
       width: 100vw;
-      height: auto;
-      padding: 10px 2.5vw;
-      justify-content: center;
-      position: static; } }
+      height: 100px;
+      justify-content: center; } }
   #user > #user-img {
     width: 125px;
     height: 125px;
@@ -513,9 +512,14 @@ main {
         height: 75px;
         border-width: 3px; } }
   #user > #user-details {
+    display: flex;
+    flex-direction: column;
     margin-left: 5%;
     font-size: 18px;
     color: #eeeeee; }
+    @media all and (max-width: 640px) {
+      #user > #user-details {
+        flex-direction: column-reverse; } }
     #user > #user-details > p {
       line-height: 1.25em; }
       @media all and (max-width: 1024px) {
@@ -527,9 +531,22 @@ main {
     @media all and (max-width: 640px) {
       #user > #user-details > #user-name, #user > #user-details > #user-birthday, #user > #user-details > #user-cgm, #user > #user-details > #user-pump {
         display: none; } }
-    #user > #user-details > #last-update {
+    #user > #user-details > #user-status {
       font-weight: bold;
       color: red; }
+    #user > #user-details > #user-live {
+      display: none; }
+      @media all and (max-width: 640px) {
+        #user > #user-details > #user-live {
+          display: block;
+          text-align: center;
+          font-size: 45px;
+          font-weight: bold;
+          font-family: "Gloria Hallelujah"; } }
+      #user > #user-details > #user-live > #user-BG, #user > #user-details > #user-live > #user-arrow {
+        background: none; }
+      #user > #user-details > #user-live > #user-arrow {
+        margin-left: -15px; }
 
 #dash {
   display: flex;
@@ -559,12 +576,13 @@ main {
       padding: 15px 5vw; } }
   @media all and (max-width: 640px) {
     #dash {
+      display: none;
       width: 100vw;
       height: auto;
-      max-width: none;
-      position: static;
-      padding: 15px 2.5vw;
-      align-items: center; } }
+      align-items: center;
+      top: 100px;
+      left: 0;
+      padding: 15px 2.5vw; } }
   #dash > #dash-live {
     display: flex;
     margin-bottom: 15px;
@@ -579,28 +597,26 @@ main {
         margin-bottom: 10px; } }
     @media all and (max-width: 640px) {
       #dash > #dash-live {
-        display: flex;
-        justify-content: center;
-        width: 100%; } }
+        display: none; } }
     #dash > #dash-live > #dash-BG {
       background: none; }
     #dash > #dash-live > #dash-arrow {
       background: none;
       margin-left: 5px; }
-  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors {
+  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors, #dash > #dash-age {
     display: flex;
     font-size: 18px;
     line-height: 1.25em;
     color: #eeeeee; }
-    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p {
+    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
       margin-right: 15px; }
       @media all and (max-width: 1024px) {
-        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p {
+        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
           font-size: 16px; } }
       @media all and (max-width: 640px) {
-        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p {
+        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
           font-size: 15px; } }
-      #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child {
+      #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child, #dash > #dash-age > p:last-child {
         margin-right: 0; }
 
 #graphBG {
@@ -613,17 +629,17 @@ main {
   #graphBG .graph-x-axis {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 26px);
+    width: calc(100% - 24px);
     height: 0px;
     order: 3; }
   #graphBG .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
-    width: 26px;
+    width: 24px;
     height: calc(100% - 0px);
     order: 2; }
   #graphBG .graph {
-    width: calc(100% - 26px);
+    width: calc(100% - 24px);
     height: calc(100% - 0px);
     order: 1;
     position: relative;
@@ -652,11 +668,11 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #300a24;
+      background-color: #3b0d21;
       cursor: pointer;
       z-index: 5; }
       #graphBG .graph > .TBR:hover {
-        background-color: #23071b; }
+        background-color: #2e0a1a; }
       #graphBG .graph > .TBR.last-TBR {
         display: none; }
       #graphBG .graph > .TBR > .inner-TBR {
@@ -688,13 +704,13 @@ main {
           height: 8px;
           border-size: 1px; } }
   #graphBG .graph-NA {
-    width: 26px;
+    width: 24px;
     height: 0px;
     order: 4; }
   @media all and (max-width: 1024px) {
     #graphBG {
       width: 100vw;
-      height: calc(100vh - 65px); } }
+      height: calc(100vh - 65px - 25vh); } }
 
 #graphI {
   display: flex;
@@ -704,18 +720,18 @@ main {
   #graphI .graph-x-axis {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 26px);
-    height: 26px;
+    width: calc(100% - 24px);
+    height: 24px;
     order: 3; }
   #graphI .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
-    width: 26px;
-    height: calc(100% - 26px);
+    width: 24px;
+    height: calc(100% - 24px);
     order: 2; }
   #graphI .graph {
-    width: calc(100% - 26px);
-    height: calc(100% - 26px);
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
     order: 1;
     position: relative;
     display: flex;
@@ -743,11 +759,11 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #300a24;
+      background-color: #3b0d21;
       cursor: pointer;
       z-index: 5; }
       #graphI .graph > .TBR:hover {
-        background-color: #23071b; }
+        background-color: #2e0a1a; }
       #graphI .graph > .TBR.last-TBR {
         display: none; }
       #graphI .graph > .TBR > .inner-TBR {
@@ -779,14 +795,14 @@ main {
           height: 8px;
           border-size: 1px; } }
   #graphI .graph-NA {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     order: 4; }
   @media all and (max-width: 1024px) {
     #graphI {
       flex: none;
       width: 100vw;
-      height: 30vh; } }
+      height: 25vh; } }
 
 #bubble {
   display: flex;
@@ -806,10 +822,16 @@ main {
     line-height: 1.25em;
     font-weight: bold;
     white-space: nowrap; }
+    @media all and (max-width: 1024px) {
+      #bubble > #bubble-info, #bubble > #bubble-time {
+        font-size: 16px; } }
+    @media all and (max-width: 640px) {
+      #bubble > #bubble-info, #bubble > #bubble-time {
+        font-size: 14px; } }
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #300a24; }
+    color: #3b0d21; }
   #bubble .B {
     color: #0025dd; }
 
