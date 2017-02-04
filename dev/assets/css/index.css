@@ -652,7 +652,8 @@ main {
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
-      z-index: 10; }
+      z-index: 10;
+      display: none; }
       @media all and (max-width: 1024px) {
         #graph-BG .graph > .BG {
           width: 9px;
@@ -668,11 +669,12 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #3b0d21;
+      background-color: #300a24;
       cursor: pointer;
-      z-index: 5; }
+      z-index: 5;
+      display: none; }
       #graph-BG .graph > .TBR:hover {
-        background-color: #2e0a1a; }
+        background-color: #23071b; }
       #graph-BG .graph > .TBR.last-TBR {
         display: none; }
       #graph-BG .graph > .TBR > .inner-TBR {
@@ -690,7 +692,8 @@ main {
       background-color: #0025dd;
       cursor: pointer;
       z-index: 10;
-      border-radius: 0; }
+      border-radius: 0;
+      display: none; }
       #graph-BG .graph > .B:hover {
         background-color: #001477; }
       @media all and (max-width: 1024px) {
@@ -743,7 +746,8 @@ main {
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
-      z-index: 10; }
+      z-index: 10;
+      display: none; }
       @media all and (max-width: 1024px) {
         #graph-I .graph > .BG {
           width: 9px;
@@ -759,11 +763,12 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #3b0d21;
+      background-color: #300a24;
       cursor: pointer;
-      z-index: 5; }
+      z-index: 5;
+      display: none; }
       #graph-I .graph > .TBR:hover {
-        background-color: #2e0a1a; }
+        background-color: #23071b; }
       #graph-I .graph > .TBR.last-TBR {
         display: none; }
       #graph-I .graph > .TBR > .inner-TBR {
@@ -781,7 +786,8 @@ main {
       background-color: #0025dd;
       cursor: pointer;
       z-index: 10;
-      border-radius: 0; }
+      border-radius: 0;
+      display: none; }
       #graph-I .graph > .B:hover {
         background-color: #001477; }
       @media all and (max-width: 1024px) {
@@ -831,7 +837,7 @@ main {
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #3b0d21; }
+    color: #300a24; }
   #bubble .B {
     color: #0025dd; }
 

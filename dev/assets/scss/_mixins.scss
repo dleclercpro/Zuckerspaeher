@@ -98,15 +98,17 @@
 
 		> .BG {
 			@include dot;
+			display: none;
 		}
 
 		> .TBR {
-
 			@include bar(TBR, $purple, 3%);
+			display: none;
 		}
 
 		> .B {
 			@include square($blue, 20%);
+			display: none;
 		}
 	}
 

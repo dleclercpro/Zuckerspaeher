@@ -1,8 +1,8 @@
-function decodeEntity(str) {
+function decodeEntity (str) {
     return $("<textarea>").html(str).text();
 }
 
-function range(start, stop, step) {
+function range (start, stop, step) {
     if (typeof stop == 'undefined') {
         stop = start;
         start = 0;
@@ -24,7 +24,7 @@ function range(start, stop, step) {
     return result;
 }
 
-function indexSort(x, y = []) {
+function indexSort (x, y = []) {
     // Couple indexes with values
   for (i = 0; i < x.length; i++) {
     x[i] = [x[i], i];
@@ -59,7 +59,7 @@ function indexSort(x, y = []) {
   }
 }
 
-function getData(report, reportSection, format = false, limits = []) {
+function getData (report, reportSection, format = false, limits = []) {
     // Create data arrays
     var x = [];
     var y = [];
@@ -111,7 +111,7 @@ function getData(report, reportSection, format = false, limits = []) {
     return [X, Y];
 }
 
-function convertTime(t, format) {
+function convertTime (t, format) {
     // Identify type of input given
     var isArray = true;
 
@@ -223,7 +223,7 @@ function convertTime(t, format) {
     return result[0];
 }
 
-function rankBG(BG, BGScale) {
+function rankBG (BG, BGScale) {
     BG = parseFloat(BG);
 
     if (BG < BGScale[0]) {
@@ -239,7 +239,7 @@ function rankBG(BG, BGScale) {
     }
 }
 
-function rankdBGdt(dBGdt, dBGdtScale) {
+function rankdBGdt (dBGdt, dBGdtScale) {
     dBGdt = parseFloat(dBGdt);
     
     var arrowUp = decodeEntity("&#8593;");
@@ -261,27 +261,24 @@ function rankdBGdt(dBGdt, dBGdtScale) {
     }
 }
 
-function round(x, n) {
+function round (x, n) {
     x = parseFloat(x);
     e = Math.pow(10, n);
 
     return (Math.round(x * e) / e).toFixed(n);
 }
 
-function roundBG(BG) {
-    BG = parseFloat(BG);
+function showGradually (e, t, flex) {
+    for (i = 0; i < e.length; i++) {
+        (function (i) {
+            setTimeout(function () {
+                if (flex) {
+                    e.eq(i).css("display", "flex");
+                    e.eq(i).hide();
+                }
 
-    return (Math.round(BG * 10) / 10).toFixed(1);
-}
-
-function roundTBR(TBR) {
-    TBR = parseInt(TBR);
-
-    return Math.round(TBR).toFixed(0);
-}
-
-function roundB(B) {
-    B = parseInt(B);
-
-    return (Math.round(B * 10) / 10).toFixed(1);
+                e.eq(i).fadeIn();
+            }, t * i);
+        }(i));
+    } 
 }

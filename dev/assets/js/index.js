@@ -21,7 +21,7 @@ $(document).ready(function () {
 
     // OBJECTS
 
-    function Graph(name) {
+    function Graph (name) {
 
         /*======================================================================
             GENERATEAXIS
@@ -82,8 +82,14 @@ $(document).ready(function () {
 
             // Format axis ticks if desired
             if (format) {
+                var t;
+
                 axis.children().each(function () {
-                    $(this).html(convertTime($(this).html(), format));
+                    // Convert time
+                    t = convertTime($(this).html(), format);
+
+                    // Set time
+                    $(this).html(t);
                 });
             }
 
@@ -246,6 +252,9 @@ $(document).ready(function () {
                 });
             }
 
+            // Gradually show dots
+            showGradually(dots, 25, false);
+
             // Show bubble
             var bubble = this.bubble;
 
@@ -396,6 +405,9 @@ $(document).ready(function () {
                 });
             }
 
+            // Gradually show bars
+            showGradually(bars, 100, true);
+
             // Show bubble
             var bubble = this.bubble;
 
@@ -422,7 +434,7 @@ $(document).ready(function () {
         this.bubble = new Bubble();
     }
 
-    function Bubble() {
+    function Bubble () {
 
         /*======================================================================
             INIT
@@ -538,7 +550,7 @@ $(document).ready(function () {
         }
     }
 
-    function GraphBG(name) {
+    function GraphBG (name) {
 
         // Extend object
         Graph.apply(this, [name]);
@@ -561,7 +573,7 @@ $(document).ready(function () {
         }
     }
 
-    function GraphI(name) {
+    function GraphI (name) {
 
         // Extend object
         Graph.apply(this, [name]);
@@ -652,7 +664,7 @@ $(document).ready(function () {
         }
     }
 
-    function Dash() {
+    function Dash () {
 
         /*======================================================================
             GET
@@ -707,7 +719,7 @@ $(document).ready(function () {
 
 
     // FUNCTIONS
-    function init() {
+    function init () {
 
     }
 
