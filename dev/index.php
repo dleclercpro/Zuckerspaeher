@@ -67,7 +67,7 @@ Notes : -
 				</div>
 				<div id="dash-factors">
 					<p><b>ISF:</b> <span id="dash-ISF">---</span> mmol/L/U</p>
-					<p><b>CSF:</b> <span id="dash-CSF">---</span> U/g</p>
+					<p><b>CSF:</b> <span id="dash-CSF">---</span> g/U</p>
 				</div>
 				<div id="dash-age">
 					<p><b>SAGE:</b> <span id="dash-SAGE">---</span> h</p>
