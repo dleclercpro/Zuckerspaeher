@@ -93,20 +93,35 @@ $(document).ready(function () {
                 });
             }
 
-            // If x-axis, add dead corner
+            // If x-axis
             if (label == "x") {
+                // Store infos on axis
+                this.x = z;
+                this.dX = dZ;
+                this.xMin = z.min();
+                this.xMax = z.max();
+
+                // Add dead corner
                 this.buildCorner();
+            }
+            // If y-axis
+            else if (label == "y") {
+                // Store infos on axis
+                this.y = z;
+                this.dY = dZ;
+                this.yMin = z.min();
+                this.yMax = z.max();
             }
 
             // Append axis to graph
-            this.e.append(axis);
+            this.self.append(axis);
         }
 
         /*======================================================================
             BUILDCORNER
         ======================================================================*/
         this.buildCorner = function () {
-            this.e.append($("<div class='graph-NA'></div>"));
+            this.self.append($("<div class='graph-NA'></div>"));
         }
 
         /*======================================================================
@@ -115,14 +130,14 @@ $(document).ready(function () {
         this.buildDots = function (type, data) {
             // If inside section of graph does not already exist, create it
             var exists = true;
-            var graph = this.e.find(".graph");
+            var graph = this.self.find(".graph");
 
             if (!graph.length) {
                 exists = false;
                 graph = ($("<div class='graph'></div>"));
 
                 // Append section to graph
-                this.e.append(graph);
+                this.self.append(graph);
             }
 
             // Store data in separate arrays
@@ -155,14 +170,14 @@ $(document).ready(function () {
         this.buildBars = function (type, data) {
             // If section of graph does not already exist, create it
             var exists = true;
-            var graph = this.e.find(".graph");
+            var graph = this.self.find(".graph");
 
             if (!graph.length) {
                 exists = false;
                 graph = ($("<div id='graph'></div>"));
 
                 // Append section to graph
-                this.e.append(graph);
+                this.self.append(graph);
             }
 
             // Store data in separate arrays
@@ -197,9 +212,9 @@ $(document).ready(function () {
         /*======================================================================
             SHOWDOTS
         ======================================================================*/
-        this.showDots = function (type, units, round, y0, xMin, yMin, dX, dY) {
+        this.showDots = function (type, units, round, y0) {
             // Get graph section in which dots must displayed
-            var graph = this.e.find(".graph");
+            var graph = this.self.find(".graph");
 
             // Get axis ticks
             var xTicks = $(".graph-x-axis-tick");
@@ -233,13 +248,13 @@ $(document).ready(function () {
             var dy;
 
             for (i = 0; i < dots.length; i++) {
-                dx = X[i] - xMin;
-                dy = y0 ? y0 : Y[i] - yMin;
+                dx = X[i] - this.xMin;
+                dy = y0 ? y0 : Y[i] - this.yMin;
 
-                x[i] = dx / dX * graph.outerWidth()
+                x[i] = dx / this.dX * graph.outerWidth()
                     - radiusDot
                     - thicknessXTick / 2;
-                y[i] = dy / dY * graph.outerHeight()
+                y[i] = dy / this.dY * graph.outerHeight()
                     - radiusDot
                     + thicknessYTick / 2;
             }
@@ -274,9 +289,9 @@ $(document).ready(function () {
         /*======================================================================
             SHOWBARS
         ======================================================================*/
-        this.showBars = function (type, units, round, y0, xMin, dX, dY) {
+        this.showBars = function (type, units, round, y0) {
             // Get graph section in which bars must displayed
-            var graph = this.e.find(".graph");
+            var graph = this.self.find(".graph");
 
             // Get bars
             var bars = graph.find("." + type);
@@ -304,9 +319,9 @@ $(document).ready(function () {
                 dh = Math.abs(Y[i] - y0);
                 dy = y0;
 
-                w[i] = dw / dX * graph.outerWidth();
-                h[i] = dh / dY * graph.outerHeight();
-                y[i] = dy / dY * graph.outerHeight() - thicknessBorder / 2;
+                w[i] = dw / this.dX * graph.outerWidth();
+                h[i] = dh / this.dY * graph.outerHeight();
+                y[i] = dy / this.dY * graph.outerHeight() - thicknessBorder / 2;
 
                 // If low bar
                 if (Y[i] < y0) {
@@ -428,7 +443,7 @@ $(document).ready(function () {
             MAIN
         ======================================================================*/
         // Store node to which future graph elements should be attached
-        this.e = $("#graph-" + name);
+        this.self = $("#graph-" + name);
 
         // Generate a bubble for graph
         this.bubble = new Bubble();
@@ -439,10 +454,9 @@ $(document).ready(function () {
         /*======================================================================
             INIT
         ======================================================================*/
-        this.init = function (element, units, round,
-            format = "HH:MM - DD.MM.YYYY") {
+        this.init = function (e, units, round, format = "HH:MM - DD.MM.YYYY") {
             // Store element on which bubble will give infos
-            this.element = element;
+            this.e = e;
 
             // Store element units
             this.units = units;
@@ -468,7 +482,7 @@ $(document).ready(function () {
             var bubble = $("#bubble");
 
             // Store bubble and its infos
-            this.e = bubble;
+            this.self = bubble;
             this.info = bubble.find("#bubble-info");
             this.time = bubble.find("#bubble-time");
         }
@@ -477,10 +491,10 @@ $(document).ready(function () {
             UPDATE
         ======================================================================*/
         this.update = function () {
-            // Get bubble info
-            var x = this.element.attr("x");
-            var y = this.element.attr("y");
-            var type = this.element.attr("class");
+            // Get infos about element
+            var x = this.e.attr("x");
+            var y = this.e.attr("y");
+            var type = this.e.attr("class");
 
             // Convert time if desired
             if (this.format) {
@@ -503,15 +517,14 @@ $(document).ready(function () {
         ======================================================================*/
         this.show = function (offsetX = 8, offsetY = 0) {
             // Define bubble coordinates
-            var offsetTop = parseFloat(this.element.parent().position().top);
-            var x = parseFloat(this.element.position().left) +
-                    parseFloat(this.element.css("width")) + offsetX;
-            var y = parseFloat(this.element.position().top) + offsetY +
-                    offsetTop;
+            var offsetTop = parseFloat(this.e.parent().position().top);
+            var x = parseFloat(this.e.position().left) +
+                    parseFloat(this.e.css("width")) + offsetX;
+            var y = parseFloat(this.e.position().top) + offsetY + offsetTop;
             
             // Define bubble size
-            var w = this.e.outerWidth();
-            var h = this.e.outerHeight();
+            var w = this.self.outerWidth();
+            var h = this.self.outerHeight();
 
             // Adjust position of bubble due to it being in content element
             if (offsetTop) {
@@ -519,34 +532,34 @@ $(document).ready(function () {
             }
 
             // Position bubble on graph
-            this.e.css({
+            this.self.css({
                 "left": x + "px",
                 "top": y + "px"
             });
 
             // If bubble exceeds width of graph
-            if (x + w > this.element.parent().outerWidth()) {
-                this.e.css({
+            if (x + w > this.e.parent().outerWidth()) {
+                this.self.css({
                     "left": x - 3 * offsetX - w + "px"
                 });
             }
 
             // If bubble exceeds height of graph
-            if (y + h > this.element.parent().outerHeight()) {
-                this.e.css({
+            if (y + h > this.e.parent().outerHeight()) {
+                this.self.css({
                     "top": y - 3 * offsetY - h + "px"
                 });
             }
 
             // Show bubble
-            this.e.show();
+            this.self.show();
         }
 
         /*======================================================================
             HIDE
         ======================================================================*/
         this.hide = function () {
-            this.e.hide();
+            this.self.hide();
         }
     }
 
@@ -560,7 +573,7 @@ $(document).ready(function () {
         ======================================================================*/
         this.colorBGs = function (BGScale) {
             // Get graph section in which are the BGs
-            var graph = this.e.find(".graph");
+            var graph = this.self.find(".graph");
 
             // Get BGs
             var BGs = graph.find(".BG");
@@ -581,7 +594,7 @@ $(document).ready(function () {
         /*======================================================================
             PROFILETBRS
         ======================================================================*/
-        this.profileTBRs = function (data, x0, dX, dtMax = 5 * 60 * 1000) {
+        this.profileTBRs = function (data, dt = 5 * 60 * 1000) {
             // Store data in separate arrays
             var TBRTimes = [];
             var TBRs = [];
@@ -608,7 +621,7 @@ $(document).ready(function () {
             for (i = 0; i < n; i++) {
                 // Add current point in time to allow next comparisons
                 if (i == n - 1) {
-                    TBRTimes.push(x0);
+                    TBRTimes.push(this.xMax);
                     TBRs.push(y.last());
                     TBRUnits.push(z.last());
                 }
@@ -617,7 +630,7 @@ $(document).ready(function () {
                 if (TBRs[i] == 0 &&
                     TBRDurations[i] == 0 &&
                     TBRUnits[i + 1] != TBRUnits[i] &&
-                    TBRTimes[i + 1] - TBRTimes[i] < dtMax) {
+                    TBRTimes[i + 1] - TBRTimes[i] < dt) {
                     continue;
                 }
 
@@ -638,7 +651,7 @@ $(document).ready(function () {
             }
 
             // Add first point left of graph
-            x.unshift(x0 - dX);
+            x.unshift(this.xMin);
             y.unshift(100);
             z.unshift(TBRUnits.first());
 
@@ -654,10 +667,10 @@ $(document).ready(function () {
         /*======================================================================
             BUILDTBRS
         ======================================================================*/
-        this.buildTBRs = function (data, x0, dX) {
+        this.buildTBRs = function (data) {
 
             // Compute TBR profile
-            var TBRProfile = this.profileTBRs(data, x0, dX);
+            var TBRProfile = this.profileTBRs(data);
 
             // Build TBRs
             this.buildBars("TBR", [TBRProfile[0], TBRProfile[1]]);
@@ -671,23 +684,23 @@ $(document).ready(function () {
         ======================================================================*/
         this.get = function () {
             // Store dash and its infos
-            this.e = $("#dash");
-            this.live = this.e.find("#dash-live");
-            this.delta = this.e.find("#dash-delta");
-            this.basal = this.e.find("#dash-basal");
-            this.onBoard = this.e.find("#dash-on-board");
-            this.factors = this.e.find("#dash-factors");
-            //this.age = this.e.find("#dash-age");
+            this.self = $("#dash");
+            this.live = this.self.find("#dash-live");
+            this.delta = this.self.find("#dash-delta");
+            this.basal = this.self.find("#dash-basal");
+            this.onBoard = this.self.find("#dash-on-board");
+            this.factors = this.self.find("#dash-factors");
+            //this.age = this.self.find("#dash-age");
 
             this.BG = $("#dash-BG").add("#user-BG");
             this.arrow = $("#dash-arrow").add("#user-arrow");
 
-            this.dBG = this.e.find("#dash-dBG");
-            this.dBGdt = this.e.find("#dash-dBG-dt");
-            this.TBR = this.e.find("#dash-TBR");
-            this.BR = this.e.find("#dash-BR");
-            this.IOB = this.e.find("#dash-IOB");
-            this.COB = this.e.find("#dash-COB");
+            this.dBG = this.self.find("#dash-dBG");
+            this.dBGdt = this.self.find("#dash-dBG-dt");
+            this.TBR = this.self.find("#dash-TBR");
+            this.BR = this.self.find("#dash-BR");
+            this.IOB = this.self.find("#dash-IOB");
+            this.COB = this.self.find("#dash-COB");
         }
 
         /*======================================================================
@@ -753,6 +766,12 @@ $(document).ready(function () {
     // Build x-axis for time
     graphI.buildAxis(x, x0, dx, dX, "x", "HH:MM");
 
+    // Share x-axis between I and BG graphs
+    graphBG.x = graphI.x;
+    graphBG.dX = graphI.dX;
+    graphBG.xMin = graphI.xMin;
+    graphBG.xMax = graphI.xMax;
+
     // Build y-axis for I
     graphI.buildAxis(yI, null, null, null, "y", false);
 
@@ -767,7 +786,7 @@ $(document).ready(function () {
     graphBG.buildDots("BG", BGs);
 
     // Show BG dots
-    graphBG.showDots("BG", "mmol/L", 1, false, x0 - dX, yBG.min(), dX, dYBG);
+    graphBG.showDots("BG", "mmol/L", 1, false);
 
     // Color BG dots
     graphBG.colorBGs(BGScale);
@@ -780,17 +799,17 @@ $(document).ready(function () {
     graphI.buildDots("B", Bs);
 
     // Show B dots
-    graphI.showDots("B", "U", 1, y0, x0 - dX, yI.min(), dX, dYI);
+    graphI.showDots("B", "U", 1, y0);
 
     // Get TBRs
     var TBRs = getData("ajax/insulin.json", "Temporary Basals",
         "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
 
     // Build TBR bars
-    graphI.buildTBRs(TBRs, x0, dX);
+    graphI.buildTBRs(TBRs);
 
     // Show TBR bars
-    graphI.showBars("TBR", "%", 0, y0, x0 - dX, dX, dYI);
+    graphI.showBars("TBR", "%", 0, y0);
 
     // Create dash object
     var dash = new Dash();
