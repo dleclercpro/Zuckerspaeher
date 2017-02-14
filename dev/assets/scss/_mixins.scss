@@ -173,7 +173,7 @@
 	}
 
 	&.last-#{$bar} {
-		display: none;
+		display: none !important;
 	}
 
 	> .inner-#{$bar} {

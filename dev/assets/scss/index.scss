@@ -10,7 +10,6 @@ Notes : -
 // IMPORTS
 @import "normalize";
 @import "reset";
-@import "fonts";
 @import "config";
 @import "mixins";
 @import "placeholders";
@@ -24,7 +23,7 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	background-color: $gray;
-	font-family: $font_stack;
+	font-family: $font_normal;
 }
 
 header {
@@ -46,9 +45,14 @@ header {
 		align-items: center;
 		height: 100%;
 		color: $white;
-		font-family: "Gloria Hallelujah";
-		font-size: 30px;
+		font-family: $font_highlight;
+		font-size: 38px;
 		font-weight: bold;
+		line-height: 1em;
+
+		span {
+			color: $light-gray;
+		}
 	}
 
 	> #buttons {
@@ -72,7 +76,7 @@ main {
 
 #user {
 	@include box($black-trans);
-	@include absolute($top: 5%, $left: $padding-header + 0.5%);
+	@include absolute($top: 5%, $left: $padding-header);
 	align-items: center;
 	width: 45vw;
 	max-width: 450px;
@@ -120,7 +124,7 @@ main {
 		display: flex;
 		flex-direction: column;
 		margin-left: 5%;
-		font-size: 18px;
+		font-size: 17px;
 		color: $white;
 
 		@include mq(mobile) {
@@ -129,6 +133,7 @@ main {
 
 		> p {
 			line-height: 1.25em;
+			white-space: nowrap;
 
 			@include mq(tablet) {
 				font-size: 16px;
@@ -171,7 +176,7 @@ main {
 				text-align: center;
 				font-size: 45px;
 				font-weight: bold;
-				font-family: "Gloria Hallelujah";
+				font-family: $font_highlight;
 			}
 			
 			> #user-BG {
@@ -188,7 +193,7 @@ main {
 
 #dash {
 	@include box($black-trans);
-	@include absolute($top: 5%, $right: $padding-header + 0.5%);
+	@include absolute($top: 5%, $right: $padding-header);
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-end;
@@ -218,16 +223,15 @@ main {
 
 	> #dash-live {
 		display: flex;
-		margin-bottom: 15px;
-		font-family: "Gloria Hallelujah";
-		font-size: 45px;
+		margin-bottom: 10px;
+		font-family: $font_highlight;
+		font-size: 50px;
 		font-weight: bold;
 		line-height: 1em;
 		color: $white;
 
 		@include mq(tablet) {
 			font-size: 40px;
-			margin-bottom: 10px;
 		}
 
 		@include mq(mobile) {
@@ -246,12 +250,13 @@ main {
 
 	> #dash-delta {
 		display: flex;
-		font-size: 18px;
+		font-size: 17px;
 		line-height: 1.25em;
 		color: $white;
 
 		> p {
 			margin-right: 15px;
+			white-space: nowrap;
 
 			@include mq(tablet) {
 				font-size: 16px;
@@ -286,27 +291,18 @@ main {
 
 #graph-BG {
 	@include graph($width-y-axis, 0px);
-	flex: none;
 	width: 100vw;
-	height: 75vh;
+	height: $height-graph-BG;
+	flex: none;
 	order: 3;
-
-	@include mq(tablet) {
-		width: 100vw;
-		height: calc(100vh - #{$height-header} - 25vh);
-	}
 }
 
 #graph-I {
 	@include graph($width-y-axis, $height-x-axis);
+	width: 100vw;
+	height: $height-graph-I;
 	flex: 1;
 	order: 4;
-
-	@include mq(tablet) {
-		flex: none;
-		width: 100vw;
-		height: 25vh;
-	}
 }
 
 #bubble {
@@ -319,7 +315,7 @@ main {
 
 	> #bubble-info {
 		color: $white;
-		font-size: 18px;
+		font-size: 17px;
 		line-height: 1.25em;
 		font-weight: bold;
 		white-space: nowrap;
@@ -373,7 +369,7 @@ main {
 		margin: 0 0 15px 0;
 		font-weight: bold;
 		font-size: 22px;
-		font-family: "Gloria Hallelujah";
+		font-family: $font_highlight;
 	}
 
 	> form {

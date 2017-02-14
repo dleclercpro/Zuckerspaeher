@@ -11,7 +11,7 @@ Notes : -
  * 1. Change the default font family in all browsers (opinionated).
  * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
-@import url("https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu+Condensed|Gloria+Hallelujah");
+@import url("https://fonts.googleapis.com/css?family=Kreon|Gloria+Hallelujah|Slabo+27px|Ubuntu+Condensed|Shadows+Into+Light");
 html {
   font-family: sans-serif;
   /* 1 */
@@ -377,7 +377,6 @@ p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
   margin: 0;
   padding: 0;
   font-size: 1em;
-  font-weight: normal;
   text-decoration: none; }
 
 * {
@@ -392,7 +391,7 @@ header > #buttons {
   display: flex;
   justify-content: flex-end;
   flex: none;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: #eeeeee; }
   @media all and (max-width: 640px) {
@@ -430,14 +429,14 @@ body {
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #201d1d;
-  font-family: "Ubuntu Condensed", sans-serif; }
+  background-color: #1b1b1b;
+  font-family: "Kreon", serif; }
 
 header {
   display: flex;
   flex: none;
   width: 100vw;
-  height: 65px;
+  height: 70px;
   padding: 0 3%;
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: 0 3px 3px black;
@@ -450,9 +449,12 @@ header {
     align-items: center;
     height: 100%;
     color: #eeeeee;
-    font-family: "Gloria Hallelujah";
-    font-size: 30px;
-    font-weight: bold; }
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    line-height: 1em; }
+    header > #branding span {
+      color: #484848; }
   header > #buttons {
     width: 20px;
     margin-left: auto; }
@@ -475,7 +477,7 @@ main {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
   position: absolute;
   top: 5%;
-  left: 3.5%;
+  left: 3%;
   align-items: center;
   width: 45vw;
   max-width: 450px;
@@ -516,13 +518,14 @@ main {
     display: flex;
     flex-direction: column;
     margin-left: 5%;
-    font-size: 18px;
+    font-size: 17px;
     color: #eeeeee; }
     @media all and (max-width: 640px) {
       #user > #user-details {
         flex-direction: column-reverse; } }
     #user > #user-details > p {
-      line-height: 1.25em; }
+      line-height: 1.25em;
+      white-space: nowrap; }
       @media all and (max-width: 1024px) {
         #user > #user-details > p {
           font-size: 16px; } }
@@ -543,7 +546,7 @@ main {
           text-align: center;
           font-size: 45px;
           font-weight: bold;
-          font-family: "Gloria Hallelujah"; } }
+          font-family: "Shadows Into Light", sans-serif; } }
       #user > #user-details > #user-live > #user-BG, #user > #user-details > #user-live > #user-arrow {
         background: none; }
       #user > #user-details > #user-live > #user-arrow {
@@ -558,7 +561,7 @@ main {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
   position: absolute;
   top: 5%;
-  right: 3.5%;
+  right: 3%;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
@@ -585,16 +588,15 @@ main {
       left: 0; } }
   #dash > #dash-live {
     display: flex;
-    margin-bottom: 15px;
-    font-family: "Gloria Hallelujah";
-    font-size: 45px;
+    margin-bottom: 10px;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 50px;
     font-weight: bold;
     line-height: 1em;
     color: #eeeeee; }
     @media all and (max-width: 1024px) {
       #dash > #dash-live {
-        font-size: 40px;
-        margin-bottom: 10px; } }
+        font-size: 40px; } }
     @media all and (max-width: 640px) {
       #dash > #dash-live {
         display: none; } }
@@ -605,11 +607,12 @@ main {
       margin-left: 5px; }
   #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors, #dash > #dash-age {
     display: flex;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.25em;
     color: #eeeeee; }
     #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
-      margin-right: 15px; }
+      margin-right: 15px;
+      white-space: nowrap; }
       @media all and (max-width: 1024px) {
         #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
           font-size: 16px; } }
@@ -622,24 +625,24 @@ main {
 #graph-BG {
   display: flex;
   flex-wrap: wrap;
-  flex: none;
   width: 100vw;
-  height: 75vh;
+  height: calc(0.75 * (100vh - 70px));
+  flex: none;
   order: 3; }
   #graph-BG .graph-x-axis {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 24px);
+    width: calc(100% - 28px);
     height: 0px;
     order: 3; }
   #graph-BG .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
-    width: 24px;
+    width: 28px;
     height: calc(100% - 0px);
     order: 2; }
   #graph-BG .graph {
-    width: calc(100% - 24px);
+    width: calc(100% - 28px);
     height: calc(100% - 0px);
     order: 1;
     position: relative;
@@ -647,8 +650,8 @@ main {
     align-items: flex-end; }
     #graph-BG .graph > .BG {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
@@ -669,14 +672,14 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #3b0d21;
+      background-color: #300a24;
       cursor: pointer;
       z-index: 5;
       display: none; }
       #graph-BG .graph > .TBR:hover {
-        background-color: #2e0a1a; }
+        background-color: #23071b; }
       #graph-BG .graph > .TBR.last-TBR {
-        display: none; }
+        display: none !important; }
       #graph-BG .graph > .TBR > .inner-TBR {
         width: 50%; }
         #graph-BG .graph > .TBR > .inner-TBR:first-child {
@@ -685,8 +688,8 @@ main {
           border-right: 2px solid #090808; }
     #graph-BG .graph > .B {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border: 2px solid #090808;
       border-radius: 50%;
       background-color: #0025dd;
@@ -707,42 +710,40 @@ main {
           height: 8px;
           border-size: 1px; } }
   #graph-BG .graph-NA {
-    width: 24px;
+    width: 28px;
     height: 0px;
     order: 4; }
-  @media all and (max-width: 1024px) {
-    #graph-BG {
-      width: 100vw;
-      height: calc(100vh - 65px - 25vh); } }
 
 #graph-I {
   display: flex;
   flex-wrap: wrap;
+  width: 100vw;
+  height: calc(0.25 * (100vh - 70px));
   flex: 1;
   order: 4; }
   #graph-I .graph-x-axis {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 24px);
-    height: 24px;
+    width: calc(100% - 28px);
+    height: 28px;
     order: 3; }
   #graph-I .graph-y-axis {
     display: flex;
     flex-direction: column-reverse;
-    width: 24px;
-    height: calc(100% - 24px);
+    width: 28px;
+    height: calc(100% - 28px);
     order: 2; }
   #graph-I .graph {
-    width: calc(100% - 24px);
-    height: calc(100% - 24px);
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
     order: 1;
     position: relative;
     display: flex;
     align-items: flex-end; }
     #graph-I .graph > .BG {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
@@ -763,14 +764,14 @@ main {
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #3b0d21;
+      background-color: #300a24;
       cursor: pointer;
       z-index: 5;
       display: none; }
       #graph-I .graph > .TBR:hover {
-        background-color: #2e0a1a; }
+        background-color: #23071b; }
       #graph-I .graph > .TBR.last-TBR {
-        display: none; }
+        display: none !important; }
       #graph-I .graph > .TBR > .inner-TBR {
         width: 50%; }
         #graph-I .graph > .TBR > .inner-TBR:first-child {
@@ -779,8 +780,8 @@ main {
           border-right: 2px solid #090808; }
     #graph-I .graph > .B {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border: 2px solid #090808;
       border-radius: 50%;
       background-color: #0025dd;
@@ -801,14 +802,9 @@ main {
           height: 8px;
           border-size: 1px; } }
   #graph-I .graph-NA {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     order: 4; }
-  @media all and (max-width: 1024px) {
-    #graph-I {
-      flex: none;
-      width: 100vw;
-      height: 25vh; } }
 
 #bubble {
   display: flex;
@@ -824,7 +820,7 @@ main {
   display: none; }
   #bubble > #bubble-info, #bubble > #bubble-time {
     color: #eeeeee;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.25em;
     font-weight: bold;
     white-space: nowrap; }
@@ -837,7 +833,7 @@ main {
   #bubble .BG {
     background: none; }
   #bubble .TBR {
-    color: #3b0d21; }
+    color: #300a24; }
   #bubble .B {
     color: #0025dd; }
 
@@ -864,7 +860,7 @@ main {
     margin: 0 0 15px 0;
     font-weight: bold;
     font-size: 22px;
-    font-family: "Gloria Hallelujah"; }
+    font-family: "Shadows Into Light", sans-serif; }
   #settings > form > .fieldset {
     display: flex;
     flex-wrap: wrap;
@@ -879,14 +875,14 @@ main {
     #settings > form > .fieldset > input, #settings > form > .fieldset select {
       width: 20%;
       margin-right: 8px;
-      background-color: #201d1d;
+      background-color: #1b1b1b;
       color: #eeeeee;
       border: none;
       border-radius: 3px; }
     #settings > form > .fieldset > #settings-save {
       width: 100%;
       height: 45px;
-      background-color: #201d1d;
+      background-color: #1b1b1b;
       color: #eeeeee; }
       #settings > form > .fieldset > #settings-save:hover, #settings > form > .fieldset > #settings-save:active {
         background-color: #eeeeee;

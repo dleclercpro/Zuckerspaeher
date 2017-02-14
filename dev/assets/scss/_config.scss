@@ -5,30 +5,39 @@ $breakpoints: (
 );
 
 // Fonts
-//$font_stack: "Slabo 27px", serif;
-$font_stack: 'Ubuntu Condensed', sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Kreon|Gloria+Hallelujah|Slabo+27px|Ubuntu+Condensed|Shadows+Into+Light");
+$font_normal: "Kreon", serif;
+$font_highlight: "Shadows Into Light", sans-serif;
 
 // Colors
 $black: #090808;
 $white: #eeeeee;
-//$gray: #1b1b1b;
-$gray: #201d1d;
+$gray: #1b1b1b;
+//$gray: #201d1d;
+$light-gray: #484848;
 $green: #99e500;
 $orange: #ff7500;
 $red: #e50000;
 //$purple: #3b0085;
-$purple: #3b0d21;
-//$purple: #300a24;
+//$purple: #3b0d21;
+$purple: #300a24;
 $blue: #0025dd;
 $black-trans: rgba(0, 0, 0, 0.75);
 
 // Sizes
-$width-y-axis: 24px;
+$width-y-axis: 28px;
 $height-x-axis: $width-y-axis;
-$height-header: 65px;
+$height-header: 70px;
 $tablet-height-dash: 190px;
 $mobile-height-user: 100px;
-$radius-dot: 5px;
+
+$ratio-graphs: 3;
+$a: $ratio-graphs / (1 + $ratio-graphs);
+$b: 1 / (1 + $ratio-graphs);
+$height-graph-BG: calc(#{$a} * (100vh - #{$height-header}));
+$height-graph-I: calc(#{$b} * (100vh - #{$height-header}));
+
+$radius-dot: 5.5px;
 $tablet-radius-dot: 4.5px;
 $mobile-radius-dot: 4px;
 $border-radius-dot: 2px;

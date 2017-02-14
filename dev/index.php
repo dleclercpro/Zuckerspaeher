@@ -25,7 +25,7 @@ Notes : -
 
 		<header>
 			<div id="branding">
-				<p>MeinNS</p>
+				<p>Zucker<span>späher</span></p>
 			</div>
 			<div id="buttons">
 				<img id="settings-button" src="assets/svg/menu.svg">
