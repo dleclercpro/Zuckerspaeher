@@ -1,3 +1,0 @@
-# MeinNS
-
-My own website.
