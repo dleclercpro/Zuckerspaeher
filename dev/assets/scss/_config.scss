@@ -1,15 +1,25 @@
+/*******************************************************************************
+
+	Title : _config.scss
+	Author : David Leclerc
+	Date : 12.12.2016
+	Notes : -
+
+*******************************************************************************/
+
+// =============================================================================
 // Breakpoints
+// =============================================================================
+
 $breakpoints: (
-	"mobile": 640px,
+	"phone": 640px,
 	"tablet": 1024px
 );
 
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Kreon|Gloria+Hallelujah|Slabo+27px|Ubuntu+Condensed|Shadows+Into+Light");
-$font_normal: "Kreon", serif;
-$font_highlight: "Shadows Into Light", sans-serif;
-
+// =============================================================================
 // Colors
+// =============================================================================
+
 $black: #090808;
 $white: #eeeeee;
 $gray: #1b1b1b;
@@ -24,25 +34,58 @@ $purple: #300a24;
 $blue: #0025dd;
 $black-trans: rgba(0, 0, 0, 0.75);
 
+// =============================================================================
+// Fonts
+// =============================================================================
+
+//Gloria+Hallelujah|Slabo+27px|Ubuntu+Condensed
+@import url("https://fonts.googleapis.com/css?family=Kreon|Shadows+Into+Light");
+
+// Fonts
+$font-copy: "Kreon", serif;
+$font-highlight: "Shadows Into Light", sans-serif;
+
+// Fonts dictionary
+$fonts: (
+	"logo": (family: $font-highlight, size: 38px, weight: bold, color: $white),
+	"user-status": (weight: bold, color: $red),
+	"user-BG": (family: $font-highlight, size: 45px, weight: bold),
+	"user-details": (size: (desktop: 17px, tablet: 16px, phone: 15px), line-height: 1.25em),
+	"dash-BG": (family: $font-highlight, size: (desktop: 50px, tablet: 40px), weight: bold, line-height: 1em, color: $white),
+	"dash-details": (size: (desktop: 17px, tablet: 16px, phone: 15px), line-height: 1.25em),
+	"settings-head": (family: $font-highlight, size: 25px, weight: bold),
+	"settings-text": (weight: bold),
+	"bubble-text": (size: (desktop: 17px, tablet: 16px, phone: 15px), weight: bold, line-height: 1.25em, color: $white),
+	"graph-tick": (size: (desktop: 15px, phone: 14px), weight: bold),
+	"button": (size: (desktop: 18px, phone: 15px), weight: bold)
+);
+
+// =============================================================================
 // Sizes
+// =============================================================================
+
 $width-y-axis: 28px;
 $height-x-axis: $width-y-axis;
 $height-header: 70px;
 $tablet-height-dash: 190px;
-$mobile-height-user: 100px;
+$phone-height-user: 100px;
+$padding-header: 3%;
+$border-radius: 3px;
+$shadow-radius: 3px;
 
+// =============================================================================
+// Graph properties
+// =============================================================================
 $ratio-graphs: 3;
 $a: $ratio-graphs / (1 + $ratio-graphs);
 $b: 1 / (1 + $ratio-graphs);
 $height-graph-BG: calc(#{$a} * (100vh - #{$height-header}));
 $height-graph-I: calc(#{$b} * (100vh - #{$height-header}));
 
+// Dots and squares
 $radius-dot: 5.5px;
 $tablet-radius-dot: 4.5px;
-$mobile-radius-dot: 4px;
+$phone-radius-dot: 4px;
 $border-radius-dot: 2px;
 $tablet-border-radius-dot: 1px;
-$mobile-border-radius-dot: 1px;
-$border-radius: 3px;
-$shadow-radius: 3px;
-$padding-header: 3%;
+$phone-border-radius-dot: 1px;

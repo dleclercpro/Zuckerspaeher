@@ -1,9 +1,9 @@
 /*******************************************************************************
 
-Title : index.scss
-Author : David Leclerc
-Date : 12.12.2016
-Notes : -
+	Title : index.scss
+	Author : David Leclerc
+	Date : 12.12.2016
+	Notes : -
 
 *******************************************************************************/
 
@@ -23,7 +23,8 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	background-color: $gray;
-	font-family: $font_normal;
+	font-family: $font-copy;
+	color: $white;
 }
 
 header {
@@ -40,18 +41,17 @@ header {
 		padding: 0 5%;
 	}
 
-	> #branding {
+	> #logo {
 		display: flex;
 		align-items: center;
 		height: 100%;
-		color: $white;
-		font-family: $font_highlight;
-		font-size: 38px;
-		font-weight: bold;
-		line-height: 1em;
 
-		span {
-			color: $light-gray;
+		> p {
+			@include font("logo");
+
+			> span {
+				color: $light-gray;
+			}
 		}
 	}
 
@@ -93,9 +93,9 @@ main {
 		padding: 15px 5vw;
 	}
 
-	@include mq(mobile) {
+	@include mq(phone) {
 		width: 100vw;
-		height: $mobile-height-user;
+		height: $phone-height-user;
 		justify-content: center;
 		cursor: pointer;
 	}
@@ -113,7 +113,7 @@ main {
 			border-width: 4px;
 		}
 
-		@include mq(mobile) {
+		@include mq(phone) {
 			width: 75px;
 			height: 75px;
 			border-width: 3px;
@@ -124,28 +124,18 @@ main {
 		display: flex;
 		flex-direction: column;
 		margin-left: 5%;
-		font-size: 17px;
-		color: $white;
 
-		@include mq(mobile) {
+		@include mq(phone) {
 			flex-direction: column-reverse;
 		}
 
 		> p {
-			line-height: 1.25em;
+			@include font("user-details");
 			white-space: nowrap;
-
-			@include mq(tablet) {
-				font-size: 16px;
-			}
-
-			@include mq(mobile) {
-				font-size: 15px;
-			}
 		}
 
 		> #user-name {
-			@include mq(mobile) {
+			@include mq(phone) {
 				display: none;
 			}
 		}
@@ -164,19 +154,16 @@ main {
 		}
 
 		> #user-status {
-			font-weight: bold;
-			color: red;
+			@include font("user-status");
 		}
 
 		> #user-live {
 			display: none;
 
-			@include mq(mobile) {
+			@include mq(phone) {
 				display: block;
 				text-align: center;
-				font-size: 45px;
-				font-weight: bold;
-				font-family: $font_highlight;
+				@include font("user-BG");
 			}
 			
 			> #user-BG {
@@ -212,29 +199,21 @@ main {
 		padding: 15px 5vw;
 	}
 
-	@include mq(mobile) {
+	@include mq(phone) {
 		display: none;
 		width: 100vw;
 		height: auto;
 		align-items: center;
-		top: $mobile-height-user;
+		top: $phone-height-user;
 		left: 0;
 	}
 
 	> #dash-live {
 		display: flex;
 		margin-bottom: 10px;
-		font-family: $font_highlight;
-		font-size: 50px;
-		font-weight: bold;
-		line-height: 1em;
-		color: $white;
+		@include font("dash-BG");
 
-		@include mq(tablet) {
-			font-size: 40px;
-		}
-
-		@include mq(mobile) {
+		@include mq(phone) {
 			display: none;
 		}
 
@@ -250,21 +229,11 @@ main {
 
 	> #dash-delta {
 		display: flex;
-		font-size: 17px;
-		line-height: 1.25em;
-		color: $white;
 
 		> p {
+			@include font("dash-details");
 			margin-right: 15px;
 			white-space: nowrap;
-
-			@include mq(tablet) {
-				font-size: 16px;
-			}
-
-			@include mq(mobile) {
-				font-size: 15px;
-			}
 
 			&:last-child {
 				margin-right: 0;
@@ -314,19 +283,8 @@ main {
 	display: none;
 
 	> #bubble-info {
-		color: $white;
-		font-size: 17px;
-		line-height: 1.25em;
-		font-weight: bold;
+		@include font("bubble-text");
 		white-space: nowrap;
-
-		@include mq(tablet) {
-			font-size: 16px;
-		}
-
-		@include mq(mobile) {
-			font-size: 14px;
-		}
 	}
 
 	> #bubble-time {
@@ -364,12 +322,10 @@ main {
 		padding: 15px 5%;
 	}
 
-	> h1 {
+	> p {
 		width: 50%;
 		margin: 0 0 15px 0;
-		font-weight: bold;
-		font-size: 22px;
-		font-family: $font_highlight;
+		@include font("settings-head");
 	}
 
 	> form {
@@ -387,7 +343,7 @@ main {
 				display: flex;
 				align-items: center;
 				margin-right: 8px;
-				font-weight: bold;
+				@include font("settings-text");
 			}
 
 			> input, select {

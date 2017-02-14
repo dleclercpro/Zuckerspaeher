@@ -18,13 +18,13 @@ Notes : -
 		<!--
 		<link rel="stylesheet" type="text/css" href="assets/css/main.min.css">
 		-->
-		<title>MeinNS - 2016</title>
+		<title>Zuckerspäher</title>
 	</head>
 
 	<body>
 
 		<header>
-			<div id="branding">
+			<div id="logo">
 				<p>Zucker<span>späher</span></p>
 			</div>
 			<div id="buttons">
@@ -38,8 +38,8 @@ Notes : -
 				<div id="user-details">
 					<p id="user-name">Leclerc, David</p>
 					<p id="user-birthday">27.12.1991</p>
-					<p id="user-cgm">Dexcom G5</p>
-					<p id="user-pump">MiniMed 640G</p>
+					<p id="user-cgm">Dexcom G4</p>
+					<p id="user-pump">MiniMed 722</p>
 					<p id="user-status">23:55 - 21.12.2016 (<span>50</span>%)</p>
 					<p id="user-live">
 						<span id="user-BG" class="last-BG">---</span>
@@ -84,7 +84,7 @@ Notes : -
 			</div>
 
 			<div id="settings">
-				<h1>Settings</h1>
+				<p>Settings</p>
 
 				<form>
 					<div class="fieldset">

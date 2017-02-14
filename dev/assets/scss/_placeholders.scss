@@ -1,3 +1,12 @@
+/*******************************************************************************
+
+	Title : _placeholders.scss
+	Author : David Leclerc
+	Date : 12.12.2016
+	Notes : -
+
+*******************************************************************************/
+
 %center {
 	display: flex;
 	justify-content: center;
@@ -8,13 +17,7 @@
 	display: flex;
 	justify-content: flex-end;
 	flex: none;
-	font-size: 15px;
-	font-weight: bold;
-	color: $white;
-
-	@include mq(mobile) {
-		font-size: 14px;
-	}
+	@include font("graph-tick");
 }
 
 %graph-y-axis-tick {
@@ -23,7 +26,7 @@
 	padding-bottom: 2px;
 	border-bottom: 1px dashed $white;
 
-	@include mq(mobile) {
+	@include mq(phone) {
 		padding-left: 3px;
 	}
 }
@@ -39,7 +42,7 @@
 	padding: 0;
 	border-radius: $border-radius;
 	border: none;
-	font-weight: bold;
+	@include font("button");
 
 	&:hover {
 		cursor: pointer;

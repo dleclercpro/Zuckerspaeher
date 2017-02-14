@@ -1,14 +1,32 @@
+/*******************************************************************************
+
+	Title : _mixins.scss
+	Author : David Leclerc
+	Date : 12.12.2016
+	Notes : -
+
+*******************************************************************************/
+
+// GENERAL MIXINS
+
+// =============================================================================
+// MQ
+// =============================================================================
+
 @mixin mq($type) {
 	
-	@media all and (max-width: map-get($breakpoints, $type)) {
+	@media only screen and (max-width: map-get($breakpoints, $type)) {
 		@content;
 	}
 }
 
-@mixin size($width: null, $height: null,
-	$tablet-width: null, $tablet-height: null,
-	$mobile-width: null, $mobile-height: null) {
+// =============================================================================
+// SIZE
+// =============================================================================
 
+@mixin size($width: null, $height: null,
+			$tablet-width: null, $tablet-height: null,
+			$phone-width: null, $phone-height: null) {
 	width: $width;
 	height: $height;
 
@@ -17,18 +35,18 @@
 		height: $tablet-height;
 	}
 
-	@include mq(mobile) {
-		width: $mobile-width;
-		height: $mobile-height;
+	@include mq(phone) {
+		width: $phone-width;
+		height: $phone-height;
 	}
 }
 
-@mixin position($position,
-	$top: null,
-	$right: null,
-	$bottom: null,
-	$left: null) {
+// =============================================================================
+// POSITION
+// =============================================================================
 
+@mixin position($position,
+				$top: null, $right: null, $bottom: null, $left: null) {
   position: $position;
   top: $top;
   right: $right;
@@ -48,6 +66,119 @@
 	@include position(fixed, $args...);
 }
 
+// =============================================================================
+// FONT
+// =============================================================================
+
+@mixin font($font) {
+	// Get font from config file
+	$font: map-get($fonts, $font);
+
+	// Set font-family
+	@if map-has-key($font, family) {
+		font-family: map-get($font, family);
+	}
+
+	// Set font-size
+	@if map-has-key($font, size) {
+		$size: map-get($font, size);
+
+		// Deal with MQ
+		@if type-of($size) == "map" {
+
+			@if map-has-key($size, desktop) {
+				font-size: map-get($size, desktop)
+			}
+
+			@if map-has-key($size, tablet) {
+				@include mq(tablet) {
+					font-size: map-get($size, tablet)
+				}
+			}
+
+			@if map-has-key($size, phone) {
+				@include mq(phone) {
+					font-size: map-get($size, phone)
+				}
+			}
+		}
+
+		@else {
+			font-size: $size;
+		}
+	}
+
+	// Set font-weight
+	@if map-has-key($font, weight) {
+		$weight: map-get($font, weight);
+
+		// Deal with MQ
+		@if type-of($weight) == "map" {
+
+			@if map-has-key($weight, desktop) {
+				font-weight: map-get($weight, desktop)
+			}
+
+			@if map-has-key($weight, tablet) {
+				@include mq(tablet) {
+					font-weight: map-get($weight, tablet)
+				}
+			}
+
+			@if map-has-key($weight, phone) {
+				@include mq(phone) {
+					font-weight: map-get($weight, phone)
+				}
+			}
+		}
+
+		@else {
+			font-weight: $weight;
+		}
+	}
+
+	// Set line-height
+	@if map-has-key($font, line-height) {
+		$line-height: map-get($font, line-height);
+
+		// Deal with MQ
+		@if type-of($line-height) == "map" {
+
+			@if map-has-key($line-height, desktop) {
+				line-height: map-get($line-height, desktop)
+			}
+
+			@if map-has-key($line-height, tablet) {
+				@include mq(tablet) {
+					line-height: map-get($line-height, tablet)
+				}
+			}
+
+			@if map-has-key($line-height, phone) {
+				@include mq(phone) {
+					line-height: map-get($line-height, phone)
+				}
+			}
+		}
+		@else {
+			line-height: $line-height;
+		}
+	}
+
+	// Set color
+	@if map-has-key($font, color) {
+		color: map-get($font, color);
+	}
+}
+
+
+
+// CUSTOM MIXINS
+
+// =============================================================================
+// BOX
+// =============================================================================
+
 @mixin box($color) {
 	display: flex;
 	flex: none;
@@ -56,6 +187,14 @@
 	background-color: $color;
 	box-shadow: $shadow-radius $shadow-radius $shadow-radius $black-trans;
 }
+
+
+
+// GRAPH MIXINS
+
+// =============================================================================
+// GRAPH
+// =============================================================================
 
 @mixin graph($w, $h) {
 	display: flex;
@@ -119,10 +258,15 @@
 	}
 }
 
+// =============================================================================
+// DOT
+// =============================================================================
+
 @mixin dot($color: null, $degree: null) {
 	@include absolute;
-	width: 2 * $radius-dot;
-	height: 2 * $radius-dot;
+	@include size(2 * $radius-dot, 2 * $radius-dot,
+		2 * $tablet-radius-dot, 2 * $tablet-radius-dot,
+		2 * $phone-radius-dot, 2 * $phone-radius-dot)
 	border: $border-radius-dot solid $black;
 	border-radius: 50%;
 	background-color: $color;
@@ -136,22 +280,26 @@
 	}
 
 	@include mq("tablet") {
-		width: 2 * $tablet-radius-dot;
-		height: 2 * $tablet-radius-dot;
 		border-size: $tablet-border-radius-dot;
 	}
 
-	@include mq("mobile") {
-		width: 2 * $mobile-radius-dot;
-		height: 2 * $mobile-radius-dot;
-		border-size: $mobile-border-radius-dot;
+	@include mq("phone") {
+		border-size: $phone-border-radius-dot;
 	}
 }
+
+// =============================================================================
+// SQUARE
+// =============================================================================
 
 @mixin square($color: null, $degree: null) {
 	@include dot($color, $degree);
 	border-radius: 0;
 }
+
+// =============================================================================
+// BAR
+// =============================================================================
 
 @mixin bar($bar, $color: null, $degree: null) {
 	display: flex;
