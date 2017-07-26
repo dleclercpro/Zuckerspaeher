@@ -267,9 +267,6 @@ $(document).ready(function () {
                 });
             }
 
-            // Gradually show dots
-            showGradually(dots, 25, false);
-
             // Show bubble
             var bubble = this.bubble;
 
@@ -419,9 +416,6 @@ $(document).ready(function () {
                     "margin-bottom": y[i] + "px"
                 });
             }
-
-            // Gradually show bars
-            showGradually(bars, 100, true);
 
             // Show bubble
             var bubble = this.bubble;
@@ -779,8 +773,8 @@ $(document).ready(function () {
     graphBG.buildAxis(yBG, null, null, null, "y", false);
 
     // Get BGs
-    var BGs = getData("ajax/BG.json", false,
-        "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+    var BGs = getData("reports/BG.json", false,
+        "YYYY.MM.DD - HH:MM:SS");
 
     // Build BG dots
     graphBG.buildDots("BG", BGs);
@@ -792,8 +786,8 @@ $(document).ready(function () {
     graphBG.colorBGs(BGScale);
 
     // Get Bs
-    var Bs = getData("ajax/treatments.json", "Boluses",
-        "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+    var Bs = getData("reports/treatments.json", "Boluses",
+        "YYYY.MM.DD - HH:MM:SS");
 
     // Build B dots
     graphI.buildDots("B", Bs);
@@ -802,8 +796,8 @@ $(document).ready(function () {
     graphI.showDots("B", "U", 1, y0);
 
     // Get TBRs
-    var TBRs = getData("ajax/treatments.json", "Temporary Basals",
-        "YYYY.MM.DD - HH:MM:SS", [x0 - dX, x0]);
+    var TBRs = getData("reports/treatments.json", "Temporary Basals",
+        "YYYY.MM.DD - HH:MM:SS");
 
     // Build TBR bars
     graphI.buildTBRs(TBRs);

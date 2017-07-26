@@ -106,6 +106,11 @@ function getData (report, reportSection, format = false, limits = []) {
             }
         }
     }
+    // Otherwise, keep it all
+    else {
+        X = x;
+        Y = y;
+    }
 
     // Return data
     return [X, Y];
