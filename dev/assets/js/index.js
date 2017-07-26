@@ -639,14 +639,14 @@ $(document).ready(function () {
                 if (TBRDurations[i] != 0 &&
                     TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
                     x.push(TBRTimes[i] + TBRDurations[i]);
-                    y.push(100);
+                    y.push(1);
                     z.push(z.last());
                 }
             }
 
             // Add first point left of graph
             x.unshift(this.xMin);
-            y.unshift(100);
+            y.unshift(1);
             z.unshift(TBRUnits.first());
 
             // Add current point in time
@@ -739,10 +739,10 @@ $(document).ready(function () {
     var x0 = now.getTime();
     var dx = 1 * 60 * 60 * 1000; // Time step (h)
     var dX = 12 * 60 * 60 * 1000; // Time range (h)
-    var y0 = 100; // Basal baseline (%)
+    var y0 = 1; // Basal baseline (U/h)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
     var dYBG = yBG.max() - yBG.min();
-    var yI = [0, 100, 200]; // %
+    var yI = [0, 1, 2]; // U/h
     var dYI = yI.max() - yI.min();
     var BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
     var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)

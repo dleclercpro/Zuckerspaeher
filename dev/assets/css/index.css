@@ -689,8 +689,7 @@ main {
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
-      z-index: 10;
-      display: none; }
+      z-index: 10; }
       @media only screen and (max-width: 1024px) {
         #graph-BG .graph > .BG {
           width: 9px;
@@ -712,8 +711,7 @@ main {
       border-bottom: 2px solid #090808;
       background-color: #300a24;
       cursor: pointer;
-      z-index: 5;
-      display: none; }
+      z-index: 5; }
       #graph-BG .graph > .TBR:hover {
         background-color: #23071b; }
       #graph-BG .graph > .TBR.last-TBR {
@@ -733,8 +731,7 @@ main {
       background-color: #0025dd;
       cursor: pointer;
       z-index: 10;
-      border-radius: 0;
-      display: none; }
+      border-radius: 0; }
       @media only screen and (max-width: 1024px) {
         #graph-BG .graph > .B {
           width: 9px;
@@ -789,8 +786,7 @@ main {
       border: 2px solid #090808;
       border-radius: 50%;
       cursor: pointer;
-      z-index: 10;
-      display: none; }
+      z-index: 10; }
       @media only screen and (max-width: 1024px) {
         #graph-I .graph > .BG {
           width: 9px;
@@ -812,8 +808,7 @@ main {
       border-bottom: 2px solid #090808;
       background-color: #300a24;
       cursor: pointer;
-      z-index: 5;
-      display: none; }
+      z-index: 5; }
       #graph-I .graph > .TBR:hover {
         background-color: #23071b; }
       #graph-I .graph > .TBR.last-TBR {
@@ -833,8 +828,7 @@ main {
       background-color: #0025dd;
       cursor: pointer;
       z-index: 10;
-      border-radius: 0;
-      display: none; }
+      border-radius: 0; }
       @media only screen and (max-width: 1024px) {
         #graph-I .graph > .B {
           width: 9px;
