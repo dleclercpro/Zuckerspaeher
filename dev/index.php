@@ -56,7 +56,7 @@ Notes : -
 				</div>
 				<div id="dash-delta">
 					<p><b>&Delta;BG:</b> <span id="dash-dBG">---</span> mmol/L</p>
-					<p><b>&Delta;BG/&Delta;t:</b> <span id="dash-dBG-dt">---</span> mmol/L/m</p>
+					<p><b>&Delta;BG/&Delta;t:</b> <span id="dash-dBG-dt">---</span> mmol/L/h</p>
 				</div>
 				<div id="dash-basal">
 					<p><b>TBR:</b> <span id="dash-TBR">---</span>%</p>

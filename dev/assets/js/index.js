@@ -710,7 +710,7 @@ $(document).ready(function () {
             var lastBGType = BGs.eq(-1).attr("class");
             var dBG = round(BGs.eq(-1).attr("y") - BGs.eq(-2).attr("y"), 1);
             var dt = (parseInt(BGs.eq(-1).attr("x")) -
-                parseInt(BGs.eq(-2).attr("x"))) / 1000 / 60; // (m)
+                parseInt(BGs.eq(-2).attr("x"))) / 1000 / 60 / 60; // (h)
             var dBGdt = round(dBG / dt, 1);
 
             // Update infos in dash
@@ -745,7 +745,7 @@ $(document).ready(function () {
     var yI = [0, 1, 2]; // U/h
     var dYI = yI.max() - yI.min();
     var BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
-    var dBGdtScale = [-0.15, -0.075, 0.075, 0.15]; // (mmol/L/m)
+    var dBGdtScale = [-0.15 * 60, -0.075 * 60, 0.075 * 60, 0.15 * 60]; // (mmol/L/h)
 
     // Resizing
     if ($(window).outerWidth() < 800) {
