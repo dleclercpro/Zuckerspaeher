@@ -59,7 +59,7 @@ Notes : -
 					<p><b>&Delta;BG/&Delta;t:</b> <span id="dash-dBG-dt">---</span> mmol/L/h</p>
 				</div>
 				<div id="dash-basal">
-					<p><b>TBR:</b> <span id="dash-TBR">---</span>%</p>
+					<p><b>TB:</b> <span id="dash-TB">---</span> U/h</p>
 					<p><b>BR:</b> <span id="dash-BR">---</span> U/h</p>
 				</div>
 				<div id="dash-on-board">

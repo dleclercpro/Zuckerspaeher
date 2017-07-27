@@ -239,8 +239,8 @@
 			@include dot;
 		}
 
-		> .TBR {
-			@include bar(TBR, $purple, 3%);
+		> .TB {
+			@include bar(TB, $purple, 3%);
 		}
 
 		> .B {

@@ -144,7 +144,6 @@ function convertTime (t, format) {
             var hour = date.getHours();
             var minute = date.getMinutes();
             var second = date.getSeconds();
-            var millisecond = date.getMilliseconds(0);
 
             // Store time conversion
             switch(format) {
@@ -190,7 +189,6 @@ function convertTime (t, format) {
                     var hour = t[i].slice(-8, -6);
                     var minute = t[i].slice(-5, -3);
                     var second = t[i].slice(-2);
-                    var millisecond = 0;
                     break;
 
                 case "HH:MM - DD.MM.YYYY":
@@ -200,7 +198,43 @@ function convertTime (t, format) {
                     var hour = t[i].slice(0, 2);
                     var minute = t[i].slice(3, 5);
                     var second = 0;
-                    var millisecond = 0;
+                    break;
+
+                case "HH:MM":
+                    // Get now
+                    var now = new Date();
+
+                    // Get yesterday
+                    var yesterday = new Date();
+                    yesterday.setDate(now.getDate() - 1);
+
+                    // Read time
+                    var hour = t[i].slice(0, 2);
+                    var minute = t[i].slice(3, 5);
+                    var second = 0;
+
+                    // Define considered time
+                    var time = new Date();
+                    time.setHours(hour);
+                    time.setMinutes(minute);
+                    time.setSeconds(second);
+
+                    // If later than now
+                    if (time > now)
+                    {
+                        // Define date
+                        var year = yesterday.getFullYear();
+                        var month = yesterday.getMonth() + 1;
+                        var day = yesterday.getDate();
+                    }
+                    // Otherwise
+                    else
+                    {
+                        var year = now.getFullYear();
+                        var month = now.getMonth() + 1;
+                        var day = now.getDate();
+                    }
+
                     break;
 
                 default:
@@ -213,7 +247,6 @@ function convertTime (t, format) {
             date.setHours(hour);
             date.setMinutes(minute);
             date.setSeconds(second);
-            date.setMilliseconds(millisecond);
 
             // Store time conversion
             result.push(date.getTime());

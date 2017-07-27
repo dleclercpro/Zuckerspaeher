@@ -39,7 +39,7 @@ $(document).ready(function () {
             z.unshift(z0 - dZ);
 
             return z;
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             BUILDAXIS
@@ -115,14 +115,14 @@ $(document).ready(function () {
 
             // Append axis to graph
             this.self.append(axis);
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             BUILDCORNER
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildCorner = function () {
             this.self.append($("<div class='graph-NA'></div>"));
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             BUILDDOTS
@@ -162,7 +162,7 @@ $(document).ready(function () {
 
             // Append dots to inside section of graph
             graph.append(dots);
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             BUILDBARS
@@ -207,7 +207,7 @@ $(document).ready(function () {
 
             // Append bars to inside section of graph
             graph.append(bars);
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             SHOWDOTS
@@ -281,7 +281,7 @@ $(document).ready(function () {
                     bubble.hide();
                 });
             }
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             SHOWBARS
@@ -431,7 +431,7 @@ $(document).ready(function () {
                     bubble.hide();
                 });
             }
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             MAIN
@@ -466,7 +466,7 @@ $(document).ready(function () {
 
             // Update bubble
             this.update();
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             GET
@@ -479,7 +479,7 @@ $(document).ready(function () {
             this.self = bubble;
             this.info = bubble.find("#bubble-info");
             this.time = bubble.find("#bubble-time");
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             UPDATE
@@ -504,7 +504,7 @@ $(document).ready(function () {
             this.time.html(x);
             this.info.html("<span class='" + type + "'>" + y + "</span>" +
                 " " + this.units);
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             SHOW
@@ -547,7 +547,7 @@ $(document).ready(function () {
 
             // Show bubble
             this.self.show();
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             HIDE
@@ -586,28 +586,28 @@ $(document).ready(function () {
         Graph.apply(this, [name]);
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            PROFILETBRS
+            PROFILETBS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        this.profileTBRs = function (data, dt = 5 * 60 * 1000) {
+        this.profileTBs = function (data, dt = 5 * 60 * 1000) {
             // Store data in separate arrays
-            var TBRTimes = [];
-            var TBRs = [];
-            var TBRUnits = [];
-            var TBRDurations = [];
+            var TBTimes = [];
+            var TBs = [];
+            var TBUnits = [];
+            var TBDurations = [];
 
             // Decouple data
             for (i = 0; i < data[0].length; i++) {
-                TBRTimes[i] = data[0][i];
-                TBRs[i] = data[1][i][0];
-                TBRUnits[i] = data[1][i][1];
-                TBRDurations[i] = data[1][i][2] * 60 * 1000;
+                TBTimes[i] = data[0][i];
+                TBs[i] = data[1][i][0];
+                TBUnits[i] = data[1][i][1];
+                TBDurations[i] = data[1][i][2] * 60 * 1000;
             }
 
-            // Sort TBR times in case they aren't already
-            indexSort(TBRTimes, [TBRs, TBRUnits, TBRDurations]);
+            // Sort TB times in case they aren't already
+            indexSort(TBTimes, [TBs, TBUnits, TBDurations]);
 
-            // Reconstruct TBR profile
-            var n = TBRTimes.length; // Number of entries
+            // Reconstruct TB profile
+            var n = TBTimes.length; // Number of entries
             var x = []; // Times
             var y = []; // Values
             var z = []; // Units
@@ -615,30 +615,30 @@ $(document).ready(function () {
             for (i = 0; i < n; i++) {
                 // Add current point in time to allow next comparisons
                 if (i == n - 1) {
-                    TBRTimes.push(this.xMax);
-                    TBRs.push(y.last());
-                    TBRUnits.push(z.last());
+                    TBTimes.push(this.xMax);
+                    TBs.push(y.last());
+                    TBUnits.push(z.last());
                 }
 
-                //Ignore TBR cancel associated with unit change
-                if (TBRs[i] == 0 &&
-                    TBRDurations[i] == 0 &&
-                    TBRUnits[i + 1] != TBRUnits[i] &&
-                    TBRTimes[i + 1] - TBRTimes[i] < dt) {
+                //Ignore TB cancel associated with unit change
+                if (TBs[i] == 0 &&
+                    TBDurations[i] == 0 &&
+                    TBUnits[i + 1] != TBUnits[i] &&
+                    TBTimes[i + 1] - TBTimes[i] < dt) {
                     continue;
                 }
 
-                // Add TBR to profile if different than last
-                if (TBRs[i] != y.last() || TBRUnits[i] != z.last()) {
-                    x.push(TBRTimes[i]);
-                    y.push(TBRs[i]);
-                    z.push(TBRUnits[i]);
+                // Add TB to profile if different than last
+                if (TBs[i] != y.last() || TBUnits[i] != z.last()) {
+                    x.push(TBTimes[i]);
+                    y.push(TBs[i]);
+                    z.push(TBUnits[i]);
                 }
 
-                // Add a point in time if current TBR ran completely
-                if (TBRDurations[i] != 0 &&
-                    TBRTimes[i] + TBRDurations[i] < TBRTimes[i + 1]) {
-                    x.push(TBRTimes[i] + TBRDurations[i]);
+                // Add a point in time if current TB ran completely
+                if (TBDurations[i] != 0 &&
+                    TBTimes[i] + TBDurations[i] < TBTimes[i + 1]) {
+                    x.push(TBTimes[i] + TBDurations[i]);
                     y.push(1);
                     z.push(z.last());
                 }
@@ -647,27 +647,48 @@ $(document).ready(function () {
             // Add first point left of graph
             x.unshift(this.xMin);
             y.unshift(1);
-            z.unshift(TBRUnits.first());
+            z.unshift(TBUnits.first());
 
             // Add current point in time
-            x.push(TBRTimes.last());
-            y.push(TBRs.last());
-            z.push(TBRUnits.last());
+            x.push(TBTimes.last());
+            y.push(TBs.last());
+            z.push(TBUnits.last());
 
-            // Give user TBR profile
+            // Give user TB profile
             return [x, y, z];
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            BUILDTBRS
+         PROFILEBASAL
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        this.profileBasal = function (data, dt = 5 * 60 * 1000) {
+            // Store data in separate arrays
+            var basalTimes = [];
+            var basal = [];
+
+            // Decouple data
+            for (i = 0; i < data[0].length; i++) {
+                basalTimes[i] = data[0][i];
+                basal[i] = data[1][i];
+            }
+
+            // Return basal profile
+            return [basalTimes, basal];
+        };
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            BUILDTBS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        this.buildTBRs = function (data) {
+        this.buildTBs = function (dataTBs, dataBasal) {
 
-            // Compute TBR profile
-            var TBRProfile = this.profileTBRs(data);
+            // Compute TB profile
+            var TBProfile = this.profileTBs(dataTBs);
 
-            // Build TBRs
-            this.buildBars("TBR", [TBRProfile[0], TBRProfile[1]]);
+            // Compute basal profile
+            var basalProfile = this.profileBasal(dataBasal);
+
+            // Build TBs
+            this.buildBars("TB", [TBProfile[0], TBProfile[1]]);
         }
     }
 
@@ -691,19 +712,19 @@ $(document).ready(function () {
 
             this.dBG = this.self.find("#dash-dBG");
             this.dBGdt = this.self.find("#dash-dBG-dt");
-            this.TBR = this.self.find("#dash-TBR");
+            this.TB = this.self.find("#dash-TB");
             this.BR = this.self.find("#dash-BR");
             this.IOB = this.self.find("#dash-IOB");
             this.COB = this.self.find("#dash-COB");
-        }
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             UPDATE
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.update = function () {
-            // Get BGs and TBRs
+            // Get BGs and TBs
             var BGs = $("#graph-BG").find(".BG");
-            var TBRs = $("#graph-I").find(".TBR");
+            var TBs = $("#graph-I").find(".TB");
 
             // Get last BG infos
             var lastBG = BGs.eq(-1).attr("y");
@@ -719,7 +740,7 @@ $(document).ready(function () {
             this.dBG.text(dBG);
             this.dBGdt.text(dBGdt);
             this.arrow.text(rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
-            this.TBR.text(round(TBRs.eq(-2).attr("y"), 1));
+            this.TB.text(round(TBs.eq(-2).attr("y"), 1));
         }
     }
 
@@ -795,15 +816,19 @@ $(document).ready(function () {
     // Show B dots
     graphI.showDots("B", "U", 1, y0);
 
-    // Get TBRs
-    var TBRs = getData("reports/treatments.json", "Temporary Basals",
+    // Get TBs
+    var TBs = getData("reports/treatments.json", "Temporary Basals",
         "YYYY.MM.DD - HH:MM:SS");
 
-    // Build TBR bars
-    graphI.buildTBRs(TBRs);
+    // Get basal
+    var basal = getData("reports/pump.json", "Basal Profile (Standard)",
+        "HH:MM");
 
-    // Show TBR bars
-    graphI.showBars("TBR", "%", 0, y0);
+    // Build TB bars
+    graphI.buildTBs(TBs, basal);
+
+    // Show TB bars
+    graphI.showBars("TB", "U/h", 0, y0);
 
     // Create dash object
     var dash = new Dash();
@@ -830,8 +855,8 @@ $(document).ready(function () {
         // Show B dots
         graphI.showDots("B", "U", 1, y0, x0 - dX, yI.min(), dX, dYI);
 
-        // Show TBR bars
-        graphI.showBars("TBR", "%", 0, y0, x0 - dX, dX, dYI);
+        // Show TB bars
+        graphI.showBars("TB", "U/h", 0, y0, x0 - dX, dX, dYI);
     });
 
     settingsButton.on("click", function () {
