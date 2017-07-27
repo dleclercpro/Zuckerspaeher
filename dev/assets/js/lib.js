@@ -57,6 +57,9 @@ function indexSort (x, y = []) {
     // Reassign sorted values to original arrays
     y[i] = z[i];
   }
+
+  // Return modified arrays
+  return [x, y]
 }
 
 function getData (report, reportSection, format = false, limits = []) {

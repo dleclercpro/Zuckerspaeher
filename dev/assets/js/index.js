@@ -183,6 +183,8 @@ $(document).ready(function () {
             // Store data in separate arrays
             var x = data[0];
             var y = data[1];
+            var x_ = data[2];
+            var y_ = data[3];
 
             // Initialize array for bar elements
             var bars = [];
@@ -604,7 +606,11 @@ $(document).ready(function () {
             }
 
             // Sort TB times in case they aren't already
-            indexSort(TBTimes, [TBs, TBUnits, TBDurations]);
+            var result = indexSort(TBTimes, [TBs, TBUnits, TBDurations]);
+            TBTimes = result[0];
+            TBs = result[1][0];
+            TBUnits = result[1][1];
+            TBDurations = result[1][2];
 
             // Reconstruct TB profile
             var n = TBTimes.length; // Number of entries
@@ -672,6 +678,14 @@ $(document).ready(function () {
                 basal[i] = data[1][i];
             }
 
+            // Sort basal times in case they aren't already
+            var result = indexSort(basalTimes, [basal]);
+            basalTimes = result[0];
+            basal = result[1][0];
+
+            console.log(basalTimes);
+            console.log(basal);
+
             // Return basal profile
             return [basalTimes, basal];
         };
@@ -688,7 +702,7 @@ $(document).ready(function () {
             var basalProfile = this.profileBasal(dataBasal);
 
             // Build TBs
-            this.buildBars("TB", [TBProfile[0], TBProfile[1]]);
+            this.buildBars("TB", [TBProfile[0], TBProfile[1], basalProfile[0], basalProfile[1]]);
         }
     }
 
