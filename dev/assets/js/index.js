@@ -1,4 +1,4 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~========
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Title:    index.js
 
@@ -15,7 +15,7 @@
 
     Notes:    ...
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~========*/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 $(document).ready(function () {
 
@@ -168,6 +168,7 @@ $(document).ready(function () {
             BUILDBARS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildBars = function (type, data) {
+
             // If section of graph does not already exist, create it
             var exists = true;
             var graph = this.self.find(".graph");
@@ -183,8 +184,7 @@ $(document).ready(function () {
             // Store data in separate arrays
             var x = data[0];
             var y = data[1];
-            var x_ = data[2];
-            var y_ = data[3];
+            var h = data[2];
 
             // Initialize array for bar elements
             var bars = [];
@@ -192,7 +192,8 @@ $(document).ready(function () {
             // Build bar elements
             for (i = 0; i < x.length; i++) {
                 bars[i] = $("<div class='" + type + 
-                    "' x='" + x[i] + "' y='" + y[i] + "'></div>");
+                    "' x='" + x[i] + "' y='" + y[i] + "' h='" + h[i] +
+                    "'></div>");
 
                 // Add subelements inside bar
                 for (j = 0; j < 2; j++) {
@@ -217,6 +218,10 @@ $(document).ready(function () {
         this.showDots = function (type, units, round, y0) {
             // Get graph section in which dots must displayed
             var graph = this.self.find(".graph");
+
+            // Get graph dimensions
+            var graphW = graph.outerWidth();
+            var graphH = graph.outerHeight();
 
             // Get axis ticks
             var xTicks = $(".graph-x-axis-tick");
@@ -253,10 +258,10 @@ $(document).ready(function () {
                 dx = X[i] - this.xMin;
                 dy = y0 ? y0 : Y[i] - this.yMin;
 
-                x[i] = dx / this.dX * graph.outerWidth()
+                x[i] = dx / this.dX * graphW
                     - radiusDot
                     - thicknessXTick / 2;
-                y[i] = dy / this.dY * graph.outerHeight()
+                y[i] = dy / this.dY * graphH
                     - radiusDot
                     + thicknessYTick / 2;
             }
@@ -292,6 +297,10 @@ $(document).ready(function () {
             // Get graph section in which bars must displayed
             var graph = this.self.find(".graph");
 
+            // Get graph dimensions
+            var graphW = graph.outerWidth();
+            var graphH = graph.outerHeight();
+
             // Get bars
             var bars = graph.find("." + type);
 
@@ -300,32 +309,38 @@ $(document).ready(function () {
                 || parseFloat(bars.first().css("border-bottom-width"));
 
             // Extract information from bars
-            var X = [];
-            var Y = [];
+            var x = [];
+            var y = [];
+            var h = [];
 
             for (i = 0; i < bars.length; i++) {
-                X[i] = parseFloat(bars.eq(i).attr("x"));
-                Y[i] = parseFloat(bars.eq(i).attr("y"));
+                x[i] = parseFloat(bars.eq(i).attr("x"));
+                y[i] = parseFloat(bars.eq(i).attr("y"));
+                h[i] = parseFloat(bars.eq(i).attr("h"));
             }
 
-            // Compute bar coordinates
+            // Compute space between last bar and now
+            dW = this.xMax - x.last();
+            W = dW / this.dX * graphW;
+
+            // Style graph
+            graph.css("padding-right", W);
+
+            // Compute bar sizes
             var w = [];
-            var h = [];
-            var y = [];
 
             for (i = 0; i < bars.length - 1; i++) {
-                dw = X[i + 1] - X[i];
-                dh = Math.abs(Y[i] - y0);
-                dy = y0;
+                dw = x[i + 1] - x[i];
 
-                w[i] = dw / this.dX * graph.outerWidth();
-                h[i] = dh / this.dY * graph.outerHeight();
-                y[i] = dy / this.dY * graph.outerHeight() - thicknessBorder / 2;
+                w[i] = dw / this.dX * graphW;
+                h[i] = h[i] / this.dY * graphH;
+                y[i] = y[i] / this.dY * graphH - thicknessBorder / 2;
 
                 // If low bar
-                if (Y[i] < y0) {
+                if (h[i] < 0) {
+
                     // Move bar under baseline
-                    y[i] -= h[i];
+                    y[i] += h[i];
 
                     // Recenter bar with axis
                     y[i] += thicknessBorder;
@@ -334,46 +349,59 @@ $(document).ready(function () {
 
             // Style bars
             for (i = 0; i < bars.length; i++) {
+
                 // Define type of bar
-                if (Y[i] > y0) {
+                if (h[i] > 0)
+                {
                     bars.eq(i).addClass("high-" + type);
-                } else if (Y[i] < y0) {
+                }
+                else if (h[i] < 0)
+                {
                     bars.eq(i).addClass("low-" + type);
-                } else {
+                }
+                else
+                {
                     bars.eq(i).addClass("no-" + type);
                 }
 
                 // Push inner bars
-                if (Y[i] > y0) {
+                if (h[i] > 0)
+                {
                     bars.eq(i).children().css("margin-bottom", "auto");
-                } else if (Y[i] < y0) {
+                }
+                else if (h[i] < 0)
+                {
                     bars.eq(i).children().css("margin-top", "auto");
                 }
 
+
+
                 // Draw contours
                 // Higher than baseline
-                if(Y[i] > y0) {
-                    if(i != 0 && Y[i] > Y[i - 1]) {
+                if (h[i] > 0)
+                {
+                    if(i != 0 && h[i] > h[i - 1]) {
                         bars.eq(i).children().first().css({
                             "height": h[i] - h[i - 1]
                         });
                     }
 
-                    if(i != bars.length - 1 && Y[i] > Y[i + 1]) {
+                    if(i != bars.length - 1 && h[i] > h[i + 1]) {
                         bars.eq(i).children().last().css({
                             "height": h[i] - h[i + 1]
                         });
                     }
                 }
                 // Lower than baseline
-                else if (Y[i] < y0) {
-                    if (i != 0 && Y[i] < Y[i - 1]) {
+                else if (h[i] < 0)
+                {
+                    if (i != 0 && h[i] < h[i - 1]) {
                         bars.eq(i).children().first().css({
                             "height": h[i] - h[i - 1]
                         });
                     }
 
-                    if (i != bars.length - 1 && Y[i] < Y[i + 1]) {
+                    if (i != bars.length - 1 && h[i] < h[i + 1]) {
                         bars.eq(i).children().last().css({
                             "height": h[i] - h[i + 1]
                         });
@@ -384,26 +412,36 @@ $(document).ready(function () {
                 // Baseline crossed
                 // From -1 to 1
                 if (i != 0 && (
-                    Y[i - 1] < y0 && Y[i] > y0 ||
-                    Y[i - 1] > y0 && Y[i] < y0)) {
+                    h[i - 1] < 0 && h[i] > 0 ||
+                    h[i - 1] > 0 && h[i] < 0))
+                {
                     bars.eq(i).children().first().css("height", "100%");
                 // From 1 to -1
-                } else if (i != bars.length - 1 && (
-                    Y[i + 1] < y0 && Y[i] > y0 ||
-                    Y[i + 1] > y0 && Y[i] < y0)) {
+                }
+                else if (i != bars.length - 1 && (
+                    h[i + 1] < 0 && h[i] > 0 ||
+                    h[i + 1] > 0 && h[i] < 0))
+                {
                     bars.eq(i).children().last().css("height", "100%");
                 }
 
+
+
                 // Minor bars
-                if (h[i] < 2 * thicknessBorder) {
-                    // Only keep one line for minor bars
-                    h[i] = thicknessBorder;
-                    
-                    if (Y[i] >= y0) {
+                if (Math.abs(h[i]) < 2 * thicknessBorder)
+                {
+                    // Remove unnecessary borders
+                    if (h[i] >= 0)
+                    {
                         bars.eq(i).css("border-top", "none");
-                    } else if (Y[i] < y0) {
+                    }
+                    else if (h[i] < 0)
+                    {
                         bars.eq(i).css("border-bottom", "none");
                     }
+
+                    // Only keep one line for minor bars
+                    h[i] = thicknessBorder;
 
                     // Remove borders on inner bars
                     bars.eq(i).children().css("border", "none");
@@ -414,7 +452,7 @@ $(document).ready(function () {
             for (i = 0; i < bars.length; i++) {
                 bars.eq(i).css({
                     "width": w[i] + "px",
-                    "height": h[i] + "px",
+                    "height": Math.abs(h[i]) + "px",
                     "margin-bottom": y[i] + "px"
                 });
             }
@@ -592,117 +630,37 @@ $(document).ready(function () {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.profileTBs = function (data, dt = 5 * 60 * 1000) {
             // Store data in separate arrays
-            var TBTimes = [];
-            var TBs = [];
-            var TBUnits = [];
-            var TBDurations = [];
+            var t = [];
+            var basal = [];
+            var net = [];
 
             // Decouple data
             for (i = 0; i < data[0].length; i++) {
-                TBTimes[i] = data[0][i];
-                TBs[i] = data[1][i][0];
-                TBUnits[i] = data[1][i][1];
-                TBDurations[i] = data[1][i][2] * 60 * 1000;
+                t[i] = data[0][i];
+                basal[i] = data[1][i][0];
+                net[i] = data[1][i][1];
             }
 
             // Sort TB times in case they aren't already
-            var result = indexSort(TBTimes, [TBs, TBUnits, TBDurations]);
-            TBTimes = result[0];
-            TBs = result[1][0];
-            TBUnits = result[1][1];
-            TBDurations = result[1][2];
-
-            // Reconstruct TB profile
-            var n = TBTimes.length; // Number of entries
-            var x = []; // Times
-            var y = []; // Values
-            var z = []; // Units
-
-            for (i = 0; i < n; i++) {
-                // Add current point in time to allow next comparisons
-                if (i == n - 1) {
-                    TBTimes.push(this.xMax);
-                    TBs.push(y.last());
-                    TBUnits.push(z.last());
-                }
-
-                //Ignore TB cancel associated with unit change
-                if (TBs[i] == 0 &&
-                    TBDurations[i] == 0 &&
-                    TBUnits[i + 1] != TBUnits[i] &&
-                    TBTimes[i + 1] - TBTimes[i] < dt) {
-                    continue;
-                }
-
-                // Add TB to profile if different than last
-                if (TBs[i] != y.last() || TBUnits[i] != z.last()) {
-                    x.push(TBTimes[i]);
-                    y.push(TBs[i]);
-                    z.push(TBUnits[i]);
-                }
-
-                // Add a point in time if current TB ran completely
-                if (TBDurations[i] != 0 &&
-                    TBTimes[i] + TBDurations[i] < TBTimes[i + 1]) {
-                    x.push(TBTimes[i] + TBDurations[i]);
-                    y.push(1);
-                    z.push(z.last());
-                }
-            }
-
-            // Add first point left of graph
-            x.unshift(this.xMin);
-            y.unshift(1);
-            z.unshift(TBUnits.first());
-
-            // Add current point in time
-            x.push(TBTimes.last());
-            y.push(TBs.last());
-            z.push(TBUnits.last());
+            var x = indexSort(t, [net, basal]);
+            t = x[0];
+            basal = x[1][0];
+            net = x[1][1];
 
             // Give user TB profile
-            return [x, y, z];
-        };
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         PROFILEBASAL
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        this.profileBasal = function (data, dt = 5 * 60 * 1000) {
-            // Store data in separate arrays
-            var basalTimes = [];
-            var basal = [];
-
-            // Decouple data
-            for (i = 0; i < data[0].length; i++) {
-                basalTimes[i] = data[0][i];
-                basal[i] = data[1][i];
-            }
-
-            // Sort basal times in case they aren't already
-            var result = indexSort(basalTimes, [basal]);
-            basalTimes = result[0];
-            basal = result[1][0];
-
-            console.log(basalTimes);
-            console.log(basal);
-
-            // Return basal profile
-            return [basalTimes, basal];
+            return [t, net, basal];
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             BUILDTBS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        this.buildTBs = function (dataTBs, dataBasal) {
+        this.buildTBs = function (data) {
 
             // Compute TB profile
-            var TBProfile = this.profileTBs(dataTBs);
-
-            // Compute basal profile
-            var basalProfile = this.profileBasal(dataBasal);
+            var TBProfile = this.profileTBs(data);
 
             // Build TBs
-            this.buildBars("TB", [TBProfile[0], TBProfile[1], basalProfile[0], basalProfile[1]]);
+            this.buildBars("TB", TBProfile);
         }
     }
 
@@ -831,15 +789,11 @@ $(document).ready(function () {
     graphI.showDots("B", "U", 1, y0);
 
     // Get TBs
-    var TBs = getData("reports/treatments.json", "Temporary Basals",
+    var TBs = getData("reports/treatments.json", "Basals",
         "YYYY.MM.DD - HH:MM:SS");
 
-    // Get basal
-    var basal = getData("reports/pump.json", "Basal Profile (Standard)",
-        "HH:MM");
-
     // Build TB bars
-    graphI.buildTBs(TBs, basal);
+    graphI.buildTBs(TBs);
 
     // Show TB bars
     graphI.showBars("TB", "U/h", 0, y0);

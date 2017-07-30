@@ -681,6 +681,7 @@ main {
     order: 1;
     position: relative;
     display: flex;
+    justify-content: flex-end;
     align-items: flex-end; }
     #graph-BG .graph > .BG {
       position: absolute;
@@ -704,23 +705,19 @@ main {
       @media only screen and (max-width: 640px) {
         #graph-BG .graph > .BG {
           border-size: 1px; } }
-    #graph-BG .graph > .TBR {
+    #graph-BG .graph > .TB {
       display: flex;
+      flex: none;
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #300a24;
       cursor: pointer;
       z-index: 5; }
-      #graph-BG .graph > .TBR:hover {
-        background-color: #23071b; }
-      #graph-BG .graph > .TBR.last-TBR {
-        display: none !important; }
-      #graph-BG .graph > .TBR > .inner-TBR {
+      #graph-BG .graph > .TB > .inner-TB {
         width: 50%; }
-        #graph-BG .graph > .TBR > .inner-TBR:first-child {
+        #graph-BG .graph > .TB > .inner-TB:first-child {
           border-left: 2px solid #090808; }
-        #graph-BG .graph > .TBR > .inner-TBR:last-child {
+        #graph-BG .graph > .TB > .inner-TB:last-child {
           border-right: 2px solid #090808; }
     #graph-BG .graph > .B {
       position: absolute;
@@ -778,6 +775,7 @@ main {
     order: 1;
     position: relative;
     display: flex;
+    justify-content: flex-end;
     align-items: flex-end; }
     #graph-I .graph > .BG {
       position: absolute;
@@ -801,23 +799,19 @@ main {
       @media only screen and (max-width: 640px) {
         #graph-I .graph > .BG {
           border-size: 1px; } }
-    #graph-I .graph > .TBR {
+    #graph-I .graph > .TB {
       display: flex;
+      flex: none;
       overflow: hidden;
       border-top: 2px solid #090808;
       border-bottom: 2px solid #090808;
-      background-color: #300a24;
       cursor: pointer;
       z-index: 5; }
-      #graph-I .graph > .TBR:hover {
-        background-color: #23071b; }
-      #graph-I .graph > .TBR.last-TBR {
-        display: none !important; }
-      #graph-I .graph > .TBR > .inner-TBR {
+      #graph-I .graph > .TB > .inner-TB {
         width: 50%; }
-        #graph-I .graph > .TBR > .inner-TBR:first-child {
+        #graph-I .graph > .TB > .inner-TB:first-child {
           border-left: 2px solid #090808; }
-        #graph-I .graph > .TBR > .inner-TBR:last-child {
+        #graph-I .graph > .TB > .inner-TB:last-child {
           border-right: 2px solid #090808; }
     #graph-I .graph > .B {
       position: absolute;
@@ -849,6 +843,14 @@ main {
     width: 28px;
     height: 28px;
     order: 4; }
+  #graph-I > .graph > .low-TB {
+    background-color: #300a24; }
+    #graph-I > .graph > .low-TB:hover {
+      background-color: #1b0614; }
+  #graph-I > .graph > .high-TB {
+    background-color: #484848; }
+    #graph-I > .graph > .high-TB:hover {
+      background-color: #404040; }
 
 #bubble {
   display: flex;
@@ -876,7 +878,7 @@ main {
         font-size: 15px; } }
   #bubble .BG {
     background: none; }
-  #bubble .TBR {
+  #bubble .TB {
     color: #300a24; }
   #bubble .B {
     color: #0025dd; }

@@ -62,7 +62,7 @@ function indexSort (x, y = []) {
   return [x, y]
 }
 
-function getData (report, reportSection, format = false, limits = []) {
+function getData (report, section, format = false, limits = []) {
     // Create data arrays
     var x = [];
     var y = [];
@@ -75,8 +75,8 @@ function getData (report, reportSection, format = false, limits = []) {
     // Read report with AJAX
     $.getJSON(report, function (data) {
         // Get data from particular report section if desired
-        if (reportSection) {
-            data = data[reportSection];
+        if (section) {
+            data = data[section];
         }
 
         // Store data

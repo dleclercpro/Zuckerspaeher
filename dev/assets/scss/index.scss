@@ -272,6 +272,25 @@ main {
 	height: $height-graph-I;
 	flex: 1;
 	order: 4;
+
+	> .graph {
+		
+		> .low-TB {
+			background-color: $purple;
+
+			&:hover {
+				background-color: darken($purple, 5%);
+			}
+		}
+
+		> .high-TB {
+			background-color: $light-gray;
+
+			&:hover {
+				background-color: darken($light-gray, 3%);
+			}
+		}
+	}
 }
 
 #bubble {

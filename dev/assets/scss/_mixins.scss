@@ -233,6 +233,7 @@
 		// Use flexbox to ensure no horizontal gaps between bars due to rounding
 		// errors
 		display: flex;
+		justify-content: flex-end;
 		align-items: flex-end;
 
 		> .BG {
@@ -240,7 +241,7 @@
 		}
 
 		> .TB {
-			@include bar(TB, $purple, 3%);
+			@include bar(TB);
 		}
 
 		> .B {
@@ -300,6 +301,7 @@
 
 @mixin bar($bar, $color: null, $degree: null) {
 	display: flex;
+	flex: none;
 	overflow: hidden;
 	border-top: 2px solid $black;
 	border-bottom: 2px solid $black;
@@ -318,7 +320,7 @@
 	}
 
 	&.last-#{$bar} {
-		display: none !important;
+
 	}
 
 	> .inner-#{$bar} {
