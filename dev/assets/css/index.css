@@ -846,11 +846,11 @@ main {
   #graph-I > .graph > .low-TB {
     background-color: #300a24; }
     #graph-I > .graph > .low-TB:hover {
-      background-color: #1b0614; }
+      background-color: #23071b; }
   #graph-I > .graph > .high-TB {
     background-color: #484848; }
     #graph-I > .graph > .high-TB:hover {
-      background-color: #404040; }
+      background-color: #3b3b3b; }
 
 #bubble {
   display: flex;
