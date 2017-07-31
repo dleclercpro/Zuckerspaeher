@@ -184,16 +184,13 @@ $(document).ready(function () {
             // Store data in separate arrays
             var x = data[0];
             var y = data[1];
-            var h = data[2];
 
             // Initialize array for bar elements
             var bars = [];
 
             // Build bar elements
             for (i = 0; i < x.length; i++) {
-                bars[i] = $("<div class='" + type + 
-                    "' x='" + x[i] + "' y='" + y[i] + "' h='" + h[i] +
-                    "'></div>");
+                bars[i] = $("<div class='" + type + "' x=" + x[i] + " y=" + y[i] + "></div>");
 
                 // Add subelements inside bar
                 for (j = 0; j < 2; j++) {
@@ -311,12 +308,10 @@ $(document).ready(function () {
             // Extract information from bars
             var x = [];
             var y = [];
-            var h = [];
 
             for (i = 0; i < bars.length; i++) {
                 x[i] = parseFloat(bars.eq(i).attr("x"));
                 y[i] = parseFloat(bars.eq(i).attr("y"));
-                h[i] = parseFloat(bars.eq(i).attr("h"));
             }
 
             // Compute space between last bar and now
@@ -328,22 +323,23 @@ $(document).ready(function () {
 
             // Compute bar sizes
             var w = [];
+            var b = [];
 
             for (i = 0; i < bars.length - 1; i++) {
                 dw = x[i + 1] - x[i];
 
                 w[i] = dw / this.dX * graphW;
-                h[i] = h[i] / this.dY * graphH;
-                y[i] = y[i] / this.dY * graphH - thicknessBorder / 2;
+                y[i] = y[i] / this.dY * graphH;
+                b[i] = (y0 - this.yMin) / this.dY * graphH - thicknessBorder / 2;
 
                 // If low bar
-                if (h[i] < 0) {
+                if (y[i] < 0) {
 
                     // Move bar under baseline
-                    y[i] += h[i];
+                    b[i] += y[i];
 
                     // Recenter bar with axis
-                    y[i] += thicknessBorder;
+                    b[i] += thicknessBorder;
                 }
             }
 
@@ -351,11 +347,11 @@ $(document).ready(function () {
             for (i = 0; i < bars.length; i++) {
 
                 // Define type of bar
-                if (h[i] > 0)
+                if (y[i] > 0)
                 {
                     bars.eq(i).addClass("high-" + type);
                 }
-                else if (h[i] < 0)
+                else if (y[i] < 0)
                 {
                     bars.eq(i).addClass("low-" + type);
                 }
@@ -365,45 +361,44 @@ $(document).ready(function () {
                 }
 
                 // Push inner bars
-                if (h[i] > 0)
+                if (y[i] > 0)
                 {
                     bars.eq(i).children().css("margin-bottom", "auto");
                 }
-                else if (h[i] < 0)
+                else if (y[i] < 0)
                 {
                     bars.eq(i).children().css("margin-top", "auto");
                 }
 
-
-
                 // Draw contours
                 // Higher than baseline
-                if (h[i] > 0)
+                if (y[i] > 0)
                 {
-                    if(i != 0 && h[i] > h[i - 1]) {
+                    if(i != 0 && y[i] > y[i - 1]) {
                         bars.eq(i).children().first().css({
-                            "height": h[i] - h[i - 1]
+                            "height": y[i] - y[i - 1]
                         });
                     }
 
-                    if(i != bars.length - 1 && h[i] > h[i + 1]) {
+                    if(i != bars.length - 1 && y[i] > y[i + 1]) {
                         bars.eq(i).children().last().css({
-                            "height": h[i] - h[i + 1]
+                            "height": y[i] - y[i + 1]
                         });
                     }
                 }
                 // Lower than baseline
-                else if (h[i] < 0)
+                else if (y[i] < 0)
                 {
-                    if (i != 0 && h[i] < h[i - 1]) {
+                    if (i != 0 && y[i] < y[i - 1]) {
                         bars.eq(i).children().first().css({
-                            "height": h[i] - h[i - 1]
+                            "height": Math.abs(y[i] - y[i - 1])
                         });
                     }
 
-                    if (i != bars.length - 1 && h[i] < h[i + 1]) {
+                    if (i != bars.length - 1 && y[i] < y[i + 1]) {
+                        console.log(y[i] - y[i + 1]);
                         bars.eq(i).children().last().css({
-                            "height": h[i] - h[i + 1]
+                            "height": Math.abs(y[i] - y[i + 1])
                         });
 
                     }
@@ -412,36 +407,34 @@ $(document).ready(function () {
                 // Baseline crossed
                 // From -1 to 1
                 if (i != 0 && (
-                    h[i - 1] < 0 && h[i] > 0 ||
-                    h[i - 1] > 0 && h[i] < 0))
+                    y[i - 1] < 0 && y[i] > 0 ||
+                    y[i - 1] > 0 && y[i] < 0))
                 {
                     bars.eq(i).children().first().css("height", "100%");
                 // From 1 to -1
                 }
                 else if (i != bars.length - 1 && (
-                    h[i + 1] < 0 && h[i] > 0 ||
-                    h[i + 1] > 0 && h[i] < 0))
+                    y[i + 1] < 0 && y[i] > 0 ||
+                    y[i + 1] > 0 && y[i] < 0))
                 {
                     bars.eq(i).children().last().css("height", "100%");
                 }
 
-
-
                 // Minor bars
-                if (Math.abs(h[i]) < 2 * thicknessBorder)
+                if (Math.abs(y[i]) < 2 * thicknessBorder)
                 {
                     // Remove unnecessary borders
-                    if (h[i] >= 0)
+                    if (y[i] >= 0)
                     {
                         bars.eq(i).css("border-top", "none");
                     }
-                    else if (h[i] < 0)
+                    else if (y[i] < 0)
                     {
                         bars.eq(i).css("border-bottom", "none");
                     }
 
                     // Only keep one line for minor bars
-                    h[i] = thicknessBorder;
+                    y[i] = thicknessBorder;
 
                     // Remove borders on inner bars
                     bars.eq(i).children().css("border", "none");
@@ -452,8 +445,8 @@ $(document).ready(function () {
             for (i = 0; i < bars.length; i++) {
                 bars.eq(i).css({
                     "width": w[i] + "px",
-                    "height": Math.abs(h[i]) + "px",
-                    "margin-bottom": y[i] + "px"
+                    "height": Math.abs(y[i]) + "px",
+                    "margin-bottom": b[i] + "px"
                 });
             }
 
@@ -631,24 +624,21 @@ $(document).ready(function () {
         this.profileTBs = function (data, dt = 5 * 60 * 1000) {
             // Store data in separate arrays
             var t = [];
-            var basal = [];
             var net = [];
 
             // Decouple data
             for (i = 0; i < data[0].length; i++) {
                 t[i] = data[0][i];
-                basal[i] = data[1][i][0];
-                net[i] = data[1][i][1];
+                net[i] = data[1][i];
             }
 
             // Sort TB times in case they aren't already
-            var x = indexSort(t, [net, basal]);
+            var x = indexSort(t, [net]);
             t = x[0];
-            basal = x[1][0];
-            net = x[1][1];
+            net = x[1][0];
 
             // Give user TB profile
-            return [t, net, basal];
+            return [t, net];
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -732,10 +722,10 @@ $(document).ready(function () {
     var x0 = now.getTime();
     var dx = 1 * 60 * 60 * 1000; // Time step (h)
     var dX = 12 * 60 * 60 * 1000; // Time range (h)
-    var y0 = 1; // Basal baseline (U/h)
+    var y0 = 0; // Basal baseline (U/h)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
     var dYBG = yBG.max() - yBG.min();
-    var yI = [0, 1, 2]; // U/h
+    var yI = [-4, -2, 0, 2, 4]; // U/h
     var dYI = yI.max() - yI.min();
     var BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
     var dBGdtScale = [-0.15 * 60, -0.075 * 60, 0.075 * 60, 0.15 * 60]; // (mmol/L/h)
@@ -789,7 +779,7 @@ $(document).ready(function () {
     graphI.showDots("B", "U", 1, y0);
 
     // Get TBs
-    var TBs = getData("reports/treatments.json", "Basals",
+    var TBs = getData("reports/treatments.json", "Net Basals",
         "YYYY.MM.DD - HH:MM:SS");
 
     // Build TB bars

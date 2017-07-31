@@ -241,7 +241,7 @@
 		}
 
 		> .TB {
-			@include bar(TB);
+			@include bar(TB, $purple, 3%);
 		}
 
 		> .B {
