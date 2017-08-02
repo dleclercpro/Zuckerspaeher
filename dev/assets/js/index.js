@@ -20,13 +20,13 @@
 $(document).ready(function () {
 
     // OBJECTS
-
     function Graph (name) {
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             GENERATEAXIS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.generateAxis = function (z0, dz, dZ) {
+
             // Initialize empty array
             var z = [];
 
@@ -45,6 +45,7 @@ $(document).ready(function () {
             BUILDAXIS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildAxis = function (z, z0, dz, dZ, label, format) {
+
             // Create axis node
             var axis = $("<div class='graph-" + label + "-axis'></div>");
 
@@ -128,17 +129,12 @@ $(document).ready(function () {
             BUILDDOTS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildDots = function (type, data) {
-            // If inside section of graph does not already exist, create it
-            var exists = true;
-            var graph = this.self.find(".graph");
 
-            if (!graph.length) {
-                exists = false;
-                graph = ($("<div class='graph'></div>"));
+            // Generate inner section
+            var graph = $("<div class='graph'></div>");
 
-                // Append section to graph
-                this.self.append(graph);
-            }
+            // Append section to graph
+            this.self.append(graph);
 
             // Store data in separate arrays
             var x = data[0];
@@ -169,17 +165,11 @@ $(document).ready(function () {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildBars = function (type, data) {
 
-            // If section of graph does not already exist, create it
-            var exists = true;
-            var graph = this.self.find(".graph");
+            // Generate inner section
+            var graph = $("<div id='graph'></div>");
 
-            if (!graph.length) {
-                exists = false;
-                graph = ($("<div id='graph'></div>"));
-
-                // Append section to graph
-                this.self.append(graph);
-            }
+            // Append section to graph
+            this.self.append(graph);
 
             // Store data in separate arrays
             var x = data[0];
@@ -213,7 +203,8 @@ $(document).ready(function () {
             SHOWDOTS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.showDots = function (type, units, round, y0) {
-            // Get graph section in which dots must displayed
+
+            // Get inner section in which dots must displayed
             var graph = this.self.find(".graph");
 
             // Get graph dimensions
@@ -291,7 +282,8 @@ $(document).ready(function () {
             SHOWBARS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.showBars = function (type, units, round, y0) {
-            // Get graph section in which bars must displayed
+
+            // Get inner section in which bars must displayed
             var graph = this.self.find(".graph");
 
             // Get graph dimensions
@@ -318,8 +310,8 @@ $(document).ready(function () {
             dW = this.xMax - x.last();
             W = dW / this.dX * graphW;
 
-            // Style graph
-            graph.css("padding-right", W);
+            // Push bars according to time difference between last bar and now
+            graph.children().last().css("margin-right", W);
 
             // Compute bar sizes
             var w = [];
@@ -469,6 +461,7 @@ $(document).ready(function () {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             MAIN
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
         // Store node to which future graph elements should be attached
         this.self = $("#graph-" + name);
 
@@ -482,6 +475,7 @@ $(document).ready(function () {
             INIT
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.init = function (e, units, round, format = "HH:MM - DD.MM.YYYY") {
+
             // Store element on which bubble will give infos
             this.e = e;
 
@@ -505,6 +499,7 @@ $(document).ready(function () {
             GET
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.get = function () {
+
             // Get bubble
             var bubble = $("#bubble");
 
@@ -518,6 +513,7 @@ $(document).ready(function () {
             UPDATE
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.update = function () {
+
             // Get infos about element
             var x = this.e.attr("x");
             var y = this.e.attr("y");
@@ -543,6 +539,7 @@ $(document).ready(function () {
             SHOW
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.show = function (offsetX = 8, offsetY = 0) {
+
             // Define bubble coordinates
             var offsetTop = parseFloat(this.e.parent().position().top);
             var x = parseFloat(this.e.position().left) +
@@ -599,6 +596,7 @@ $(document).ready(function () {
             COLORBGS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.colorBGs = function (BGScale) {
+
             // Get graph section in which are the BGs
             var graph = this.self.find(".graph");
 
@@ -622,6 +620,7 @@ $(document).ready(function () {
             PROFILETBS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.profileTBs = function (data, dt = 5 * 60 * 1000) {
+
             // Store data in separate arrays
             var t = [];
             var net = [];
@@ -660,6 +659,7 @@ $(document).ready(function () {
             GET
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.get = function () {
+
             // Store dash and its infos
             this.self = $("#dash");
             this.live = this.self.find("#dash-live");
@@ -684,6 +684,7 @@ $(document).ready(function () {
             UPDATE
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.update = function () {
+
             // Get BGs and TBs
             var BGs = $("#graph-BG").find(".BG");
             var TBs = $("#graph-I").find(".TB");

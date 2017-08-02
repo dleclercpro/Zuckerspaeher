@@ -1,0 +1,1 @@
+<div id="graph-<?= $args[0]; ?>"></div>
