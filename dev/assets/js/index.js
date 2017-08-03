@@ -130,11 +130,18 @@ $(document).ready(function () {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildDots = function (type, data) {
 
-            // Generate inner section
-            var graph = $("<div class='graph'></div>");
+            // If inside section of graph does not already exist, create it
+            var graph = this.self.find(".graph");
 
-            // Append section to graph
-            this.self.append(graph);
+            // If graph does not already exist
+            if (!graph.length) {
+
+                // Generate inner section
+                graph = ($("<div class='graph'></div>"));
+
+                // Append section to graph
+                this.self.append(graph);
+            }
 
             // Store data in separate arrays
             var x = data[0];
@@ -165,11 +172,18 @@ $(document).ready(function () {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.buildBars = function (type, data) {
 
-            // Generate inner section
-            var graph = $("<div id='graph'></div>");
+            // If inside section of graph does not already exist, create it
+            var graph = this.self.find(".graph");
 
-            // Append section to graph
-            this.self.append(graph);
+            // If graph does not already exist
+            if (!graph.length) {
+
+                // Generate inner section
+                graph = ($("<div class='graph'></div>"));
+
+                // Append section to graph
+                this.self.append(graph);
+            }
 
             // Store data in separate arrays
             var x = data[0];
