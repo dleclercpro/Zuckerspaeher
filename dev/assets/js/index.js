@@ -168,54 +168,8 @@ $(document).ready(function () {
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            BUILDBARS
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        this.buildBars = function (type, data) {
-
-            // If inside section of graph does not already exist, create it
-            var graph = this.self.find(".graph");
-
-            // If graph does not already exist
-            if (!graph.length) {
-
-                // Generate inner section
-                graph = ($("<div class='graph'></div>"));
-
-                // Append section to graph
-                this.self.append(graph);
-            }
-
-            // Store data in separate arrays
-            var x = data[0];
-            var y = data[1];
-
-            // Initialize array for bar elements
-            var bars = [];
-
-            // Build bar elements
-            for (i = 0; i < x.length; i++) {
-                bars[i] = $("<div class='" + type + "' x=" + x[i] + " y=" + y[i] + "></div>");
-
-                // Add subelements inside bar
-                for (j = 0; j < 2; j++) {
-                    bars[i].append($("<div class='inner-" + type + "'></div>"));
-                }
-
-                // Add first and last classes
-                if (i == 0) {
-                    bars[i].addClass("first-" + type);
-                } else if (i == x.length - 1) {
-                    bars[i].addClass("last-" + type);
-                }
-            }
-
-            // Append bars to inside section of graph
-            graph.append(bars);
-        };
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             SHOWDOTS
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.showDots = function (type, units, round, y0) {
 
             // Get inner section in which dots must displayed
@@ -293,6 +247,52 @@ $(document).ready(function () {
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            BUILDBARS
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        this.buildBars = function (type, data) {
+
+            // If inside section of graph does not already exist, create it
+            var graph = this.self.find(".graph");
+
+            // If graph does not already exist
+            if (!graph.length) {
+
+                // Generate inner section
+                graph = ($("<div class='graph'></div>"));
+
+                // Append section to graph
+                this.self.append(graph);
+            }
+
+            // Store data in separate arrays
+            var x = data[0];
+            var y = data[1];
+
+            // Initialize array for bar elements
+            var bars = [];
+
+            // Build bar elements
+            for (i = 0; i < x.length; i++) {
+                bars[i] = $("<div class='" + type + "' x=" + x[i] + " y=" + y[i] + "></div>");
+
+                // Add subelements inside bar
+                for (j = 0; j < 2; j++) {
+                    bars[i].append($("<div class='inner-" + type + "'></div>"));
+                }
+
+                // Add first and last classes
+                if (i == 0) {
+                    bars[i].addClass("first-" + type);
+                } else if (i == x.length - 1) {
+                    bars[i].addClass("last-" + type);
+                }
+            }
+
+            // Append bars to inside section of graph
+            graph.append(bars);
+        };
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             SHOWBARS
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         this.showBars = function (type, units, round, y0) {
@@ -325,7 +325,7 @@ $(document).ready(function () {
             W = dW / this.dX * graphW;
 
             // Push bars according to time difference between last bar and now
-            graph.children().last().css("margin-right", W);
+            //graph.children().last().css("margin-right", W);
 
             // Compute bar sizes
             var w = [];
@@ -337,20 +337,10 @@ $(document).ready(function () {
                 w[i] = dw / this.dX * graphW;
                 y[i] = y[i] / this.dY * graphH;
                 b[i] = (y0 - this.yMin) / this.dY * graphH - thicknessBorder / 2;
-
-                // If low bar
-                if (y[i] < 0) {
-
-                    // Move bar under baseline
-                    b[i] += y[i];
-
-                    // Recenter bar with axis
-                    b[i] += thicknessBorder;
-                }
             }
 
             // Style bars
-            for (i = 0; i < bars.length; i++) {
+            for (i = 0; i < bars.length - 1; i++) {
 
                 // Define type of bar
                 if (y[i] > 0)
@@ -402,7 +392,6 @@ $(document).ready(function () {
                     }
 
                     if (i != bars.length - 1 && y[i] < y[i + 1]) {
-                        console.log(y[i] - y[i + 1]);
                         bars.eq(i).children().last().css({
                             "height": Math.abs(y[i] - y[i + 1])
                         });
@@ -429,7 +418,7 @@ $(document).ready(function () {
                 // Minor bars
                 if (Math.abs(y[i]) < 2 * thicknessBorder)
                 {
-                    // Remove unnecessary borders
+                    // Remove unnecessary borders and shift bar back to baseline
                     if (y[i] >= 0)
                     {
                         bars.eq(i).css("border-top", "none");
@@ -444,6 +433,16 @@ $(document).ready(function () {
 
                     // Remove borders on inner bars
                     bars.eq(i).children().css("border", "none");
+                }
+
+                // If low bar
+                if (y[i] < 0) {
+
+                    // Move bar under baseline
+                    b[i] += y[i];
+
+                    // Recenter bar with axis
+                    b[i] += thicknessBorder;
                 }
             }
 
@@ -473,7 +472,7 @@ $(document).ready(function () {
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            MAIN
+            INIT
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
         // Store node to which future graph elements should be attached
@@ -719,13 +718,6 @@ $(document).ready(function () {
             this.arrow.text(rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
             this.TB.text(round(TBs.eq(-2).attr("y"), 1));
         }
-    }
-
-
-
-    // FUNCTIONS
-    function init () {
-
     }
 
 

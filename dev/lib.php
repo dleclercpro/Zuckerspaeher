@@ -12,8 +12,11 @@ function import($input) {
         $args = $input["args"];
     }
 
+    // Compute path to module
+    $path = getcwd() . "/modules/" . $name . "/" . $name;
+
     // Import module
-    require getcwd() . "/modules/" . $name . "/" . $name . ".php";
+    require $path . ".php";
 }
 
 ?>
