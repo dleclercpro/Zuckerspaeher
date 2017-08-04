@@ -32,8 +32,22 @@ Notes : -
             <?php
                 import(["name" => "user"]);
                 import(["name" => "dash"]);
-                import(["name" => "graph", "args" => ["BG"]]);
-                import(["name" => "graph", "args" => ["I"]]);
+                import(["name" => "graph",
+                    "args" => [
+                        "Type" => "BG",
+                        "X" => false,
+                        "Y" => true,
+                        "NA" => false
+                    ]
+                ]);
+                import(["name" => "graph",
+                    "args" => [
+                        "Type" => "I",
+                        "X" => false,
+                        "Y" => true,
+                        "NA" => false
+                    ]
+                ]);
                 import(["name" => "bubble"]);
                 import(["name" => "settings"]);
             ?>

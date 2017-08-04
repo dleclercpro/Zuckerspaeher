@@ -475,8 +475,12 @@ $(document).ready(function () {
             INIT
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-        // Store node to which future graph elements should be attached
+        // Define graph components
         this.self = $("#graph-" + name);
+        this.NA = this.self.find('.graph-NA');
+        this.x = this.self.find('.graph-x-axis');
+        this.y = this.self.find('.graph-y-axis');
+        this.inner = this.self.find('.graph');
 
         // Generate a bubble for graph
         this.bubble = new Bubble();
