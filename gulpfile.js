@@ -32,9 +32,18 @@ var gulp = require("gulp"),
 var paths = {
 	php: "dev/**/*.php",
 	html: "dev/**/*.html",
-	css: "dev/**/*.css",
-	scss: "dev/**/*.scss",
-	js: "dev/**/*.js",
+	css: "path/assets/css/*.css",
+	scss: ["dev/assets/scss/normalize.scss",
+		   "dev/assets/scss/base.scss",
+		   "dev/assets/scss/config.scss",
+		   "dev/assets/scss/mixins.scss",
+		   "dev/assets/scss/placeholders.scss",
+		   "dev/assets/scss/index.scss",
+		   "dev/modules/**/*.scss"],
+	js: ["dev/assets/js/helpers/*.js",
+		 "dev/assets/js/lib.js",
+		 "dev/modules/**/*.js",
+		 "dev/assets/js/index.js"],
 	img: "dev/**/*.+(jpg|png|gif|bmp|tiff)",
 	fonts: "dev/**/*.+(ttf)"
 };
@@ -79,7 +88,7 @@ gulp.task("clean",
 );
 
 // SASS-compiling task
-gulp.task("sass",
+gulp.task("old-sass",
 	gulp.series(function(done){
 		gulp.src(paths.scss)
 			.pipe(plumber())
@@ -96,14 +105,15 @@ gulp.task("sass",
 	})
 );
 
-// CSS-optimization task
-gulp.task("css",
+// SASS-compiling and minimizing task
+gulp.task("sass",
 	gulp.series(function(done){
-		gulp.src(paths.css)
-			.pipe(concat("main.css"))
-			.pipe(cssnano())
-			.pipe(rename("main.min.css"))
-			.pipe(gulp.dest("public/assets/css"))
+		gulp.src(paths.scss)
+			.pipe(plumber())
+			.pipe(concat("index.scss"))
+			.pipe(sass())
+			.pipe(rename("index.min.css"))
+			.pipe(gulp.dest("public/assets/css"));
 
 		done();
 	})
@@ -113,10 +123,11 @@ gulp.task("css",
 gulp.task("js",
 	gulp.series(function(done){
 		gulp.src(paths.js)
-			.pipe(concat("main.js"))
-			.pipe(uglify())
-			.pipe(rename("main.min.js"))
-			.pipe(gulp.dest("public/assets/js"))
+			.pipe(plumber())
+			.pipe(concat("index.js"))
+			//.pipe(uglify())
+			.pipe(rename("index.min.js"))
+			.pipe(gulp.dest("public/assets/js"));
 
 		done();
 	})
@@ -144,7 +155,7 @@ gulp.task("img",
 				var filepath = f.dirname.split("/").slice(6, -1).join("/");
 				f.dirname = "";
 				return "./public/" + filepath + "/img/" + filename;
-			}))
+			}));
 
 		done();
 	})
@@ -154,7 +165,7 @@ gulp.task("img",
 gulp.task("fonts", 
 	gulp.series(function(done){
 		gulp.src(paths.fonts)
-			.pipe(gulp.dest("public/assets/fonts"))
+			.pipe(gulp.dest("public"));
 
 		done();
 	})
@@ -165,7 +176,8 @@ gulp.task("lint:js",
 	gulp.series(function(done){
 		gulp.src([paths.js, "!./dev/assets/js/lib/**/*.js"])
 			.pipe(jshint())
-			.pipe(jshint.reporter("default"))
+			.pipe(jshint.reporter("default"));
+
 		done();
 	})
 );
@@ -191,10 +203,10 @@ gulp.task("watch",
 
 // Build task
 gulp.task("build",
-	gulp.series("clean", "sass", "css", "js", "img", "fonts",
+	gulp.series("clean", "sass", "js", "img",
 		function(done){
 			gulp.src([paths.php, paths.html])
-				.pipe(gulp.dest("public"))
+				.pipe(gulp.dest("public"));
 			
 			done();
 		}

@@ -320,7 +320,7 @@
 	}
 
 	&.last-#{$bar} {
-
+		width: 0;
 	}
 
 	> .inner-#{$bar} {

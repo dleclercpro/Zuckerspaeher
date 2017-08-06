@@ -1,0 +1,29 @@
+#bubble {
+	@include box($black);
+	@include absolute;
+	flex-direction: column;
+	padding: 10px;
+	z-index: 30;
+	display: none;
+
+	> #bubble-info {
+		@include font("bubble-text");
+		white-space: nowrap;
+	}
+
+	> #bubble-time {
+		@extend #bubble-info;
+	}
+
+	.BG {
+		background: none;
+	}
+
+	.TB {
+		color: $purple;
+	}
+
+	.B {
+		color: $blue;
+	}
+}

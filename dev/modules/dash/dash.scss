@@ -1,0 +1,79 @@
+#dash {
+	@include box($black-trans);
+	@include absolute($top: 5%, $right: $padding-header);
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+	width: 45vw;
+	max-width: 450px;
+	padding: 30px 2.5vw;
+	z-index: 15;
+	order: 2;
+
+	@include mq(tablet) {
+		width: 50vw;
+		height: $tablet-height-dash;
+		max-width: none;
+		top: 0;
+		right: 0;
+		padding: 15px 5vw;
+	}
+
+	@include mq(phone) {
+		display: none;
+		width: 100vw;
+		height: auto;
+		align-items: center;
+		top: $phone-height-user;
+		left: 0;
+	}
+
+	> #dash-live {
+		display: flex;
+		margin-bottom: 10px;
+		@include font("dash-BG");
+
+		@include mq(phone) {
+			display: none;
+		}
+
+		> #dash-BG {
+			background: none;
+		}
+
+		> #dash-arrow {
+			background: none;
+			margin-left: 5px;
+		}
+	}
+
+	> #dash-delta {
+		display: flex;
+
+		> p {
+			@include font("dash-details");
+			margin-right: 15px;
+			white-space: nowrap;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	> #dash-basal {
+		@extend #dash-delta;
+	}
+
+	> #dash-on-board {
+		@extend #dash-delta;
+	}
+
+	> #dash-factors {
+		@extend #dash-delta;
+	}
+
+	> #dash-age {
+		@extend #dash-delta;
+	}
+}

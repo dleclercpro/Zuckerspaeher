@@ -1,0 +1,103 @@
+#user {
+	@include box($black-trans);
+	@include absolute($top: 5%, $left: $padding-header);
+	align-items: center;
+	width: 45vw;
+	max-width: 450px;
+	padding: 30px 2.5vw;
+	z-index: 15;
+	order: 1;
+
+	@include mq(tablet) {
+		width: 50vw;
+		height: $tablet-height-dash;
+		max-width: none;
+		top: 0;
+		left: 0;
+		padding: 15px 5vw;
+	}
+
+	@include mq(phone) {
+		width: 100vw;
+		height: $phone-height-user;
+		justify-content: center;
+		cursor: pointer;
+	}
+
+	> #user-img {
+		width: 125px;
+		height: 125px;
+		border-radius: 50%;
+		border: 5px solid $white;
+		object-fit: cover;
+
+		@include mq(tablet) {
+			width: 100px;
+			height: 100px;
+			border-width: 4px;
+		}
+
+		@include mq(phone) {
+			width: 75px;
+			height: 75px;
+			border-width: 3px;
+		}
+	}
+
+	> #user-details {
+		display: flex;
+		flex-direction: column;
+		margin-left: 5%;
+
+		@include mq(phone) {
+			flex-direction: column-reverse;
+		}
+
+		> p {
+			@include font("user-details");
+			white-space: nowrap;
+		}
+
+		> #user-name {
+			@include mq(phone) {
+				display: none;
+			}
+		}
+
+		> #user-birthday {
+			@extend #user-name;
+		}
+
+		> #user-cgm {
+			@extend #user-name;
+
+		}
+
+		> #user-pump {
+			@extend #user-name;
+		}
+
+		> #user-status {
+			@include font("user-status");
+		}
+
+		> #user-live {
+			display: none;
+
+			@include mq(phone) {
+				display: block;
+				text-align: center;
+				@include font("user-BG");
+			}
+			
+			> #user-BG {
+				background: none;
+			}
+
+			> #user-arrow {
+				@extend #user-BG;
+				margin-left: -5px;
+			}
+		}
+	}
+}

@@ -1,0 +1,36 @@
+header {
+	display: flex;
+	flex: none;
+	width: 100vw;
+	height: $height-header;
+	padding: 0 $padding-header;
+	background-color: $black-trans;
+	box-shadow: 0 $shadow-radius $shadow-radius black;
+	z-index: 35;
+
+	@include mq(tablet) {
+		padding: 0 5%;
+	}
+
+	> #logo {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		@include font("logo");
+
+		> span {
+			color: $light-gray;
+		}
+	}
+
+	> #buttons {
+		@extend %center;
+		width: 20px;
+		margin-left: auto;
+
+		> img {
+			width: 100%;
+			cursor: pointer;
+		}
+	}
+}
