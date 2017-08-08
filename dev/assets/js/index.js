@@ -17,12 +17,17 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-$(document).ready(function (M) {
+// Import modules
+import {Bubble} from "../../modules/bubble/bubble";
+import {Graph} from "../../modules/graph/graph";
+import {Dash} from "../../modules/dash/dash";
+
+$(document).ready(() => {
 
     function GraphBG(name) {
 
         // Extend object
-        M.Graph.apply(this, [name]);
+        Graph.apply(this, [name]);
 
         /**
          * colorBGs
@@ -47,7 +52,7 @@ $(document).ready(function (M) {
     function GraphI(name) {
 
         // Extend object
-        M.Graph.apply(this, [name]);
+        Graph.apply(this, [name]);
 
         /**
          * profileTBs
@@ -164,7 +169,7 @@ $(document).ready(function (M) {
     graphI.showBars("TB", "U/h", 0, y0);
 
     // Create dash object
-    var dash = new M.Dash(dBGdtScale);
+    var dash = new Dash(dBGdtScale);
 
     // Add dash to page
     dash.get();
@@ -214,4 +219,4 @@ $(document).ready(function (M) {
         }
     });
 
-}(M));
+});

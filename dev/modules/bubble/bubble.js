@@ -1,4 +1,4 @@
-M.Bubble = function Bubble () {
+export function Bubble () {
 
     /**
      * init

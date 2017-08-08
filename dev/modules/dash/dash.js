@@ -1,4 +1,4 @@
-M.Dash = function Dash (dBGdtScale) {
+export function Dash (dBGdtScale) {
 
     /**
      * get

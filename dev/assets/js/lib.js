@@ -18,30 +18,30 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 // Prototype changes
-Array.prototype.max = function () {
+Array.prototype.max = () => {
     return Math.max.apply(null, this);
 };
 
-Array.prototype.min = function () {
+Array.prototype.min = () => {
     return Math.min.apply(null, this);
 };
 
-Array.prototype.first = function () {
+Array.prototype.first = () => {
     return this[0];
 };
 
-Array.prototype.last = function () {
+Array.prototype.last = () => {
     return this[this.length - 1];
 };
 
 
 
 // Functions
-function decodeEntity (str) {
+var decodeEntity = (str) => {
     return $("<textarea>").html(str).text();
 }
 
-function range (start, stop, step) {
+var range = (start, stop, step) => {
     if (typeof stop == 'undefined') {
         stop = start;
         start = 0;
@@ -63,7 +63,7 @@ function range (start, stop, step) {
     return result;
 }
 
-function indexSort (x, y = []) {
+var indexSort = (x, y = []) => {
     // Couple indexes with values
   for (i = 0; i < x.length; i++) {
     x[i] = [x[i], i];
@@ -101,7 +101,7 @@ function indexSort (x, y = []) {
   return [x, y]
 }
 
-function getData (report, section, format = false, limits = []) {
+var getData = (report, section, format = false, limits = []) => {
     // Create data arrays
     var x = [];
     var y = [];
@@ -158,7 +158,7 @@ function getData (report, section, format = false, limits = []) {
     return [X, Y];
 }
 
-function convertTime (t, format) {
+var convertTime = (t, format) => {
     // Identify type of input given
     var isArray = true;
 
@@ -303,7 +303,7 @@ function convertTime (t, format) {
     return result[0];
 }
 
-function rankBG (BG, BGScale) {
+var rankBG = (BG, BGScale) => {
     BG = parseFloat(BG);
 
     if (BG < BGScale[0]) {
@@ -319,7 +319,7 @@ function rankBG (BG, BGScale) {
     }
 }
 
-function rankdBGdt (dBGdt, dBGdtScale) {
+var rankdBGdt = (dBGdt, dBGdtScale) => {
     dBGdt = parseFloat(dBGdt);
     
     var arrowUp = decodeEntity("&#8593;");
@@ -341,14 +341,14 @@ function rankdBGdt (dBGdt, dBGdtScale) {
     }
 }
 
-function round (x, n) {
+var round = (x, n) => {
     x = parseFloat(x);
     e = Math.pow(10, n);
 
     return (Math.round(x * e) / e).toFixed(n);
 }
 
-function showGradually (e, t, flex) {
+var showGradually = (e, t, flex) => {
     for (i = 0; i < e.length; i++) {
         (function (i) {
             setTimeout(function () {

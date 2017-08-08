@@ -1,4 +1,4 @@
-M.Graph = function Graph (name) {
+export function Graph (name) {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      GENERATEAXIS

@@ -9,6 +9,7 @@ Notes : -
 
 // Load plugins
 var gulp = require("gulp"),
+	babel = require("gulp-babel"),
 	sass = require("gulp-sass"),
 	jshint = require("gulp-jshint"),
 	rename = require("gulp-rename"),
@@ -33,10 +34,15 @@ var paths = {
 	php: "dev/**/*.php",
 	html: "dev/**/*.html",
 	css: "path/assets/css/*.css",
-	scss: ["dev/assets/scss/normalize.scss", "dev/assets/scss/base.scss", "dev/assets/scss/config.scss",
-		   "dev/assets/scss/mixins.scss", "dev/assets/scss/placeholders.scss", "dev/assets/scss/index.scss",
+	scss: ["dev/assets/scss/normalize.scss",
+		   "dev/assets/scss/base.scss",
+		   "dev/assets/scss/config.scss",
+		   "dev/assets/scss/mixins.scss",
+		   "dev/assets/scss/placeholders.scss",
+		   "dev/assets/scss/index.scss",
 		   "dev/modules/**/*.scss"],
-	js: ["dev/assets/js/helpers/*.js", "dev/assets/js/lib.js", "dev/assets/js/modules.js", "dev/modules/**/*.js",
+	js: ["dev/assets/js/helpers/*.js",
+		 "dev/assets/js/lib.js",
 		 "dev/assets/js/index.js"],
 	img: "dev/**/*.+(jpg|png|gif|bmp|tiff)",
 	fonts: "dev/**/*.+(ttf)"
@@ -119,6 +125,9 @@ gulp.task("js",
 		gulp.src(paths.js)
 			.pipe(plumber())
 			.pipe(concat("index.js"))
+			//.pipe(babel({
+			//	presets: ["env"]
+			//}))
 			//.pipe(uglify())
 			.pipe(rename("index.min.js"))
 			.pipe(gulp.dest("public/assets/js"));

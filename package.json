@@ -10,6 +10,7 @@
     "browser-sync": "^2.17.2",
     "del": "^2.2.2",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^7.0.0",
     "gulp-cache": "^0.4.5",
     "gulp-concat": "^2.6.0",
     "gulp-connect-php": "0.0.8",
