@@ -1,19 +1,42 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Title:    lib.js
+
+ Author:   David Leclerc
+
+ Version:  0.1
+
+ Date:     08.08.2017
+
+ License:  GNU General Public License, Version 3
+           (http://www.gnu.org/licenses/gpl.html)
+
+ Overview: ...
+
+ Notes:    ...
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+// Prototype changes
 Array.prototype.max = function () {
     return Math.max.apply(null, this);
-}
+};
 
 Array.prototype.min = function () {
     return Math.min.apply(null, this);
-}
+};
 
 Array.prototype.first = function () {
     return this[0];
-}
+};
 
 Array.prototype.last = function () {
     return this[this.length - 1];
-}
+};
 
+
+
+// Functions
 function decodeEntity (str) {
     return $("<textarea>").html(str).text();
 }

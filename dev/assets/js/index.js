@@ -1,34 +1,33 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Title:    index.js
+ Title:    index.js
 
-    Author:   David Leclerc
+ Author:   David Leclerc
 
-    Version:  0.1
+ Version:  0.1
 
-    Date:     24.01.2017
+ Date:     24.01.2017
 
-    License:  GNU General Public License, Version 3
-              (http://www.gnu.org/licenses/gpl.html)
+ License:  GNU General Public License, Version 3
+           (http://www.gnu.org/licenses/gpl.html)
 
-    Overview: ...
+ Overview: ...
 
-    Notes:    ...
+ Notes:    ...
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-$(document).ready(function () {
+$(document).ready(function (M) {
 
-    // OBJECTS
-
-    function GraphBG (name) {
+    function GraphBG(name) {
 
         // Extend object
-        Graph.apply(this, [name]);
+        M.Graph.apply(this, [name]);
 
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            COLORBGS
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        /**
+         * colorBGs
+         * @param BGScale
+         */
         this.colorBGs = function (BGScale) {
 
             // Get graph section in which are the BGs
@@ -45,14 +44,17 @@ $(document).ready(function () {
         }
     }
 
-    function GraphI (name) {
+    function GraphI(name) {
 
         // Extend object
-        Graph.apply(this, [name]);
+        M.Graph.apply(this, [name]);
 
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            PROFILETBS
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        /**
+         * profileTBs
+         * @param data
+         * @param dt
+         * @returns {[*,*]}
+         */
         this.profileTBs = function (data, dt = 5 * 60 * 1000) {
 
             // Store data in separate arrays
@@ -74,9 +76,10 @@ $(document).ready(function () {
             return [t, net];
         };
 
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            BUILDTBS
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        /**
+         * buildTBs
+         * @param data
+         */
         this.buildTBs = function (data) {
 
             // Compute TB profile
@@ -161,12 +164,11 @@ $(document).ready(function () {
     graphI.showBars("TB", "U/h", 0, y0);
 
     // Create dash object
-    var dash = new Dash();
+    var dash = new M.Dash(dBGdtScale);
 
     // Add dash to page
     dash.get();
     dash.update();
-
 
 
     // Elements
@@ -175,7 +177,7 @@ $(document).ready(function () {
     var settings = $("#settings");
     var settingsButton = $("#settings-button");
 
-    // Functions
+
 
     // Main
     $(window).resize(function () {
@@ -212,4 +214,4 @@ $(document).ready(function () {
         }
     });
 
-});
+}(M));

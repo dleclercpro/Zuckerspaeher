@@ -33,16 +33,10 @@ var paths = {
 	php: "dev/**/*.php",
 	html: "dev/**/*.html",
 	css: "path/assets/css/*.css",
-	scss: ["dev/assets/scss/normalize.scss",
-		   "dev/assets/scss/base.scss",
-		   "dev/assets/scss/config.scss",
-		   "dev/assets/scss/mixins.scss",
-		   "dev/assets/scss/placeholders.scss",
-		   "dev/assets/scss/index.scss",
+	scss: ["dev/assets/scss/normalize.scss", "dev/assets/scss/base.scss", "dev/assets/scss/config.scss",
+		   "dev/assets/scss/mixins.scss", "dev/assets/scss/placeholders.scss", "dev/assets/scss/index.scss",
 		   "dev/modules/**/*.scss"],
-	js: ["dev/assets/js/helpers/*.js",
-		 "dev/assets/js/lib.js",
-		 "dev/modules/**/*.js",
+	js: ["dev/assets/js/helpers/*.js", "dev/assets/js/lib.js", "dev/assets/js/modules.js", "dev/modules/**/*.js",
 		 "dev/assets/js/index.js"],
 	img: "dev/**/*.+(jpg|png|gif|bmp|tiff)",
 	fonts: "dev/**/*.+(ttf)"
@@ -201,16 +195,21 @@ gulp.task("watch",
 	)
 );
 
+// Compile task
+gulp.task("compile",
+    gulp.series("sass", "js",
+        function(done){
+            gulp.src([paths.php, paths.html])
+                .pipe(gulp.dest("public"));
+
+            done();
+        }
+    )
+);
+
 // Build task
 gulp.task("build",
-	gulp.series("clean", "sass", "js", "img",
-		function(done){
-			gulp.src([paths.php, paths.html])
-				.pipe(gulp.dest("public"));
-			
-			done();
-		}
-	)
+	gulp.series("clean", "compile", "img")
 );
 
 // Default gulp task
