@@ -1,8 +1,14 @@
-M.Dash = function Dash (dBGdtScale) {
+// Imports
+import * as lib from "../../assets/js/lib";
 
-    /**
-     * get
-     */
+// Exports
+export {Dash};
+
+const Dash = (dBGdtScale) => {
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        GET
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.get = function () {
 
         // Store dash and its infos
@@ -25,9 +31,9 @@ M.Dash = function Dash (dBGdtScale) {
         this.COB = this.self.find("#dash-COB");
     };
 
-    /**
-     * update
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        UPDATE
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.update = function () {
 
         // Get BGs and TBs
@@ -37,23 +43,23 @@ M.Dash = function Dash (dBGdtScale) {
         // Get last BG infos
         var lastBG = BGs.eq(-1).attr("y");
         var lastBGType = BGs.eq(-1).attr("class");
-        var dBG = round(BGs.eq(-1).attr("y") - BGs.eq(-2).attr("y"), 1);
+        var dBG = lib.round(BGs.eq(-1).attr("y") - BGs.eq(-2).attr("y"), 1);
         var dt = (parseInt(BGs.eq(-1).attr("x")) -
             parseInt(BGs.eq(-2).attr("x"))) / 1000 / 60 / 60; // (h)
-        var dBGdt = round(dBG / dt, 1);
+        var dBGdt = lib.round(dBG / dt, 1);
 
         // Update infos in dash
-        this.BG.text(round(lastBG, 1));
+        this.BG.text(lib.round(lastBG, 1));
         this.BG.addClass(lastBGType);
         this.dBG.text(dBG);
         this.dBGdt.text(dBGdt);
-        this.arrow.text(rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
-        this.TB.text(round(TBs.eq(-2).attr("y"), 1));
+        this.arrow.text(lib.rankdBGdt(dBGdt, dBGdtScale)).addClass(lastBGType);
+        this.TB.text(lib.round(TBs.eq(-2).attr("y"), 1));
     }
 
-    /**
-     * init
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        MAIN
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     this.dBGdtScale = dBGdtScale;
 

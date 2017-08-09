@@ -17,31 +17,32 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-// Prototype changes
-Array.prototype.max = function () {
-    return Math.max.apply(null, this);
-};
-
-Array.prototype.min = function () {
-    return Math.min.apply(null, this);
-};
-
-Array.prototype.first = function () {
-    return this[0];
-};
-
-Array.prototype.last = function () {
-    return this[this.length - 1];
-};
-
-
+// Exports
+export {convertTime,
+        decodeEntity,
+        first,
+        getData,
+        indexSort,
+        last,
+        range,
+        rankBG,
+        rankdBGdt,
+        round};
 
 // Functions
-function decodeEntity (str) {
-    return $("<textarea>").html(str).text();
-}
+const first = (array) => {
+    return array[0];
+};
 
-function range (start, stop, step) {
+const last = (array) => {
+    return array[array.length - 1];
+};
+
+const decodeEntity = (str) => {
+    return $("<textarea>").html(str).text();
+};
+
+const range = (start, stop, step) => {
     if (typeof stop == 'undefined') {
         stop = start;
         start = 0;
@@ -61,9 +62,9 @@ function range (start, stop, step) {
     }
 
     return result;
-}
+};
 
-function indexSort (x, y = []) {
+const indexSort = (x, y = []) => {
     // Couple indexes with values
   for (i = 0; i < x.length; i++) {
     x[i] = [x[i], i];
@@ -99,9 +100,9 @@ function indexSort (x, y = []) {
 
   // Return modified arrays
   return [x, y]
-}
+};
 
-function getData (report, section, format = false, limits = []) {
+const getData = (report, section, format = false, limits = []) => {
     // Create data arrays
     var x = [];
     var y = [];
@@ -156,9 +157,9 @@ function getData (report, section, format = false, limits = []) {
 
     // Return data
     return [X, Y];
-}
+};
 
-function convertTime (t, format) {
+const convertTime = (t, format) => {
     // Identify type of input given
     var isArray = true;
 
@@ -301,9 +302,9 @@ function convertTime (t, format) {
     }
 
     return result[0];
-}
+};
 
-function rankBG (BG, BGScale) {
+const rankBG = (BG, BGScale) => {
     BG = parseFloat(BG);
 
     if (BG < BGScale[0]) {
@@ -317,9 +318,9 @@ function rankBG (BG, BGScale) {
     } else if (BG >= BGScale[3]) {
         return "BG-very-high";
     }
-}
+};
 
-function rankdBGdt (dBGdt, dBGdtScale) {
+const rankdBGdt = (dBGdt, dBGdtScale) => {
     dBGdt = parseFloat(dBGdt);
     
     var arrowUp = decodeEntity("&#8593;");
@@ -339,26 +340,11 @@ function rankdBGdt (dBGdt, dBGdtScale) {
     } else if (dBGdt >= dBGdtScale[3]) {
         return arrowUp;
     }
-}
+};
 
-function round (x, n) {
+const round = (x, n) => {
     x = parseFloat(x);
     e = Math.pow(10, n);
 
     return (Math.round(x * e) / e).toFixed(n);
-}
-
-function showGradually (e, t, flex) {
-    for (i = 0; i < e.length; i++) {
-        (function (i) {
-            setTimeout(function () {
-                if (flex) {
-                    e.eq(i).css("display", "flex");
-                    e.eq(i).hide();
-                }
-
-                e.eq(i).fadeIn();
-            }, t * i);
-        }(i));
-    } 
-}
+};

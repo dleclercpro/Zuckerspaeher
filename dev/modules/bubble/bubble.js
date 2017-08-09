@@ -1,12 +1,14 @@
-M.Bubble = function Bubble () {
+// Imports
+import * as lib from "../../assets/js/lib";
 
-    /**
-     * init
-     * @param e
-     * @param units
-     * @param round
-     * @param format
-     */
+// Exports
+export {Bubble};
+
+const Bubble = () => {
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        INIT
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.init = function (e, units, round, format = "HH:MM - DD.MM.YYYY") {
 
         // Store element on which bubble will give infos
@@ -28,9 +30,9 @@ M.Bubble = function Bubble () {
         this.update();
     };
 
-    /**
-     * get
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        GET
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.get = function () {
 
         // Get bubble
@@ -42,9 +44,9 @@ M.Bubble = function Bubble () {
         this.time = bubble.find("#bubble-time");
     };
 
-    /**
-     * update
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        UPDATE
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.update = function () {
 
         // Get infos about element
@@ -54,12 +56,12 @@ M.Bubble = function Bubble () {
 
         // Convert time if desired
         if (this.format) {
-            x = convertTime(x, this.format);
+            x = lib.convertTime(x, this.format);
         }
 
         // Round info if desired
         if (this.round) {
-            y = round(y, this.round);
+            y = lib.round(y, this.round);
         }
 
         // Update infos in bubble
@@ -68,11 +70,9 @@ M.Bubble = function Bubble () {
             " " + this.units);
     };
 
-    /**
-     * show
-     * @param offsetX
-     * @param offsetY
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        SHOW
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.show = function (offsetX = 8, offsetY = 0) {
 
         // Define bubble coordinates
@@ -114,9 +114,9 @@ M.Bubble = function Bubble () {
         this.self.show();
     };
 
-    /**
-     * hide
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        HIDE
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.hide = function () {
         this.self.hide();
     }

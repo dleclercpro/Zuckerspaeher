@@ -1,8 +1,40 @@
-M.Graph = function Graph (name) {
+// Imports
+import * as lib from "../../assets/js/lib";
+import {Bubble} from "../bubble/bubble";
+
+// Exports
+export {Graph};
+
+const Axis = (args) => {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     GENERATEAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        PARSE
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    this.parse = function(args) {
+
+        // Define possible arguments
+        validArgs = ["z", "z0", "dz", "dZ", "label", "format"];
+
+        // Assign arguments
+        for (arg of args) {
+
+            // If argument is valid
+            if (arg in validArgs) {
+
+                // Store it
+                this[arg] = args[arg];
+            }
+        }
+
+    };
+
+};
+
+const Graph = (name) => {
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        GENERATEAXIS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.generateAxis = function (z0, dz, dZ) {
 
         // Initialize empty array
@@ -20,8 +52,8 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        BUILDAXIS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.buildAxis = function (z, z0, dz, dZ, label, format) {
 
         // Create axis node
@@ -45,7 +77,7 @@ M.Graph = function Graph (name) {
 
         // Build axis based on provided z array
         else {
-            dZ = z.max() - z.min();
+            dZ = Math.max(...z) - Math.min(...z);
 
             for (i = 0; i < z.length - 1; i++) {
                 dz = z[i + 1] - z[i];
@@ -65,7 +97,7 @@ M.Graph = function Graph (name) {
 
             axis.children().each(function () {
                 // Convert time
-                t = convertTime($(this).html(), format);
+                t = lib.convertTime($(this).html(), format);
 
                 // Set time
                 $(this).html(t);
@@ -77,8 +109,8 @@ M.Graph = function Graph (name) {
             // Store infos on axis
             this.x = z;
             this.dX = dZ;
-            this.xMin = z.min();
-            this.xMax = z.max();
+            this.xMin = Math.min(...z);
+            this.xMax = Math.max(...z);
 
             // Add dead corner
             this.buildCorner();
@@ -88,8 +120,8 @@ M.Graph = function Graph (name) {
             // Store infos on axis
             this.y = z;
             this.dY = dZ;
-            this.yMin = z.min();
-            this.yMax = z.max();
+            this.yMin = Math.min(...z);
+            this.yMax = Math.max(...z);
         }
 
         // Append axis to graph
@@ -97,15 +129,15 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDCORNER
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        BUILDCORNER
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.buildCorner = function () {
         this.self.append($("<div class='graph-NA'></div>"));
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDDOTS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        BUILDDOTS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.buildDots = function (type, data) {
 
         // If inside section of graph does not already exist, create it
@@ -146,8 +178,8 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SHOWDOTS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        SHOWDOTS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.showDots = function (type, units, round, y0) {
 
         // Get inner section in which dots must displayed
@@ -165,13 +197,13 @@ M.Graph = function Graph (name) {
         var dots = graph.find("." + type);
 
         // Get dot styles
-        var radiusDot = parseFloat(dots.first().outerWidth()) / 2;
+        var radiusDot = parseFloat(lib.first(dots).outerWidth()) / 2;
         var thicknessXTick = parseFloat(
-            xTicks.first().css("border-left-width") ||
-            xTicks.first().css("border-right-width"));
+            lib.first(xTicks).css("border-left-width") ||
+            lib.first(xTicks).css("border-right-width"));
         var thicknessYTick = parseFloat(
-            yTicks.first().css("border-top-width") ||
-            yTicks.first().css("border-bottom-width")); // FIXME
+            lib.first(yTicks).css("border-top-width") ||
+            lib.first(yTicks).css("border-bottom-width")); // FIXME
 
         // Extract information from dots
         var X = [];
@@ -222,8 +254,8 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        BUILDBARS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.buildBars = function (type, data) {
 
         // If inside section of graph does not already exist, create it
@@ -269,8 +301,8 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SHOWBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        SHOWBARS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     this.showBars = function (type, units, round, y0) {
 
         // Get inner section in which bars must displayed
@@ -285,8 +317,8 @@ M.Graph = function Graph (name) {
         var n = bars.length - 1
 
         // Get bar styles
-        thicknessBorder = parseFloat(bars.first().css("border-top-width"))
-            || parseFloat(bars.first().css("border-bottom-width"));
+        thicknessBorder = parseFloat(lib.first(bars).css("border-top-width"))
+            || parseFloat(lib.first(bars).css("border-bottom-width"));
 
         // Extract information from bars
         var x = [];
@@ -298,11 +330,11 @@ M.Graph = function Graph (name) {
         }
 
         // Compute space between last bar and now
-        dW = this.xMax - x.last();
+        dW = this.xMax - lib.last(x);
         W = dW / this.dX * graphW;
 
         // Push bars according to time difference between last bar and now
-        graph.children().last().css("margin-right", W);
+        lib.last(graph.children()).css("margin-right", W);
 
         // Compute bar sizes
         var w = [];
@@ -342,13 +374,13 @@ M.Graph = function Graph (name) {
             // Higher than baseline
             if (y[i] > 0) {
                 if (i != 0 && y[i] > y[i - 1]) {
-                    bars.eq(i).children().first().css({
+                    lib.first(bars.eq(i).children()).css({
                         "height": y[i] - y[i - 1]
                     });
                 }
 
                 if (i != n && y[i] > y[i + 1]) {
-                    bars.eq(i).children().last().css({
+                    lib.last(bars.eq(i).children()).css({
                         "height": y[i] - y[i + 1]
                     });
                 }
@@ -356,13 +388,13 @@ M.Graph = function Graph (name) {
             // Lower than baseline
             else if (y[i] < 0) {
                 if (i != 0 && y[i] < y[i - 1]) {
-                    bars.eq(i).children().first().css({
+                    lib.first(bars.eq(i).children()).css({
                         "height": Math.abs(y[i] - y[i - 1])
                     });
                 }
 
                 if (i != n && y[i] < y[i + 1]) {
-                    bars.eq(i).children().last().css({
+                    lib.last(bars.eq(i).children()).css({
                         "height": Math.abs(y[i] - y[i + 1])
                     });
 
@@ -374,13 +406,13 @@ M.Graph = function Graph (name) {
             if (i != 0 && (
                 y[i - 1] < 0 && y[i] > 0 ||
                 y[i - 1] > 0 && y[i] < 0)) {
-                bars.eq(i).children().first().css("height", "100%");
+                lib.first(bars.eq(i).children()).css("height", "100%");
                 // From 1 to -1
             }
             else if (i != n && (
                 y[i + 1] < 0 && y[i] > 0 ||
                 y[i + 1] > 0 && y[i] < 0)) {
-                bars.eq(i).children().last().css("height", "100%");
+                lib.last(bars.eq(i).children()).css("height", "100%");
             }
 
             // Minor bars
@@ -438,8 +470,8 @@ M.Graph = function Graph (name) {
     };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     INIT
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        INIT
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     // Define graph components
     this.self = $("#graph-" + name);
@@ -449,5 +481,5 @@ M.Graph = function Graph (name) {
     //this.inner = this.self.find('.graph');
 
     // Generate a bubble for graph
-    this.bubble = new M.Bubble();
+    this.bubble = Bubble();
 };

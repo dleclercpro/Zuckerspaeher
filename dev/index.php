@@ -38,7 +38,6 @@ Notes : -
             ?>
 		</main>
 
-		<!-- JS -->
 		<script type="text/javascript" src="assets/js/index.min.js"></script>
 	</body>
 

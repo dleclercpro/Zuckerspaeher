@@ -17,12 +17,21 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-$(document).ready(function (M) {
+// Imports
+import jQuery from "jquery";
+import * as lib from "./lib";
+import {Dash} from "../../modules/dash/dash";
+import {Graph} from "../../modules/graph/graph";
 
-    function GraphBG(name) {
+// Enable jQuery
+window.$ = window.jQuery = jQuery;
+
+$(document).ready(() => {
+
+    function GraphBG (name) {
 
         // Extend object
-        M.Graph.apply(this, [name]);
+        Graph.apply(this, [name]);
 
         /**
          * colorBGs
@@ -39,15 +48,15 @@ $(document).ready(function (M) {
             // Color BGs
             for (i = 0; i < BGs.length; i++) {
                 BG = parseFloat(BGs.eq(i).attr("y"));
-                BGs.eq(i).addClass(rankBG(BG, BGScale));
+                BGs.eq(i).addClass(lib.rankBG(BG, BGScale));
             }
         }
     }
 
-    function GraphI(name) {
+    function GraphI (name) {
 
         // Extend object
-        M.Graph.apply(this, [name]);
+        Graph.apply(this, [name]);
 
         /**
          * profileTBs
@@ -68,7 +77,7 @@ $(document).ready(function (M) {
             }
 
             // Sort TB times in case they aren't already
-            var x = indexSort(t, [net]);
+            var x = lib.indexSort(t, [net]);
             t = x[0];
             net = x[1][0];
 
@@ -99,9 +108,9 @@ $(document).ready(function (M) {
     var dX = 12 * 60 * 60 * 1000; // Time range (h)
     var y0 = 0; // Basal baseline (U/h)
     var yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
-    var dYBG = yBG.max() - yBG.min();
+    var dYBG = Math.max(...yBG) - Math.min(...yBG);
     var yI = [-4, -2, 0, 2, 4]; // U/h
-    var dYI = yI.max() - yI.min();
+    var dYI = Math.max(...yI) - Math.min(...yI);
     var BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
     var dBGdtScale = [-0.15 * 60, -0.075 * 60, 0.075 * 60, 0.15 * 60]; // (mmol/L/h)
 
@@ -131,7 +140,7 @@ $(document).ready(function (M) {
     graphBG.buildAxis(yBG, null, null, null, "y", false);
 
     // Get BGs
-    var BGs = getData("reports/BG.json", false,
+    var BGs = lib.getData("reports/BG.json", false,
         "YYYY.MM.DD - HH:MM:SS");
 
     // Build BG dots
@@ -144,7 +153,7 @@ $(document).ready(function (M) {
     graphBG.colorBGs(BGScale);
 
     // Get Bs
-    var Bs = getData("reports/treatments.json", "Boluses",
+    var Bs = lib.getData("reports/treatments.json", "Boluses",
         "YYYY.MM.DD - HH:MM:SS");
 
     // Build B dots
@@ -154,7 +163,7 @@ $(document).ready(function (M) {
     graphI.showDots("B", "U", 1, y0);
 
     // Get TBs
-    var TBs = getData("reports/treatments.json", "Net Basals",
+    var TBs = lib.getData("reports/treatments.json", "Net Basals",
         "YYYY.MM.DD - HH:MM:SS");
 
     // Build TB bars
@@ -164,7 +173,7 @@ $(document).ready(function (M) {
     graphI.showBars("TB", "U/h", 0, y0);
 
     // Create dash object
-    var dash = new M.Dash(dBGdtScale);
+    var dash = new Dash(dBGdtScale);
 
     // Add dash to page
     dash.get();
@@ -182,10 +191,10 @@ $(document).ready(function (M) {
     // Main
     $(window).resize(function () {
         // Show BG dots
-        graphBG.showDots("BG", "mmol/L", 1, false, x0 - dX, yBG.min(), dX, dYBG);
+        graphBG.showDots("BG", "mmol/L", 1, false, x0 - dX, Math.min(...yBG), dX, dYBG);
 
         // Show B dots
-        graphI.showDots("B", "U", 1, y0, x0 - dX, yI.min(), dX, dYI);
+        graphI.showDots("B", "U", 1, y0, x0 - dX, Math.min(...yI), dX, dYI);
 
         // Show TB bars
         graphI.showBars("TB", "U/h", 0, y0, x0 - dX, dX, dYI);
@@ -214,4 +223,4 @@ $(document).ready(function (M) {
         }
     });
 
-}(M));
+});
