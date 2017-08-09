@@ -26,7 +26,7 @@ export const last = (array) => {
     return array[array.length - 1];
 };
 
-export const round = (x, n) => {
+export const round = (x, n = 1) => {
 
     // Ensure float
     x = parseFloat(x);
