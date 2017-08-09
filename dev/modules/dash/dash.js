@@ -8,7 +8,7 @@ export class Dash {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor(dBGdtScale) {
 
-        // Get dash from DOM
+        // Get object from DOM
         this.self = $("#dash");
 
         // Get its sub-elements
