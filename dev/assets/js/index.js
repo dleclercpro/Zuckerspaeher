@@ -46,7 +46,7 @@ $(document).ready(() => {
 
     // Generate bubble
     const _Bubble = new bubble.Bubble();
-    _Bubble.update(test, "Test", "09.08.2017", 5.525, "U/h", 2, false);
+    _Bubble.update(test, "Test", "09.08.2017", 5.525, "U/h", 2);
     _Bubble.show();
 
 });

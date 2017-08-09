@@ -3,9 +3,9 @@ import * as lib from "../../assets/js/lib";
 
 export class Bubble {
 
-    /**
-     * CONSTRUCTOR
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     CONSTRUCTOR
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor() {
 
         // Get object from DOM
@@ -20,16 +20,9 @@ export class Bubble {
         this.format = null;
     }
 
-    /**
-     * UPDATE
-     * @param target
-     * @param type
-     * @param x
-     * @param y
-     * @param units
-     * @param round
-     * @param format
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     UPDATE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     update(target, type, x, y, units, round, format) {
 
         // Define properties
@@ -56,24 +49,55 @@ export class Bubble {
         this.info.html("<span class='" + type + "'>" + y + "</span> " + units);
     }
 
-    /**
-     * SHOW
-     */
-    show() {
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SHOW
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    show(offsetX = 8, offsetY = 0) {
 
-        // Position bubble
+        // Define bubble coordinates
+        const offsetTop = parseFloat(this.target.parent().position().top);
+
+        // Compute bubble position
+        let x = parseFloat(this.target.position().left) +
+                  parseFloat(this.target.css("width")) + offsetX;
+        let y = parseFloat(this.target.position().top) + offsetY + offsetTop;
+
+        // Read bubble size
+        let w = this.self.outerWidth();
+        let h = this.self.outerHeight();
+
+        // Adjust position of bubble due to it being in content element
+        if (offsetTop) {
+            y += h; // FIXME
+        }
+
+        // Position bubble on graph
         this.self.css({
-            "top": 0,
-            "left": 0,
+            "left": x,
+            "top": y
         });
+
+        // If bubble exceeds width of graph
+        if (x + w > this.target.parent().outerWidth()) {
+            this.self.css({
+                "left": x - 3 * offsetX - w
+            });
+        }
+
+        // If bubble exceeds height of graph
+        if (y + h > this.target.parent().outerHeight()) {
+            this.self.css({
+                "top": y - 3 * offsetY - h
+            });
+        }
 
         // Show bubble
         this.self.show();
     }
 
-    /**
-     * HIDE
-     */
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     HIDE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     hide() {
 
         // Hide bubble
