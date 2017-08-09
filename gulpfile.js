@@ -8,7 +8,7 @@
  *******************************************************************************/
 
 // Load plugins
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     babel = require("gulp-babel"),
     webpack = require("webpack-stream"),
     sass = require("gulp-sass"),
@@ -20,7 +20,7 @@ var gulp = require("gulp"),
 
 
 // Define paths
-var paths = {
+const paths = {
     php: "dev/**/*.php",
     html: "dev/**/*.html",
     css: "path/assets/css/*.css",
@@ -31,13 +31,15 @@ var paths = {
         "dev/assets/scss/placeholders.scss",
         "dev/assets/scss/index.scss",
         "dev/modules/**/*.scss"],
-    js: ["dev/assets/js/index.js"]
+    js: ["dev/assets/js/index.js",
+        "dev/assets/js/lib.js",
+        "dev/modules/**/*.js"]
 };
 
 // TASKS
 // PHP task
 gulp.task("php",
-    gulp.series(function (done) {
+    gulp.series((done) => {
         php.server({
             base: "dev",
             port: 8000,
@@ -51,7 +53,7 @@ gulp.task("php",
 
 // Synchronize browser task
 gulp.task("sync",
-    gulp.series("php", function (done) {
+    gulp.series("php", (done) => {
         sync({
             proxy: "127.0.0.1:8000",
             port: 8010,
@@ -66,25 +68,8 @@ gulp.task("sync",
 
 // Cleaning public folder
 gulp.task("clean",
-    gulp.series(function (done) {
+    gulp.series((done) => {
         del("public/**/*");
-
-        done();
-    })
-);
-
-// SASS-compiling task
-gulp.task("old-sass",
-    gulp.series(function (done) {
-        gulp.src(paths.scss)
-            .pipe(sass())
-            .pipe(sync.stream())
-            .pipe(gulp.dest(function (f) {
-                var filename = f.path.split("/").pop();
-                var filepath = f.dirname.split("/").slice(6, -1).join("/");
-                f.dirname = "";
-                return "./dev/" + filepath + "/css/" + filename;
-            }));
 
         done();
     })
@@ -92,10 +77,11 @@ gulp.task("old-sass",
 
 // SASS-compiling and minimizing task
 gulp.task("sass",
-    gulp.series(function (done) {
+    gulp.series((done) => {
         gulp.src(paths.scss)
             .pipe(concat("index.scss"))
             .pipe(sass())
+            .pipe(sync.stream())
             .pipe(rename("index.min.css"))
             .pipe(gulp.dest("dev/assets/css"));
 
@@ -105,8 +91,8 @@ gulp.task("sass",
 
 // JS-optimization task
 gulp.task("js",
-    gulp.series(function (done) {
-        gulp.src(paths.js)
+    gulp.series((done) => {
+        gulp.src(paths.js[0])
             .pipe(babel({
                 presets: ["es2015"]
             }))
@@ -121,7 +107,7 @@ gulp.task("js",
 
 // JS-linting task
 gulp.task("lint:js",
-    gulp.series(function (done) {
+    gulp.series((done) => {
         gulp.src([paths.js, "!./dev/assets/js/lib/**/*.js"])
             .pipe(jshint())
             .pipe(jshint.reporter("default"));
@@ -132,8 +118,8 @@ gulp.task("lint:js",
 
 // Watch task
 gulp.task("watch",
-    gulp.series("sass", "sync",
-        gulp.parallel(function (done) {
+    gulp.series("sass", "js", "sync",
+        gulp.parallel((done) => {
             gulp.watch(paths.php)
                 .on("change", gulp.series(sync.reload));
             gulp.watch(paths.html)
@@ -141,8 +127,7 @@ gulp.task("watch",
             gulp.watch(paths.scss)
                 .on("change", gulp.series("sass"));
             gulp.watch(paths.js)
-            //.on("change", gulp.series("lint:js", sync.reload));
-                .on("change", gulp.series(sync.reload));
+                .on("change", gulp.series("js", sync.reload));
 
             done();
         })
@@ -152,7 +137,7 @@ gulp.task("watch",
 // Compile task
 gulp.task("compile",
     gulp.series("sass", "js",
-        function (done) {
+        (done) => {
             gulp.src([paths.php, paths.html])
                 .pipe(gulp.dest("public"));
 

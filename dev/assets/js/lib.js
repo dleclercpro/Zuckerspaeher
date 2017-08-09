@@ -17,32 +17,36 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-// Exports
-export {convertTime,
-        decodeEntity,
-        first,
-        getData,
-        indexSort,
-        last,
-        range,
-        rankBG,
-        rankdBGdt,
-        round};
-
 // Functions
-const first = (array) => {
+export const first = (array) => {
     return array[0];
 };
 
-const last = (array) => {
+export const last = (array) => {
     return array[array.length - 1];
 };
 
-const decodeEntity = (str) => {
+export const round = (x, n) => {
+
+    // Ensure float
+    x = parseFloat(x);
+
+    // Define scientific exponent
+    const e = Math.pow(10, n);
+
+    // Return rounded value
+    return (Math.round(x * e) / e).toFixed(n);
+};
+
+
+
+
+
+export const decodeEntity = (str) => {
     return $("<textarea>").html(str).text();
 };
 
-const range = (start, stop, step) => {
+export const range = (start, stop, step) => {
     if (typeof stop == 'undefined') {
         stop = start;
         start = 0;
@@ -64,7 +68,7 @@ const range = (start, stop, step) => {
     return result;
 };
 
-const indexSort = (x, y = []) => {
+export const indexSort = (x, y = []) => {
     // Couple indexes with values
   for (i = 0; i < x.length; i++) {
     x[i] = [x[i], i];
@@ -102,7 +106,7 @@ const indexSort = (x, y = []) => {
   return [x, y]
 };
 
-const getData = (report, section, format = false, limits = []) => {
+export const getData = (report, section, format = false, limits = []) => {
     // Create data arrays
     var x = [];
     var y = [];
@@ -159,7 +163,7 @@ const getData = (report, section, format = false, limits = []) => {
     return [X, Y];
 };
 
-const convertTime = (t, format) => {
+export const convertTime = (t, format) => {
     // Identify type of input given
     var isArray = true;
 
@@ -304,7 +308,7 @@ const convertTime = (t, format) => {
     return result[0];
 };
 
-const rankBG = (BG, BGScale) => {
+export const rankBG = (BG, BGScale) => {
     BG = parseFloat(BG);
 
     if (BG < BGScale[0]) {
@@ -320,7 +324,7 @@ const rankBG = (BG, BGScale) => {
     }
 };
 
-const rankdBGdt = (dBGdt, dBGdtScale) => {
+export const rankdBGdt = (dBGdt, dBGdtScale) => {
     dBGdt = parseFloat(dBGdt);
     
     var arrowUp = decodeEntity("&#8593;");
@@ -340,11 +344,4 @@ const rankdBGdt = (dBGdt, dBGdtScale) => {
     } else if (dBGdt >= dBGdtScale[3]) {
         return arrowUp;
     }
-};
-
-const round = (x, n) => {
-    x = parseFloat(x);
-    e = Math.pow(10, n);
-
-    return (Math.round(x * e) / e).toFixed(n);
 };

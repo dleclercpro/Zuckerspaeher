@@ -1,123 +1,82 @@
 // Imports
 import * as lib from "../../assets/js/lib";
 
-// Exports
-export {Bubble};
+export class Bubble {
 
-const Bubble = () => {
+    /**
+     * CONSTRUCTOR
+     */
+    constructor() {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        INIT
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    this.init = function (e, units, round, format = "HH:MM - DD.MM.YYYY") {
+        // Get object from DOM
+        this.self = $("#bubble");
+        this.info = this.self.find("#bubble-info");
+        this.time = this.self.find("#bubble-time");
 
-        // Store element on which bubble will give infos
-        this.e = e;
+        // Initialize properties
+        this.target = null;
+        this.units = null;
+        this.round = null;
+        this.format = null;
+    }
 
-        // Store element units
+    /**
+     * UPDATE
+     * @param target
+     * @param type
+     * @param x
+     * @param y
+     * @param units
+     * @param round
+     * @param format
+     */
+    update(target, type, x, y, units, round, format) {
+
+        // Define properties
+        this.target = target;
+        this.type = type;
+        this.x = x;
+        this.y = y;
         this.units = units;
-
-        // Store rounding position
         this.round = round;
-
-        // Store time format
         this.format = format;
 
-        // Get bubble element
-        this.get();
-
-        // Update bubble
-        this.update();
-    };
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        GET
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    this.get = function () {
-
-        // Get bubble
-        var bubble = $("#bubble");
-
-        // Store bubble and its infos
-        this.self = bubble;
-        this.info = bubble.find("#bubble-info");
-        this.time = bubble.find("#bubble-time");
-    };
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        UPDATE
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    this.update = function () {
-
-        // Get infos about element
-        var x = this.e.attr("x");
-        var y = this.e.attr("y");
-        var type = this.e.attr("class");
-
         // Convert time if desired
-        if (this.format) {
-            x = lib.convertTime(x, this.format);
+        if (format) {
+            x = lib.convertTime(x, format);
         }
 
         // Round info if desired
-        if (this.round) {
-            y = lib.round(y, this.round);
+        if (round) {
+            y = lib.round(y, round);
         }
 
         // Update infos in bubble
         this.time.html(x);
-        this.info.html("<span class='" + type + "'>" + y + "</span>" +
-            " " + this.units);
-    };
+        this.info.html("<span class='" + type + "'>" + y + "</span> " + units);
+    }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        SHOW
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    this.show = function (offsetX = 8, offsetY = 0) {
+    /**
+     * SHOW
+     */
+    show() {
 
-        // Define bubble coordinates
-        var offsetTop = parseFloat(this.e.parent().position().top);
-        var x = parseFloat(this.e.position().left) +
-            parseFloat(this.e.css("width")) + offsetX;
-        var y = parseFloat(this.e.position().top) + offsetY + offsetTop;
-
-        // Define bubble size
-        var w = this.self.outerWidth();
-        var h = this.self.outerHeight();
-
-        // Adjust position of bubble due to it being in content element
-        if (offsetTop) {
-            y += h; // FIXME
-        }
-
-        // Position bubble on graph
+        // Position bubble
         this.self.css({
-            "left": x + "px",
-            "top": y + "px"
+            "top": 0,
+            "left": 0,
         });
-
-        // If bubble exceeds width of graph
-        if (x + w > this.e.parent().outerWidth()) {
-            this.self.css({
-                "left": x - 3 * offsetX - w + "px"
-            });
-        }
-
-        // If bubble exceeds height of graph
-        if (y + h > this.e.parent().outerHeight()) {
-            this.self.css({
-                "top": y - 3 * offsetY - h + "px"
-            });
-        }
 
         // Show bubble
         this.self.show();
-    };
+    }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        HIDE
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    this.hide = function () {
+    /**
+     * HIDE
+     */
+    hide() {
+
+        // Hide bubble
         this.self.hide();
     }
-};
+}
