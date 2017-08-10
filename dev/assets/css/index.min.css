@@ -1,3 +1,11 @@
+/*******************************************************************************
+
+	Title : index.scss
+	Author : David Leclerc
+	Date : 12.12.2016
+	Notes : -
+
+*******************************************************************************/
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -452,14 +460,6 @@ header > #buttons {
     box-shadow: inset 3px 3px 3px #090808;
     padding-left: 6px; }
 
-/*******************************************************************************
-
-	Title : index.scss
-	Author : David Leclerc
-	Date : 12.12.2016
-	Notes : -
-
-*******************************************************************************/
 body {
   display: flex;
   flex-direction: column;
@@ -494,6 +494,75 @@ main {
   color: #99e500; }
   .BG-normal:hover {
     background-color: #446600; }
+
+#dash {
+  display: flex;
+  flex: none;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 5%;
+  right: 3%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 45vw;
+  max-width: 450px;
+  padding: 30px 2.5vw;
+  z-index: 15;
+  order: 2; }
+  @media only screen and (max-width: 1024px) {
+    #dash {
+      width: 50vw;
+      height: 190px;
+      max-width: none;
+      top: 0;
+      right: 0;
+      padding: 15px 5vw; } }
+  @media only screen and (max-width: 640px) {
+    #dash {
+      display: none;
+      width: 100vw;
+      height: auto;
+      align-items: center;
+      top: 100px;
+      left: 0; } }
+  #dash > #dash-live {
+    display: flex;
+    margin-bottom: 10px;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1em;
+    color: #eeeeee; }
+    @media only screen and (max-width: 1024px) {
+      #dash > #dash-live {
+        font-size: 40px; } }
+    @media only screen and (max-width: 640px) {
+      #dash > #dash-live {
+        display: none; } }
+    #dash > #dash-live > #dash-BG {
+      background: none; }
+    #dash > #dash-live > #dash-arrow {
+      background: none;
+      margin-left: 5px; }
+  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors, #dash > #dash-age {
+    display: flex; }
+    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
+      font-size: 17px;
+      line-height: 1.25em;
+      margin-right: 15px;
+      white-space: nowrap; }
+      @media only screen and (max-width: 1024px) {
+        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
+          font-size: 16px; } }
+      @media only screen and (max-width: 640px) {
+        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
+          font-size: 15px; } }
+      #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child, #dash > #dash-age > p:last-child {
+        margin-right: 0; }
 
 #bubble {
   display: flex;
@@ -727,75 +796,6 @@ main {
     width: 28px;
     height: 28px;
     order: 4; }
-
-#dash {
-  display: flex;
-  flex: none;
-  border: none;
-  border-radius: 3px;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-  position: absolute;
-  top: 5%;
-  right: 3%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  width: 45vw;
-  max-width: 450px;
-  padding: 30px 2.5vw;
-  z-index: 15;
-  order: 2; }
-  @media only screen and (max-width: 1024px) {
-    #dash {
-      width: 50vw;
-      height: 190px;
-      max-width: none;
-      top: 0;
-      right: 0;
-      padding: 15px 5vw; } }
-  @media only screen and (max-width: 640px) {
-    #dash {
-      display: none;
-      width: 100vw;
-      height: auto;
-      align-items: center;
-      top: 100px;
-      left: 0; } }
-  #dash > #dash-live {
-    display: flex;
-    margin-bottom: 10px;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 50px;
-    font-weight: bold;
-    line-height: 1em;
-    color: #eeeeee; }
-    @media only screen and (max-width: 1024px) {
-      #dash > #dash-live {
-        font-size: 40px; } }
-    @media only screen and (max-width: 640px) {
-      #dash > #dash-live {
-        display: none; } }
-    #dash > #dash-live > #dash-BG {
-      background: none; }
-    #dash > #dash-live > #dash-arrow {
-      background: none;
-      margin-left: 5px; }
-  #dash > #dash-delta, #dash > #dash-basal, #dash > #dash-on-board, #dash > #dash-factors, #dash > #dash-age {
-    display: flex; }
-    #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
-      font-size: 17px;
-      line-height: 1.25em;
-      margin-right: 15px;
-      white-space: nowrap; }
-      @media only screen and (max-width: 1024px) {
-        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
-          font-size: 16px; } }
-      @media only screen and (max-width: 640px) {
-        #dash > #dash-delta > p, #dash > #dash-basal > p, #dash > #dash-on-board > p, #dash > #dash-factors > p, #dash > #dash-age > p {
-          font-size: 15px; } }
-      #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child, #dash > #dash-age > p:last-child {
-        margin-right: 0; }
 
 header {
   display: flex;

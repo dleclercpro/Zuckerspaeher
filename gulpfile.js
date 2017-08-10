@@ -18,22 +18,16 @@ const gulp = require("gulp"),
     php = require("gulp-connect-php"),
     sync = require("browser-sync");
 
-
 // Define paths
 const paths = {
     php: "dev/**/*.php",
     html: "dev/**/*.html",
     css: "path/assets/css/*.css",
-    scss: ["dev/assets/scss/normalize.scss",
-        "dev/assets/scss/base.scss",
-        "dev/assets/scss/config.scss",
-        "dev/assets/scss/mixins.scss",
-        "dev/assets/scss/placeholders.scss",
-        "dev/assets/scss/index.scss",
-        "dev/modules/**/*.scss"],
+    scss: ["dev/assets/scss/index.scss",
+           "dev/modules/**/*.scss"],
     js: ["dev/assets/js/index.js",
-        "dev/assets/js/lib.js",
-        "dev/modules/**/*.js"]
+         "dev/assets/js/lib.js",
+         "dev/modules/**/*.js"]
 };
 
 // TASKS
@@ -106,7 +100,7 @@ gulp.task("js",
 );
 
 // JS-linting task
-gulp.task("lint:js",
+gulp.task("js:lint",
     gulp.series((done) => {
         gulp.src([paths.js, "!./dev/assets/js/lib/**/*.js"])
             .pipe(jshint())
@@ -136,14 +130,12 @@ gulp.task("watch",
 
 // Compile task
 gulp.task("compile",
-    gulp.series("sass", "js",
-        (done) => {
-            gulp.src([paths.php, paths.html])
-                .pipe(gulp.dest("public"));
+    gulp.series("sass", "js", (done) => {
+        gulp.src([paths.php, paths.html])
+            .pipe(gulp.dest("public"));
 
-            done();
-        }
-    )
+        done();
+    })
 );
 
 // Build task
