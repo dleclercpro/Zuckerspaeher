@@ -4,9 +4,9 @@ import {Bubble} from "../bubble/bubble";
 
 class Axis {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
      constructor() {
 
      }
@@ -15,9 +15,9 @@ class Axis {
 
 class Inner {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor() {
 
     }
@@ -26,9 +26,9 @@ class Inner {
 
 class Corner {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor() {
 
     }
@@ -37,9 +37,9 @@ class Corner {
 
 export class Graph {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor(name) {
 
         // Get object in DOM
@@ -65,9 +65,9 @@ export class Graph {
         this.buildInner();
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      GENERATEAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     generateAxis(z0, dz, dZ) {
 
         // Initialize empty array
@@ -84,9 +84,9 @@ export class Graph {
         return z;
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildAxis(z, z0, dz, dZ, label, format) {
 
         // Create axis node
@@ -184,27 +184,27 @@ export class Graph {
         this.self.append(axis);
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDINNER
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildInner() {
 
         // Append to graph
         this.self.append($("<div class='graph'></div>"));
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDCORNER
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildCorner() {
 
         // Append to graph
         this.self.append($("<div class='graph-NA'></div>"));
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDDOTS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildDots(type, data) {
 
         // If inside section of graph does not already exist, create it
@@ -240,9 +240,9 @@ export class Graph {
         graph.append(dots);
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      SHOWDOTS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     showDots(type, units, round, y0) {
 
         // Get inner section of graph
@@ -272,7 +272,7 @@ export class Graph {
 
         for (let dot of dots) {
             X.push(parseFloat($(dot).attr("x")));
-            Y.push(parseFloat($(dot).attr("y")));
+            Y.push(typeof(y0) == "number" ? y0 : parseFloat($(dot).attr("y")));
         }
 
         // Compute coordinates of dots
@@ -283,7 +283,7 @@ export class Graph {
 
             // Compute distance with inner extremities
             let dx = X[i] - this.xMin;
-            let dy = y0 ? y0 : Y[i] - this.yMin;
+            let dy = Y[i] - this.yMin;
 
             // Convert to pixels
             x.push(dx / this.dX * graphW - radiusDot - thicknessXTick / 2);
@@ -295,8 +295,8 @@ export class Graph {
 
             // Set CSS
             dots.eq(i).css({
-                "left": x[i] + "px",
-                "bottom": y[i] + "px"
+                "left": x[i],
+                "bottom": y[i]
             });
         }
 
@@ -306,14 +306,14 @@ export class Graph {
             $(dot).on("mouseenter", (e) => {
 
                 // Update bubble
-                this.bubble.update(e.currentTarget, type, units, round);
+                this.bubble.update(e.currentTarget, type, units, round, "YYYY.MM.DD - HH:MM:SS");
 
                 // Show bubble
                 this.bubble.show();
             });
 
             // When mouse exits dot
-            $(dot).on("mouseenter", (e) => {
+            $(dot).on("mouseleave", (e) => {
 
                 // Hide bubble
                 this.bubble.hide();
@@ -321,9 +321,9 @@ export class Graph {
         }
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildBars(type, data) {
 
         // If inside section of graph does not already exist, create it
@@ -364,9 +364,9 @@ export class Graph {
         graph.append(bars);
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      SHOWBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     showBars(type, units, round, y0) {
 
         // Get inner section of graph
@@ -381,16 +381,16 @@ export class Graph {
         const n = bars.length - 1;
 
         // Get bar styles
-        const thicknessBorder = parseFloat(lib.first(bars).css("border-top-width")) ||
-                                parseFloat(lib.first(bars).css("border-bottom-width"));
+        const thicknessBorder = parseFloat(bars.first().css("border-top-width")) ||
+                                parseFloat(bars.first().css("border-bottom-width"));
 
         // Extract information from bars
         let x = [];
         let y = [];
 
         for (let bar of bars) {
-            x.push(parseFloat(bar.attr("x")));
-            y.push(parseFloat(bar.attr("y")));
+            x.push(parseFloat($(bar).attr("x")));
+            y.push(parseFloat($(bar).attr("y")));
         }
 
         // Compute space between last bar and now
@@ -398,14 +398,14 @@ export class Graph {
         const W = dW / this.dX * graphW;
 
         // Push bars according to time difference between last bar and now
-        lib.last(graph.children()).css("margin-right", W);
+        graph.children().last().css("margin-right", W);
 
         // Compute bar sizes
         let w = [];
         let b = [];
 
         for (let i = 0; i < n; i++) {
-            dw = x[i + 1] - x[i];
+            let dw = x[i + 1] - x[i];
 
             w[i] = dw / this.dX * graphW;
             y[i] = y[i] / this.dY * graphH;
@@ -421,19 +421,16 @@ export class Graph {
             // Define type of bar
             if (y[i] > 0) {
                 bar.addClass("high-" + type);
-            }
-            else if (y[i] < 0) {
+            } else if (y[i] < 0) {
                 bar.addClass("low-" + type);
-            }
-            else {
+            } else {
                 bar.addClass("no-" + type);
             }
 
             // Push inner bars
             if (y[i] > 0) {
                 bar.children().css("margin-bottom", "auto");
-            }
-            else if (y[i] < 0) {
+            } else if (y[i] < 0) {
                 bar.children().css("margin-top", "auto");
             }
 
@@ -441,32 +438,31 @@ export class Graph {
             // Higher than baseline
             if (y[i] > 0) {
                 if (i != 0 && y[i] > y[i - 1]) {
-                    lib.first(bar.children()).css("height", y[i] - y[i - 1]);
+                    bar.children().first().css("height", y[i] - y[i - 1]);
                 }
 
                 if (i != n && y[i] > y[i + 1]) {
-                    lib.last(bar.children()).css("height", y[i] - y[i + 1]);
+                    bar.children().last().css("height", y[i] - y[i + 1]);
                 }
             }
             // Lower than baseline
             else if (y[i] < 0) {
                 if (i != 0 && y[i] < y[i - 1]) {
-                    lib.first(bar.children()).css("height", Math.abs(y[i] - y[i - 1]));
+                    bar.children().first().css("height", Math.abs(y[i] - y[i - 1]));
                 }
 
                 if (i != n && y[i] < y[i + 1]) {
-                    lib.last(bar.children()).css("height", Math.abs(y[i] - y[i + 1]));
+                    bar.children().last().css("height", Math.abs(y[i] - y[i + 1]));
                 }
             }
 
             // Baseline crossed
             // From -1 to 1
             if (i != 0 && (y[i - 1] < 0 && y[i] > 0 || y[i - 1] > 0 && y[i] < 0)) {
-                lib.first(bar.children()).css("height", "100%");
-                // From 1 to -1
-            }
-            else if (i != n && (y[i + 1] < 0 && y[i] > 0 || y[i + 1] > 0 && y[i] < 0)) {
-                lib.last(bar.children()).css("height", "100%");
+                bar.children().first().css("height", "100%");
+            // From 1 to -1
+            } else if (i != n && (y[i + 1] < 0 && y[i] > 0 || y[i + 1] > 0 && y[i] < 0)) {
+                bar.children().last().css("height", "100%");
             }
 
             // Minor bars
@@ -475,8 +471,7 @@ export class Graph {
                 // Remove unnecessary borders and shift bar back to baseline
                 if (y[i] >= 0) {
                     bar.css("border-top", "none");
-                }
-                else if (y[i] < 0) {
+                } else if (y[i] < 0) {
                     bar.css("border-bottom", "none");
                 }
 
@@ -499,19 +494,19 @@ export class Graph {
 
             // Position bars on graph
             bar.css({
-                "width": w[i] + "px",
-                "height": Math.abs(y[i]) + "px",
-                "margin-bottom": b[i] + "px"
+                "width": w[i],
+                "height": Math.abs(y[i]),
+                "margin-bottom": b[i]
             });
 
             // Show bubble
-            bar.on("mouseenter", function () {
-                this.bubble.init($(this), units, round);
+            bar.on("mouseenter", (e) => {
+                this.bubble.update(e.currentTarget, type, units, round, "YYYY.MM.DD - HH:MM:SS");
                 this.bubble.show();
             });
 
             // Hide bubble
-            bar.on("mouseleave", function () {
+            bar.on("mouseleave", (e) => {
                 this.bubble.hide();
             });
         }
@@ -521,9 +516,9 @@ export class Graph {
 
 export class GraphBG extends Graph {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      COLORBGS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     colorBGs (BGScale) {
 
         // Get inner graph section
@@ -546,27 +541,24 @@ export class GraphBG extends Graph {
 
 export class GraphI extends Graph {
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      PROFILETBS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     profileTBs (data, dt = 5 * 60 * 1000) {
 
         // Store data in separate arrays
         let [t, net] = data;
 
         // Sort TB times in case they aren't already
-        [t, net] = lib.indexSort(t, [net]);
-
-        // Get net
-        net = net[0];
+        [t, net] = lib.indexSort(t, net);
 
         // Give user TB profile
         return [t, net];
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDTBS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildTBs (data) {
 
         // Build TBs

@@ -262,6 +262,57 @@ export const convertTime = (T, format) => {
     }
 };
 
+export const indexSort = (x, ...args) => {
+
+    // Count number of entries in main array
+    const N = x.length;
+
+    // Count number of arrays to sort according to main array
+    const n = args.length;
+
+    // Loop on all values
+    for (let i = 0; i < N; i++) {
+
+        // Couple indexes with values
+        x[i] = [x[i], i];
+    }
+
+    // Sort based on values
+    x.sort((a, b) => {
+        return a[0] < b[0] ? -1 : 1;
+    });
+
+    // Initialize indexes array
+    let indexes = [];
+
+    // Loop on all values
+    for (let i = 0; i < N; i++) {
+
+        // Decouple indexes and values
+        [x[i], indexes[i]] = x[i];
+    }
+
+    // Initialize sorted rest array
+    let sorted = [];
+
+    // Sort linked arrays based on previously obtained indexes array
+    for (let i = 0; i < n; i++) {
+
+        // Initialize sorted array
+        sorted[i] = [];
+
+        // Loop on sorted indexes
+        for (let j = 0; j < N; j++) {
+
+            // Sort according to index
+            sorted[i][j] = args[i][indexes[j]];
+        }
+    }
+
+    // Return modified arrays
+    return [x, ...sorted]
+};
+
 
 
 
@@ -290,44 +341,6 @@ export const range = (start, stop, step) => {
     }
 
     return result;
-};
-
-export const indexSort = (x, y = []) => {
-    // Couple indexes with values
-  for (i = 0; i < x.length; i++) {
-    x[i] = [x[i], i];
-  }
-
-  // Sort based on values
-  x.sort(function(a, b) {
-    return a[0] < b[0] ? -1 : 1;
-  });
-
-  // Initialize indexes array
-  indexes = [];
-
-  // Decouple indexes and values
-  for (i = 0; i < x.length; i++) {
-    indexes.push(x[i][1]);
-    x[i] = x[i][0];
-  }
-
-  // Sort linked arrays based on previously obtained indexes array
-  var z = [];
-
-  for(i = 0; i < y.length; i++) {
-    z[i] = [];
-
-    for(j = 0; j < x.length; j++) {
-        z[i][j] = y[i][indexes[j]];
-    }
-
-    // Reassign sorted values to original arrays
-    y[i] = z[i];
-  }
-
-  // Return modified arrays
-  return [x, y]
 };
 
 export const getData = (report, section, format = false, limits = []) => {
