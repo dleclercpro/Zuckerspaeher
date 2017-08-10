@@ -35,6 +35,9 @@ $(document).ready(() => {
     const x0 = now.getTime();
     let dx = 1; // Time step (h)
     let dX = 12; // Time range (h)
+    const yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
+    const yI = [-4, -2, 0, 2, 4]; // U/h
+    const BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
 
     // Convert times to ms standard
     dx *= 60 * 60 * 1000;
@@ -56,16 +59,29 @@ $(document).ready(() => {
     // Generate I graph
     const _GraphI = new graph.GraphI("I");
 
-    // Generate axis for I graph
+    // Generate axes
     _GraphI.buildAxis(x, x0, dx, dX, "x", "HH:MM");
+    _GraphI.buildAxis(yI, null, null, null, "y");
+    _GraphBG.buildAxis(yBG, null, null, null, "y");
 
+    // Share x-axis between I and BG graphs
+    _GraphBG.x = _GraphI.x;
+    _GraphBG.dX = _GraphI.dX;
+    _GraphBG.xMin = _GraphI.xMin;
+    _GraphBG.xMax = _GraphI.xMax;
 
+    // Get data
+    let BGs = lib.getData("reports/BG.json", false, "YYYY.MM.DD - HH:MM:SS"),
+        TBs = lib.getData("reports/treatments.json", "Net Basals", "YYYY.MM.DD - HH:MM:SS"),
+        Bs = lib.getData("reports/treatments.json", "Boluses", "YYYY.MM.DD - HH:MM:SS");
 
+    // Build BG dots
+    _GraphBG.buildDots("BG", BGs);
 
-    // Define test element to show stuff
-    let _ = $("#graph-I");
+    // Show BG dots
+    _GraphBG.showDots("BG", "mmol/L", 1, false);
 
-    _.append("<p>" + _GraphBG.name + ".</p>");
-    _.append("<p>" + _GraphI.name + ".</p>");
+    // Color BG dots
+    _GraphBG.colorBGs(BGScale);
 
 });

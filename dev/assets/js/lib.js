@@ -129,7 +129,7 @@ export const convertTime = (T, format) => {
                 default:
 
                     // Show error
-                    alert("Time conversion error.");
+                    console.log("Time conversion error: " + T);
             }
         }
 
@@ -139,7 +139,7 @@ export const convertTime = (T, format) => {
         }
 
         // If formatted string
-        else if (t instanceof String) {
+        else if (typeof(t) == "string") {
 
             // Initialize date components
             let year = null,
@@ -156,12 +156,12 @@ export const convertTime = (T, format) => {
                 case "YYYY.MM.DD - HH:MM:SS":
 
                     // Parse time
-                    year = t[i].slice(0, 4);
-                    month = t[i].slice(5, 7);
-                    day = t[i].slice(8, 10);
-                    hour = t[i].slice(-8, -6);
-                    minute = t[i].slice(-5, -3);
-                    second = t[i].slice(-2);
+                    year = t.slice(0, 4);
+                    month = t.slice(5, 7);
+                    day = t.slice(8, 10);
+                    hour = t.slice(-8, -6);
+                    minute = t.slice(-5, -3);
+                    second = t.slice(-2);
 
                     break;
 
@@ -169,11 +169,11 @@ export const convertTime = (T, format) => {
                 case "HH:MM - DD.MM.YYYY":
 
                     // Parse time
-                    year = t[i].slice(-4);
-                    month = t[i].slice(-7, -5);
-                    day = t[i].slice(-10, -8);
-                    hour = t[i].slice(0, 2);
-                    minute = t[i].slice(3, 5);
+                    year = t.slice(-4);
+                    month = t.slice(-7, -5);
+                    day = t.slice(-10, -8);
+                    hour = t.slice(0, 2);
+                    minute = t.slice(3, 5);
                     second = 0;
 
                     break;
@@ -190,8 +190,8 @@ export const convertTime = (T, format) => {
                     yesterday.setDate(now.getDate() - 1);
 
                     // Read time
-                    hour = t[i].slice(0, 2);
-                    minute = t[i].slice(3, 5);
+                    hour = t.slice(0, 2);
+                    minute = t.slice(3, 5);
                     second = 0;
 
                     // Define considered time
@@ -222,19 +222,19 @@ export const convertTime = (T, format) => {
                     default:
 
                         // Show error
-                        alert("Time conversion error.");
+                        console.log("Time conversion error: " + T);
             }
 
             // Generate new date object
             const date = new Date();
 
             // Define date
-            date.setFullYear(year)
-                .setMonth(month - 1)
-                .setDate(day)
-                .setHours(hour)
-                .setMinutes(minute)
-                .setSeconds(second);
+            date.setFullYear(year);
+            date.setMonth(month - 1);
+            date.setDate(day);
+            date.setHours(hour);
+            date.setMinutes(minute);
+            date.setSeconds(second);
 
             // Convert time
             t_ = date.getTime();
@@ -244,7 +244,7 @@ export const convertTime = (T, format) => {
         else {
 
             // Show error
-            alert("Time conversion error.");
+            console.log("Time conversion error: " + T);
         }
 
         // Store time conversion

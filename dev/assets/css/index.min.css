@@ -595,35 +595,6 @@ main {
       #dash > #dash-delta > p:last-child, #dash > #dash-basal > p:last-child, #dash > #dash-on-board > p:last-child, #dash > #dash-factors > p:last-child, #dash > #dash-age > p:last-child {
         margin-right: 0; }
 
-header {
-  display: flex;
-  flex: none;
-  width: 100vw;
-  height: 70px;
-  padding: 0 3%;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 3px 3px black;
-  z-index: 35; }
-  @media only screen and (max-width: 1024px) {
-    header {
-      padding: 0 5%; } }
-  header > #logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 38px;
-    font-weight: bold;
-    color: #eeeeee; }
-    header > #logo > span {
-      color: #484848; }
-  header > #buttons {
-    width: 20px;
-    margin-left: auto; }
-    header > #buttons > img {
-      width: 100%;
-      cursor: pointer; }
-
 #graph-BG {
   display: flex;
   flex-wrap: wrap;
@@ -825,6 +796,35 @@ header {
     width: 28px;
     height: 28px;
     order: 4; }
+
+header {
+  display: flex;
+  flex: none;
+  width: 100vw;
+  height: 70px;
+  padding: 0 3%;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 3px 3px black;
+  z-index: 35; }
+  @media only screen and (max-width: 1024px) {
+    header {
+      padding: 0 5%; } }
+  header > #logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #eeeeee; }
+    header > #logo > span {
+      color: #484848; }
+  header > #buttons {
+    width: 20px;
+    margin-left: auto; }
+    header > #buttons > img {
+      width: 100%;
+      cursor: pointer; }
 
 #settings {
   display: none;
