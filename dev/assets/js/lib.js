@@ -18,6 +18,22 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 // Functions
+export const arrayize = (x) => {
+
+    // Initialize response
+    let X = x;
+
+    // If not an array
+    if (!(x instanceof Array)) {
+
+        // Convert to array
+        X = [x];
+    }
+
+    // Return resposne
+    return X;
+};
+
 export const first = (array) => {
     return array[0];
 };
@@ -36,6 +52,214 @@ export const round = (x, n = 1) => {
 
     // Return rounded value
     return (Math.round(x * e) / e).toFixed(n);
+};
+
+export const convertTime = (T, format) => {
+
+    // Make sure an array was given as input
+    T = arrayize(T);
+
+    // Initialize converted time array
+    let T_ = [];
+
+    // Define 01.01.2000 - 00:00:00 in epoch time (ms)
+    const epoch = 946684800000;
+
+    // Loop on time entries
+    for (let t of T) {
+
+        // Initialize converted time
+        let t_ = null;
+
+        // If epoch time (bigger than
+        if (parseInt(t) > epoch) {
+
+            // Parse string
+            t = parseInt(t);
+
+            // Generate date object
+            const date = new Date(t);
+
+            // Read date components
+            const year = date.getFullYear(),
+                  month = date.getMonth() + 1,
+                  day = date.getDate(),
+                  hour = date.getHours(),
+                  minute = date.getMinutes(),
+                  second = date.getSeconds();
+
+            // Look for correct format
+            switch(format) {
+
+                // Format 1
+                case "YYYY.MM.DD - HH:MM:SS":
+
+                    // Store conversion
+                    t_ = year + "." +
+                         ("0" + month).slice(-2) + "." +
+                         ("0" + day).slice(-2) + " - " +
+                         ("0" + hour).slice(-2) + ":" +
+                         ("0" + minute).slice(-2) + ":" +
+                         ("0" + second).slice(-2);
+
+                    break;
+
+                // Format 2
+                case "HH:MM - DD.MM.YYYY":
+
+                    // Store conversion
+                    t_ = ("0" + hour).slice(-2) + ":" +
+                         ("0" + minute).slice(-2) + " - " +
+                         ("0" + day).slice(-2) + "." +
+                         ("0" + month).slice(-2) + "." +
+                         year;
+
+                    break;
+
+                // Format 3
+                case "HH:MM":
+
+                    // Store conversion
+                    t_ = ("0" + hour).slice(-2) + ":" +
+                         ("0" + minute).slice(-2);
+
+                    break;
+
+                // Error
+                default:
+
+                    // Show error
+                    alert("Time conversion error.");
+            }
+        }
+
+        // If date object
+        else if (t instanceof Date) {
+
+        }
+
+        // If formatted string
+        else if (t instanceof String) {
+
+            // Initialize date components
+            let year = null,
+                month = null,
+                day = null,
+                hour = null,
+                minute = null,
+                second = null;
+
+            // Look for correct format
+            switch(format) {
+
+                // Format 1
+                case "YYYY.MM.DD - HH:MM:SS":
+
+                    // Parse time
+                    year = t[i].slice(0, 4);
+                    month = t[i].slice(5, 7);
+                    day = t[i].slice(8, 10);
+                    hour = t[i].slice(-8, -6);
+                    minute = t[i].slice(-5, -3);
+                    second = t[i].slice(-2);
+
+                    break;
+
+                // Format 2
+                case "HH:MM - DD.MM.YYYY":
+
+                    // Parse time
+                    year = t[i].slice(-4);
+                    month = t[i].slice(-7, -5);
+                    day = t[i].slice(-10, -8);
+                    hour = t[i].slice(0, 2);
+                    minute = t[i].slice(3, 5);
+                    second = 0;
+
+                    break;
+
+                // Format 3 (map time)
+                case "HH:MM":
+
+                    // Generate new dates for considered time, today and yesterday
+                    const now = new Date();
+                    const today = new Date();
+                    const yesterday = new Date();
+
+                    // Set yesterday
+                    yesterday.setDate(now.getDate() - 1);
+
+                    // Read time
+                    hour = t[i].slice(0, 2);
+                    minute = t[i].slice(3, 5);
+                    second = 0;
+
+                    // Define considered time
+                    now.setHours(hour);
+                    now.setMinutes(minute);
+                    now.setSeconds(second);
+
+                    // If later than current time
+                    if (now > today) {
+
+                        // Define date
+                        year = yesterday.getFullYear();
+                        month = yesterday.getMonth() + 1;
+                        day = yesterday.getDate();
+                    }
+                    // Otherwise
+                    else {
+
+                        // Define date
+                        year = today.getFullYear();
+                        month = today.getMonth() + 1;
+                        day = today.getDate();
+                    }
+
+                    break;
+
+                    // Error
+                    default:
+
+                        // Show error
+                        alert("Time conversion error.");
+            }
+
+            // Generate new date object
+            const date = new Date();
+
+            // Define date
+            date.setFullYear(year)
+                .setMonth(month - 1)
+                .setDate(day)
+                .setHours(hour)
+                .setMinutes(minute)
+                .setSeconds(second);
+
+            // Convert time
+            t_ = date.getTime();
+        }
+
+        // Unknown format
+        else {
+
+            // Show error
+            alert("Time conversion error.");
+        }
+
+        // Store time conversion
+        T_.push(t_);
+    }
+
+    // Return array
+    if (T_.length > 1) {
+        return T_;
+    }
+
+    // Return single value
+    else {
+        return first(T_);
+    }
 };
 
 
@@ -161,151 +385,6 @@ export const getData = (report, section, format = false, limits = []) => {
 
     // Return data
     return [X, Y];
-};
-
-export const convertTime = (t, format) => {
-    // Identify type of input given
-    var isArray = true;
-
-    if (typeof(t) === "number" || typeof(t) === "string") {
-        isArray = false;
-
-        // Convert input to array
-        t = [t];
-    }
-
-    // Initialize result variable
-    var result = [];
-
-    // Loop on input
-    for(i = 0; i < t.length; i++) {
-        // Convert from epoch to string
-        if(parseInt(t[0]) == t[0]) {
-            t[i] = parseInt(t[i]);
-
-            var date = new Date(t[i]);
-
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            var hour = date.getHours();
-            var minute = date.getMinutes();
-            var second = date.getSeconds();
-
-            // Store time conversion
-            switch(format) {
-                case "YYYY.MM.DD - HH:MM:SS":
-                    result.push(year + "." +
-                        ("0" + month).slice(-2) + "." +
-                        ("0" + day).slice(-2) + " - " +
-                        ("0" + hour).slice(-2) + ":" +
-                        ("0" + minute).slice(-2) + ":" +
-                        ("0" + second).slice(-2)
-                    );
-                    break;
-
-                case "HH:MM - DD.MM.YYYY":
-                    result.push(("0" + hour).slice(-2) + ":" +
-                        ("0" + minute).slice(-2) + " - " +
-                        ("0" + day).slice(-2) + "." +
-                        ("0" + month).slice(-2) + "." +
-                        year
-                    );
-                    break;
-
-                case "HH:MM":
-                    result.push(("0" + hour).slice(-2) + ":" +
-                        ("0" + minute).slice(-2)
-                    );
-                    break;
-
-                default:
-                    alert("Time conversion error.");
-            }
-        }
-
-        // Convert from string to epoch
-        else {
-            var date = new Date();
-
-            switch(format) {
-                case "YYYY.MM.DD - HH:MM:SS":
-                    var year = t[i].slice(0, 4);
-                    var month = t[i].slice(5, 7);
-                    var day = t[i].slice(8, 10);
-                    var hour = t[i].slice(-8, -6);
-                    var minute = t[i].slice(-5, -3);
-                    var second = t[i].slice(-2);
-                    break;
-
-                case "HH:MM - DD.MM.YYYY":
-                    var year = t[i].slice(-4);
-                    var month = t[i].slice(-7, -5);
-                    var day = t[i].slice(-10, -8);
-                    var hour = t[i].slice(0, 2);
-                    var minute = t[i].slice(3, 5);
-                    var second = 0;
-                    break;
-
-                case "HH:MM":
-                    // Get now
-                    var now = new Date();
-
-                    // Get yesterday
-                    var yesterday = new Date();
-                    yesterday.setDate(now.getDate() - 1);
-
-                    // Read time
-                    var hour = t[i].slice(0, 2);
-                    var minute = t[i].slice(3, 5);
-                    var second = 0;
-
-                    // Define considered time
-                    var time = new Date();
-                    time.setHours(hour);
-                    time.setMinutes(minute);
-                    time.setSeconds(second);
-
-                    // If later than now
-                    if (time > now)
-                    {
-                        // Define date
-                        var year = yesterday.getFullYear();
-                        var month = yesterday.getMonth() + 1;
-                        var day = yesterday.getDate();
-                    }
-                    // Otherwise
-                    else
-                    {
-                        var year = now.getFullYear();
-                        var month = now.getMonth() + 1;
-                        var day = now.getDate();
-                    }
-
-                    break;
-
-                default:
-                    alert("Time conversion error.");
-            }
-
-            date.setFullYear(year);
-            date.setMonth(month - 1);
-            date.setDate(day);
-            date.setHours(hour);
-            date.setMinutes(minute);
-            date.setSeconds(second);
-
-            // Store time conversion
-            result.push(date.getTime());
-        }
-    }
-
-    // Give back result based on input type
-    if (isArray) {
-        return result;
-    }
-
-    return result[0];
 };
 
 export const rankBG = (BG, BGScale) => {

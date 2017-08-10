@@ -23,16 +23,18 @@ export class Bubble {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    update(target, type, x, y, units, round, format) {
+    update(target, type, units, round, format) {
 
         // Define properties
         this.target = target;
         this.type = type;
-        this.x = x;
-        this.y = y;
         this.units = units;
         this.round = round;
         this.format = format;
+
+        // Read properties from target
+        this.x = target.attr("x");
+        this.y = target.attr("y");
 
         // Convert time if desired
         if (format) {
