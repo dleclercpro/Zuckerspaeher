@@ -18,17 +18,19 @@ const gulp = require("gulp"),
     php = require("gulp-connect-php"),
     sync = require("browser-sync");
 
-// Define paths
-const paths = {
+// Define entry paths
+const entries = {
     php: "dev/**/*.php",
-    html: "dev/**/*.html",
-    css: "path/assets/css/*.css",
-    scss: ["dev/assets/scss/index.scss",
-           "dev/modules/**/*.scss"],
-    js: ["dev/assets/js/index.js",
-         "dev/assets/js/lib.js",
-         "dev/modules/**/*.js"]
+    scss: "dev/assets/scss/index.scss",
+    js: "dev/assets/js/index.js"
 };
+
+// Define module paths
+const modules = {
+    php: "dev/modules/**/*.php",
+    scss: "dev/modules/**/*.scss",
+    js: "dev/modules/**/*.js"
+}
 
 // TASKS
 // PHP task
@@ -72,12 +74,12 @@ gulp.task("clean",
 // SASS-compiling and minimizing task
 gulp.task("sass",
     gulp.series((done) => {
-        gulp.src(paths.scss)
+        gulp.src([entries.scss, modules.scss])
             .pipe(concat("index.scss"))
             .pipe(sass())
-            .pipe(sync.stream())
             .pipe(rename("index.min.css"))
-            .pipe(gulp.dest("dev/assets/css"));
+            .pipe(gulp.dest("dev/assets/css"))
+            .pipe(sync.stream());
 
         done();
     })
@@ -86,7 +88,7 @@ gulp.task("sass",
 // JS-optimization task
 gulp.task("js",
     gulp.series((done) => {
-        gulp.src(paths.js[0])
+        gulp.src(entries.js)
             .pipe(babel({
                 presets: ["es2015"]
             }))
@@ -102,7 +104,7 @@ gulp.task("js",
 // JS-linting task
 gulp.task("js:lint",
     gulp.series((done) => {
-        gulp.src([paths.js, "!./dev/assets/js/lib/**/*.js"])
+        gulp.src(entries.js)
             .pipe(jshint())
             .pipe(jshint.reporter("default"));
 
@@ -114,13 +116,11 @@ gulp.task("js:lint",
 gulp.task("watch",
     gulp.series("sass", "js", "sync",
         gulp.parallel((done) => {
-            gulp.watch(paths.php)
+            gulp.watch("dev/**/*.php")
                 .on("change", gulp.series(sync.reload));
-            gulp.watch(paths.html)
-                .on("change", gulp.series(sync.reload));
-            gulp.watch(paths.scss)
+            gulp.watch("dev/**/*.scss")
                 .on("change", gulp.series("sass"));
-            gulp.watch(paths.js)
+            gulp.watch("dev/**/*.js")
                 .on("change", gulp.series("js", sync.reload));
 
             done();
@@ -131,7 +131,7 @@ gulp.task("watch",
 // Compile task
 gulp.task("compile",
     gulp.series("sass", "js", (done) => {
-        gulp.src([paths.php, paths.html])
+        gulp.src([entries.php, modules.php])
             .pipe(gulp.dest("public"));
 
         done();
