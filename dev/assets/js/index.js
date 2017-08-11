@@ -21,6 +21,7 @@
 import jQuery from "jquery";
 import * as lib from "./lib";
 import {Dash} from "../../modules/dash/dash";
+import {Axis} from "../../modules/graph/axis";
 import {GraphBG, GraphI} from "../../modules/graph/graph";
 
 // Enable jQuery
@@ -53,7 +54,13 @@ $(document).ready(() => {
     const graphI = new GraphI("I");
 
     // Generate axes
-    graphI.buildAxis(x, x0, dx, dX, "x", "HH:MM");
+    graphI.xAxis = new Axis("x");
+    graphI.xAxis.generate(x0, dx, dX)
+    graphI.xAxis.build("HH:MM", 1);
+
+    // Append axes
+    graphI.self.append(graphI.xAxis.self);
+
     graphI.buildAxis(yI, null, null, null, "y");
     graphBG.buildAxis(yBG, null, null, null, "y");
 
@@ -88,5 +95,10 @@ $(document).ready(() => {
 
     // Show TB bars
     graphI.showBars("TB", "U/h", 0, y0);
+
+    // TEST
+    let axis = new Axis("x");
+    axis.build(x0, dx, dX);
+    console.log(axis.self);
 
 });
