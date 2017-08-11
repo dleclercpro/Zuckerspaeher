@@ -57,11 +57,16 @@ $(document).ready(() => {
     graphI.xAxis = new Axis("x");
     graphI.xAxis.generate(x0, dx, dX)
     graphI.xAxis.build("HH:MM", 1);
+    graphI.yAxis = new Axis("y");
+    graphI.yAxis.define(yI);
+    graphI.yAxis.build();
 
     // Append axes
+    graphI.buildCorner();
     graphI.self.append(graphI.xAxis.self);
+    graphI.self.append(graphI.yAxis.self);
+    graphI.buildInner();
 
-    graphI.buildAxis(yI, null, null, null, "y");
     graphBG.buildAxis(yBG, null, null, null, "y");
 
     // Share x-axis between I and BG graphs
@@ -95,10 +100,5 @@ $(document).ready(() => {
 
     // Show TB bars
     graphI.showBars("TB", "U/h", 0, y0);
-
-    // TEST
-    let axis = new Axis("x");
-    axis.build(x0, dx, dX);
-    console.log(axis.self);
 
 });

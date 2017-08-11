@@ -53,9 +53,6 @@ export class Graph {
 
         // Give graph a bubble
         this.bubble = new Bubble();
-
-        // Give graph an inner section
-        this.buildInner();
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
