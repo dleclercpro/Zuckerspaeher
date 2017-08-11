@@ -1,32 +1,10 @@
 // Imports
 import * as lib from "../../assets/js/lib";
 import {Bubble} from "../bubble/bubble";
-
-class Inner {
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-     constructor() {
-
-        // Generate node
-        this.self = $("<div class='graph'></div>");
-     }
-
-}
-
-class Corner {
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     CONSTRUCTOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor() {
-
-        // Generate node
-        this.self = $("<div class='graph-NA'></div>");
-    }
-
-}
+import {Inner} from "./inner";
+import {Corner} from "./corner";
+import {Dots} from "./dots";
+import {Bars} from "./bars";
 
 export class Graph {
 
@@ -53,181 +31,27 @@ export class Graph {
 
         // Give graph a bubble
         this.bubble = new Bubble();
-    }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     GENERATEAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    generateAxis(z0, dz, dZ) {
+        // Give graph an inner section
+        this.inner = new Inner();
 
-        // Initialize empty array
-        let z = [];
+        // Give graph a corner section
+        this.corner = new Corner();
 
-        // Generate axis tick
-        for (let i = 0; i < (dZ / dz); i++) {
-            z.unshift(z0 - i * dz);
-        }
+        // Give graph dots
+        this.dots = new Dots();
 
-        // Add last tick based on given dZ
-        z.unshift(z0 - dZ);
-
-        return z;
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDAXIS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildAxis(z, z0, dz, dZ, label, format) {
-
-        // Create axis node
-        let axis = $("<div class='graph-" + label + "-axis'></div>");
-
-        // Build axis based on z0, dz and dZ
-        if (z.length == 0) {
-
-            // Generate axis
-            z = this.generateAxis(z0, dz, dZ);
-
-            for (let i = 0; i < z.length - 1; i++) {
-
-                // Compute delta
-                dz = z[i + 1] - z[i];
-
-                // Generate tick
-                let tick = $("<div class='graph-" + label + "-axis-tick'>" +
-                               z[i + 1] + "</div>");
-
-                // Style it
-                tick.css("width", (dz / dZ * 100) + "%");
-
-                // Append it to axis
-                axis.append(tick);
-            }
-        }
-
-        // Build axis based on provided z array
-        else {
-
-            // Compute total step
-            dZ = Math.max(...z) - Math.min(...z);
-
-            for (let i = 0; i < z.length - 1; i++) {
-
-                // Complete step
-                dz = z[i + 1] - z[i];
-
-                // Generate tick
-                let tick = $("<div class='graph-" + label + "-axis-tick'>" +
-                               z[i] + "</div>");
-
-                // Style it
-                tick.css("height", (dz / dZ * 100) + "%");
-
-                // Append it to axis
-                axis.append(tick);
-            }
-        }
-
-        // Format axis ticks if desired
-        if (format) {
-
-            // Convert every tick
-            for (let tick of axis.children()) {
-
-                // Make it a jQuery object
-                tick = $(tick);
-
-                // Get time
-                let t = tick.html();
-
-                // Convert time
-                t = lib.convertTime(t, format);
-
-                // Set time
-                tick.html(t);
-            }
-        }
-
-        // If x-axis
-        if (label == "x") {
-
-            // Store infos on axis
-            this.x = z;
-            this.dX = dZ;
-            this.xMin = Math.min(...z);
-            this.xMax = Math.max(...z);
-
-            // Add dead corner
-            this.buildCorner();
-        }
-        // If y-axis
-        else if (label == "y") {
-            
-            // Store infos on axis
-            this.y = z;
-            this.dY = dZ;
-            this.yMin = Math.min(...z);
-            this.yMax = Math.max(...z);
-        }
-
-        // Append axis to graph
-        this.self.append(axis);
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDINNER
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildInner() {
-
-        // Append to graph
-        this.self.append($("<div class='graph'></div>"));
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDCORNER
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildCorner() {
-
-        // Append to graph
-        this.self.append($("<div class='graph-NA'></div>"));
+        // Give graph bars
+        this.bars = new Bars();
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildDots(type, data) {
-
-        // If inside section of graph does not already exist, create it
-        const graph = this.self.find(".graph");
-
-        // Destructure data
-        const [x, y] = data;
-
-        // Initialize array for dot elements
-        let dots = [];
-
-        // Build dot elements
-        for (let i = 0; i < x.length; i++) {
-
-            // Generate dot
-            let dot = $("<div class='" + type + "' x=" + x[i] +
-                        " y=" + y[i] + "></div>");
-
-            // Note first
-            if (i == 0) {
-                dot.addClass("first-" + type);
-            }
-            // Note last
-            else if (i == x.length - 1) {
-                dot.addClass("last-" + type);
-            }
-
-            // Store it
-            dots.push(dot);
-        }
+    buildDots(name, data) {
 
         // Append dots to inner section of graph
-        graph.append(dots);
+        this.inner.self.append(this.dots.build(name, data));
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -235,19 +59,15 @@ export class Graph {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     showDots(type, units, round, y0) {
 
-        // Get inner section of graph
-        const graph = this.self.find(".graph");
-
-        // Get graph dimensions
-        const graphW = graph.outerWidth();
-        const graphH = graph.outerHeight();
+        // Measure inner section
+        this.inner.measure();
 
         // Get axis ticks
         const xTicks = $(".graph-x-axis-tick");
         const yTicks = $(".graph-y-axis-tick");
 
         // Get dots
-        const dots = graph.find("." + type);
+        const dots = this.inner.self.find("." + type);
 
         // Get dot styles
         const radiusDot = parseFloat($(lib.first(dots)).outerWidth()) / 2;
@@ -276,8 +96,8 @@ export class Graph {
             let dy = Y[i] - this.yMin;
 
             // Convert to pixels
-            x.push(dx / this.dX * graphW - radiusDot - thicknessXTick / 2);
-            y.push(dy / this.dY * graphH - radiusDot + thicknessYTick / 2);
+            x.push(dx / this.dX * this.inner.width - radiusDot - thicknessXTick / 2);
+            y.push(dy / this.dY * this.inner.height - radiusDot + thicknessYTick / 2);
         }
 
         // Position dots on graph
@@ -316,9 +136,6 @@ export class Graph {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     buildBars(type, data) {
 
-        // If inside section of graph does not already exist, create it
-        const graph = this.self.find(".graph");
-
         // Destructure data
         const [x, y] = data;
 
@@ -337,21 +154,12 @@ export class Graph {
                 bar.append($("<div class='inner-" + type + "'></div>"));
             }
 
-            // Note first
-            if (i == 0) {
-                bar.addClass("first-" + type);
-            }
-            // Note last
-            else if (i == x.length - 1) {
-                bar.addClass("last-" + type);
-            }
-
             // Store it
             bars.push(bar);
         }
 
         // Append dots to inner section of graph
-        graph.append(bars);
+        this.inner.self.append(bars);
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -359,15 +167,11 @@ export class Graph {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     showBars(type, units, round, y0) {
 
-        // Get inner section of graph
-        const graph = this.self.find(".graph");
-
-        // Get graph dimensions
-        const graphW = graph.outerWidth();
-        const graphH = graph.outerHeight();
+        // Measure inner section
+        this.inner.measure();
 
         // Get bars
-        const bars = graph.find("." + type);
+        const bars = this.inner.self.find("." + type);
         const n = bars.length - 1;
 
         // Get bar styles
@@ -385,10 +189,10 @@ export class Graph {
 
         // Compute space between last bar and now
         const dW = this.xMax - lib.last(x);
-        const W = dW / this.dX * graphW;
+        const W = dW / this.dX * this.inner.width;
 
         // Push bars according to time difference between last bar and now
-        graph.children().last().css("margin-right", W);
+        this.inner.self.children().last().css("margin-right", W);
 
         // Compute bar sizes
         let w = [];
@@ -397,9 +201,9 @@ export class Graph {
         for (let i = 0; i < n; i++) {
             let dw = x[i + 1] - x[i];
 
-            w[i] = dw / this.dX * graphW;
-            y[i] = y[i] / this.dY * graphH;
-            b[i] = (y0 - this.yMin) / this.dY * graphH - thicknessBorder / 2;
+            w[i] = dw / this.dX * this.inner.width;
+            y[i] = y[i] / this.dY * this.inner.height;
+            b[i] = (y0 - this.yMin) / this.dY * this.inner.height - thicknessBorder / 2;
         }
 
         // Style bars
@@ -511,11 +315,8 @@ export class GraphBG extends Graph {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     colorBGs (BGScale) {
 
-        // Get inner graph section
-        const graph = this.self.find(".graph");
-
         // Get BGs
-        const BGs = graph.find(".BG");
+        const BGs = this.inner.self.find(".BG");
 
         // Color BGs
         for (let i = 0; i < BGs.length; i++) {

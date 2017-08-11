@@ -224,7 +224,7 @@
 		}
 	}
 
-	.graph {
+	.graph-inner {
 		width: calc(100% - #{$w});
 		height: calc(100% - #{$h});
 		order: 1;
@@ -249,7 +249,7 @@
 		}
 	}
 
-	.graph-NA {
+	.graph-corner {
 		width: $w;
 		height: $h;
 		order: 4;
@@ -315,11 +315,11 @@
 		}
 	}
 
-	&.first-#{$bar} {
+	&:first-of-type {
 
 	}
 
-	&.last-#{$bar} {
+	&:last-of-type {
 		width: 0;
 	}
 

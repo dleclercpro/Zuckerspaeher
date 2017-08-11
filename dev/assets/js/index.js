@@ -60,20 +60,36 @@ $(document).ready(() => {
     graphI.yAxis = new Axis("y");
     graphI.yAxis.define(yI);
     graphI.yAxis.build();
+    graphBG.yAxis = new Axis("y");
+    graphBG.yAxis.define(yBG);
+    graphBG.yAxis.build();
 
-    // Append axes
-    graphI.buildCorner();
+    // Build graphs
+    graphI.self.append(graphI.corner.self);
     graphI.self.append(graphI.xAxis.self);
     graphI.self.append(graphI.yAxis.self);
-    graphI.buildInner();
+    graphI.self.append(graphI.inner.self);
 
-    graphBG.buildAxis(yBG, null, null, null, "y");
+    graphBG.self.append(graphBG.yAxis.self);
+    graphBG.self.append(graphBG.inner.self);
 
     // Share x-axis between I and BG graphs
-    graphBG.x = graphI.x;
-    graphBG.dX = graphI.dX;
-    graphBG.xMin = graphI.xMin;
-    graphBG.xMax = graphI.xMax;
+    graphBG.x = graphI.xAxis.z;
+    graphBG.dX = graphI.xAxis.dZ;
+    graphBG.xMin = graphI.xAxis.min;
+    graphBG.xMax = graphI.xAxis.max;
+    graphBG.y = graphBG.yAxis.z;
+    graphBG.dY = graphBG.yAxis.dZ;
+    graphBG.yMin = graphBG.yAxis.min;
+    graphBG.yMax = graphBG.yAxis.max;
+    graphI.x = graphI.xAxis.z;
+    graphI.dX = graphI.xAxis.dZ;
+    graphI.xMin = graphI.xAxis.min;
+    graphI.xMax = graphI.xAxis.max;
+    graphI.y = graphI.yAxis.z;
+    graphI.dY = graphI.yAxis.dZ;
+    graphI.yMin = graphI.yAxis.min;
+    graphI.yMax = graphI.yAxis.max;
 
     // Get data
     let BGs = lib.getData("reports/BG.json", false, "YYYY.MM.DD - HH:MM:SS"),
