@@ -4,6 +4,13 @@
 	height: $height-graph-BG;
 	flex: none;
 	order: 3;
+
+	> .graph-inner {
+		
+		> .BG {
+			@include dot;
+		}
+	}
 }
 
 #graph-I {
@@ -12,4 +19,15 @@
 	height: $height-graph-I;
 	flex: 1;
 	order: 4;
+
+	> .graph-inner {
+
+		> .TB {
+			@include bar(TB, $purple, 3%);
+		}
+
+		> .B {
+			@include square($blue, 20%);
+		}
+	}
 }

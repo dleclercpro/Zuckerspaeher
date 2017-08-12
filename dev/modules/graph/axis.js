@@ -1,12 +1,18 @@
 // Imports
-import * as lib from "../../assets/js/lib";
+import {Tick} from "./tick";
 
 export class Axis {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(name) {
+    constructor(type) {
+
+        // Generate node
+        this.self = $("<div class='graph-" + type + "-axis'></div>");
+
+        // Define properties
+        this.type = type;
 
         // Initialize properties
         this.z = [];
@@ -14,12 +20,20 @@ export class Axis {
         this.min = null;
         this.max = null;
 
-        // Define properties
-        this.name = name;
+        // Initialize ticks
+        this.ticks = [];
+    }
 
-        // Generate node
-        this.self = $("<div class='graph-" + name + "-axis'></div>");
-
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     DEFINE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    define(z = []) {
+        
+        // Compute and store infos about axis
+        this.z = z;
+        this.min = Math.min(...this.z);
+        this.max = Math.max(...this.z);
+        this.dZ = this.max - this.min;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,22 +60,31 @@ export class Axis {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     DEFINE
+     BUILD
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    define(z = []) {
+    build(f = false, offset = 0) {
 
-        // If axis given
-        if (z.length != 0) {
+        // Build ticks
+        for (let i = 0; i < this.z.length - 1; i++) {
+
+            // Generate new tick
+            const tick = new Tick(this.type);
+
+            // Fill it
+            tick.fill(this.z[i + offset])
+
+            // Style it
+            tick.style(this.z[i + 1] - this.z[i], this.dZ);
+
+            // Format it
+            if (f) tick.format(f);
 
             // Store it
-            this.z = z;
+            this.ticks.push(tick);
 
+            // Add it to axis
+            this.self.append(tick.self);
         }
-
-        // Compute and store infos about axis
-        this.min = Math.min(...this.z);
-        this.max = Math.max(...this.z);
-        this.dZ = this.max - this.min;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,66 +94,6 @@ export class Axis {
 
         // Share axis properties
         axis.define(this.z);
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     FORMAT
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    format(f) {
-
-        // Convert every tick
-        for (let tick of this.self.children()) {
-
-            // Make it a jQuery object
-            tick = $(tick);
-
-            // Get and convert time
-            let t = lib.convertTime(tick.html(), f);
-
-            // Set time
-            tick.html(t);
-        }
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILD
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    build(f = false, offset = 0) {
-
-        // Loop on axis values
-        for (let i = 0; i < this.z.length - 1; i++) {
-
-            // Compute delta
-            let dz = this.z[i + 1] - this.z[i];
-
-            // Generate tick
-            let tick = $("<div class='graph-" + this.name + "-axis-tick'>" + this.z[i + offset] +
-                         "</div>");
-
-            // Define default property to style
-            let property = "width";
-
-            // If y-axis
-            if (this.name == "y") {
-
-                // Define property
-                property = "height";
-
-            }
-
-            // Style it
-            tick.css(property, (dz / this.dZ * 100) + "%");
-
-            // Append it to axis
-            this.self.append(tick);
-        }
-
-        // If desired
-        if (f) {
-
-            // Format axis ticks
-            this.format(f);
-        }
     }
 
 }

@@ -76,7 +76,7 @@ gulp.task("sass",
     gulp.series((done) => {
         gulp.src([entries.scss, modules.scss])
             .pipe(concat("index.scss"))
-            .pipe(sass())
+            .pipe(sass({includePaths: ["dev/assets/scss"]}))
             .pipe(rename("index.min.css"))
             .pipe(gulp.dest("dev/assets/css"))
             .pipe(sync.stream());
@@ -120,7 +120,7 @@ gulp.task("watch",
                 .on("change", gulp.series(sync.reload));
             gulp.watch("dev/**/*.scss")
                 .on("change", gulp.series("sass"));
-            gulp.watch("dev/**/*.js")
+            gulp.watch(["dev/**/*.js", "!dev/**/*.min.js"])
                 .on("change", gulp.series("js", sync.reload));
 
             done();

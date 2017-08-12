@@ -3,21 +3,21 @@ import * as lib from "../../assets/js/lib";
 import {Bubble} from "../bubble/bubble";
 import {Inner} from "./inner";
 import {Corner} from "./corner";
-import {Dots} from "./dots";
-import {Bars} from "./bars";
+import {Dot} from "./dot";
+import {Bar} from "./bar";
 
 export class Graph {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(name) {
+    constructor(type) {
 
-        // Get object in DOM
-        this.self = $("#graph-" + name);
+        // Get node
+        this.self = $("#graph-" + type);
 
-        // Define graph name
-        this.name = name;
+        // Define graph type
+        this.type = type;
 
         // Initialize properties
         this.x = null;
@@ -38,20 +38,33 @@ export class Graph {
         // Give graph a corner section
         this.corner = new Corner();
 
-        // Give graph dots
-        this.dots = new Dots();
-
-        // Give graph bars
-        this.bars = new Bars();
+        // Initialize dots
+        this.dots = [];
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildDots(name, data) {
+    buildDots(type, data) {
 
-        // Append dots to inner section of graph
-        this.inner.self.append(this.dots.build(name, data));
+        // Destructure data
+        const [x, y] = data;
+
+        // Build dot elements
+        for (let i = 0; i < x.length; i++) {
+
+            // Generate new dot
+            let dot = new Dot(this.type);
+
+            // Fill it
+            dot.fill(x[i], y[i]);
+
+            // Store it
+            this.dots.push(dot);
+
+            // Add it to graph
+            this.inner.self.append(dot.self);
+        }
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

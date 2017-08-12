@@ -622,79 +622,32 @@ main {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end; }
-    #graph-BG .graph-inner > .BG {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10; }
-      @media only screen and (max-width: 1024px) {
-        #graph-BG .graph-inner > .BG {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-BG .graph-inner > .BG {
-          width: 8px;
-          height: 8px; } }
-      @media only screen and (max-width: 1024px) {
-        #graph-BG .graph-inner > .BG {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-BG .graph-inner > .BG {
-          border-size: 1px; } }
-    #graph-BG .graph-inner > .TB {
-      display: flex;
-      flex: none;
-      overflow: hidden;
-      border-top: 2px solid #090808;
-      border-bottom: 2px solid #090808;
-      background-color: #300a24;
-      cursor: pointer;
-      z-index: 5; }
-      #graph-BG .graph-inner > .TB:hover {
-        background-color: #23071b; }
-      #graph-BG .graph-inner > .TB:last-of-type {
-        width: 0; }
-      #graph-BG .graph-inner > .TB > .inner-TB {
-        width: 50%; }
-        #graph-BG .graph-inner > .TB > .inner-TB:first-child {
-          border-left: 2px solid #090808;
-          margin-right: auto; }
-        #graph-BG .graph-inner > .TB > .inner-TB:last-child {
-          border-right: 2px solid #090808;
-          margin-left: auto; }
-    #graph-BG .graph-inner > .B {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      background-color: #0025dd;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 0; }
-      @media only screen and (max-width: 1024px) {
-        #graph-BG .graph-inner > .B {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-BG .graph-inner > .B {
-          width: 8px;
-          height: 8px; } }
-      #graph-BG .graph-inner > .B:hover {
-        background-color: #001477; }
-      @media only screen and (max-width: 1024px) {
-        #graph-BG .graph-inner > .B {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-BG .graph-inner > .B {
-          border-size: 1px; } }
   #graph-BG .graph-corner {
     width: 28px;
     height: 0px;
     order: 4; }
+  #graph-BG > .graph-inner > .BG {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border: 2px solid #090808;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10; }
+    @media only screen and (max-width: 1024px) {
+      #graph-BG > .graph-inner > .BG {
+        width: 9px;
+        height: 9px; } }
+    @media only screen and (max-width: 640px) {
+      #graph-BG > .graph-inner > .BG {
+        width: 8px;
+        height: 8px; } }
+    @media only screen and (max-width: 1024px) {
+      #graph-BG > .graph-inner > .BG {
+        border-size: 1px; } }
+    @media only screen and (max-width: 640px) {
+      #graph-BG > .graph-inner > .BG {
+        border-size: 1px; } }
 
 #graph-I {
   display: flex;
@@ -723,79 +676,57 @@ main {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end; }
-    #graph-I .graph-inner > .BG {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10; }
-      @media only screen and (max-width: 1024px) {
-        #graph-I .graph-inner > .BG {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-I .graph-inner > .BG {
-          width: 8px;
-          height: 8px; } }
-      @media only screen and (max-width: 1024px) {
-        #graph-I .graph-inner > .BG {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-I .graph-inner > .BG {
-          border-size: 1px; } }
-    #graph-I .graph-inner > .TB {
-      display: flex;
-      flex: none;
-      overflow: hidden;
-      border-top: 2px solid #090808;
-      border-bottom: 2px solid #090808;
-      background-color: #300a24;
-      cursor: pointer;
-      z-index: 5; }
-      #graph-I .graph-inner > .TB:hover {
-        background-color: #23071b; }
-      #graph-I .graph-inner > .TB:last-of-type {
-        width: 0; }
-      #graph-I .graph-inner > .TB > .inner-TB {
-        width: 50%; }
-        #graph-I .graph-inner > .TB > .inner-TB:first-child {
-          border-left: 2px solid #090808;
-          margin-right: auto; }
-        #graph-I .graph-inner > .TB > .inner-TB:last-child {
-          border-right: 2px solid #090808;
-          margin-left: auto; }
-    #graph-I .graph-inner > .B {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      background-color: #0025dd;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 0; }
-      @media only screen and (max-width: 1024px) {
-        #graph-I .graph-inner > .B {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-I .graph-inner > .B {
-          width: 8px;
-          height: 8px; } }
-      #graph-I .graph-inner > .B:hover {
-        background-color: #001477; }
-      @media only screen and (max-width: 1024px) {
-        #graph-I .graph-inner > .B {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        #graph-I .graph-inner > .B {
-          border-size: 1px; } }
   #graph-I .graph-corner {
     width: 28px;
     height: 28px;
     order: 4; }
+  #graph-I > .graph-inner > .TB {
+    display: flex;
+    flex: none;
+    overflow: hidden;
+    border-top: 2px solid #090808;
+    border-bottom: 2px solid #090808;
+    background-color: #300a24;
+    cursor: pointer;
+    z-index: 5; }
+    #graph-I > .graph-inner > .TB:hover {
+      background-color: #23071b; }
+    #graph-I > .graph-inner > .TB:last-of-type {
+      width: 0; }
+    #graph-I > .graph-inner > .TB > .inner-TB {
+      width: 50%; }
+      #graph-I > .graph-inner > .TB > .inner-TB:first-child {
+        border-left: 2px solid #090808;
+        margin-right: auto; }
+      #graph-I > .graph-inner > .TB > .inner-TB:last-child {
+        border-right: 2px solid #090808;
+        margin-left: auto; }
+  #graph-I > .graph-inner > .B {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border: 2px solid #090808;
+    border-radius: 50%;
+    background-color: #0025dd;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 0; }
+    @media only screen and (max-width: 1024px) {
+      #graph-I > .graph-inner > .B {
+        width: 9px;
+        height: 9px; } }
+    @media only screen and (max-width: 640px) {
+      #graph-I > .graph-inner > .B {
+        width: 8px;
+        height: 8px; } }
+    #graph-I > .graph-inner > .B:hover {
+      background-color: #001477; }
+    @media only screen and (max-width: 1024px) {
+      #graph-I > .graph-inner > .B {
+        border-size: 1px; } }
+    @media only screen and (max-width: 640px) {
+      #graph-I > .graph-inner > .B {
+        border-size: 1px; } }
 
 header {
   display: flex;

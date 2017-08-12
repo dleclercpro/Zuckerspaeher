@@ -235,18 +235,6 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: flex-end;
-
-		> .BG {
-			@include dot;
-		}
-
-		> .TB {
-			@include bar(TB, $purple, 3%);
-		}
-
-		> .B {
-			@include square($blue, 20%);
-		}
 	}
 
 	.graph-corner {

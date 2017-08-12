@@ -8,8 +8,10 @@ export class Bubble {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     constructor() {
 
-        // Get object from DOM
+        // Get node
         this.self = $("#bubble");
+
+        // Read properties
         this.info = this.self.find("#bubble-info");
         this.time = this.self.find("#bubble-time");
 
