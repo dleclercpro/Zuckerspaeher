@@ -55,16 +55,29 @@ export class Tick {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      MEASURE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    measure(type) {
+    measure() {
 
-        // Measure thickness
-        this.thickness = (type == "x") ? this.self.css("border-left-width") ||
-                                         this.self.css("border-right-width") :
-                                         this.self.css("border-top-width") ||
-                                         this.self.css("border-bottom-width");
+        // Initialize first and last border widths
+        let first = null,
+            last = null;
 
-        // Parse it
-        this.thickness = parseFloat(this.thickness);
+        // If x-axis
+        if (this.type == "x") {
+
+            // Measure thickness
+            first = parseFloat(this.self.css("border-left-width"));
+            last = parseFloat(this.self.css("border-right-width"));
+        }
+        // If y-axis
+        else if (this.type == "y") {
+
+            // Measure thickness
+            first = parseFloat(this.self.css("border-top-width"));
+            last = parseFloat(this.self.css("border-bottom-width"));
+        }
+
+        // Assign thickness
+        this.thickness = Math.max(first, last);
     }
 
 }

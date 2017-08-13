@@ -3,7 +3,7 @@ export class Inner {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-     constructor() {
+    constructor() {
 
         // Generate node
         this.self = $("<div class='graph-inner'></div>");
@@ -11,16 +11,18 @@ export class Inner {
         // Initialize dimensions
         this.width = null;
         this.height = null;
-     }
+    }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      MEASURE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-     measure() {
+    measure() {
 
         // Measure dimensions
         this.width = this.self.outerWidth();
         this.height = this.self.outerHeight();
-     }
+
+        // Measure dots
+    }
 
 }

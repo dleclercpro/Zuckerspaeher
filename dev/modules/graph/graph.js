@@ -3,6 +3,7 @@ import * as lib from "../../assets/js/lib";
 import {Bubble} from "../bubble/bubble";
 import {Inner} from "./inner";
 import {Corner} from "./corner";
+import {Axis} from "./axis";
 import {Dot} from "./dot";
 import {Bar} from "./bar";
 
@@ -16,18 +17,8 @@ export class Graph {
         // Get node
         this.self = $("#graph-" + type);
 
-        // Define graph type
+        // Define properties
         this.type = type;
-
-        // Initialize properties
-        this.x = null;
-        this.dX = null;
-        this.xMin = null;
-        this.xMax = null;
-        this.y = null;
-        this.dY = null;
-        this.yMin = null;
-        this.yMax = null;
 
         // Give graph a bubble
         this.bubble = new Bubble();
@@ -38,109 +29,113 @@ export class Graph {
         // Give graph a corner section
         this.corner = new Corner();
 
+        // Initialize axes
+        this.axes = {};
+
         // Initialize dots
-        this.dots = [];
+        this.dots = {};
+
+        // Initialize bars
+        this.bars = {};
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BUILDINNER
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    buildInner() {
+
+        // Append it to graph
+        this.self.append(this.inner.self);
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BUILDCORNER
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    buildCorner() {
+
+        // Append it to graph
+        this.self.append(this.corner.self);
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BUILDAXIS
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    buildAxis(type, z0, dz, dZ, z = [], f = false, offset = 0) {
+
+        // Create axis object
+        const axis = new Axis(type);
+
+        // Generate it
+        axis.generate(z0, dz, dZ, z);
+
+        // Build it
+        axis.build(f, offset);
+
+        // Append to graph
+        this.self.append(axis.self);
+
+        // Store it
+        this.axes[type] = axis;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildDots(type, data) {
+    buildDots(type, units, round, format, data) {
 
         // Destructure data
         const [x, y] = data;
+
+        // Reset dot type
+        this.dots[type] = [];
 
         // Build dot elements
         for (let i = 0; i < x.length; i++) {
 
             // Generate new dot
-            let dot = new Dot(this.type);
+            let dot = new Dot(type, units, round, format);
 
-            // Fill it
-            dot.fill(x[i], y[i]);
-
-            // Store it
-            this.dots.push(dot);
+            // Define it
+            dot.define(x[i], y[i]);
 
             // Add it to graph
             this.inner.self.append(dot.self);
+
+            // Store it
+            this.dots[type].push(dot);
         }
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SHOWDOTS
+     ADDDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    showDots(type, units, round, y0) {
+    addDots(type, y0 = null) {
 
-        // Measure inner section
-        this.inner.measure();
+        // Read measurements
+        const dX = this.axes.x.dZ,
+              dY = this.axes.y.dZ,
+              innerWidth = this.inner.width,
+              innerHeight = this.inner.height,
+              dotRadius = this.dots[type][0].radius,
+              xAxisTickThickness = this.axes.x.ticks[0].thickness,
+              yAxisTickThickness = this.axes.y.ticks[0].thickness;
 
-        // Get axis ticks
-        const xTicks = $(".graph-x-axis-tick");
-        const yTicks = $(".graph-y-axis-tick");
-
-        // Get dots
-        const dots = this.inner.self.find("." + type);
-
-        // Get dot styles
-        const radiusDot = parseFloat($(lib.first(dots)).outerWidth()) / 2;
-        const thicknessXTick = parseFloat($(lib.first(xTicks)).css("border-left-width") ||
-                                          $(lib.first(xTicks)).css("border-right-width"));
-        const thicknessYTick = parseFloat($(lib.first(yTicks)).css("border-top-width") ||
-                                          $(lib.first(yTicks)).css("border-bottom-width")); // FIXME
-
-        // Extract information from dots
-        let X = [];
-        let Y = [];
-
-        for (let dot of dots) {
-            X.push(parseFloat($(dot).attr("x")));
-            Y.push(typeof(y0) == "number" ? y0 : parseFloat($(dot).attr("y")));
-        }
-
-        // Compute coordinates of dots
-        let x = [];
-        let y = [];
-
-        for (let i = 0; i < dots.length; i++) {
+        // Loop on dots
+        for (let dot of this.dots[type]) {
 
             // Compute distance with inner extremities
-            let dx = X[i] - this.xMin;
-            let dy = Y[i] - this.yMin;
+            let dx = dot.x - this.axes.x.min,
+                dy = (y0 == null ? dot.y : y0) - this.axes.y.min;
 
             // Convert to pixels
-            x.push(dx / this.dX * this.inner.width - radiusDot - thicknessXTick / 2);
-            y.push(dy / this.dY * this.inner.height - radiusDot + thicknessYTick / 2);
-        }
+            let x = dx / dX * innerWidth - dotRadius - xAxisTickThickness / 2,
+                y = dy / dY * innerHeight - dotRadius + yAxisTickThickness / 2;
 
-        // Position dots on graph
-        for (let i = 0; i < dots.length; i++) {
+            // Position on graph
+            dot.position(x, y);
 
-            // Set CSS
-            dots.eq(i).css({
-                "left": x[i],
-                "bottom": y[i]
-            });
-        }
-
-        for (let dot of dots) {
-
-            // When mouse enters dot
-            $(dot).on("mouseenter", (e) => {
-
-                // Update bubble
-                this.bubble.update(e.currentTarget, type, units, round, "YYYY.MM.DD - HH:MM:SS");
-
-                // Show bubble
-                this.bubble.show();
-            });
-
-            // When mouse exits dot
-            $(dot).on("mouseleave", (e) => {
-
-                // Hide bubble
-                this.bubble.hide();
-            });
+            // Inform through bubble
+            dot.inform(this.bubble);
         }
     }
 
@@ -180,15 +175,12 @@ export class Graph {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     showBars(type, units, round, y0) {
 
-        // Measure inner section
-        this.inner.measure();
-
         // Get bars
         const bars = this.inner.self.find("." + type);
         const n = bars.length - 1;
 
         // Get bar styles
-        const thicknessBorder = parseFloat(bars.first().css("border-top-width")) ||
+        const widthBorder = parseFloat(bars.first().css("border-top-width")) ||
                                 parseFloat(bars.first().css("border-bottom-width"));
 
         // Extract information from bars
@@ -216,7 +208,7 @@ export class Graph {
 
             w[i] = dw / this.dX * this.inner.width;
             y[i] = y[i] / this.dY * this.inner.height;
-            b[i] = (y0 - this.yMin) / this.dY * this.inner.height - thicknessBorder / 2;
+            b[i] = (y0 - this.yMin) / this.dY * this.inner.height - widthBorder / 2;
         }
 
         // Style bars
@@ -273,7 +265,7 @@ export class Graph {
             }
 
             // Minor bars
-            if (Math.abs(y[i]) < 2 * thicknessBorder) {
+            if (Math.abs(y[i]) < 2 * widthBorder) {
 
                 // Remove unnecessary borders and shift bar back to baseline
                 if (y[i] >= 0) {
@@ -283,7 +275,7 @@ export class Graph {
                 }
 
                 // Only keep one line for minor bars
-                y[i] = thicknessBorder;
+                y[i] = widthBorder;
 
                 // Remove borders on inner bars
                 bar.children().css("border", "none");
@@ -296,7 +288,7 @@ export class Graph {
                 b[i] += y[i];
 
                 // Recenter bar with axis
-                b[i] += thicknessBorder;
+                b[i] += widthBorder;
             }
 
             // Position bars on graph
@@ -319,26 +311,58 @@ export class Graph {
         }
     }
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MEASURE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    measure() {
+
+        // Measure inner section
+        this.inner.measure();
+
+        // Measure axes
+        for (let type in this.axes) {
+
+            // Measure it
+            this.axes[type].measure();
+        }
+
+        // Measure dots
+        for (let type in this.dots) {
+
+            // Loop on dots
+            for (let dot of this.dots[type]) {
+
+                // Measure them
+                dot.measure();
+            }
+        }
+
+        // Measure bars
+        for (let type in this.bars) {
+
+            // Loop on bars
+            for (let bar of this.bars[type]) {
+
+                // Measure them
+                bar.measure();
+            }
+        }
+    }
+
 }
 
 export class GraphBG extends Graph {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     COLORBGS
+     COLOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    colorBGs (BGScale) {
+    color (BGScale) {
 
-        // Get BGs
-        const BGs = this.inner.self.find(".BG");
-
-        // Color BGs
-        for (let i = 0; i < BGs.length; i++) {
-
-            // Read BG value
-            let BG = parseFloat(BGs.eq(i).attr("y"));
+        // Color dots
+        for (let dot of this.dots["BG"]) {
 
             // Add class based on rank
-            BGs.eq(i).addClass(lib.rankBG(BG, BGScale));
+            dot.self.addClass(lib.rankBG(dot.y, BGScale));
         }
     }
 }

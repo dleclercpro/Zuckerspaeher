@@ -53,43 +53,20 @@ $(document).ready(() => {
     // Generate I graph
     const graphI = new GraphI("I");
 
-    // Generate axes
-    graphI.xAxis = new Axis("x");
-    graphI.xAxis.generate(x0, dx, dX)
-    graphI.xAxis.build("HH:MM", 1);
-    graphI.yAxis = new Axis("y");
-    graphI.yAxis.define(yI);
-    graphI.yAxis.build();
-    graphBG.yAxis = new Axis("y");
-    graphBG.yAxis.define(yBG);
-    graphBG.yAxis.build();
+    // Build corner
+    graphI.buildCorner();
 
-    // Build graphs
-    graphI.self.append(graphI.corner.self);
-    graphI.self.append(graphI.xAxis.self);
-    graphI.self.append(graphI.yAxis.self);
-    graphI.self.append(graphI.inner.self);
+    // Build axes
+    graphI.buildAxis("x", x0, dx, dX, [], "HH:MM", 1);
+    graphI.buildAxis("y", null, null, null, yI);
+    graphBG.buildAxis("y", null, null, null, yBG);
 
-    graphBG.self.append(graphBG.yAxis.self);
-    graphBG.self.append(graphBG.inner.self);
+    // Build inner
+    graphI.buildInner();
+    graphBG.buildInner();
 
     // Share x-axis between I and BG graphs
-    graphBG.x = graphI.xAxis.z;
-    graphBG.dX = graphI.xAxis.dZ;
-    graphBG.xMin = graphI.xAxis.min;
-    graphBG.xMax = graphI.xAxis.max;
-    graphBG.y = graphBG.yAxis.z;
-    graphBG.dY = graphBG.yAxis.dZ;
-    graphBG.yMin = graphBG.yAxis.min;
-    graphBG.yMax = graphBG.yAxis.max;
-    graphI.x = graphI.xAxis.z;
-    graphI.dX = graphI.xAxis.dZ;
-    graphI.xMin = graphI.xAxis.min;
-    graphI.xMax = graphI.xAxis.max;
-    graphI.y = graphI.yAxis.z;
-    graphI.dY = graphI.yAxis.dZ;
-    graphI.yMin = graphI.yAxis.min;
-    graphI.yMax = graphI.yAxis.max;
+    graphI.axes.x.share("x", graphBG);
 
     // Get data
     let BGs = lib.getData("reports/BG.json", false, "YYYY.MM.DD - HH:MM:SS"),
@@ -97,24 +74,31 @@ $(document).ready(() => {
         Bs = lib.getData("reports/treatments.json", "Boluses", "YYYY.MM.DD - HH:MM:SS");
 
     // Build BG dots
-    graphBG.buildDots("BG", BGs);
+    graphBG.buildDots("BG", "mmol/L", 1, "YYYY.MM.DD - HH:MM:SS", BGs);
 
-    // Show BG dots
-    graphBG.showDots("BG", "mmol/L", 1, false);
+    // Measure graphs
+    graphI.measure();
+    graphBG.measure();
+
+    console.log(graphI);
+    console.log(graphBG);
+
+    // Add BG dots
+    graphBG.addDots("BG");
 
     // Color BG dots
-    graphBG.colorBGs(BGScale);
+    graphBG.color(BGScale);
 
     // Build bolus dots
-    graphI.buildDots("B", Bs);
+    //graphI.buildDots("B", Bs);
 
     // Show bolus dots
-    graphI.showDots("B", "U", 1, y0);
+    //graphI.showDots("B", "U", 1, y0);
 
     // Build TB bars
-    graphI.buildTBs(TBs);
+    //graphI.buildTBs(TBs);
 
     // Show TB bars
-    graphI.showBars("TB", "U/h", 0, y0);
+    //graphI.showBars("TB", "U/h", 0, y0);
 
 });

@@ -3,31 +3,40 @@ export class Dot {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(type, x, y) {
+    constructor(type, units, round, format) {
 
     	// Define node
     	this.self = $("<div class='dot " + type + "'></div>");
 
     	// Store properties
     	this.type = type;
+    	this.units = units;
+    	this.round = round;
+    	this.format = format;
 
     	// Initialize properties
     	this.x = null;
     	this.y = null;
-    	this.r = null;
+    	this.radius = null;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     FILL
+     DEFINE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    fill(x, y) {
+    define(x, y) {
 
-        // Store coordinates
+        // Define coordinates
         this.x = x;
         this.y = y;
+    }
 
-        // Fill dot
-        this.self.attr({"x": x, "y": y});
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     POSITION
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    position(x, y) {
+
+    	// Position dot
+        this.self.css({"left": x, "bottom": y});
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +45,33 @@ export class Dot {
     measure() {
 
     	// Measure radius
-    	this.r = parseFloat(this.self.outerWidth()) / 2;
+    	this.radius = parseFloat(this.self.outerWidth()) / 2;
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     INFORM
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    inform(bubble) {
+
+        // When mouse enters dot
+        this.self.on("mouseenter", () => {
+
+            // Update bubble
+            bubble.update(this);
+
+            // Position it
+            bubble.position();
+
+            // Show it
+            bubble.self.show();
+        });
+
+        // When mouse exits dot
+        this.self.on("mouseleave", () => {
+
+            // Hide bubble
+            bubble.self.hide();
+        });
     }
 
 }

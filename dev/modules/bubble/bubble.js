@@ -17,62 +17,81 @@ export class Bubble {
 
         // Initialize properties
         this.target = null;
+        this.type = null;
         this.units = null;
         this.round = null;
         this.format = null;
+        this.x = null;
+        this.y = null;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    update(target, type, units, round, format) {
+    update(target) {
 
-        // Define properties
-        this.target = $(target);
-        this.type = type;
-        this.units = units;
-        this.round = round;
-        this.format = format;
+        // Store target properties
+        this.target = target;
 
         // Read properties from target
-        this.x = this.target.attr("x");
-        this.y = this.target.attr("y");
+        this.type = target.self.attr("class");
+        this.units = target.units;
+        this.round = target.round;
+        this.format = target.format;
+        this.x = target.x;
+        this.y = target.y;
 
         // Convert time if desired
-        if (format) {
-            this.x = lib.convertTime(this.x, format);
+        if (this.format != null) {
+            this.x = lib.convertTime(this.x, this.format);
         }
 
         // Round info if desired
-        if (round) {
-            this.y = lib.round(this.y, round);
+        if (this.round != null) {
+            this.y = lib.round(this.y, this.round);
         }
 
         // Update infos in bubble
         this.time.html(this.x);
-        this.info.html("<span class='" + type + "'>" + this.y + "</span> " + units);
+        this.info.html("<span class='" + this.type + "'>" + this.y + "</span> " + this.units);
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SHOW
+     POSITION
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    show(offsetX = 8, offsetY = 0) {
-
-        // Define bubble coordinates
-        const offsetTop = parseFloat(this.target.parent().position().top);
-
-        // Compute bubble position
-        let x = parseFloat(this.target.position().left) +
-                  parseFloat(this.target.css("width")) + offsetX;
-        let y = parseFloat(this.target.position().top) + offsetY + offsetTop;
+    position(offsetX = 8, offsetY = 0) {
 
         // Read bubble size
-        let w = this.self.outerWidth();
-        let h = this.self.outerHeight();
+        const w = this.self.outerWidth();
+        const h = this.self.outerHeight();
+
+        // Define bubble coordinates
+        const offsetTop = parseFloat(this.target.self.parent().position().top);
+
+        // Compute bubble position
+        let x = parseFloat(this.target.self.position().left) +
+                parseFloat(this.target.self.css("width")) + offsetX;
+        let y = parseFloat(this.target.self.position().top) + offsetY + offsetTop;
 
         // Adjust position of bubble due to it being in content element
         if (offsetTop) {
-            y += h; // FIXME
+
+            // Reposition it
+            y += h;
+        }
+
+        // If bubble exceeds width of graph
+        if (x + w > this.target.self.parent().outerWidth()) {
+
+            // Reposition it
+            x -= 3 * offsetX + w;
+        }
+
+        // If bubble exceeds height of graph
+        if (y + h > this.target.self.parent().outerHeight()) {
+
+            // Reposition it
+            y -= 3 * offsetY + h;
         }
 
         // Position bubble on graph
@@ -80,31 +99,6 @@ export class Bubble {
             "left": x,
             "top": y
         });
-
-        // If bubble exceeds width of graph
-        if (x + w > this.target.parent().outerWidth()) {
-            this.self.css({
-                "left": x - 3 * offsetX - w
-            });
-        }
-
-        // If bubble exceeds height of graph
-        if (y + h > this.target.parent().outerHeight()) {
-            this.self.css({
-                "top": y - 3 * offsetY - h
-            });
-        }
-
-        // Show bubble
-        this.self.show();
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     HIDE
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    hide() {
-
-        // Hide bubble
-        this.self.hide();
-    }
 }

@@ -25,18 +25,6 @@ export class Axis {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     DEFINE
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    define(z = []) {
-        
-        // Compute and store infos about axis
-        this.z = z;
-        this.min = Math.min(...this.z);
-        this.max = Math.max(...this.z);
-        this.dZ = this.max - this.min;
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      GENERATE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     generate(z0, dz, dZ, z = []) {
@@ -55,8 +43,11 @@ export class Axis {
             z.unshift(z0 - dZ);
         }
 
-        // Update axis infos
-        this.define(z);
+        // Compute and store infos about axis
+        this.z = z;
+        this.min = Math.min(...z);
+        this.max = Math.max(...z);
+        this.dZ = this.max - this.min;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,21 +70,34 @@ export class Axis {
             // Format it
             if (f) tick.format(f);
 
-            // Store it
-            this.ticks.push(tick);
-
             // Add it to axis
             this.self.append(tick.self);
+
+            // Store it
+            this.ticks.push(tick);
+        }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MEASURE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    measure() {
+
+        // Measure ticks
+        for (let tick of this.ticks) {
+
+            // Measure it
+            tick.measure();
         }
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      SHARE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    share(axis) {
+    share(type, graph) {
 
-        // Share axis properties
-        axis.define(this.z);
+        // Copy axis
+        graph.axes[type] = this;
     }
 
 }
