@@ -20,6 +20,7 @@
 // Imports
 import jQuery from "jquery";
 import * as lib from "./lib";
+import {User} from "../../modules/user/user";
 import {Dash} from "../../modules/dash/dash";
 import {GraphBG} from "../../modules/graph/graphBG";
 import {GraphI} from "../../modules/graph/graphI";
@@ -30,23 +31,21 @@ window.$ = window.jQuery = jQuery;
 $(document).ready(() => {
 
     // CONFIG
-    const now = new Date();
-    const x0 = now.getTime();
-    let dx = 1 * 60 * 60 * 1000; // Time step (ms)
-    let dX = 12 * 60 * 60 * 1000; // Time range (ms)
-    const x = [];
-    const y0 = 0; // Basal baseline (U/h)
-    const yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
-    const yI = [-4, -2, 0, 2, 4]; // U/h
-    const BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
+    const now = new Date(),
+          x0 = now.getTime(),
+          dx = 1 * 60 * 60 * 1000, // Time step (ms)
+          dX = 12 * 60 * 60 * 1000, // Time range (ms)
+          y0 = 0, // Basal baseline (U/h)
+          yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15], // mmol/L
+          yI = [-4, -2, 0, 2, 4], // U/h
+          BGScale = [3.8, 4.2, 7.0, 12.0], // (mmol/L)
+          dBGdtScale = [-3.6, -1.2, 1.2, 3.6]; // (mmol/L/h)
 
     // Get data
     const BGs = lib.getData("reports/BG.json"),
           TBs = lib.getData("reports/treatments.json", "Net Basals"),
-          Bs = lib.getData("reports/treatments.json", "Boluses");
-
-    // Generate dash
-    const dash = new Dash([1, 2, 3, 4]);
+          Bs = lib.getData("reports/treatments.json", "Boluses"),
+          IOBs = lib.getData("reports/treatments.json", "IOB");
 
     // Generate BG graph
     const graphBG = new GraphBG();
@@ -92,5 +91,17 @@ $(document).ready(() => {
     // Give infos about graphs
     console.log(graphI);
     console.log(graphBG);
+
+    // Generate dash
+    const dash = new Dash(BGScale, dBGdtScale);
+
+    // Update BG
+    dash.updateBG(BGs, x0);
+
+    // Update TB
+    dash.updateTB(TBs, x0);
+
+    // Update IOB
+    dash.updateIOB(IOBs, x0);
 
 });

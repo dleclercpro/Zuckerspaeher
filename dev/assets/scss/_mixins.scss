@@ -71,6 +71,7 @@
 // =============================================================================
 
 @mixin font($font) {
+	
 	// Get font from config file
 	$font: map-get($fonts, $font);
 

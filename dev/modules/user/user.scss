@@ -24,7 +24,7 @@
 		cursor: pointer;
 	}
 
-	> #user-img {
+	> .img {
 		width: 125px;
 		height: 125px;
 		border-radius: 50%;
@@ -44,7 +44,7 @@
 		}
 	}
 
-	> #user-details {
+	> .details {
 		display: flex;
 		flex-direction: column;
 		margin-left: 5%;
@@ -58,30 +58,30 @@
 			white-space: nowrap;
 		}
 
-		> #user-name {
+		> .name {
 			@include mq(phone) {
 				display: none;
 			}
 		}
 
-		> #user-birthday {
-			@extend #user-name;
+		> .birthday {
+			@extend .name;
 		}
 
-		> #user-cgm {
-			@extend #user-name;
+		> .cgm {
+			@extend .name;
 
 		}
 
-		> #user-pump {
-			@extend #user-name;
+		> .pump {
+			@extend .name;
 		}
 
-		> #user-status {
+		> .status {
 			@include font("user-status");
 		}
 
-		> #user-live {
+		> .live {
 			display: none;
 
 			@include mq(phone) {
@@ -90,12 +90,12 @@
 				@include font("user-BG");
 			}
 			
-			> #user-BG {
+			> .BG {
 				background: none;
 			}
 
-			> #user-arrow {
-				@extend #user-BG;
+			> .trend {
+				@extend .BG;
 				margin-left: -5px;
 			}
 		}

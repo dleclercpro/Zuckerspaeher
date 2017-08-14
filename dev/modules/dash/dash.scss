@@ -28,7 +28,7 @@
 		left: 0;
 	}
 
-	> #dash-live {
+	> .live {
 		display: flex;
 		margin-bottom: 10px;
 		@include font("dash-BG");
@@ -37,17 +37,18 @@
 			display: none;
 		}
 
-		> #dash-BG {
+		> .BG {
 			background: none;
 		}
 
-		> #dash-arrow {
+		> .trend {
 			background: none;
 			margin-left: 5px;
+			font-weight: normal;
 		}
 	}
 
-	> #dash-delta {
+	> .delta {
 		display: flex;
 
 		> p {
@@ -61,19 +62,19 @@
 		}
 	}
 
-	> #dash-basal {
-		@extend #dash-delta;
+	> .basal {
+		@extend .delta;
 	}
 
-	> #dash-on-board {
-		@extend #dash-delta;
+	> .on-board {
+		@extend .delta;
 	}
 
-	> #dash-factors {
-		@extend #dash-delta;
+	> .factors {
+		@extend .delta;
 	}
 
-	> #dash-age {
-		@extend #dash-delta;
+	> .age {
+		@extend .delta;
 	}
 }

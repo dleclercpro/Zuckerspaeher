@@ -17,7 +17,23 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-// Functions
+export const last = (array, n = 1) => {
+
+    // If empty
+    if (array.length < n) {
+
+        // Return nothing
+        return null;
+    }
+    // Otherwise
+    else {
+
+        // Return last value
+        return array[array.length - n];
+
+    }
+};
+
 export const arrayize = (x) => {
 
     // Initialize response
@@ -32,14 +48,6 @@ export const arrayize = (x) => {
 
     // Return resposne
     return X;
-};
-
-export const first = (array) => {
-    return array[0];
-};
-
-export const last = (array) => {
-    return array[array.length - 1];
 };
 
 export const round = (x, n = 1) => {
@@ -258,7 +266,7 @@ export const formatTime = (T, format) => {
 
     // Return single value
     else {
-        return first(T_);
+        return T_[0];
     }
 };
 
