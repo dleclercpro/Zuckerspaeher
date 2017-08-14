@@ -40,8 +40,6 @@ export class Inner {
         // Measure dimensions
         this.width = this.self.outerWidth();
         this.height = this.self.outerHeight();
-
-        // Measure dots
     }
 
 }
