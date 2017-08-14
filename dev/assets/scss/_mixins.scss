@@ -287,7 +287,7 @@
 // BAR
 // =============================================================================
 
-@mixin bar($bar, $color: null, $degree: null) {
+@mixin bar($color: null, $degree: null) {
 	display: flex;
 	flex: none;
 	overflow: hidden;
@@ -303,25 +303,61 @@
 		}
 	}
 
-	&:first-of-type {
-
-	}
-
 	&:last-of-type {
 		width: 0;
 	}
 
-	> .inner-#{$bar} {
-		width: 50%;
+    // Positive bar
+    &.high,
+    &.zero {
 
-		&:first-child {
-			border-left: $border-bar;
-			margin-right: auto;
-		}
+        // Minor
+        &.minor-y {
+            border-top: none;
 
-		&:last-child {
-			border-right: $border-bar;
-			margin-left: auto;
-		}
-	}
+            // Inner bars of minor bar
+            > .inner {
+                border: none;
+            }
+        }
+
+        // Inner bars
+        > .inner {
+            margin-bottom: auto;
+        }
+    }
+
+    // Negative bar
+    &.low {
+
+        // Minor
+        &.minor-y {
+            border-bottom: none;
+
+            // Inner bars of minor bar
+            > .inner {
+                border: none;
+            }
+        }
+
+        // Inner bars
+        > .inner {
+            margin-top: auto;
+        }
+    }
+
+    // Inner bars
+    > .inner {
+        width: 50%;
+
+        &:first-child {
+            border-left: $border-bar;
+            margin-right: auto;
+        }
+
+        &:last-child {
+            border-right: $border-bar;
+            margin-left: auto;
+        }
+    }
 }

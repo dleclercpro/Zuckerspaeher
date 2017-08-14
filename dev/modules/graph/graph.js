@@ -1,11 +1,30 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Title:    graph.js
+
+ Author:   David Leclerc
+
+ Version:  0.1
+
+ Date:     14.08.2017
+
+ License:  GNU General Public License, Version 3
+ (http://www.gnu.org/licenses/gpl.html)
+
+ Overview: ...
+
+ Notes:    ...
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 // Imports
 import * as lib from "../../assets/js/lib";
 import {Bubble} from "../bubble/bubble";
-import {Inner} from "./inner";
-import {Corner} from "./corner";
-import {Axis} from "./axis";
-import {Dot} from "./dot";
-import {Bar} from "./bar";
+import {Axis} from "./axis/axis";
+import {Corner} from "./corner/corner";
+import {Inner} from "./inner/inner";
+import {Dot} from "./inner/dot/dot";
+import {Bar} from "./inner/bar/bar";
 
 export class Graph {
 
@@ -107,6 +126,37 @@ export class Graph {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BUILDBARS
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    buildBars(type, units, round, format, data) {
+
+        // Destructure data
+        const [x, y] = data;
+
+        // Reset bar type
+        this.bars[type] = [];
+
+        // Build bar elements
+        for (let i = 0; i < x.length; i++) {
+
+            // Generate new bar
+            let bar = new Bar(type, units, round, format);
+
+            // Define it
+            bar.define(x[i], y[i]);
+
+            // Classify it
+            bar.classify();
+
+            // Add it to graph
+            this.inner.self.append(bar.self);
+
+            // Store it
+            this.bars[type].push(bar);
+        }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      ADDDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     addDots(type, y0 = null) {
@@ -140,175 +190,143 @@ export class Graph {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDBARS
+     ADDBARS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildBars(type, data) {
+    addBars(type, y0 = 0) {
 
-        // Destructure data
-        const [x, y] = data;
+        // Read measurements
+        const dX = this.axes.x.dZ,
+              dY = this.axes.y.dZ,
+              innerWidth = this.inner.width,
+              innerHeight = this.inner.height,
+              borderThickness = this.bars[type][0].thickness;
 
-        // Initialize array for bar elements
-        let bars = [];
+        // Count number of computatable bars
+        const n = this.bars[type].length;
 
-        // Build bar elements
-        for (let i = 0; i < x.length; i++) {
+        // Initialize bar sizes
+        let w = [],
+            h = [],
+            b = [];
 
-            // Generate bar
-            let bar = $("<div class='" + type + "' x=" + x[i] +
-                " y=" + y[i] + "></div>");
-
-            // Add sub-elements inside bar
-            for (let j = 0; j < 2; j++) {
-                bar.append($("<div class='inner-" + type + "'></div>"));
-            }
-
-            // Store it
-            bars.push(bar);
-        }
-
-        // Append dots to inner section of graph
-        this.inner.self.append(bars);
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SHOWBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    showBars(type, units, round, y0) {
-
-        // Get bars
-        const bars = this.inner.self.find("." + type);
-        const n = bars.length - 1;
-
-        // Get bar styles
-        const widthBorder = parseFloat(bars.first().css("border-top-width")) ||
-                                parseFloat(bars.first().css("border-bottom-width"));
-
-        // Extract information from bars
-        let x = [];
-        let y = [];
-
-        for (let bar of bars) {
-            x.push(parseFloat($(bar).attr("x")));
-            y.push(parseFloat($(bar).attr("y")));
-        }
-
-        // Compute space between last bar and now
-        const dW = this.xMax - lib.last(x);
-        const W = dW / this.dX * this.inner.width;
-
-        // Push bars according to time difference between last bar and now
-        this.inner.self.children().last().css("margin-right", W);
-
-        // Compute bar sizes
-        let w = [];
-        let b = [];
-
-        for (let i = 0; i < n; i++) {
-            let dw = x[i + 1] - x[i];
-
-            w[i] = dw / this.dX * this.inner.width;
-            y[i] = y[i] / this.dY * this.inner.height;
-            b[i] = (y0 - this.yMin) / this.dY * this.inner.height - widthBorder / 2;
-        }
-
-        // Style bars
+        // Loop on bars
         for (let i = 0; i < n; i++) {
 
-            // Get considered bar
-            let bar = bars.eq(i);
+            // Initialize bar width and height
+            let dw, dh;
 
-            // Define type of bar
-            if (y[i] > 0) {
-                bar.addClass("high-" + type);
-            } else if (y[i] < 0) {
-                bar.addClass("low-" + type);
-            } else {
-                bar.addClass("no-" + type);
+            // If last bar
+            if (i == n - 1) {
+
+                // Define width
+                dw = 0;
+
+                // Define height
+                dh = 0;
+            }
+            // Otherwise
+            else {
+
+                // Compute width
+                dw = this.bars[type][i + 1].x - this.bars[type][i].x;
+
+                // Read height
+                dh = this.bars[type][i].y;
             }
 
-            // Push inner bars
-            if (y[i] > 0) {
-                bar.children().css("margin-bottom", "auto");
-            } else if (y[i] < 0) {
-                bar.children().css("margin-top", "auto");
+            // Convert to pixels and store them
+            w.push(dw / dX * innerWidth);
+            h.push(dh / dY * innerHeight);
+            b.push((y0 - this.axes.y.min) / dY * innerHeight - borderThickness / 2);
+        }
+
+        // Loop on all but last bar
+        for (let i = 0; i < n; i++) {
+
+            // Get inner bars
+            const innerBars = this.bars[type][i].self.children();
+
+            // Not first
+            if (i != 0) {
+                
+                // Compute delta between previous and current bar
+                let dh = h[i] - h[i - 1];
+
+                // Step with previous bar needs contour
+                if (h[i] > 0 && dh > 0 || h[i] < 0 && dh < 0) {
+
+                    // Contour
+                    innerBars.first().css("height", Math.abs(dh));
+                }
+                // Baseline crossed
+                else if (h[i - 1] < 0 && h[i] > 0 || h[i - 1] > 0 && h[i] < 0) {
+
+                    // Contour
+                    innerBars.first().css("height", "100%");
+                }
+            }
+            
+            // Not last
+            if (i != n - 1) {
+
+                // Compute delta between current and next bar
+                let dh = h[i + 1] - h[i];
+
+                // Step with next bar needs contour
+                if (h[i] > 0 && dh < 0 || h[i] < 0 && dh > 0) {
+
+                    // Contour
+                    innerBars.last().css("height", Math.abs(dh));
+                }
+                // Baseline crossed
+                else if (h[i] > 0 && h[i + 1] < 0 || h[i] < 0 && h[i + 1] > 0) {
+
+                    // Contour
+                    innerBars.last().css("height", "100%");
+                }
             }
 
-            // Draw contours
-            // Higher than baseline
-            if (y[i] > 0) {
-                if (i != 0 && y[i] > y[i - 1]) {
-                    bar.children().first().css("height", y[i] - y[i - 1]);
-                }
-
-                if (i != n && y[i] > y[i + 1]) {
-                    bar.children().last().css("height", y[i] - y[i + 1]);
-                }
-            }
-            // Lower than baseline
-            else if (y[i] < 0) {
-                if (i != 0 && y[i] < y[i - 1]) {
-                    bar.children().first().css("height", Math.abs(y[i] - y[i - 1]));
-                }
-
-                if (i != n && y[i] < y[i + 1]) {
-                    bar.children().last().css("height", Math.abs(y[i] - y[i + 1]));
-                }
-            }
-
-            // Baseline crossed
-            // From -1 to 1
-            if (i != 0 && (y[i - 1] < 0 && y[i] > 0 || y[i - 1] > 0 && y[i] < 0)) {
-                bar.children().first().css("height", "100%");
-            // From 1 to -1
-            } else if (i != n && (y[i + 1] < 0 && y[i] > 0 || y[i + 1] > 0 && y[i] < 0)) {
-                bar.children().last().css("height", "100%");
-            }
-
-            // Minor bars
-            if (Math.abs(y[i]) < 2 * widthBorder) {
-
-                // Remove unnecessary borders and shift bar back to baseline
-                if (y[i] >= 0) {
-                    bar.css("border-top", "none");
-                } else if (y[i] < 0) {
-                    bar.css("border-bottom", "none");
-                }
+            // Bars of minor height
+            if (Math.abs(h[i]) < 2 * borderThickness) {
 
                 // Only keep one line for minor bars
-                y[i] = widthBorder;
+                h[i] = borderThickness;
 
-                // Remove borders on inner bars
-                bar.children().css("border", "none");
+                // Add minor class
+                this.bars[type][i].self.addClass("minor-y");
             }
 
             // If low bar
-            if (y[i] < 0) {
+            if (h[i] < 0) {
 
-                // Move bar under baseline
-                b[i] += y[i];
-
-                // Recenter bar with axis
-                b[i] += widthBorder;
+                // Move bar under baseline and recenter with axis
+                b[i] += h[i] + borderThickness;
             }
 
-            // Position bars on graph
-            bar.css({
-                "width": w[i],
-                "height": Math.abs(y[i]),
-                "margin-bottom": b[i]
-            });
+            // Position bar on graph
+            this.bars[type][i].position(w[i], h[i], b[i]);
 
-            // Show bubble
-            bar.on("mouseenter", (e) => {
-                this.bubble.update(e.currentTarget, type, units, round, "YYYY.MM.DD - HH:MM:SS");
-                this.bubble.show();
-            });
-
-            // Hide bubble
-            bar.on("mouseleave", (e) => {
-                this.bubble.hide();
-            });
+            // Inform through bubble
+            this.bars[type][i].inform(this.bubble);
         }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SPACEBARS
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    spaceBars(type) {
+
+        // Get last bar
+        const lastBar = lib.last(this.bars[type]);
+
+        // Compute time elapsed between last bar and now
+        const dt = this.axes.x.max - lastBar.x;
+
+        // Convert to pixels
+        const t = dt / this.axes.x.dZ * this.inner.width;
+
+        // Push bars according to time difference between last bar and now
+        lastBar.self.css("margin-right", t);
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,7 +347,7 @@ export class Graph {
         // Measure dots
         for (let type in this.dots) {
 
-            // Loop on dots
+            // Loop on dot types
             for (let dot of this.dots[type]) {
 
                 // Measure them
@@ -340,7 +358,7 @@ export class Graph {
         // Measure bars
         for (let type in this.bars) {
 
-            // Loop on bars
+            // Loop on bar types
             for (let bar of this.bars[type]) {
 
                 // Measure them
@@ -349,47 +367,4 @@ export class Graph {
         }
     }
 
-}
-
-export class GraphBG extends Graph {
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     COLOR
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    color (BGScale) {
-
-        // Color dots
-        for (let dot of this.dots["BG"]) {
-
-            // Add class based on rank
-            dot.self.addClass(lib.rankBG(dot.y, BGScale));
-        }
-    }
-}
-
-export class GraphI extends Graph {
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     PROFILETBS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    profileTBs (data, dt = 5 * 60 * 1000) {
-
-        // Store data in separate arrays
-        let [t, net] = data;
-
-        // Sort TB times in case they aren't already
-        [t, net] = lib.indexSort(t, net);
-
-        // Give user TB profile
-        return [t, net];
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     BUILDTBS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildTBs (data) {
-
-        // Build TBs
-        this.buildBars("TB", this.profileTBs(data));
-    }
 }

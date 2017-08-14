@@ -495,37 +495,6 @@ main {
   .BG-normal:hover {
     background-color: #446600; }
 
-#bubble {
-  display: flex;
-  flex: none;
-  border: none;
-  border-radius: 3px;
-  background-color: #090808;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-  position: absolute;
-  flex-direction: column;
-  padding: 10px;
-  z-index: 30;
-  display: none; }
-  #bubble > #bubble-info, #bubble > #bubble-time {
-    font-size: 17px;
-    font-weight: bold;
-    line-height: 1.25em;
-    color: #eeeeee;
-    white-space: nowrap; }
-    @media only screen and (max-width: 1024px) {
-      #bubble > #bubble-info, #bubble > #bubble-time {
-        font-size: 16px; } }
-    @media only screen and (max-width: 640px) {
-      #bubble > #bubble-info, #bubble > #bubble-time {
-        font-size: 15px; } }
-  #bubble .BG {
-    background: none; }
-  #bubble .TB {
-    color: #300a24; }
-  #bubble .B {
-    color: #0025dd; }
-
 #dash {
   display: flex;
   flex: none;
@@ -693,12 +662,24 @@ main {
       background-color: #23071b; }
     #graph-I > .graph-inner > .TB:last-of-type {
       width: 0; }
-    #graph-I > .graph-inner > .TB > .inner-TB {
+    #graph-I > .graph-inner > .TB.high.minor-y, #graph-I > .graph-inner > .TB.zero.minor-y {
+      border-top: none; }
+      #graph-I > .graph-inner > .TB.high.minor-y > .inner, #graph-I > .graph-inner > .TB.zero.minor-y > .inner {
+        border: none; }
+    #graph-I > .graph-inner > .TB.high > .inner, #graph-I > .graph-inner > .TB.zero > .inner {
+      margin-bottom: auto; }
+    #graph-I > .graph-inner > .TB.low.minor-y {
+      border-bottom: none; }
+      #graph-I > .graph-inner > .TB.low.minor-y > .inner {
+        border: none; }
+    #graph-I > .graph-inner > .TB.low > .inner {
+      margin-top: auto; }
+    #graph-I > .graph-inner > .TB > .inner {
       width: 50%; }
-      #graph-I > .graph-inner > .TB > .inner-TB:first-child {
+      #graph-I > .graph-inner > .TB > .inner:first-child {
         border-left: 2px solid #090808;
         margin-right: auto; }
-      #graph-I > .graph-inner > .TB > .inner-TB:last-child {
+      #graph-I > .graph-inner > .TB > .inner:last-child {
         border-right: 2px solid #090808;
         margin-left: auto; }
   #graph-I > .graph-inner > .B {
@@ -727,6 +708,37 @@ main {
     @media only screen and (max-width: 640px) {
       #graph-I > .graph-inner > .B {
         border-size: 1px; } }
+
+#bubble {
+  display: flex;
+  flex: none;
+  border: none;
+  border-radius: 3px;
+  background-color: #090808;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  flex-direction: column;
+  padding: 10px;
+  z-index: 30;
+  display: none; }
+  #bubble > #bubble-info, #bubble > #bubble-time {
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.25em;
+    color: #eeeeee;
+    white-space: nowrap; }
+    @media only screen and (max-width: 1024px) {
+      #bubble > #bubble-info, #bubble > #bubble-time {
+        font-size: 16px; } }
+    @media only screen and (max-width: 640px) {
+      #bubble > #bubble-info, #bubble > #bubble-time {
+        font-size: 15px; } }
+  #bubble .BG {
+    background: none; }
+  #bubble .TB {
+    color: #300a24; }
+  #bubble .B {
+    color: #0025dd; }
 
 header {
   display: flex;

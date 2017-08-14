@@ -54,7 +54,7 @@ export const round = (x, n = 1) => {
     return (Math.round(x * e) / e).toFixed(n);
 };
 
-export const convertTime = (T, format) => {
+export const formatTime = (T, format) => {
 
     // Make sure an array was given as input
     T = arrayize(T);
@@ -313,40 +313,11 @@ export const indexSort = (x, ...args) => {
     return [x, ...sorted]
 };
 
+export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS") => {
 
-
-
-
-export const decodeEntity = (str) => {
-    return $("<textarea>").html(str).text();
-};
-
-export const range = (start, stop, step) => {
-    if (typeof stop == 'undefined') {
-        stop = start;
-        start = 0;
-    }
-
-    if (typeof step == 'undefined') {
-        step = 1;
-    }
-
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-        return [];
-    }
-
-    var result = [];
-    for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
-        result.push(i);
-    }
-
-    return result;
-};
-
-export const getData = (report, section, format = false, limits = []) => {
-    // Create data arrays
-    var x = [];
-    var y = [];
+    // Initialize data arrays
+    let x = [],
+        y = [];
 
     // Turn off async AJAX
     $.ajaxSetup({
@@ -354,14 +325,15 @@ export const getData = (report, section, format = false, limits = []) => {
     });
 
     // Read report with AJAX
-    $.getJSON(report, function (data) {
-        // Get data from particular report section if desired
-        if (section) {
-            data = data[section];
+    $.getJSON(report, (data) => {
+
+        // Get data from particular report branch if desired
+        if (branch != null) {
+            data = data[branch];
         }
 
         // Store data
-        $.each(data, function (key, value) {
+        $.each(data, (key, value) => {
             x.push(key);
             y.push(value);
         });
@@ -373,36 +345,29 @@ export const getData = (report, section, format = false, limits = []) => {
     });
 
     // Format x-axis if desired
-    if(format) {
-        x = convertTime(x, format);
+    if (format != null) {
+
+        // Format
+        x = formatTime(x, format);
     }
 
-    // Initialize final arrays
-    var X = [];
-    var Y = [];
-
-    // Exclude data out of limits
-    if (limits.length != 0) {
-        for (i = 0; i < x.length; i++) {
-            if (x[i] >= limits[0] && x[i] <= limits[1]) {
-                X.push(x[i]);
-                Y.push(y[i]);
-            }
-        }
-    }
-    // Otherwise, keep it all
-    else {
-        X = x;
-        Y = y;
-    }
+    // Sort data
+    [x, y] = indexSort(...[x, y]);
 
     // Return data
-    return [X, Y];
+    return [x, y];
+};
+
+export const decodeHTMLEntity = (str) => {
+    return $("<textarea>").html(str).text();
 };
 
 export const rankBG = (BG, BGScale) => {
+
+    // Make sure BG is a float
     BG = parseFloat(BG);
 
+    // Rank it
     if (BG < BGScale[0]) {
         return "BG-very-low";
     } else if (BG >= BGScale[0] && BG < BGScale[1]) {
@@ -417,14 +382,18 @@ export const rankBG = (BG, BGScale) => {
 };
 
 export const rankdBGdt = (dBGdt, dBGdtScale) => {
-    dBGdt = parseFloat(dBGdt);
-    
-    var arrowUp = decodeEntity("&#8593;");
-    var arrowRightUp = decodeEntity("&#8599;");
-    var arrowRight = decodeEntity("&#8594;");
-    var arrowRightDown = decodeEntity("&#8600");
-    var arrowDown = decodeEntity("&#8595;");
 
+    // Make sure dBGdt is a float
+    dBGdt = parseFloat(dBGdt);
+
+    // Define arrows
+    const arrowUp = decodeHTMLEntity("&#8593;");
+    const arrowRightUp = decodeHTMLEntity("&#8599;");
+    const arrowRight = decodeHTMLEntity("&#8594;");
+    const arrowRightDown = decodeHTMLEntity("&#8600");
+    const arrowDown = decodeHTMLEntity("&#8595;");
+
+    // Rank it and return corresponding arrow
     if (dBGdt < dBGdtScale[0]) {
         return arrowDown;
     } else if (dBGdt >= dBGdtScale[0]  && dBGdt < dBGdtScale[1]) {

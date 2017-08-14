@@ -1,5 +1,24 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Title:    tick.js
+
+ Author:   David Leclerc
+
+ Version:  0.1
+
+ Date:     14.08.2017
+
+ License:  GNU General Public License, Version 3
+ (http://www.gnu.org/licenses/gpl.html)
+
+ Overview: ...
+
+ Notes:    ...
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 // Imports
-import * as lib from "../../assets/js/lib";
+import * as lib from "../../../../assets/js/lib";
 
 export class Tick {
 
@@ -49,7 +68,7 @@ export class Tick {
     format(f) {
 
         // Get time value, format and then replace it
-        this.fill(lib.convertTime(this.value, f));
+        this.fill(lib.formatTime(this.value, f));
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,27 +76,26 @@ export class Tick {
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     measure() {
 
-        // Initialize first and last border widths
-        let first = null,
-            last = null;
+        // Initialize possible thicknesses
+        let a, b;
 
         // If x-axis
         if (this.type == "x") {
 
-            // Measure thickness
-            first = parseFloat(this.self.css("border-left-width"));
-            last = parseFloat(this.self.css("border-right-width"));
+            // Measure them
+            a = this.self.css("border-left-width");
+            b = this.self.css("border-right-width");
         }
         // If y-axis
         else if (this.type == "y") {
 
-            // Measure thickness
-            first = parseFloat(this.self.css("border-top-width"));
-            last = parseFloat(this.self.css("border-bottom-width"));
+            // Measure them
+            a = this.self.css("border-top-width");
+            b = this.self.css("border-bottom-width");
         }
 
-        // Assign thickness
-        this.thickness = Math.max(first, last);
+        // Store real thickness
+        this.thickness = Math.max(parseFloat(a), parseFloat(b));
     }
 
 }

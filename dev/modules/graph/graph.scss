@@ -23,7 +23,7 @@
 	> .graph-inner {
 
 		> .TB {
-			@include bar(TB, $purple, 3%);
+			@include bar($purple, 3%);
 		}
 
 		> .B {

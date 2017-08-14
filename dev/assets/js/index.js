@@ -21,8 +21,8 @@
 import jQuery from "jquery";
 import * as lib from "./lib";
 import {Dash} from "../../modules/dash/dash";
-import {Axis} from "../../modules/graph/axis";
-import {GraphBG, GraphI} from "../../modules/graph/graph";
+import {GraphBG} from "../../modules/graph/graphBG";
+import {GraphI} from "../../modules/graph/graphI";
 
 // Enable jQuery
 window.$ = window.jQuery = jQuery;
@@ -32,26 +32,27 @@ $(document).ready(() => {
     // CONFIG
     const now = new Date();
     const x0 = now.getTime();
-    let dx = 1; // Time step (h)
-    let dX = 12; // Time range (h)
+    let dx = 1 * 60 * 60 * 1000; // Time step (ms)
+    let dX = 12 * 60 * 60 * 1000; // Time range (ms)
     const x = [];
     const y0 = 0; // Basal baseline (U/h)
     const yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15]; // mmol/L
     const yI = [-4, -2, 0, 2, 4]; // U/h
     const BGScale = [3.8, 4.2, 7.0, 12.0]; // (mmol/L)
 
-    // Convert times to ms standard
-    dx *= 60 * 60 * 1000;
-    dX *= 60 * 60 * 1000;
+    // Get data
+    const BGs = lib.getData("reports/BG.json"),
+          TBs = lib.getData("reports/treatments.json", "Net Basals"),
+          Bs = lib.getData("reports/treatments.json", "Boluses");
 
     // Generate dash
     const dash = new Dash([1, 2, 3, 4]);
 
     // Generate BG graph
-    const graphBG = new GraphBG("BG");
+    const graphBG = new GraphBG();
 
     // Generate I graph
-    const graphI = new GraphI("I");
+    const graphI = new GraphI();
 
     // Build corner
     graphI.buildCorner();
@@ -61,44 +62,35 @@ $(document).ready(() => {
     graphI.buildAxis("y", null, null, null, yI);
     graphBG.buildAxis("y", null, null, null, yBG);
 
+    // Share axes
+    graphI.axes.x.share("x", graphBG);
+
     // Build inner
     graphI.buildInner();
     graphBG.buildInner();
 
-    // Share x-axis between I and BG graphs
-    graphI.axes.x.share("x", graphBG);
-
-    // Get data
-    let BGs = lib.getData("reports/BG.json", false, "YYYY.MM.DD - HH:MM:SS"),
-        TBs = lib.getData("reports/treatments.json", "Net Basals", "YYYY.MM.DD - HH:MM:SS"),
-        Bs = lib.getData("reports/treatments.json", "Boluses", "YYYY.MM.DD - HH:MM:SS");
-
     // Build BG dots
+    graphI.buildBars("TB", "U/h", 2, "YYYY.MM.DD - HH:MM:SS", TBs);
+    graphI.buildDots("B", "U", 1, "YYYY.MM.DD - HH:MM:SS", Bs);
     graphBG.buildDots("BG", "mmol/L", 1, "YYYY.MM.DD - HH:MM:SS", BGs);
 
     // Measure graphs
     graphI.measure();
     graphBG.measure();
 
-    console.log(graphI);
-    console.log(graphBG);
-
-    // Add BG dots
+    // Add elements
+    graphI.addDots("B", y0);
+    graphI.addBars("TB");
     graphBG.addDots("BG");
+
+    // Space last bar from current time
+    graphI.spaceBars("TB");
 
     // Color BG dots
     graphBG.color(BGScale);
 
-    // Build bolus dots
-    //graphI.buildDots("B", Bs);
-
-    // Show bolus dots
-    //graphI.showDots("B", "U", 1, y0);
-
-    // Build TB bars
-    //graphI.buildTBs(TBs);
-
-    // Show TB bars
-    //graphI.showBars("TB", "U/h", 0, y0);
+    // Give infos about graphs
+    console.log(graphI);
+    console.log(graphBG);
 
 });

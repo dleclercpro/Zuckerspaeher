@@ -1,3 +1,22 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Title:    bubble.js
+
+ Author:   David Leclerc
+
+ Version:  0.1
+
+ Date:     14.08.2017
+
+ License:  GNU General Public License, Version 3
+ (http://www.gnu.org/licenses/gpl.html)
+
+ Overview: ...
+
+ Notes:    ...
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 // Imports
 import * as lib from "../../assets/js/lib";
 
@@ -41,13 +60,17 @@ export class Bubble {
         this.x = target.x;
         this.y = target.y;
 
-        // Convert time if desired
+        // Format time if desired
         if (this.format != null) {
-            this.x = lib.convertTime(this.x, this.format);
+
+            // Format
+            this.x = lib.formatTime(this.x, this.format);
         }
 
         // Round info if desired
         if (this.round != null) {
+
+            // Round
             this.y = lib.round(this.y, this.round);
         }
 
