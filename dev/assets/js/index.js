@@ -93,15 +93,15 @@ $(document).ready(() => {
     console.log(graphBG);
 
     // Generate dash
-    const dash = new Dash(BGScale, dBGdtScale);
+    const dash = new Dash(x0, BGScale, dBGdtScale);
 
     // Update BG
-    dash.updateBG(BGs, x0);
+    dash.updateBG(BGs);
 
     // Update TB
-    dash.updateTB(TBs, x0);
+    dash.updateTB(TBs);
 
     // Update IOB
-    dash.updateIOB(IOBs, x0);
+    dash.updateIOB(IOBs);
 
 });
