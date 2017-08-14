@@ -40,6 +40,9 @@ export class Bar {
         // Initialize properties
         this.x = null;
         this.y = null;
+        this.w = null;
+        this.h = null;
+        this.b = null;
         this.thickness = null;
     }
 
@@ -56,13 +59,13 @@ export class Bar {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      POSITION
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    position(w, h, y) {
+    position(w, h, b) {
 
         // Position bar
         this.self.css({
             "width": w,
             "height": Math.abs(h),
-            "margin-bottom": y
+            "margin-bottom": b
         });
     }
 

@@ -209,7 +209,7 @@ export class Graph {
             h = [],
             b = [];
 
-        // Loop on bars
+        // Compute bar sizes
         for (let i = 0; i < n; i++) {
 
             // Initialize bar width and height
@@ -240,7 +240,7 @@ export class Graph {
             b.push((y0 - this.axes.y.min) / dY * innerHeight - borderThickness / 2);
         }
 
-        // Loop on all but last bar
+        // Loop on bars
         for (let i = 0; i < n; i++) {
 
             // Get inner bars
