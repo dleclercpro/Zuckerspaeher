@@ -1,7 +1,7 @@
 <div id="user">
     <img class="img" src="assets/img/me.jpg">
     <div class="details">
-        <p class="name">Leclerc, Davclass</p>
+        <p class="name">Leclerc, David</p>
         <p class="birthday">27.12.1991</p>
         <p class="cgm">Dexcom G4</p>
         <p class="pump">MiniMed 722</p>
