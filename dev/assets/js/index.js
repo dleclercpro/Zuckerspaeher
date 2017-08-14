@@ -38,8 +38,9 @@ $(document).ready(() => {
           y0 = 0, // Basal baseline (U/h)
           yBG = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15], // mmol/L
           yI = [-4, -2, 0, 2, 4], // U/h
-          BGScale = [3.8, 4.2, 7.0, 12.0], // (mmol/L)
-          dBGdtScale = [-3.6, -1.2, 1.2, 3.6]; // (mmol/L/h)
+          n = 60 / 5, // Number of BG measurements within an hour (/h)
+          BGScale = [3.8, 4.2, 7.0, 9.0], // (mmol/L)
+          dBGdtScale = lib.mirror([0.1, 0.3]).map(x => lib.round(x * n, 1)); // (mmol/L/h)
 
     // Get data
     const BGs = lib.getData("reports/BG.json"),
@@ -88,10 +89,6 @@ $(document).ready(() => {
     // Color BG dots
     graphBG.color(BGScale);
 
-    // Give infos about graphs
-    console.log(graphI);
-    console.log(graphBG);
-
     // Generate dash
     const dash = new Dash(x0, BGScale, dBGdtScale);
 
@@ -103,5 +100,10 @@ $(document).ready(() => {
 
     // Update IOB
     dash.updateIOB(IOBs);
+
+    // Give infos about objects
+    console.log(graphI);
+    console.log(graphBG);
+    console.log(dash);
 
 });

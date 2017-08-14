@@ -46,7 +46,29 @@ export const arrayize = (x) => {
         X = [x];
     }
 
-    // Return resposne
+    // Return response
+    return X;
+};
+
+export const mirror = (x, zero = false) => {
+
+    // Initialize mirrored array
+    let X = [];
+
+    // Add negative part
+    X.push.apply(X, x.reverse().map(i => -i));
+
+    // If zero wanted
+    if (zero) {
+
+        // Add zero
+        X.push(0);
+    }
+
+    // Add positive part
+    X.push.apply(X, x);
+
+    // Return mirrored array
     return X;
 };
 
