@@ -103,7 +103,7 @@ export class Graph {
     buildDots(type, units, round, format, data) {
 
         // Destructure data
-        const [x, y] = data;
+        const [ x, y ] = data;
 
         // Reset dot type
         this.dots[type] = [];
@@ -131,7 +131,7 @@ export class Graph {
     buildBars(type, units, round, format, data) {
 
         // Destructure data
-        const [x, y] = data;
+        const [ x, y ] = data;
 
         // Reset bar type
         this.bars[type] = [];
@@ -157,9 +157,9 @@ export class Graph {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     ADDDOTS
+     SHOWDOTS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    addDots(type, y0 = null) {
+    showDots(type, y0 = null) {
 
         // Read measurements
         const dX = this.axes.x.dZ,
@@ -190,9 +190,9 @@ export class Graph {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     ADDBARS
+     SHOWBARS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    addBars(type, y0 = 0) {
+    showBars(type, y0 = 0) {
 
         // Read measurements
         const dX = this.axes.x.dZ,

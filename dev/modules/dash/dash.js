@@ -25,7 +25,7 @@ export class Dash {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(now, BGScale, dBGdtScale) {
+    constructor(config) {
 
         // Get object from DOM
         this.self = $("#dash");
@@ -46,9 +46,9 @@ export class Dash {
         this.trend = this.self.find(".trend").add("#user > .live > .trend");
 
         // Store input
-        this.now = now;
-        this.BGScale = BGScale;
-        this.dBGdtScale = dBGdtScale;
+        this.now = config.x0;
+        this.BGScale = config.BGScale;
+        this.dBGdtScale = config.dBGdtScale;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,7 +70,7 @@ export class Dash {
     updateBG(data) {
 
         // Destructure data
-        const [t, BGs] = data;
+        const [ t, BGs ] = data;
 
         // Get last BGs and their corresponding epoch times
         const lastT = lib.last(t),
@@ -125,7 +125,7 @@ export class Dash {
     updateTB(data) {
 
         // Destructure data
-        const [t, TBs] = data;
+        const [ t, TBs ] = data;
 
         // Get last TB and its corresponding epoch time
         const lastT = lib.last(t),
@@ -149,7 +149,7 @@ export class Dash {
     updateIOB(data) {
 
         // Destructure data
-        const [t, IOBs] = data;
+        const [ t, IOBs ] = data;
 
         // Get last IOB and its corresponding epoch time
         const lastT = lib.last(t),
