@@ -56,7 +56,10 @@ export const mirror = (x, zero = false) => {
     let X = [];
 
     // Add negative part
-    X.push.apply(X, x.reverse().map(i => -i));
+    X.push.apply(X, x.map(i => -i));
+
+    // Reverse it
+    X.reverse();
 
     // If zero wanted
     if (zero) {
@@ -64,7 +67,7 @@ export const mirror = (x, zero = false) => {
         // Add zero
         X.push(0);
     }
-
+    
     // Add positive part
     X.push.apply(X, x);
 
