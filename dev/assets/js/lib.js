@@ -346,6 +346,16 @@ export const indexSort = (x, ...args) => {
     return [x, ...sorted]
 };
 
+export const verifyValidity = (t0, t1, dt, callback) => {
+
+    // If input is still valid
+    if (t0 != null && t1 - t0 <= dt) {
+
+        // Execute callback
+        callback();
+    }
+}
+
 export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS") => {
 
     // Initialize data arrays
@@ -362,7 +372,13 @@ export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS")
 
         // Get data from particular report branch if desired
         if (branch != null) {
-            data = data[branch];
+
+            // Dig in data
+            for (let b of branch) {
+
+                // Get new section
+                data = data[b];
+            }
         }
 
         // Store data

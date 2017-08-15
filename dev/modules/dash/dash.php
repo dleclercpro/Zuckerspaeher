@@ -4,23 +4,63 @@
         <span class="trend"></span>
     </div>
     <div class="delta">
-        <p><b>&Delta;BG:</b> <span class="dBG">---</span> mmol/L</p>
-        <p><b>&Delta;BG/&Delta;t:</b> <span class="dBGdt">---</span> mmol/L/h</p>
+        <p>
+            <span class="title">&Delta;BG:</span>
+            <span class="dBG">---</span>
+            <span class="units">mmol/L</span>
+        </p>
+        <p>
+            <span class="title">&Delta;BG/&Delta;t:</span>
+            <span class="dBGdt">---</span>
+            <span class="units">mmol/L/h</span>
+        </p>
     </div>
     <div class="basal">
-        <p><b>TB:</b> <span class="TB">---</span> U/h</p>
-        <p><b>BR:</b> <span class="BR">---</span> U/h</p>
+        <p>
+            <span class="title">TB:</span>
+            <span class="TB">---</span>
+            <span class="units">U/h</span>
+        </p>
+        <p>
+            <span class="title">BR:</span>
+            <span class="BR">---</span>
+            <span class="units">U/h</span>
+        </p>
     </div>
     <div class="on-board">
-        <p><b>IOB:</b> <span class="IOB">---</span> U</p>
-        <p><b>COB:</b> <span class="COB">---</span> g</p>
+        <p>
+            <span class="title">IOB:</span>
+            <span class="IOB">---</span>
+            <span class="units">U</span>
+        </p>
+        <p>
+            <span class="title">COB:</span>
+            <span class="COB">---</span>
+            <span class="units">g</span>
+        </p>
     </div>
     <div class="factors">
-        <p><b>ISF:</b> <span class="ISF">---</span> mmol/L/U</p>
-        <p><b>CSF:</b> <span class="CSF">---</span> g/U</p>
+        <p>
+            <span class="title">ISF:</span>
+            <span class="ISF">---</span>
+            <span class="units">mmol/L/U</span>
+        </p>
+        <p>
+            <span class="title">CSF:</span>
+            <span class="CSF">---</span>
+            <span class="units">g/U</span>
+        </p>
     </div>
     <div class="age">
-        <p><b>SAGE:</b> <span class="SAGE">---</span> h</p>
-        <p><b>CAGE:</b> <span class="CAGE">---</span> h</p>
+        <p>
+            <span class="title">SAGE:</span>
+            <span class="SAGE">---</span>
+            <span class="units">h
+        </p>
+        <p>
+            <span class="title">CAGE:</span>
+            <span class="CAGE">---</span>
+            <span class="units">h</span>
+        </p>
     </div>
 </div>

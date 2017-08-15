@@ -68,17 +68,31 @@
 			@extend .name;
 		}
 
-		> .cgm {
-			@extend .name;
-
-		}
-
+		> .cgm,
 		> .pump {
 			@extend .name;
+
+			> .battery {
+				font-weight: bold;
+
+				&.very-low {
+					color: $red;
+				}
+
+				&.low,
+				&.medium {
+					color: $orange;
+				}
+
+				&.high,
+				&.very-high {
+					color: $green;
+				}
+			}
 		}
 
-		> .status {
-			@include font("user-status");
+		> .loop {
+			
 		}
 
 		> .live {

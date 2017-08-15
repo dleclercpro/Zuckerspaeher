@@ -560,6 +560,8 @@ main {
       align-items: center;
       top: 100px;
       left: 0; } }
+  #dash .title {
+    font-weight: bold; }
   #dash > .live {
     display: flex;
     margin-bottom: 10px;
@@ -889,9 +891,20 @@ header {
     @media only screen and (max-width: 640px) {
       #user > .details > .name, #user > .details > .birthday, #user > .details > .cgm, #user > .details > .pump {
         display: none; } }
-    #user > .details > .status {
-      font-weight: bold;
-      color: #e50000; }
+    #user > .details > .cgm > .battery,
+    #user > .details > .pump > .battery {
+      font-weight: bold; }
+      #user > .details > .cgm > .battery.very-low,
+      #user > .details > .pump > .battery.very-low {
+        color: #e50000; }
+      #user > .details > .cgm > .battery.low, #user > .details > .cgm > .battery.medium,
+      #user > .details > .pump > .battery.low,
+      #user > .details > .pump > .battery.medium {
+        color: #ff7500; }
+      #user > .details > .cgm > .battery.high, #user > .details > .cgm > .battery.very-high,
+      #user > .details > .pump > .battery.high,
+      #user > .details > .pump > .battery.very-high {
+        color: #99e500; }
     #user > .details > .live {
       display: none; }
       @media only screen and (max-width: 640px) {

@@ -34,8 +34,16 @@ window.$ = window.jQuery = jQuery;
 const build = (config, elements, data) => {
 
     // Destructure input
-    const { graphI: graphI, graphBG: graphBG, dash: dash } = elements,
-          { TBs: TBs, Bs: Bs, IOBs: IOBs, BGs: BGs} = data;
+    const { graphI: graphI,
+            graphBG: graphBG,
+            dash: dash,
+            user: user } = elements,
+          { TBs: TBs,
+            Bs: Bs,
+            IOBs: IOBs,
+            BGs: BGs,
+            pumpBatteryLevels: pumpBatteryLevels,
+            cgmBatteryLevels: cgmBatteryLevels} = data;
 
     // Build corner
     graphI.buildCorner();
@@ -64,6 +72,10 @@ const build = (config, elements, data) => {
     dash.updateBG(BGs);
     dash.updateTB(TBs);
     dash.updateIOB(IOBs);
+
+    // Update user
+    user.updatePumpBatteryLevel(pumpBatteryLevels);
+    user.updateCGMBatteryLevel(cgmBatteryLevels);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,7 +84,8 @@ const build = (config, elements, data) => {
 const show = (config, elements) => {
 
     // Destructure input
-    const { graphI: graphI, graphBG: graphBG } = elements;
+    const { graphI: graphI,
+            graphBG: graphBG } = elements;
 
     // Measure graphs
     graphI.measure();
@@ -110,25 +123,28 @@ $(document).ready(() => {
         dx: 1 * 60 * 60 * 1000, // Time step (ms)
         dX: 12 * 60 * 60 * 1000, // Time range (ms)
         y0: 0, // Basal baseline (U/h)
-        yBG: [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 15], // mmol/L
+        yBG: [0, 2, 4, 6, 8, 10, 15, 20], // mmol/L
         yI: lib.mirror([2, 4], true), // U/h
         BGScale: [3.8, 4.2, 7.0, 9.0], // (mmol/L)
-        dBGdtScale: lib.mirror([0.1, 0.3]).map(x => lib.round(x * 60 / 5, 1)) // (mmol/L/h)
+        dBGdtScale: lib.mirror([0.1, 0.3]).map(x => lib.round(x * 60 / 5, 1)), // (mmol/L/h)
     };
 
     // Generate elements
     const elements = {
         graphBG: new GraphBG(),
         graphI: new GraphI(),
-        dash: new Dash(config)
+        dash: new Dash(config),
+        user: new User(config),
     };
 
     // Get data
     const data = {
         BGs: lib.getData("reports/BG.json"),
-        TBs: lib.getData("reports/treatments.json", "Net Basals"),
-        Bs: lib.getData("reports/treatments.json", "Boluses"),
-        IOBs: lib.getData("reports/treatments.json", "IOB")
+        TBs: lib.getData("reports/treatments.json", ["Net Basals"]),
+        Bs: lib.getData("reports/treatments.json", ["Boluses"]),
+        IOBs: lib.getData("reports/treatments.json", ["IOB"]),
+        pumpBatteryLevels: lib.getData("reports/history.json", ["Pump", "Battery Levels"]),
+        cgmBatteryLevels: lib.getData("reports/history.json", ["CGM", "Battery Levels"]),
     };
 
     // Build elements

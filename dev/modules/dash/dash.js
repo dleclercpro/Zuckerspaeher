@@ -52,19 +52,6 @@ export class Dash {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     VERIFYVALIDITY
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    verifyValidity(t0, t1, dt, callback) {
-
-        // If input is still valid
-        if (t0 != null && t1 - t0 <= dt) {
-
-            // Execute callback
-            callback();
-        }
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATEBG
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     updateBG(data) {
@@ -83,7 +70,7 @@ export class Dash {
               dtMaxdBGdt = 5 * 60 * 1000;
 
         // If last BG found is still valid
-        this.verifyValidity(lastT, this.now, dtMaxBG, () => {
+        lib.verifyValidity(lastT, this.now, dtMaxBG, () => {
 
             // Compute BG rank
             const BGRank = lib.rankBG(lastBG, this.BGScale);
@@ -95,7 +82,7 @@ export class Dash {
             this.BG.addClass(BGRank);
 
             // If second last BG found is still valid
-            this.verifyValidity(lastlastT, lastT, dtMaxdBGdt, () => {
+            lib.verifyValidity(lastlastT, lastT, dtMaxdBGdt, () => {
 
                 // Compute dBG (mmol/L)
                 const dBG = lastBG - lastlastBG;
@@ -135,7 +122,7 @@ export class Dash {
         const dtMax = 30 * 60 * 1000;
 
         // If last TB found is still valid
-        this.verifyValidity(lastT, this.now, dtMax, () => {
+        lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
             this.TB.text(lib.round(lastTB, 2));
@@ -159,7 +146,7 @@ export class Dash {
         const dtMax = 15 * 60 * 1000;
 
         // If last TB found is still valid
-        this.verifyValidity(lastT, this.now, dtMax, () => {
+        lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
             this.IOB.text(lib.round(lastIOB, 1));

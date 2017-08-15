@@ -48,7 +48,6 @@ $font-highlight: "Shadows Into Light", sans-serif;
 // Fonts dictionary
 $fonts: (
 	"logo": (family: $font-highlight, size: 38px, weight: bold, color: $white),
-	"user-status": (weight: bold, color: $red),
 	"user-BG": (family: $font-highlight, size: 45px, weight: bold),
 	"user-details": (size: (desktop: 17px, tablet: 16px, phone: 15px), line-height: 1.25em),
 	"dash-BG": (family: $font-highlight, size: (desktop: 50px, tablet: 40px), weight: bold, line-height: 1em, color: $white),
