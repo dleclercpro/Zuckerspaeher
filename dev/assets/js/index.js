@@ -103,12 +103,41 @@ const show = (config, elements) => {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  LISTEN
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-const listen = (config, elements) => {
+const listen = (mq, config, elements) => {
 
     $(window).on("resize", () => {
 
         // Reshow
         show(config, elements);
+    });
+
+
+    // Desktop breakpoint
+    mq.desktop.addListener(() => {
+        
+        // Tablet -> Desktop
+        if (mq.desktop.matches) {
+
+        }
+
+        // Desktop -> Tablet
+        else if (mq.tablet.matches) {
+
+        }
+    });
+
+    // Tablet breakpoint
+    mq.tablet.addListener(() => {
+
+        // Mobile -> Tablet
+        if (mq.tablet.matches) {
+
+        }
+
+        // Tablet -> Mobile
+        else {
+
+        }
     });
 }
 
@@ -116,6 +145,12 @@ const listen = (config, elements) => {
  MAIN
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 $(document).ready(() => {
+
+    // Media queries
+    const mq = {
+        tablet: window.matchMedia("(min-width: 640px)"),
+        desktop: window.matchMedia("(min-width: 1024px)"),
+    };
 
     // Config
     const config = {
@@ -154,7 +189,7 @@ $(document).ready(() => {
     show(config, elements);
 
     // Listen to events
-    listen(config, elements);
+    listen(mq, config, elements);
 
     // Give infos
     console.log(config);
