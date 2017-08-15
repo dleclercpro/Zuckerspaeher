@@ -31,19 +31,31 @@ export class Dash {
         this.self = $("#dash");
 
         // Get its sub-elements
+        // Live
         this.live = this.self.find(".live");
+        this.BG = this.live.find(".BG").add("#user > .BG");
+        this.trend = this.live.find(".trend").add("#user > .live > .trend");
+
+        // Delta
         this.delta = this.self.find(".delta");
-        this.basal = this.self.find(".basal");
+        this.dBG = this.delta.find(".dBG");
+        this.dBGdt = this.delta.find(".dBGdt");
+
+        // Insulin
+        this.insulin = this.self.find(".insulin");
+        this.netBasal = this.insulin.find(".net-basal");
+        this.basal = this.insulin.find(".basal");
+        this.reservoir = this.insulin.find(".reservoir");
+
+        // On-board
         this.onBoard = this.self.find(".on-board");
+        this.IOB = this.onBoard.find(".IOB");
+        this.COB = this.onBoard.find(".COB");
+
+        // Factors
         this.factors = this.self.find(".factors");
-        this.TB = this.self.find(".TB");
-        this.BR = this.self.find(".BR");
-        this.IOB = this.self.find(".IOB");
-        this.COB = this.self.find(".COB");
-        this.BG = this.self.find(".BG").add("#user > .BG");
-        this.dBG = this.self.find(".dBG");
-        this.dBGdt = this.self.find(".dBGdt");
-        this.trend = this.self.find(".trend").add("#user > .live > .trend");
+        this.ISF = this.factors.find(".ISF");
+        this.CSF = this.factors.find(".CSF");
 
         // Store input
         this.now = config.x0;
@@ -97,8 +109,8 @@ export class Dash {
                 const trend = lib.rankdBGdt(dBGdt, this.dBGdtScale);
 
                 // Update dBG and dBG/dt
-                this.dBG.text(lib.round(dBG));
-                this.dBGdt.text(lib.round(dBGdt));
+                this.dBG.find(".value").text(lib.round(dBG));
+                this.dBGdt.find(".value").text(lib.round(dBGdt));
 
                 // Add trend arrow
                 this.trend.text(trend).addClass(BGRank);
@@ -107,9 +119,9 @@ export class Dash {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATETB
+     UPDATENB
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateTB(data) {
+    updateNB(data) {
 
         // Destructure data
         const [ t, TBs ] = data;
@@ -125,7 +137,7 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
-            this.TB.text(lib.round(lastTB, 2));
+            this.netBasal.find(".value").text(lib.round(lastTB, 2));
 
         });
     }
@@ -149,7 +161,34 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
-            this.IOB.text(lib.round(lastIOB, 1));
+            this.IOB.find(".value").text(lib.round(lastIOB, 1));
+        });
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     UPDATEPUMPRESERVOIRLEVEL
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    updatePumpReservoirLevel(data) {
+
+        // Destructure data
+        const [ t, levels ] = data;
+
+        // Get last level and its corresponding epoch time
+        const lastT = lib.last(t),
+              lastLevel = lib.last(levels);
+
+        // Define max validity time (ms)
+        const dtMax = 30 * 60 * 1000;
+
+        // If last level found is still valid
+        lib.verifyValidity(lastT, this.now, dtMax, () => {
+
+            // Round level (U)
+            const level = lib.round(lastLevel, 1);
+
+            // Update level
+            this.reservoir.find(".value").text(level);
+
         });
     }
 

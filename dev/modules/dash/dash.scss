@@ -32,6 +32,10 @@
 		font-weight: bold;
 	}
 
+	.value {
+
+	}
+
 	.units {
 
 	}
@@ -56,7 +60,11 @@
 		}
 	}
 
-	> .delta {
+	> .delta,
+	> .insulin,
+	> .on-board,
+	> .factors,
+	> .age {
 		display: flex;
 
 		> p {
@@ -68,21 +76,5 @@
 				margin-right: 0;
 			}
 		}
-	}
-
-	> .basal {
-		@extend .delta;
-	}
-
-	> .on-board {
-		@extend .delta;
-	}
-
-	> .factors {
-		@extend .delta;
-	}
-
-	> .age {
-		@extend .delta;
 	}
 }

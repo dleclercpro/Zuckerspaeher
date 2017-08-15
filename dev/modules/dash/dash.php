@@ -4,62 +4,67 @@
         <span class="trend"></span>
     </div>
     <div class="delta">
-        <p>
+        <p class="dBG">
             <span class="title">&Delta;BG:</span>
-            <span class="dBG">---</span>
+            <span class="value">---</span>
             <span class="units">mmol/L</span>
         </p>
-        <p>
+        <p class="dBGdt">
             <span class="title">&Delta;BG/&Delta;t:</span>
-            <span class="dBGdt">---</span>
+            <span class="value">---</span>
             <span class="units">mmol/L/h</span>
         </p>
     </div>
-    <div class="basal">
-        <p>
+    <div class="insulin">
+        <p class="net-basal">
             <span class="title">TB:</span>
-            <span class="TB">---</span>
+            <span class="value">---</span>
             <span class="units">U/h</span>
         </p>
-        <p>
-            <span class="title">BR:</span>
-            <span class="BR">---</span>
+        <p class="basal">
+            <span class="title">B:</span>
+            <span class="value">---</span>
             <span class="units">U/h</span>
+        </p>
+        <p class="reservoir">
+            <span class="title">R:</span>
+            <span class="value">---</span>
+            <span class="units">U</span>
         </p>
     </div>
     <div class="on-board">
-        <p>
+        <p class="IOB">
             <span class="title">IOB:</span>
-            <span class="IOB">---</span>
+            <span class="value">---</span>
             <span class="units">U</span>
         </p>
-        <p>
+        <p class="COB">
             <span class="title">COB:</span>
-            <span class="COB">---</span>
+            <span class="value">---</span>
             <span class="units">g</span>
         </p>
     </div>
     <div class="factors">
-        <p>
+        <p class="ISF">
             <span class="title">ISF:</span>
-            <span class="ISF">---</span>
+            <span class="value">---</span>
             <span class="units">mmol/L/U</span>
         </p>
-        <p>
+        <p class="CSF">
             <span class="title">CSF:</span>
-            <span class="CSF">---</span>
+            <span class="value">---</span>
             <span class="units">g/U</span>
         </p>
     </div>
     <div class="age">
-        <p>
+        <p class="SAGE">
             <span class="title">SAGE:</span>
-            <span class="SAGE">---</span>
+            <span class="value">---</span>
             <span class="units">h
         </p>
-        <p>
+        <p class="CAGE">
             <span class="title">CAGE:</span>
-            <span class="CAGE">---</span>
+            <span class="value">---</span>
             <span class="units">h</span>
         </p>
     </div>

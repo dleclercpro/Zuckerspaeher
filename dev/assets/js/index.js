@@ -42,6 +42,7 @@ const build = (config, elements, data) => {
             Bs: Bs,
             IOBs: IOBs,
             BGs: BGs,
+            pumpReservoirLevels: pumpReservoirLevels,
             pumpBatteryLevels: pumpBatteryLevels,
             cgmBatteryLevels: cgmBatteryLevels} = data;
 
@@ -70,8 +71,9 @@ const build = (config, elements, data) => {
 
     // Update dash
     dash.updateBG(BGs);
-    dash.updateTB(TBs);
+    dash.updateNB(TBs);
     dash.updateIOB(IOBs);
+    dash.updatePumpReservoirLevel(pumpReservoirLevels);
 
     // Update user
     user.updatePumpBatteryLevel(pumpBatteryLevels);
@@ -178,6 +180,7 @@ $(document).ready(() => {
         TBs: lib.getData("reports/treatments.json", ["Net Basals"]),
         Bs: lib.getData("reports/treatments.json", ["Boluses"]),
         IOBs: lib.getData("reports/treatments.json", ["IOB"]),
+        pumpReservoirLevels: lib.getData("reports/history.json", ["Pump", "Reservoir Levels"]),
         pumpBatteryLevels: lib.getData("reports/history.json", ["Pump", "Battery Levels"]),
         cgmBatteryLevels: lib.getData("reports/history.json", ["CGM", "Battery Levels"]),
     };

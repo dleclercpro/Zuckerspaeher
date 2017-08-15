@@ -81,7 +81,7 @@ export class User {
         	const maxLevel = 1.50,
         		  minLevel = 1.15;
 
-		    // Compute and round level in percentage
+		    // Compute and round level (%)
 		    const level = lib.round((lastLevel - minLevel) / (maxLevel - minLevel) * 100, 0);
 
 		    // Rank level
@@ -98,7 +98,7 @@ export class User {
 		    }
 
             // Update level
-            this.pumpBattery.text("(" + level + " %)");
+            this.pumpBattery.text("(" + level + "%)");
 
         });
     }
@@ -121,7 +121,7 @@ export class User {
         // If last level found is still valid
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
-		    // Round level in percentage
+		    // Round level (%)
 		    const level = lib.round(lastLevel, 0);
 
 		    // Rank level
@@ -138,7 +138,7 @@ export class User {
 		    }
 
             // Update level
-            this.cgmBattery.text("(" + level + " %)");
+            this.cgmBattery.text("(" + level + "%)");
 
         });
     }

@@ -582,20 +582,40 @@ main {
       background: none;
       margin-left: 5px;
       font-weight: normal; }
-  #dash > .delta, #dash > .basal, #dash > .on-board, #dash > .factors, #dash > .age {
+  #dash > .delta,
+  #dash > .insulin,
+  #dash > .on-board,
+  #dash > .factors,
+  #dash > .age {
     display: flex; }
-    #dash > .delta > p, #dash > .basal > p, #dash > .on-board > p, #dash > .factors > p, #dash > .age > p {
+    #dash > .delta > p,
+    #dash > .insulin > p,
+    #dash > .on-board > p,
+    #dash > .factors > p,
+    #dash > .age > p {
       font-size: 17px;
       line-height: 1.25em;
       margin-right: 15px;
       white-space: nowrap; }
       @media only screen and (max-width: 1024px) {
-        #dash > .delta > p, #dash > .basal > p, #dash > .on-board > p, #dash > .factors > p, #dash > .age > p {
+        #dash > .delta > p,
+        #dash > .insulin > p,
+        #dash > .on-board > p,
+        #dash > .factors > p,
+        #dash > .age > p {
           font-size: 16px; } }
       @media only screen and (max-width: 640px) {
-        #dash > .delta > p, #dash > .basal > p, #dash > .on-board > p, #dash > .factors > p, #dash > .age > p {
+        #dash > .delta > p,
+        #dash > .insulin > p,
+        #dash > .on-board > p,
+        #dash > .factors > p,
+        #dash > .age > p {
           font-size: 15px; } }
-      #dash > .delta > p:last-child, #dash > .basal > p:last-child, #dash > .on-board > p:last-child, #dash > .factors > p:last-child, #dash > .age > p:last-child {
+      #dash > .delta > p:last-child,
+      #dash > .insulin > p:last-child,
+      #dash > .on-board > p:last-child,
+      #dash > .factors > p:last-child,
+      #dash > .age > p:last-child {
         margin-right: 0; }
 
 #graph-BG {
