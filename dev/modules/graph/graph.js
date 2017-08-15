@@ -243,8 +243,9 @@ export class Graph {
         // Loop on bars
         for (let i = 0; i < n; i++) {
 
-            // Get inner bars
-            const innerBars = this.bars[type][i].self.children();
+            // Get bar and its content
+            const bar = this.bars[type][i],
+                  innerBars = bar.self.children();
 
             // Not first
             if (i != 0) {
@@ -286,6 +287,13 @@ export class Graph {
                 }
             }
 
+            // Bars of minor width
+            if (w[i] < 2 * borderThickness) {
+
+                // Add minor class
+                bar.self.addClass("minor-x");
+            }
+
             // Bars of minor height
             if (Math.abs(h[i]) < 2 * borderThickness) {
 
@@ -293,7 +301,7 @@ export class Graph {
                 h[i] = borderThickness;
 
                 // Add minor class
-                this.bars[type][i].self.addClass("minor-y");
+                bar.self.addClass("minor-y");
             }
 
             // If low bar
@@ -304,10 +312,10 @@ export class Graph {
             }
 
             // Position bar on graph
-            this.bars[type][i].position(w[i], h[i], b[i]);
+            bar.position(w[i], h[i], b[i]);
 
             // Inform through bubble
-            this.bars[type][i].inform(this.bubble);
+            bar.inform(this.bubble);
         }
     }
 

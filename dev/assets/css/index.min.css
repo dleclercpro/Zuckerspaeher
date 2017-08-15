@@ -706,6 +706,8 @@ main {
         border: none; }
     #graph-I > .graph-inner > .TB.low > .inner {
       margin-top: auto; }
+    #graph-I > .graph-inner > .TB.minor-x {
+      background-color: #090808; }
     #graph-I > .graph-inner > .TB > .inner {
       width: 50%; }
       #graph-I > .graph-inner > .TB > .inner:first-child {
