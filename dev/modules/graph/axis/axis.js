@@ -28,7 +28,7 @@ export class Axis {
     constructor(type) {
 
         // Generate node
-        this.self = $("<div class='graph-" + type + "-axis'></div>");
+        this.self = $("<div class='axis " + type + "'></div>");
 
         // Define properties
         this.type = type;

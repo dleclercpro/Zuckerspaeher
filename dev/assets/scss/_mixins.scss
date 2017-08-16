@@ -197,51 +197,26 @@
 // GRAPH
 // =============================================================================
 
-@mixin graph($w, $h) {
-	display: flex;
-	flex-wrap: wrap;
+@mixin size-graph($w, $h) {
 
-	.graph-x-axis {
-		display: flex;
-		flex-direction: row;
+	> .axis.x {
 		width: calc(100% - #{$w});
 		height: $h;
-		order: 3;
-
-		> .graph-x-axis-tick {
-			@extend %graph-x-axis-tick;
-		}
 	}
 
-	.graph-y-axis {
-		display: flex;
-		flex-direction: column-reverse;
+	> .axis.y {
 		width: $w;
 		height: calc(100% - #{$h});
-		order: 2;
-
-		> .graph-y-axis-tick {
-			@extend %graph-y-axis-tick;
-		}
 	}
 
-	.graph-inner {
+	> .inner {
 		width: calc(100% - #{$w});
 		height: calc(100% - #{$h});
-		order: 1;
-		@include relative;
-
-		// Use flexbox to ensure no horizontal gaps between bars due to rounding
-		// errors
-		display: flex;
-		justify-content: flex-end;
-		align-items: flex-end;
 	}
 
-	.graph-corner {
+	> .corner {
 		width: $w;
 		height: $h;
-		order: 4;
 	}
 }
 

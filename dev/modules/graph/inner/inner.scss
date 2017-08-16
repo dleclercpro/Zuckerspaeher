@@ -1,0 +1,9 @@
+.inner {
+    @include relative;
+    order: 1;
+
+    // Use flexbox to ensure no horizontal gaps between bars due to rounding errors
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

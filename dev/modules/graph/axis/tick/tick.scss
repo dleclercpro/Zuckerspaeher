@@ -1,0 +1,23 @@
+.tick {
+    display: flex;
+    justify-content: flex-end;
+    flex: none;
+    @include font("graph-tick");
+
+    // x-axis tick
+    .axis.x > & {
+        padding-right: 4px;
+        border-right: 1px dashed $white;
+    }
+
+    // y-axis tick
+    .axis.y > & {
+        flex-direction: column;
+        padding-bottom: 2px;
+        border-bottom: 1px dashed $white;
+
+        @include mq(phone) {
+            padding-left: 3px;
+        }
+    }
+}

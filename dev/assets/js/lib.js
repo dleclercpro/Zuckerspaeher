@@ -84,7 +84,7 @@ export const round = (x, n = 1) => {
     const e = Math.pow(10, n);
 
     // Return rounded value
-    return (Math.round(x * e) / e).toFixed(n);
+    return parseFloat((Math.round(x * e) / e).toFixed(n));
 };
 
 export const formatTime = (T, format) => {

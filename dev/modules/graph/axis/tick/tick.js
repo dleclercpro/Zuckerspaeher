@@ -28,7 +28,7 @@ export class Tick {
     constructor(type) {
 
         // Generate node
-        this.self = $("<div class='graph-" + type + "-axis-tick'></div>");
+        this.self = $("<div class='tick " + type + "'></div>");
 
         // Define properties
         this.type = type;

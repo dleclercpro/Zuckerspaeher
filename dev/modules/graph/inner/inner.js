@@ -25,7 +25,7 @@ export class Inner {
     constructor() {
 
         // Generate node
-        this.self = $("<div class='graph-inner'></div>");
+        this.self = $("<div class='inner'></div>");
 
         // Initialize dimensions
         this.width = null;

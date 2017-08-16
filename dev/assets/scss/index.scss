@@ -9,31 +9,12 @@
 
 // IMPORTS
 @import "normalize";
-@import "base";
 @import "config";
 @import "mixins";
 @import "placeholders";
+@import "base";
 
 // STYLES
-body {
-	display: flex;
-	flex-direction: column;
-	width: 100vw;
-	height: 100vh;
-	overflow-x: hidden;
-	overflow-y: auto;
-	background-color: $gray;
-	font-family: $font-copy;
-	color: $white;
-}
-
-main {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	@include relative;
-}
-
 .BG {
 
 	&-very-low,

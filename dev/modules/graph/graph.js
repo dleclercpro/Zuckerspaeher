@@ -34,7 +34,7 @@ export class Graph {
     constructor(type) {
 
         // Get node
-        this.self = $("#graph-" + type);
+        this.self = $(".graph." + type);
 
         // Define properties
         this.type = type;

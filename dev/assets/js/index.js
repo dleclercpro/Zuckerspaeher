@@ -78,7 +78,7 @@ const build = (config, elements, data) => {
     // Update user
     user.updatePumpBatteryLevel(pumpBatteryLevels);
     user.updateCGMBatteryLevel(cgmBatteryLevels);
-}
+};
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  SHOW
@@ -100,7 +100,7 @@ const show = (config, elements) => {
 
     // Space graph bars
     graphI.spaceBars("TB");
-}
+};
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  LISTEN
@@ -141,7 +141,7 @@ const listen = (mq, config, elements) => {
 
         }
     });
-}
+};
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  MAIN

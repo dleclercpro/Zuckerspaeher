@@ -21,3 +21,22 @@ p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
 a {
 	cursor: pointer;
 }
+
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: $gray;
+	font-family: $font-copy;
+	color: $white;
+}
+
+main {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	@include relative;
+}

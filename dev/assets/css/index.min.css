@@ -375,26 +375,6 @@ textarea {
 
 /*******************************************************************************
 
-	Title : _base.scss
-	Author : David Leclerc
-	Date : 06.08.2017
-	Notes : -
-
-*******************************************************************************/
-* {
-  box-sizing: border-box; }
-
-p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
-  margin: 0;
-  padding: 0;
-  font-size: 1em;
-  text-decoration: none; }
-
-a {
-  cursor: pointer; }
-
-/*******************************************************************************
-
 	Title : _config.scss
 	Author : David Leclerc
 	Date : 12.12.2016
@@ -422,28 +402,6 @@ header > #buttons {
   justify-content: center;
   align-items: center; }
 
-#graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick, #graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
-  display: flex;
-  justify-content: flex-end;
-  flex: none;
-  font-size: 15px;
-  font-weight: bold; }
-  @media only screen and (max-width: 640px) {
-    #graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick, #graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
-      font-size: 14px; } }
-
-#graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick {
-  flex-direction: column;
-  padding-bottom: 2px;
-  border-bottom: 1px dashed #eeeeee; }
-  @media only screen and (max-width: 640px) {
-    #graph-BG .graph-y-axis > .graph-y-axis-tick, #graph-I .graph-y-axis > .graph-y-axis-tick {
-      padding-left: 3px; } }
-
-#graph-BG .graph-x-axis > .graph-x-axis-tick, #graph-I .graph-x-axis > .graph-x-axis-tick {
-  padding-right: 4px;
-  border-right: 1px dashed #eeeeee; }
-
 #settings > form > .fieldset > #settings-save {
   margin: 0;
   padding: 0;
@@ -459,6 +417,26 @@ header > #buttons {
   #settings > form > .fieldset > #settings-save:active {
     box-shadow: inset 3px 3px 3px #090808;
     padding-left: 6px; }
+
+/*******************************************************************************
+
+	Title : _base.scss
+	Author : David Leclerc
+	Date : 06.08.2017
+	Notes : -
+
+*******************************************************************************/
+* {
+  box-sizing: border-box; }
+
+p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  text-decoration: none; }
+
+a {
+  cursor: pointer; }
 
 body {
   display: flex;
@@ -618,150 +596,124 @@ main {
       #dash > .age > p:last-child {
         margin-right: 0; }
 
-#graph-BG {
+.graph {
   display: flex;
-  flex-wrap: wrap;
-  width: 100vw;
-  height: calc(0.75 * (100vh - 70px));
-  flex: none;
-  order: 3; }
-  #graph-BG .graph-x-axis {
-    display: flex;
-    flex-direction: row;
-    width: calc(100% - 28px);
-    height: 0px;
-    order: 3; }
-  #graph-BG .graph-y-axis {
-    display: flex;
-    flex-direction: column-reverse;
-    width: 28px;
-    height: calc(100% - 0px);
-    order: 2; }
-  #graph-BG .graph-inner {
-    width: calc(100% - 28px);
-    height: calc(100% - 0px);
-    order: 1;
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end; }
-  #graph-BG .graph-corner {
-    width: 28px;
-    height: 0px;
-    order: 4; }
-  #graph-BG > .graph-inner > .BG, #user > .details#graph-BG > .live.graph-inner > .trend {
-    position: absolute;
-    width: 11px;
-    height: 11px;
-    border: 2px solid #090808;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10; }
-    @media only screen and (max-width: 1024px) {
-      #graph-BG > .graph-inner > .BG, #user > .details#graph-BG > .live.graph-inner > .trend {
-        width: 9px;
-        height: 9px; } }
-    @media only screen and (max-width: 640px) {
-      #graph-BG > .graph-inner > .BG, #user > .details#graph-BG > .live.graph-inner > .trend {
-        width: 8px;
-        height: 8px; } }
-    @media only screen and (max-width: 1024px) {
-      #graph-BG > .graph-inner > .BG, #user > .details#graph-BG > .live.graph-inner > .trend {
-        border-size: 1px; } }
-    @media only screen and (max-width: 640px) {
-      #graph-BG > .graph-inner > .BG, #user > .details#graph-BG > .live.graph-inner > .trend {
-        border-size: 1px; } }
-
-#graph-I {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100vw;
-  height: calc(0.25 * (100vh - 70px));
-  flex: 1;
-  order: 4; }
-  #graph-I .graph-x-axis {
-    display: flex;
-    flex-direction: row;
-    width: calc(100% - 28px);
-    height: 28px;
-    order: 3; }
-  #graph-I .graph-y-axis {
-    display: flex;
-    flex-direction: column-reverse;
-    width: 28px;
-    height: calc(100% - 28px);
-    order: 2; }
-  #graph-I .graph-inner {
-    width: calc(100% - 28px);
-    height: calc(100% - 28px);
-    order: 1;
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end; }
-  #graph-I .graph-corner {
-    width: 28px;
-    height: 28px;
-    order: 4; }
-  #graph-I > .graph-inner > .TB {
-    display: flex;
+  flex-wrap: wrap; }
+  .graph.BG, #user > .details > .live > .graph.trend {
+    width: 100vw;
+    height: calc(0.75 * (100vh - 70px));
     flex: none;
-    overflow: hidden;
-    border-top: 2px solid #090808;
-    border-bottom: 2px solid #090808;
-    background-color: #300a24;
-    cursor: pointer;
-    z-index: 5; }
-    #graph-I > .graph-inner > .TB:hover {
-      background-color: #23071b; }
-    #graph-I > .graph-inner > .TB:last-of-type {
-      width: 0; }
-    #graph-I > .graph-inner > .TB.high.minor-y, #graph-I > .graph-inner > .TB.zero.minor-y {
-      border-top: none; }
-      #graph-I > .graph-inner > .TB.high.minor-y > .inner, #graph-I > .graph-inner > .TB.zero.minor-y > .inner {
-        border: none; }
-    #graph-I > .graph-inner > .TB.high > .inner, #graph-I > .graph-inner > .TB.zero > .inner {
-      margin-bottom: auto; }
-    #graph-I > .graph-inner > .TB.low.minor-y {
-      border-bottom: none; }
-      #graph-I > .graph-inner > .TB.low.minor-y > .inner {
-        border: none; }
-    #graph-I > .graph-inner > .TB.low > .inner {
-      margin-top: auto; }
-    #graph-I > .graph-inner > .TB > .inner {
-      width: 50%; }
-      #graph-I > .graph-inner > .TB > .inner:first-child {
-        border-left: 2px solid #090808;
-        margin-right: auto; }
-      #graph-I > .graph-inner > .TB > .inner:last-child {
-        border-right: 2px solid #090808;
-        margin-left: auto; }
-  #graph-I > .graph-inner > .B {
-    position: absolute;
-    width: 11px;
-    height: 11px;
-    border: 2px solid #090808;
-    border-radius: 50%;
-    background-color: #0025dd;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 0; }
-    @media only screen and (max-width: 1024px) {
-      #graph-I > .graph-inner > .B {
-        width: 9px;
-        height: 9px; } }
-    @media only screen and (max-width: 640px) {
-      #graph-I > .graph-inner > .B {
-        width: 8px;
-        height: 8px; } }
-    #graph-I > .graph-inner > .B:hover {
-      background-color: #001477; }
-    @media only screen and (max-width: 1024px) {
-      #graph-I > .graph-inner > .B {
-        border-size: 1px; } }
-    @media only screen and (max-width: 640px) {
-      #graph-I > .graph-inner > .B {
-        border-size: 1px; } }
+    order: 3; }
+    .graph.BG > .axis.x, #user > .details > .live > .graph.trend > .axis.x {
+      width: calc(100% - 28px);
+      height: 0px; }
+    .graph.BG > .axis.y, #user > .details > .live > .graph.trend > .axis.y {
+      width: 28px;
+      height: calc(100% - 0px); }
+    .graph.BG > .inner, #user > .details > .live > .graph.trend > .inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 0px); }
+    .graph.BG > .corner, #user > .details > .live > .graph.trend > .corner {
+      width: 28px;
+      height: 0px; }
+    .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border: 2px solid #090808;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10; }
+      @media only screen and (max-width: 1024px) {
+        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
+          width: 9px;
+          height: 9px; } }
+      @media only screen and (max-width: 640px) {
+        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
+          width: 8px;
+          height: 8px; } }
+      @media only screen and (max-width: 1024px) {
+        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
+          border-size: 1px; } }
+      @media only screen and (max-width: 640px) {
+        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
+          border-size: 1px; } }
+  .graph.I {
+    width: 100vw;
+    height: calc(0.25 * (100vh - 70px));
+    flex: 1;
+    order: 4; }
+    .graph.I > .axis.x {
+      width: calc(100% - 28px);
+      height: 28px; }
+    .graph.I > .axis.y {
+      width: 28px;
+      height: calc(100% - 28px); }
+    .graph.I > .inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 28px); }
+    .graph.I > .corner {
+      width: 28px;
+      height: 28px; }
+    .graph.I > .inner > .TB {
+      display: flex;
+      flex: none;
+      overflow: hidden;
+      border-top: 2px solid #090808;
+      border-bottom: 2px solid #090808;
+      background-color: #300a24;
+      cursor: pointer;
+      z-index: 5; }
+      .graph.I > .inner > .TB:hover {
+        background-color: #23071b; }
+      .graph.I > .inner > .TB:last-of-type {
+        width: 0; }
+      .graph.I > .inner > .TB.high.minor-y, .graph.I > .inner > .TB.zero.minor-y {
+        border-top: none; }
+        .graph.I > .inner > .TB.high.minor-y > .inner, .graph.I > .inner > .TB.zero.minor-y > .inner {
+          border: none; }
+      .graph.I > .inner > .TB.high > .inner, .graph.I > .inner > .TB.zero > .inner {
+        margin-bottom: auto; }
+      .graph.I > .inner > .TB.low.minor-y {
+        border-bottom: none; }
+        .graph.I > .inner > .TB.low.minor-y > .inner {
+          border: none; }
+      .graph.I > .inner > .TB.low > .inner {
+        margin-top: auto; }
+      .graph.I > .inner > .TB > .inner {
+        width: 50%; }
+        .graph.I > .inner > .TB > .inner:first-child {
+          border-left: 2px solid #090808;
+          margin-right: auto; }
+        .graph.I > .inner > .TB > .inner:last-child {
+          border-right: 2px solid #090808;
+          margin-left: auto; }
+    .graph.I > .inner > .B {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border: 2px solid #090808;
+      border-radius: 50%;
+      background-color: #0025dd;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 0; }
+      @media only screen and (max-width: 1024px) {
+        .graph.I > .inner > .B {
+          width: 9px;
+          height: 9px; } }
+      @media only screen and (max-width: 640px) {
+        .graph.I > .inner > .B {
+          width: 8px;
+          height: 8px; } }
+      .graph.I > .inner > .B:hover {
+        background-color: #001477; }
+      @media only screen and (max-width: 1024px) {
+        .graph.I > .inner > .B {
+          border-size: 1px; } }
+      @media only screen and (max-width: 640px) {
+        .graph.I > .inner > .B {
+          border-size: 1px; } }
 
 header {
   display: flex;
@@ -936,3 +888,42 @@ header {
         background: none; }
       #user > .details > .live > .trend {
         margin-left: -5px; }
+
+.axis {
+  display: flex; }
+  .axis.x {
+    flex-direction: row;
+    order: 3; }
+  .axis.y {
+    flex-direction: column-reverse;
+    order: 2; }
+
+.corner {
+  order: 4; }
+
+.inner {
+  position: relative;
+  order: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end; }
+
+.tick {
+  display: flex;
+  justify-content: flex-end;
+  flex: none;
+  font-size: 15px;
+  font-weight: bold; }
+  @media only screen and (max-width: 640px) {
+    .tick {
+      font-size: 14px; } }
+  .axis.x > .tick {
+    padding-right: 4px;
+    border-right: 1px dashed #eeeeee; }
+  .axis.y > .tick {
+    flex-direction: column;
+    padding-bottom: 2px;
+    border-bottom: 1px dashed #eeeeee; }
+    @media only screen and (max-width: 640px) {
+      .axis.y > .tick {
+        padding-left: 3px; } }

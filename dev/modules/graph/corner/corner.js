@@ -25,7 +25,7 @@ export class Corner {
     constructor() {
 
         // Generate node
-        this.self = $("<div class='graph-corner'></div>");
+        this.self = $("<div class='corner'></div>");
     }
 
 }

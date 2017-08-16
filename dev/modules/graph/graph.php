@@ -1,1 +1,1 @@
-<div id="graph-<?= $args[0]; ?>"></div>
+<div class="graph <?= $args[0]; ?>"></div>

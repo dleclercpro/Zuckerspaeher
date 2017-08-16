@@ -178,7 +178,7 @@ export class Dash {
               lastLevel = lib.last(levels);
 
         // Define max validity time (ms)
-        const dtMax = 15 * 60 * 1000;
+        const dtMax = 30 * 60 * 1000;
 
         // If last level found is still valid
         lib.verifyValidity(lastT, this.now, dtMax, () => {
