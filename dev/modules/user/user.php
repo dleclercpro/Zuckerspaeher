@@ -1,4 +1,4 @@
-<div id="user">
+<div class="mod-user">
     <img class="img" src="assets/img/me.jpg">
     <div class="details">
         <p class="name">Leclerc, David</p>

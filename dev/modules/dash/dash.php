@@ -1,4 +1,4 @@
-<div id="dash">
+<div class="mod-dash">
     <div class="live">
         <span class="BG">---</span>
         <span class="trend"></span>

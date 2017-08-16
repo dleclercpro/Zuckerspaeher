@@ -1,0 +1,22 @@
+.mod-dot {
+	@include absolute;
+	@include size(2 * $radius-dot, 2 * $radius-dot,
+		2 * $tablet-radius-dot, 2 * $tablet-radius-dot,
+		2 * $mobile-radius-dot, 2 * $mobile-radius-dot)
+	border: $border-radius-dot solid $black;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: 10;
+
+	&.square {
+		border-radius: 0;
+	}
+
+	@include mq("tablet") {
+		border-size: $tablet-border-radius-dot;
+	}
+
+	@include mq("mobile") {
+		border-size: $mobile-border-radius-dot;
+	}
+}

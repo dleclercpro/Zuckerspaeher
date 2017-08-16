@@ -1,4 +1,4 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  Title:    bubble.js
 
@@ -15,7 +15,7 @@
 
  Notes:    ...
 
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 // Imports
 import * as lib from "../../assets/js/lib";
@@ -28,11 +28,11 @@ export class Bubble {
     constructor() {
 
         // Get node
-        this.self = $("#bubble");
+        this.self = $(".mod-bubble");
 
         // Read properties
-        this.info = this.self.find("#bubble-info");
-        this.time = this.self.find("#bubble-time");
+        this.info = this.self.find(".info");
+        this.time = this.self.find(".time");
 
         // Initialize properties
         this.target = null;
@@ -53,7 +53,7 @@ export class Bubble {
         this.target = target;
 
         // Read properties from target
-        this.type = target.self.attr("class");
+        this.type = lib.filterString(target.self.attr("class"), "mod-");
         this.units = target.units;
         this.round = target.round;
         this.format = target.format;
@@ -71,12 +71,12 @@ export class Bubble {
         if (this.round != null) {
 
             // Round
-            this.y = lib.round(this.y, this.round);
+            this.y = this.y.toFixed(this.round);
         }
 
         // Update infos in bubble
         this.time.html(this.x);
-        this.info.html("<span class='" + this.type + "'>" + this.y + "</span> " + this.units);
+        this.info.html("<span class='value " + this.type + "'>" + this.y + "</span> <span class='units'>" + this.units + "</span>");
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

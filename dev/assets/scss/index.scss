@@ -1,11 +1,11 @@
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : index.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 
 // IMPORTS
 @import "normalize";
@@ -19,30 +19,28 @@
 
 	&-very-low,
 	&-very-high {
-		background-color: $red;
+		@include background($red, 25%);
 		color: $red;
-
-		&:hover {
-			background-color: darken($red, 25%);
-		}
 	}
 
 	&-low,
 	&-high {
-		background-color: $orange;
+		@include background($orange, 25%);
 		color: $orange;
-
-		&:hover {
-			background-color: darken($orange, 25%);
-		}
 	}
 
 	&-normal {
-		background-color: $green;
+		@include background($green, 25%);
 		color: $green;
-
-		&:hover {
-			background-color: darken($green, 25%);
-		}
 	}
+}
+
+.TB {
+	@include background($purple, 3%);
+	color: $purple;
+}
+
+.B {
+	@include background($blue, 25%);
+	color: $blue;
 }

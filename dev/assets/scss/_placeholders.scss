@@ -1,31 +1,14 @@
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : _placeholders.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 
 %center {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
-
-%button {
-	margin: 0;
-	padding: 0;
-	border-radius: $border-radius;
-	border: none;
-	@include font("button");
-
-	&:hover {
-		cursor: pointer;
-	}
-
-	&:active {
-		box-shadow: inset 3px 3px 3px $black;
-		padding-left: 6px;
-	}
 }

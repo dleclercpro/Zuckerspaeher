@@ -1,40 +1,22 @@
-.graph {
+.mod-graph {
 	display: flex;
 	flex-wrap: wrap;
 
     // BG graph
     &.BG {
-        @include size-graph($width-y-axis, 0px);
+        @include graph($width-y-axis, 0px);
         width: 100vw;
         height: $height-graph-BG;
         flex: none;
         order: 3;
-
-        > .inner {
-
-            > .BG {
-                @include dot;
-            }
-        }
     }
 
     // Insulin graph
     &.I {
-        @include size-graph($width-y-axis, $height-x-axis);
+        @include graph($width-y-axis, $height-x-axis);
         width: 100vw;
         height: $height-graph-I;
         flex: 1;
         order: 4;
-
-        > .inner {
-
-            > .TB {
-                @include bar($purple, 3%);
-            }
-
-            > .B {
-                @include square($blue, 20%);
-            }
-        }
     }
 }

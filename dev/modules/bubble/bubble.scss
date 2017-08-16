@@ -1,29 +1,19 @@
-#bubble {
-	@include box($black);
+.mod-bubble {
+	@include box($black, $border-radius, $shadow-radius);
 	@include absolute;
+	@include font("bubble-text");
 	flex-direction: column;
 	padding: 10px;
 	z-index: 30;
 	display: none;
 
-	> #bubble-info {
-		@include font("bubble-text");
-		white-space: nowrap;
-	}
+	> .info,
+	> .time {
 
-	> #bubble-time {
-		@extend #bubble-info;
-	}
-
-	.BG {
-		background: none;
-	}
-
-	.TB {
-		color: $purple;
-	}
-
-	.B {
-		color: $blue;
+		> .value,
+		> .units {
+			white-space: nowrap;
+			background: none;
+		}
 	}
 }

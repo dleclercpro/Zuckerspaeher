@@ -1,5 +1,5 @@
-#dash {
-	@include box($black-trans);
+.mod-dash {
+	@include box($black-trans, $border-radius, $shadow-radius);
 	@include absolute($top: 5%, $right: $padding-header);
 	flex-direction: column;
 	justify-content: center;
@@ -19,12 +19,12 @@
 		padding: 15px 5vw;
 	}
 
-	@include mq(phone) {
+	@include mq(mobile) {
 		display: none;
 		width: 100vw;
 		height: auto;
 		align-items: center;
-		top: $phone-height-user;
+		top: $mobile-height-user;
 		left: 0;
 	}
 
@@ -45,7 +45,7 @@
 		margin-bottom: 10px;
 		@include font("dash-BG");
 
-		@include mq(phone) {
+		@include mq(mobile) {
 			display: none;
 		}
 

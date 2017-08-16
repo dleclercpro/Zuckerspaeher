@@ -1,4 +1,4 @@
-<div id="settings">
+<div class="mod-settings">
     <p>Settings</p>
 
     <form>

@@ -34,6 +34,20 @@ export const last = (array, n = 1) => {
     }
 };
 
+export const filterString = (string, x) => {
+
+    // Get undesirable term length
+    const n = x.length;
+
+    // Split string, ignore elements starting with undesirable term, join result
+    const result = $.grep(string.split(" "), (value, i) => {
+        return !(value.length >= n && value.substring(0, n) == x);
+    }).join(" ");
+
+    // Return filtered string
+    return result;
+};
+
 export const arrayize = (x) => {
 
     // Initialize response
@@ -84,7 +98,7 @@ export const round = (x, n = 1) => {
     const e = Math.pow(10, n);
 
     // Return rounded value
-    return parseFloat((Math.round(x * e) / e).toFixed(n));
+    return Math.round(x * e) / e;
 };
 
 export const formatTime = (T, format) => {

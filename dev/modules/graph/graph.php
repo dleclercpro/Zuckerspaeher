@@ -1,1 +1,1 @@
-<div class="graph <?= $args[0]; ?>"></div>
+<div class="mod-graph <?= $args[0]; ?>"></div>

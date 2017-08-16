@@ -1,18 +1,17 @@
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : _mixins.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 
 // GENERAL MIXINS
 
-// =============================================================================
-// MQ
-// =============================================================================
-
+/***************************************************************************************************
+	MQ
+***************************************************************************************************/
 @mixin mq($type) {
 	
 	@media only screen and (max-width: map-get($breakpoints, $type)) {
@@ -20,13 +19,12 @@
 	}
 }
 
-// =============================================================================
-// SIZE
-// =============================================================================
-
+/***************************************************************************************************
+	SIZE
+***************************************************************************************************/
 @mixin size($width: null, $height: null,
 			$tablet-width: null, $tablet-height: null,
-			$phone-width: null, $phone-height: null) {
+			$mobile-width: null, $mobile-height: null) {
 	width: $width;
 	height: $height;
 
@@ -35,16 +33,15 @@
 		height: $tablet-height;
 	}
 
-	@include mq(phone) {
-		width: $phone-width;
-		height: $phone-height;
+	@include mq(mobile) {
+		width: $mobile-width;
+		height: $mobile-height;
 	}
 }
 
-// =============================================================================
-// POSITION
-// =============================================================================
-
+/***************************************************************************************************
+	POSITION
+***************************************************************************************************/
 @mixin position($position,
 				$top: null, $right: null, $bottom: null, $left: null) {
   position: $position;
@@ -66,10 +63,9 @@
 	@include position(fixed, $args...);
 }
 
-// =============================================================================
-// FONT
-// =============================================================================
-
+/***************************************************************************************************
+	FONT
+***************************************************************************************************/
 @mixin font($font) {
 
 	// Get font from config file
@@ -97,9 +93,9 @@
 				}
 			}
 
-			@if map-has-key($size, phone) {
-				@include mq(phone) {
-					font-size: map-get($size, phone)
+			@if map-has-key($size, mobile) {
+				@include mq(mobile) {
+					font-size: map-get($size, mobile)
 				}
 			}
 		}
@@ -126,9 +122,9 @@
 				}
 			}
 
-			@if map-has-key($weight, phone) {
-				@include mq(phone) {
-					font-weight: map-get($weight, phone)
+			@if map-has-key($weight, mobile) {
+				@include mq(mobile) {
+					font-weight: map-get($weight, mobile)
 				}
 			}
 		}
@@ -155,9 +151,9 @@
 				}
 			}
 
-			@if map-has-key($line-height, phone) {
-				@include mq(phone) {
-					line-height: map-get($line-height, phone)
+			@if map-has-key($line-height, mobile) {
+				@include mq(mobile) {
+					line-height: map-get($line-height, mobile)
 				}
 			}
 		}
@@ -176,164 +172,80 @@
 
 // CUSTOM MIXINS
 
-// =============================================================================
-// BOX
-// =============================================================================
+/***************************************************************************************************
+	BACKGROUND
+***************************************************************************************************/
+@mixin background($color: null, $degree: null) {
+	background-color: $color;
 
-@mixin box($color) {
+	@if $degree {
+		&:hover {
+			background-color: darken($color, $degree);
+		}
+	}
+}
+
+/***************************************************************************************************
+	BOX
+***************************************************************************************************/
+@mixin box($color, $border-radius, $shadow-radius) {
 	display: flex;
 	flex: none;
 	border: none;
 	border-radius: $border-radius;
 	background-color: $color;
-	box-shadow: $shadow-radius $shadow-radius $shadow-radius $black-trans;
+	box-shadow: $shadow-radius $shadow-radius $shadow-radius $color;
 }
 
+/***************************************************************************************************
+	BUTTON
+***************************************************************************************************/
+@mixin button($color, $hover-color, $border-radius, $shadow-radius) {
+	@include font("button");
+	margin: 0;
+	padding: 0;
+	border-radius: $border-radius;
+	border: none;
+	background-color: $color;
+	color: $hover-color;
 
+	&:hover, &:active {
+		background-color: $hover-color;
+		color: $color;
+	}
 
-// GRAPH MIXINS
+	&:hover {
+		cursor: pointer;
+	}
 
-// =============================================================================
-// GRAPH
-// =============================================================================
+	&:active {
+		box-shadow: inset $shadow-radius $shadow-radius $shadow-radius $black;
+		padding-left: 6px;
+	}
+}
 
-@mixin size-graph($w, $h) {
+/***************************************************************************************************
+	GRAPH
+***************************************************************************************************/
+@mixin graph($w, $h) {
 
-	> .axis.x {
+	> .mod-axis.x {
 		width: calc(100% - #{$w});
 		height: $h;
 	}
 
-	> .axis.y {
+	> .mod-axis.y {
 		width: $w;
 		height: calc(100% - #{$h});
 	}
 
-	> .inner {
+	> .mod-inner {
 		width: calc(100% - #{$w});
 		height: calc(100% - #{$h});
 	}
 
-	> .corner {
+	> .mod-corner {
 		width: $w;
 		height: $h;
 	}
-}
-
-// =============================================================================
-// DOT
-// =============================================================================
-
-@mixin dot($color: null, $degree: null) {
-	@include absolute;
-	@include size(2 * $radius-dot, 2 * $radius-dot,
-		2 * $tablet-radius-dot, 2 * $tablet-radius-dot,
-		2 * $phone-radius-dot, 2 * $phone-radius-dot)
-	border: $border-radius-dot solid $black;
-	border-radius: 50%;
-	background-color: $color;
-	cursor: pointer;
-	z-index: 10;
-
-	@if $degree {
-		&:hover {
-			background-color: darken($color, $degree);
-		}
-	}
-
-	@include mq("tablet") {
-		border-size: $tablet-border-radius-dot;
-	}
-
-	@include mq("phone") {
-		border-size: $phone-border-radius-dot;
-	}
-}
-
-// =============================================================================
-// SQUARE
-// =============================================================================
-
-@mixin square($color: null, $degree: null) {
-	@include dot($color, $degree);
-	border-radius: 0;
-}
-
-// =============================================================================
-// BAR
-// =============================================================================
-
-@mixin bar($color: null, $degree: null) {
-	display: flex;
-	flex: none;
-	overflow: hidden;
-	border-top: $border-bar;
-	border-bottom: $border-bar;
-	background-color: $color;
-	cursor: pointer;
-	z-index: 5;
-
-	@if $degree {
-		&:hover {
-			background-color: darken($color, $degree);
-		}
-	}
-
-	&:last-of-type {
-		width: 0;
-	}
-
-    // Positive bar
-    &.high,
-    &.zero {
-
-        // Minor
-        &.minor-y {
-            border-top: none;
-
-            // Inner bars of minor bar
-            > .inner {
-                border: none;
-            }
-        }
-
-        // Inner bars
-        > .inner {
-            margin-bottom: auto;
-        }
-    }
-
-    // Negative bar
-    &.low {
-
-        // Minor
-        &.minor-y {
-            border-bottom: none;
-
-            // Inner bars of minor bar
-            > .inner {
-                border: none;
-            }
-        }
-
-        // Inner bars
-        > .inner {
-            margin-top: auto;
-        }
-    }
-
-    // Inner bars
-    > .inner {
-        width: 50%;
-
-        &:first-child {
-            border-left: $border-bar;
-            margin-right: auto;
-        }
-
-        &:last-child {
-            border-right: $border-bar;
-            margin-left: auto;
-        }
-    }
 }

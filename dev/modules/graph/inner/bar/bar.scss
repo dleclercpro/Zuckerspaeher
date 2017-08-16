@@ -1,0 +1,67 @@
+.mod-bar {
+	display: flex;
+	flex: none;
+	overflow: hidden;
+	border-top: $border-bar;
+	border-bottom: $border-bar;
+	cursor: pointer;
+	z-index: 5;
+
+	&:last-of-type {
+		width: 0;
+	}
+
+    // Positive bar
+    &.high,
+    &.zero {
+
+        // Minor
+        &.minor-y {
+            border-top: none;
+
+            // Inner bars of minor bar
+            > .inner {
+                border: none;
+            }
+        }
+
+        // Inner bars
+        > .inner {
+            margin-bottom: auto;
+        }
+    }
+
+    // Negative bar
+    &.low {
+
+        // Minor
+        &.minor-y {
+            border-bottom: none;
+
+            // Inner bars of minor bar
+            > .inner {
+                border: none;
+            }
+        }
+
+        // Inner bars
+        > .inner {
+            margin-top: auto;
+        }
+    }
+
+    // Inner bars
+    > .inner {
+        width: 50%;
+
+        &:first-child {
+            border-left: $border-bar;
+            margin-right: auto;
+        }
+
+        &:last-child {
+            border-right: $border-bar;
+            margin-left: auto;
+        }
+    }
+}

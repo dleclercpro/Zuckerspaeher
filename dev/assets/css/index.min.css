@@ -1,11 +1,11 @@
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : index.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -373,59 +373,82 @@ textarea {
   font: inherit;
   /* 2 */ }
 
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : _config.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
-/*******************************************************************************
+***************************************************************************************************/
+/***************************************************************************************************
+// Breakpoints
+***************************************************************************************************/
+/***************************************************************************************************
+// Colors
+***************************************************************************************************/
+/***************************************************************************************************
+// Fonts
+***************************************************************************************************/
+/***************************************************************************************************
+// Sizes
+***************************************************************************************************/
+/***************************************************************************************************
+// Graph properties
+***************************************************************************************************/
+/***************************************************************************************************
 
 	Title : _mixins.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
-/*******************************************************************************
+***************************************************************************************************/
+/***************************************************************************************************
+	MQ
+***************************************************************************************************/
+/***************************************************************************************************
+	SIZE
+***************************************************************************************************/
+/***************************************************************************************************
+	POSITION
+***************************************************************************************************/
+/***************************************************************************************************
+	FONT
+***************************************************************************************************/
+/***************************************************************************************************
+	BACKGROUND
+***************************************************************************************************/
+/***************************************************************************************************
+	BOX
+***************************************************************************************************/
+/***************************************************************************************************
+	BUTTON
+***************************************************************************************************/
+/***************************************************************************************************
+	GRAPH
+***************************************************************************************************/
+/***************************************************************************************************
 
 	Title : _placeholders.scss
 	Author : David Leclerc
 	Date : 12.12.2016
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 header > #buttons {
   display: flex;
   justify-content: center;
   align-items: center; }
 
-#settings > form > .fieldset > #settings-save {
-  margin: 0;
-  padding: 0;
-  border-radius: 3px;
-  border: none;
-  font-size: 18px;
-  font-weight: bold; }
-  @media only screen and (max-width: 640px) {
-    #settings > form > .fieldset > #settings-save {
-      font-size: 15px; } }
-  #settings > form > .fieldset > #settings-save:hover {
-    cursor: pointer; }
-  #settings > form > .fieldset > #settings-save:active {
-    box-shadow: inset 3px 3px 3px #090808;
-    padding-left: 6px; }
-
-/*******************************************************************************
+/***************************************************************************************************
 
 	Title : _base.scss
 	Author : David Leclerc
 	Date : 06.08.2017
 	Notes : -
 
-*******************************************************************************/
+***************************************************************************************************/
 * {
   box-sizing: border-box; }
 
@@ -450,10 +473,10 @@ body {
   color: #eeeeee; }
 
 main {
+  position: relative;
   display: flex;
   flex: 1;
-  flex-direction: column;
-  position: relative; }
+  flex-direction: column; }
 
 .BG-very-low, .BG-very-high {
   background-color: #e50000;
@@ -473,38 +496,48 @@ main {
   .BG-normal:hover {
     background-color: #446600; }
 
-#bubble {
+.TB {
+  background-color: #300a24;
+  color: #300a24; }
+  .TB:hover {
+    background-color: #23071b; }
+
+.B {
+  background-color: #0025dd;
+  color: #0025dd; }
+  .B:hover {
+    background-color: #00105e; }
+
+.mod-bubble {
   display: flex;
   flex: none;
   border: none;
   border-radius: 3px;
   background-color: #090808;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 3px #090808;
   position: absolute;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 1.25em;
+  color: #eeeeee;
   flex-direction: column;
   padding: 10px;
   z-index: 30;
   display: none; }
-  #bubble > #bubble-info, #bubble > #bubble-time {
-    font-size: 17px;
-    font-weight: bold;
-    line-height: 1.25em;
-    color: #eeeeee;
-    white-space: nowrap; }
-    @media only screen and (max-width: 1024px) {
-      #bubble > #bubble-info, #bubble > #bubble-time {
-        font-size: 16px; } }
-    @media only screen and (max-width: 640px) {
-      #bubble > #bubble-info, #bubble > #bubble-time {
-        font-size: 15px; } }
-  #bubble .BG, #bubble #user > .details > .live > .trend {
+  @media only screen and (max-width: 1024px) {
+    .mod-bubble {
+      font-size: 16px; } }
+  @media only screen and (max-width: 640px) {
+    .mod-bubble {
+      font-size: 15px; } }
+  .mod-bubble > .info > .value,
+  .mod-bubble > .info > .units,
+  .mod-bubble > .time > .value,
+  .mod-bubble > .time > .units {
+    white-space: nowrap;
     background: none; }
-  #bubble .TB {
-    color: #300a24; }
-  #bubble .B {
-    color: #0025dd; }
 
-#dash {
+.mod-dash {
   display: flex;
   flex: none;
   border: none;
@@ -523,7 +556,7 @@ main {
   z-index: 15;
   order: 2; }
   @media only screen and (max-width: 1024px) {
-    #dash {
+    .mod-dash {
       width: 50vw;
       height: 190px;
       max-width: none;
@@ -531,16 +564,16 @@ main {
       right: 0;
       padding: 15px 5vw; } }
   @media only screen and (max-width: 640px) {
-    #dash {
+    .mod-dash {
       display: none;
       width: 100vw;
       height: auto;
       align-items: center;
       top: 100px;
       left: 0; } }
-  #dash .title {
+  .mod-dash .title {
     font-weight: bold; }
-  #dash > .live {
+  .mod-dash > .live {
     display: flex;
     margin-bottom: 10px;
     font-family: "Shadows Into Light", sans-serif;
@@ -549,171 +582,90 @@ main {
     line-height: 1em;
     color: #eeeeee; }
     @media only screen and (max-width: 1024px) {
-      #dash > .live {
+      .mod-dash > .live {
         font-size: 40px; } }
     @media only screen and (max-width: 640px) {
-      #dash > .live {
+      .mod-dash > .live {
         display: none; } }
-    #dash > .live > .BG, #user > .details#dash > .live > .trend {
+    .mod-dash > .live > .BG, .mod-user > .details.mod-dash > .live > .trend {
       background: none; }
-    #dash > .live > .trend {
+    .mod-dash > .live > .trend {
       background: none;
       margin-left: 5px;
       font-weight: normal; }
-  #dash > .delta,
-  #dash > .insulin,
-  #dash > .on-board,
-  #dash > .factors,
-  #dash > .age {
+  .mod-dash > .delta,
+  .mod-dash > .insulin,
+  .mod-dash > .on-board,
+  .mod-dash > .factors,
+  .mod-dash > .age {
     display: flex; }
-    #dash > .delta > p,
-    #dash > .insulin > p,
-    #dash > .on-board > p,
-    #dash > .factors > p,
-    #dash > .age > p {
+    .mod-dash > .delta > p,
+    .mod-dash > .insulin > p,
+    .mod-dash > .on-board > p,
+    .mod-dash > .factors > p,
+    .mod-dash > .age > p {
       font-size: 17px;
       line-height: 1.25em;
       margin-right: 15px;
       white-space: nowrap; }
       @media only screen and (max-width: 1024px) {
-        #dash > .delta > p,
-        #dash > .insulin > p,
-        #dash > .on-board > p,
-        #dash > .factors > p,
-        #dash > .age > p {
+        .mod-dash > .delta > p,
+        .mod-dash > .insulin > p,
+        .mod-dash > .on-board > p,
+        .mod-dash > .factors > p,
+        .mod-dash > .age > p {
           font-size: 16px; } }
       @media only screen and (max-width: 640px) {
-        #dash > .delta > p,
-        #dash > .insulin > p,
-        #dash > .on-board > p,
-        #dash > .factors > p,
-        #dash > .age > p {
+        .mod-dash > .delta > p,
+        .mod-dash > .insulin > p,
+        .mod-dash > .on-board > p,
+        .mod-dash > .factors > p,
+        .mod-dash > .age > p {
           font-size: 15px; } }
-      #dash > .delta > p:last-child,
-      #dash > .insulin > p:last-child,
-      #dash > .on-board > p:last-child,
-      #dash > .factors > p:last-child,
-      #dash > .age > p:last-child {
+      .mod-dash > .delta > p:last-child,
+      .mod-dash > .insulin > p:last-child,
+      .mod-dash > .on-board > p:last-child,
+      .mod-dash > .factors > p:last-child,
+      .mod-dash > .age > p:last-child {
         margin-right: 0; }
 
-.graph {
+.mod-graph {
   display: flex;
   flex-wrap: wrap; }
-  .graph.BG, #user > .details > .live > .graph.trend {
+  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
     width: 100vw;
     height: calc(0.75 * (100vh - 70px));
     flex: none;
     order: 3; }
-    .graph.BG > .axis.x, #user > .details > .live > .graph.trend > .axis.x {
+    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
       width: calc(100% - 28px);
       height: 0px; }
-    .graph.BG > .axis.y, #user > .details > .live > .graph.trend > .axis.y {
+    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
       width: 28px;
       height: calc(100% - 0px); }
-    .graph.BG > .inner, #user > .details > .live > .graph.trend > .inner {
+    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
       width: calc(100% - 28px);
       height: calc(100% - 0px); }
-    .graph.BG > .corner, #user > .details > .live > .graph.trend > .corner {
+    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
       width: 28px;
       height: 0px; }
-    .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10; }
-      @media only screen and (max-width: 1024px) {
-        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
-          width: 8px;
-          height: 8px; } }
-      @media only screen and (max-width: 1024px) {
-        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        .graph.BG > .inner > .BG, #user > .details > .live > .graph.trend > .inner > .BG, #user > .details.graph.BG > .live.inner > .trend, #user > .details > #user.live > .details.graph.trend > .live.inner > .trend {
-          border-size: 1px; } }
-  .graph.I {
+  .mod-graph.I {
     width: 100vw;
     height: calc(0.25 * (100vh - 70px));
     flex: 1;
     order: 4; }
-    .graph.I > .axis.x {
+    .mod-graph.I > .mod-axis.x {
       width: calc(100% - 28px);
       height: 28px; }
-    .graph.I > .axis.y {
+    .mod-graph.I > .mod-axis.y {
       width: 28px;
       height: calc(100% - 28px); }
-    .graph.I > .inner {
+    .mod-graph.I > .mod-inner {
       width: calc(100% - 28px);
       height: calc(100% - 28px); }
-    .graph.I > .corner {
+    .mod-graph.I > .mod-corner {
       width: 28px;
       height: 28px; }
-    .graph.I > .inner > .TB {
-      display: flex;
-      flex: none;
-      overflow: hidden;
-      border-top: 2px solid #090808;
-      border-bottom: 2px solid #090808;
-      background-color: #300a24;
-      cursor: pointer;
-      z-index: 5; }
-      .graph.I > .inner > .TB:hover {
-        background-color: #23071b; }
-      .graph.I > .inner > .TB:last-of-type {
-        width: 0; }
-      .graph.I > .inner > .TB.high.minor-y, .graph.I > .inner > .TB.zero.minor-y {
-        border-top: none; }
-        .graph.I > .inner > .TB.high.minor-y > .inner, .graph.I > .inner > .TB.zero.minor-y > .inner {
-          border: none; }
-      .graph.I > .inner > .TB.high > .inner, .graph.I > .inner > .TB.zero > .inner {
-        margin-bottom: auto; }
-      .graph.I > .inner > .TB.low.minor-y {
-        border-bottom: none; }
-        .graph.I > .inner > .TB.low.minor-y > .inner {
-          border: none; }
-      .graph.I > .inner > .TB.low > .inner {
-        margin-top: auto; }
-      .graph.I > .inner > .TB > .inner {
-        width: 50%; }
-        .graph.I > .inner > .TB > .inner:first-child {
-          border-left: 2px solid #090808;
-          margin-right: auto; }
-        .graph.I > .inner > .TB > .inner:last-child {
-          border-right: 2px solid #090808;
-          margin-left: auto; }
-    .graph.I > .inner > .B {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      border: 2px solid #090808;
-      border-radius: 50%;
-      background-color: #0025dd;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 0; }
-      @media only screen and (max-width: 1024px) {
-        .graph.I > .inner > .B {
-          width: 9px;
-          height: 9px; } }
-      @media only screen and (max-width: 640px) {
-        .graph.I > .inner > .B {
-          width: 8px;
-          height: 8px; } }
-      .graph.I > .inner > .B:hover {
-        background-color: #001477; }
-      @media only screen and (max-width: 1024px) {
-        .graph.I > .inner > .B {
-          border-size: 1px; } }
-      @media only screen and (max-width: 640px) {
-        .graph.I > .inner > .B {
-          border-size: 1px; } }
 
 header {
   display: flex;
@@ -744,7 +696,7 @@ header {
       width: 100%;
       cursor: pointer; }
 
-#settings {
+.mod-settings {
   display: none;
   flex-direction: column;
   position: absolute;
@@ -758,44 +710,58 @@ header {
   color: #eeeeee;
   z-index: 30; }
   @media only screen and (max-width: 1024px) {
-    #settings {
+    .mod-settings {
       width: 100vw;
       height: auto;
       padding: 15px 5%; } }
-  #settings > p {
+  .mod-settings > p {
     width: 50%;
     margin: 0 0 15px 0;
     font-family: "Shadows Into Light", sans-serif;
     font-size: 25px;
     font-weight: bold; }
-  #settings > form > .fieldset {
+  .mod-settings > form > .fieldset {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 15px; }
-    #settings > form > .fieldset:last-child {
+    .mod-settings > form > .fieldset:last-child {
       margin-bottom: 0; }
-    #settings > form > .fieldset > label, #settings > form > .fieldset p {
+    .mod-settings > form > .fieldset > label, .mod-settings > form > .fieldset p {
       display: flex;
       align-items: center;
       margin-right: 8px;
       font-weight: bold; }
-    #settings > form > .fieldset > input, #settings > form > .fieldset select {
+    .mod-settings > form > .fieldset > input, .mod-settings > form > .fieldset select {
       width: 20%;
       margin-right: 8px;
       background-color: #1b1b1b;
       color: #eeeeee;
       border: none;
       border-radius: 3px; }
-    #settings > form > .fieldset > #settings-save {
-      width: 100%;
-      height: 45px;
+    .mod-settings > form > .fieldset > #settings-save {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+      padding: 0;
+      border-radius: 3px;
+      border: none;
       background-color: #1b1b1b;
-      color: #eeeeee; }
-      #settings > form > .fieldset > #settings-save:hover, #settings > form > .fieldset > #settings-save:active {
+      color: #eeeeee;
+      width: 100%;
+      height: 45px; }
+      @media only screen and (max-width: 640px) {
+        .mod-settings > form > .fieldset > #settings-save {
+          font-size: 15px; } }
+      .mod-settings > form > .fieldset > #settings-save:hover, .mod-settings > form > .fieldset > #settings-save:active {
         background-color: #eeeeee;
-        color: #090808; }
+        color: #1b1b1b; }
+      .mod-settings > form > .fieldset > #settings-save:hover {
+        cursor: pointer; }
+      .mod-settings > form > .fieldset > #settings-save:active {
+        box-shadow: inset 3px 3px 3px #090808;
+        padding-left: 6px; }
 
-#user {
+.mod-user {
   display: flex;
   flex: none;
   border: none;
@@ -812,7 +778,7 @@ header {
   z-index: 15;
   order: 1; }
   @media only screen and (max-width: 1024px) {
-    #user {
+    .mod-user {
       width: 50vw;
       height: 190px;
       max-width: none;
@@ -820,110 +786,166 @@ header {
       left: 0;
       padding: 15px 5vw; } }
   @media only screen and (max-width: 640px) {
-    #user {
+    .mod-user {
       width: 100vw;
       height: 100px;
       justify-content: center;
       cursor: pointer; } }
-  #user > .img {
+  .mod-user > .img {
     width: 125px;
     height: 125px;
     border-radius: 50%;
     border: 5px solid #eeeeee;
     object-fit: cover; }
     @media only screen and (max-width: 1024px) {
-      #user > .img {
+      .mod-user > .img {
         width: 100px;
         height: 100px;
         border-width: 4px; } }
     @media only screen and (max-width: 640px) {
-      #user > .img {
+      .mod-user > .img {
         width: 75px;
         height: 75px;
         border-width: 3px; } }
-  #user > .details {
+  .mod-user > .details {
     display: flex;
     flex-direction: column;
     margin-left: 5%; }
     @media only screen and (max-width: 640px) {
-      #user > .details {
+      .mod-user > .details {
         flex-direction: column-reverse; } }
-    #user > .details > p {
+    .mod-user > .details > p {
       font-size: 17px;
       line-height: 1.25em;
       white-space: nowrap; }
       @media only screen and (max-width: 1024px) {
-        #user > .details > p {
+        .mod-user > .details > p {
           font-size: 16px; } }
       @media only screen and (max-width: 640px) {
-        #user > .details > p {
+        .mod-user > .details > p {
           font-size: 15px; } }
     @media only screen and (max-width: 640px) {
-      #user > .details > .name, #user > .details > .birthday, #user > .details > .cgm, #user > .details > .pump {
+      .mod-user > .details > .name, .mod-user > .details > .birthday, .mod-user > .details > .cgm, .mod-user > .details > .pump {
         display: none; } }
-    #user > .details > .cgm > .battery,
-    #user > .details > .pump > .battery {
+    .mod-user > .details > .cgm > .battery,
+    .mod-user > .details > .pump > .battery {
       font-weight: bold; }
-      #user > .details > .cgm > .battery.very-low,
-      #user > .details > .pump > .battery.very-low {
+      .mod-user > .details > .cgm > .battery.very-low,
+      .mod-user > .details > .pump > .battery.very-low {
         color: #e50000; }
-      #user > .details > .cgm > .battery.low, #user > .details > .cgm > .battery.medium,
-      #user > .details > .pump > .battery.low,
-      #user > .details > .pump > .battery.medium {
+      .mod-user > .details > .cgm > .battery.low, .mod-user > .details > .cgm > .battery.medium,
+      .mod-user > .details > .pump > .battery.low,
+      .mod-user > .details > .pump > .battery.medium {
         color: #ff7500; }
-      #user > .details > .cgm > .battery.high, #user > .details > .cgm > .battery.very-high,
-      #user > .details > .pump > .battery.high,
-      #user > .details > .pump > .battery.very-high {
+      .mod-user > .details > .cgm > .battery.high, .mod-user > .details > .cgm > .battery.very-high,
+      .mod-user > .details > .pump > .battery.high,
+      .mod-user > .details > .pump > .battery.very-high {
         color: #99e500; }
-    #user > .details > .live {
+    .mod-user > .details > .live {
       display: none; }
       @media only screen and (max-width: 640px) {
-        #user > .details > .live {
+        .mod-user > .details > .live {
           display: block;
           text-align: center;
           font-family: "Shadows Into Light", sans-serif;
           font-size: 45px;
           font-weight: bold; } }
-      #user > .details > .live > .BG, #user > .details > .live > .trend {
+      .mod-user > .details > .live > .BG, .mod-user > .details > .live > .trend {
         background: none; }
-      #user > .details > .live > .trend {
+      .mod-user > .details > .live > .trend {
         margin-left: -5px; }
 
-.axis {
+.mod-axis {
   display: flex; }
-  .axis.x {
+  .mod-axis.x {
     flex-direction: row;
     order: 3; }
-  .axis.y {
+  .mod-axis.y {
     flex-direction: column-reverse;
     order: 2; }
 
-.corner {
+.mod-corner {
   order: 4; }
 
-.inner {
+.mod-inner {
   position: relative;
   order: 1;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end; }
 
-.tick {
+.mod-tick {
   display: flex;
   justify-content: flex-end;
   flex: none;
   font-size: 15px;
   font-weight: bold; }
   @media only screen and (max-width: 640px) {
-    .tick {
+    .mod-tick {
       font-size: 14px; } }
-  .axis.x > .tick {
+  .mod-axis.x > .mod-tick {
     padding-right: 4px;
     border-right: 1px dashed #eeeeee; }
-  .axis.y > .tick {
+  .mod-axis.y > .mod-tick {
     flex-direction: column;
     padding-bottom: 2px;
     border-bottom: 1px dashed #eeeeee; }
     @media only screen and (max-width: 640px) {
-      .axis.y > .tick {
+      .mod-axis.y > .mod-tick {
         padding-left: 3px; } }
+
+.mod-bar {
+  display: flex;
+  flex: none;
+  overflow: hidden;
+  border-top: 2px solid #090808;
+  border-bottom: 2px solid #090808;
+  cursor: pointer;
+  z-index: 5; }
+  .mod-bar:last-of-type {
+    width: 0; }
+  .mod-bar.high.minor-y, .mod-bar.zero.minor-y {
+    border-top: none; }
+    .mod-bar.high.minor-y > .inner, .mod-bar.zero.minor-y > .inner {
+      border: none; }
+  .mod-bar.high > .inner, .mod-bar.zero > .inner {
+    margin-bottom: auto; }
+  .mod-bar.low.minor-y {
+    border-bottom: none; }
+    .mod-bar.low.minor-y > .inner {
+      border: none; }
+  .mod-bar.low > .inner {
+    margin-top: auto; }
+  .mod-bar > .inner {
+    width: 50%; }
+    .mod-bar > .inner:first-child {
+      border-left: 2px solid #090808;
+      margin-right: auto; }
+    .mod-bar > .inner:last-child {
+      border-right: 2px solid #090808;
+      margin-left: auto; }
+
+.mod-dot {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border: 2px solid #090808;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10; }
+  @media only screen and (max-width: 1024px) {
+    .mod-dot {
+      width: 9px;
+      height: 9px; } }
+  @media only screen and (max-width: 640px) {
+    .mod-dot {
+      width: 8px;
+      height: 8px; } }
+  .mod-dot.square {
+    border-radius: 0; }
+  @media only screen and (max-width: 1024px) {
+    .mod-dot {
+      border-size: 1px; } }
+  @media only screen and (max-width: 640px) {
+    .mod-dot {
+      border-size: 1px; } }

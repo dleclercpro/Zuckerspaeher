@@ -1,4 +1,4 @@
-<div id="bubble">
-    <div id="bubble-info"></div>
-    <div id="bubble-time"></div>
+<div class="mod-bubble">
+    <p class="info"></p>
+    <p class="time"></p>
 </div>
