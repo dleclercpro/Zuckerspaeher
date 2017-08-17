@@ -56,6 +56,7 @@ const build = (elements, data, now) => {
     // Build graph elements
     graphI.buildBars("TB", "U/h", 2, "YYYY.MM.DD - HH:MM:SS", TBs);
     graphI.buildDots("B", "U", 1, "YYYY.MM.DD - HH:MM:SS", Bs);
+    graphI.buildDots("IOB", "U", 1, "YYYY.MM.DD - HH:MM:SS", IOBs);
     graphBG.buildDots("BG", "mmol/L", 1, "YYYY.MM.DD - HH:MM:SS", BGs);
 
     // Color graph elements
@@ -85,8 +86,9 @@ const show = (elements) => {
     graphBG.measure();
 
     // Add graph elements
-    graphI.showDots("B", config.y0);
     graphI.showBars("TB");
+    graphI.showDots("B", config.y0);
+    graphI.showDots("IOB");
     graphBG.showDots("BG");
 
     // Space graph bars

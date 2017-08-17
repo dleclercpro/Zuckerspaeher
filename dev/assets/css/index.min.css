@@ -497,9 +497,15 @@ main {
     background-color: #446600; }
 
 .TB {
+  background-color: #484848;
+  color: #484848; }
+  .TB:hover {
+    background-color: #2f2f2f; }
+
+.IOB {
   background-color: #300a24;
   color: #300a24; }
-  .TB:hover {
+  .IOB:hover {
     background-color: #23071b; }
 
 .B {
@@ -681,35 +687,6 @@ main {
       width: 28px;
       height: 28px; }
 
-header {
-  display: flex;
-  flex: none;
-  width: 100vw;
-  height: 70px;
-  padding: 0 3%;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 3px 3px black;
-  z-index: 35; }
-  @media only screen and (max-width: 1024px) {
-    header {
-      padding: 0 5%; } }
-  header > #logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 38px;
-    font-weight: bold;
-    color: #eeeeee; }
-    header > #logo > span {
-      color: #484848; }
-  header > #buttons {
-    width: 20px;
-    margin-left: auto; }
-    header > #buttons > img {
-      width: 100%;
-      cursor: pointer; }
-
 .mod-settings {
   display: none;
   flex-direction: column;
@@ -857,6 +834,35 @@ header {
         background: none; }
       .mod-user > .details > .live > .trend {
         margin-left: -5px; }
+
+header {
+  display: flex;
+  flex: none;
+  width: 100vw;
+  height: 70px;
+  padding: 0 3%;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 3px 3px black;
+  z-index: 35; }
+  @media only screen and (max-width: 1024px) {
+    header {
+      padding: 0 5%; } }
+  header > #logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #eeeeee; }
+    header > #logo > span {
+      color: #484848; }
+  header > #buttons {
+    width: 20px;
+    margin-left: auto; }
+    header > #buttons > img {
+      width: 100%;
+      cursor: pointer; }
 
 .mod-axis {
   display: flex; }

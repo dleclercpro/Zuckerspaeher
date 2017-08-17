@@ -7,14 +7,14 @@
 
 ***************************************************************************************************/
 
-// IMPORTS
+// Imports
 @import "normalize";
 @import "config";
 @import "mixins";
 @import "placeholders";
 @import "base";
 
-// STYLES
+// Styles
 .BG {
 
 	&.very-low,
@@ -36,6 +36,11 @@
 }
 
 .TB {
+	@include background($light-gray, 10%);
+	color: $light-gray;
+}
+
+.IOB {
 	@include background($purple, 3%);
 	color: $purple;
 }
