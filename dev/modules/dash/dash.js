@@ -19,13 +19,14 @@
 
 // Imports
 import * as lib from "../../assets/js/lib";
+import * as config from "../../assets/js/config";
 
 export class Dash {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(config) {
+    constructor(now) {
 
         // Get object from DOM
         this.self = $(".mod-dash");
@@ -57,10 +58,8 @@ export class Dash {
         this.ISF = this.factors.find(".ISF");
         this.CSF = this.factors.find(".CSF");
 
-        // Store input
-        this.now = config.x0;
-        this.BGScale = config.BGScale;
-        this.dBGdtScale = config.dBGdtScale;
+        // Store current epoch time
+        this.now = now;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +84,7 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMaxBG, () => {
 
             // Compute BG rank
-            const BGRank = lib.rank(lastBG, this.BGScale);
+            const BGRank = lib.rank(lastBG, config.BGScale);
 
             // Update BG
             this.BG.text(lib.round(lastBG, 1));
@@ -106,7 +105,7 @@ export class Dash {
                 const dBGdt = dBG / dt;
 
                 // Compute dBG/dt rank and get trend arrow
-                const trend = lib.rank(dBGdt, this.dBGdtScale);
+                const trend = lib.rank(dBGdt, config.dBGdtScale);
 
                 // Update dBG and dBG/dt
                 this.dBG.find(".value").text(lib.round(dBG, 1));

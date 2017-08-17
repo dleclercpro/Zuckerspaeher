@@ -30,7 +30,7 @@ const modules = {
     php: "dev/modules/**/*.php",
     scss: "dev/modules/**/*.scss",
     js: "dev/modules/**/*.js"
-}
+};
 
 // TASKS
 // PHP task

@@ -25,7 +25,7 @@ export class User {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      CONSTRUCTOR
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    constructor(config) {
+    constructor(now) {
 
     	// Get object from DOM
         this.self = $(".mod-user");
@@ -55,8 +55,8 @@ export class User {
         this.liveBG = this.self.find(".live > .BG");
         this.liveTrend = this.self.find(".live > .trend");
 
-        // Store input
-        this.now = config.x0;
+        // Store current epoch time
+        this.now = now;
 	}
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

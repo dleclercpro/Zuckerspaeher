@@ -551,73 +551,6 @@ main {
     white-space: nowrap;
     background: none; }
 
-.mod-graph {
-  display: flex;
-  flex-wrap: wrap; }
-  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
-    width: 100vw;
-    height: calc(0.75 * (100vh - 70px));
-    flex: none;
-    order: 3; }
-    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
-      width: calc(100% - 28px);
-      height: 0px; }
-    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
-      width: 28px;
-      height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
-      width: calc(100% - 28px);
-      height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
-      width: 28px;
-      height: 0px; }
-  .mod-graph.I {
-    width: 100vw;
-    height: calc(0.25 * (100vh - 70px));
-    flex: 1;
-    order: 4; }
-    .mod-graph.I > .mod-axis.x {
-      width: calc(100% - 28px);
-      height: 28px; }
-    .mod-graph.I > .mod-axis.y {
-      width: 28px;
-      height: calc(100% - 28px); }
-    .mod-graph.I > .mod-inner {
-      width: calc(100% - 28px);
-      height: calc(100% - 28px); }
-    .mod-graph.I > .mod-corner {
-      width: 28px;
-      height: 28px; }
-
-header {
-  display: flex;
-  flex: none;
-  width: 100vw;
-  height: 70px;
-  padding: 0 3%;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 3px 3px black;
-  z-index: 35; }
-  @media only screen and (max-width: 1024px) {
-    header {
-      padding: 0 5%; } }
-  header > #logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 38px;
-    font-weight: bold;
-    color: #eeeeee; }
-    header > #logo > span {
-      color: #484848; }
-  header > #buttons {
-    width: 20px;
-    margin-left: auto; }
-    header > #buttons > img {
-      width: 100%;
-      cursor: pointer; }
-
 .mod-dash {
   display: flex;
   flex: none;
@@ -709,6 +642,73 @@ header {
       .mod-dash > .factors > p:last-child,
       .mod-dash > .age > p:last-child {
         margin-right: 0; }
+
+.mod-graph {
+  display: flex;
+  flex-wrap: wrap; }
+  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
+    width: 100vw;
+    height: calc(0.75 * (100vh - 70px));
+    flex: none;
+    order: 3; }
+    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
+      width: calc(100% - 28px);
+      height: 0px; }
+    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
+      width: 28px;
+      height: calc(100% - 0px); }
+    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 0px); }
+    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
+      width: 28px;
+      height: 0px; }
+  .mod-graph.I {
+    width: 100vw;
+    height: calc(0.25 * (100vh - 70px));
+    flex: 1;
+    order: 4; }
+    .mod-graph.I > .mod-axis.x {
+      width: calc(100% - 28px);
+      height: 28px; }
+    .mod-graph.I > .mod-axis.y {
+      width: 28px;
+      height: calc(100% - 28px); }
+    .mod-graph.I > .mod-inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 28px); }
+    .mod-graph.I > .mod-corner {
+      width: 28px;
+      height: 28px; }
+
+header {
+  display: flex;
+  flex: none;
+  width: 100vw;
+  height: 70px;
+  padding: 0 3%;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 3px 3px black;
+  z-index: 35; }
+  @media only screen and (max-width: 1024px) {
+    header {
+      padding: 0 5%; } }
+  header > #logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #eeeeee; }
+    header > #logo > span {
+      color: #484848; }
+  header > #buttons {
+    width: 20px;
+    margin-left: auto; }
+    header > #buttons > img {
+      width: 100%;
+      cursor: pointer; }
 
 .mod-settings {
   display: none;

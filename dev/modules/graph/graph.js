@@ -79,13 +79,23 @@ export class Graph {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BUILDAXIS
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    buildAxis(type, z0, dz, dZ, z = [], f = false, offset = 0) {
+    buildAxis(type, z, z0, dz, dZ, f = false, offset = 0) {
 
         // Create axis object
         const axis = new Axis(type);
 
-        // Generate it
-        axis.generate(z0, dz, dZ, z);
+        // If axis given
+        if (z != null) {
+
+            // Define it
+            axis.define(z);
+        }
+        // Otherwise
+        else {
+
+            // Generate it
+            axis.generate(z0, dz, dZ);
+        }
 
         // Build it
         axis.build(f, offset);

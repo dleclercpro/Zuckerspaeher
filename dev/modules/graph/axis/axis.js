@@ -44,29 +44,37 @@ export class Axis {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     GENERATE
+     DEFINE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    generate(z0, dz, dZ, z = []) {
-
-        // No axis given
-        if (z.length == 0) {
-
-            // Generate axis tick
-            for (let i = 0; i < (dZ / dz); i++) {
-
-                // Store it
-                z.unshift(z0 - i * dz);
-            }
-
-            // Add last tick based on given dZ
-            z.unshift(z0 - dZ);
-        }
+    define(z) {
 
         // Compute and store infos about axis
         this.z = z;
         this.min = Math.min(...z);
         this.max = Math.max(...z);
         this.dZ = this.max - this.min;
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     GENERATE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    generate(z0, dz, dZ) {
+
+        // Generate new axis
+        let z = [];
+
+        // Generate axis tick
+        for (let i = 0; i < (dZ / dz); i++) {
+
+            // Store it
+            z.unshift(z0 - i * dz);
+        }
+
+        // Add last tick based on given dZ
+        z.unshift(z0 - dZ);
+
+        // Define axis
+        this.define(z);
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

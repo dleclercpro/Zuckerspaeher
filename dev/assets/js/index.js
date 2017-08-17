@@ -20,6 +20,7 @@
 // Imports
 import jQuery from "jquery";
 import * as lib from "./lib";
+import * as config from "./config";
 import {User} from "../../modules/user/user";
 import {Dash} from "../../modules/dash/dash";
 import {GraphBG} from "../../modules/graph/graphBG";
@@ -31,28 +32,19 @@ window.$ = window.jQuery = jQuery;
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  BUILD
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-const build = (config, elements, data) => {
+const build = (elements, data, now) => {
 
     // Destructure input
-    const { graphI: graphI,
-            graphBG: graphBG,
-            dash: dash,
-            user: user } = elements,
-          { TBs: TBs,
-            Bs: Bs,
-            IOBs: IOBs,
-            BGs: BGs,
-            pumpReservoirLevels: pumpReservoirLevels,
-            pumpBatteryLevels: pumpBatteryLevels,
-            cgmBatteryLevels: cgmBatteryLevels} = data;
+    const { graphI, graphBG, dash, user } = elements,
+          { TBs, Bs, IOBs, BGs, pumpReservoirLevels, pumpBatteryLevels, cgmBatteryLevels} = data;
 
     // Build corner
     graphI.buildCorner();
 
     // Build axes
-    graphI.buildAxis("x", config.x0, config.dx, config.dX, [], "HH:MM", 1);
-    graphI.buildAxis("y", null, null, null, config.yI);
-    graphBG.buildAxis("y", null, null, null, config.yBG);
+    graphI.buildAxis("x", null, now, config.dx, config.dX, "HH:MM", 1);
+    graphI.buildAxis("y", config.yI);
+    graphBG.buildAxis("y", config.yBG);
 
     // Share axes
     graphI.axes.x.share("x", graphBG);
@@ -83,11 +75,10 @@ const build = (config, elements, data) => {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  SHOW
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-const show = (config, elements) => {
+const show = (elements) => {
 
     // Destructure input
-    const { graphI: graphI,
-            graphBG: graphBG } = elements;
+    const { graphI, graphBG } = elements;
 
     // Measure graphs
     graphI.measure();
@@ -105,12 +96,12 @@ const show = (config, elements) => {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  LISTEN
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-const listen = (mq, config, elements) => {
+const listen = (mq, elements) => {
 
     $(window).on("resize", () => {
 
         // Reshow
-        show(config, elements);
+        show(elements);
     });
 
 
@@ -148,44 +139,21 @@ const listen = (mq, config, elements) => {
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 $(document).ready(() => {
 
+    // Define current epoch time
+    const now = new Date().getTime();
+
     // Media queries
     const mq = {
         tablet: window.matchMedia("(min-width: 640px)"),
         desktop: window.matchMedia("(min-width: 1024px)"),
     };
 
-    // Config
-    const config = {
-        x0: new Date().getTime(),
-        dx: 1 * 60 * 60 * 1000, // Time step (ms)
-        dX: 12 * 60 * 60 * 1000, // Time range (ms)
-        y0: 0, // Basal baseline (U/h)
-        yBG: [0, 2, 4, 6, 8, 10, 15, 20], // mmol/L
-        yI: lib.mirror([2, 4], true), // U/h
-        BGScale: {
-            ranks: ["very-low", "low", "normal", "high", "very-high"],
-            limits: [3.8, 4.2, 7.0, 9.0], // (mmol/L)
-        },
-        dBGdtScale: {
-            ranks: ["↓↓", "↓", "↘", "→", "↗", "↑", "↑↑"],
-            limits: lib.mirror([0.1, 0.3, 0.5]).map(x => lib.round(x * 60 / 5, 1)), // (mmol/L/h)
-        },
-        batteryLevelScale: {
-            ranks: ["very-low", "low", "medium", "high", "very-high"],
-            limits: [20, 50, 75, 90], // (%)
-        },
-        reservoirLevelScale: {
-            ranks: ["very-low", "low", "medium", "high", "very-high"],
-            limits: [25, 50, 100, 200], // (U)
-        },
-    };
-
     // Generate elements
     const elements = {
         graphBG: new GraphBG(),
         graphI: new GraphI(),
-        dash: new Dash(config),
-        user: new User(config),
+        dash: new Dash(now),
+        user: new User(now),
     };
 
     // Get data
@@ -200,13 +168,13 @@ $(document).ready(() => {
     };
 
     // Build elements
-    build(config, elements, data);
+    build(elements, data, now);
 
     // Show elements
-    show(config, elements);
+    show(elements);
 
     // Listen to events
-    listen(mq, config, elements);
+    listen(mq, elements);
 
     // Give infos
     console.log(config);
