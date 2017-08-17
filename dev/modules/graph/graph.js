@@ -184,8 +184,8 @@ export class Graph {
             // Position on graph
             dot.position(x, y);
 
-            // Inform through bubble
-            dot.inform(this.bubble);
+            // Make bubble listen to dot
+            this.bubble.listen(dot);
         }
     }
 
@@ -314,8 +314,8 @@ export class Graph {
             // Position bar on graph
             bar.position(w[i], h[i], b[i]);
 
-            // Inform through bubble
-            bar.inform(this.bubble);
+            // Make bubble listen to bar
+            this.bubble.listen(bar);
         }
     }
 

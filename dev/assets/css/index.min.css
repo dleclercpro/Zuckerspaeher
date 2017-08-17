@@ -536,7 +536,7 @@ main {
   color: #eeeeee;
   flex-direction: column;
   padding: 10px;
-  z-index: 30;
+  z-index: 50;
   display: none; }
   @media only screen and (max-width: 1024px) {
     .mod-bubble {
@@ -588,6 +588,35 @@ main {
     .mod-graph.I > .mod-corner {
       width: 28px;
       height: 28px; }
+
+header {
+  display: flex;
+  flex: none;
+  width: 100vw;
+  height: 70px;
+  padding: 0 3%;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 3px 3px black;
+  z-index: 35; }
+  @media only screen and (max-width: 1024px) {
+    header {
+      padding: 0 5%; } }
+  header > #logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #eeeeee; }
+    header > #logo > span {
+      color: #484848; }
+  header > #buttons {
+    width: 20px;
+    margin-left: auto; }
+    header > #buttons > img {
+      width: 100%;
+      cursor: pointer; }
 
 .mod-dash {
   display: flex;
@@ -680,35 +709,6 @@ main {
       .mod-dash > .factors > p:last-child,
       .mod-dash > .age > p:last-child {
         margin-right: 0; }
-
-header {
-  display: flex;
-  flex: none;
-  width: 100vw;
-  height: 70px;
-  padding: 0 3%;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 3px 3px black;
-  z-index: 35; }
-  @media only screen and (max-width: 1024px) {
-    header {
-      padding: 0 5%; } }
-  header > #logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 38px;
-    font-weight: bold;
-    color: #eeeeee; }
-    header > #logo > span {
-      color: #484848; }
-  header > #buttons {
-    width: 20px;
-    margin-left: auto; }
-    header > #buttons > img {
-      width: 100%;
-      cursor: pointer; }
 
 .mod-settings {
   display: none;
@@ -858,9 +858,6 @@ header {
       .mod-user > .details > .live > .trend {
         margin-left: -5px; }
 
-.mod-corner {
-  order: 4; }
-
 .mod-axis {
   display: flex; }
   .mod-axis.x {
@@ -869,6 +866,9 @@ header {
   .mod-axis.y {
     flex-direction: column-reverse;
     order: 2; }
+
+.mod-corner {
+  order: 4; }
 
 .mod-inner {
   position: relative;

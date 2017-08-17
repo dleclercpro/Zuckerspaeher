@@ -67,30 +67,4 @@ export class Dot {
     	this.radius = parseFloat(this.self.outerWidth()) / 2;
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     INFORM
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    inform(bubble) {
-
-        // When mouse enters dot
-        this.self.on("mouseenter", () => {
-
-            // Update bubble
-            bubble.update(this);
-
-            // Position it
-            bubble.position();
-
-            // Show it
-            bubble.self.show();
-        });
-
-        // When mouse exits dot
-        this.self.on("mouseleave", () => {
-
-            // Hide bubble
-            bubble.self.hide();
-        });
-    }
-
 }

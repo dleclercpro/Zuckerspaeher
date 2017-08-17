@@ -33,10 +33,13 @@ Notes : -
                 import(["name" => "dash"]);
                 import(["name" => "graph", "args" => ["BG"]]);
                 import(["name" => "graph", "args" => ["I"]]);
-                import(["name" => "bubble"]);
                 import(["name" => "settings"]);
             ?>
 		</main>
+
+        <?php
+            import(["name" => "bubble"]);
+        ?>
 
 		<script type="text/javascript" src="assets/js/index.min.js"></script>
 	</body>

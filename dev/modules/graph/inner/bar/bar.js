@@ -113,30 +113,4 @@ export class Bar {
         this.thickness = Math.max(parseFloat(a), parseFloat(b));
     }
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     INFORM
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    inform(bubble) {
-
-        // When mouse enters dot
-        this.self.on("mouseenter", () => {
-
-            // Update bubble
-            bubble.update(this);
-
-            // Position it
-            bubble.position();
-
-            // Show it
-            bubble.self.show();
-        });
-
-        // When mouse exits dot
-        this.self.on("mouseleave", () => {
-
-            // Hide bubble
-            bubble.self.hide();
-        });
-    }
-
 }
