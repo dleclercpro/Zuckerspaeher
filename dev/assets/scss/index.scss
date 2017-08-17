@@ -17,19 +17,19 @@
 // STYLES
 .BG {
 
-	&-very-low,
-	&-very-high {
+	&.very-low,
+	&.very-high {
 		@include background($red, 25%);
 		color: $red;
 	}
 
-	&-low,
-	&-high {
+	&.low,
+	&.high {
 		@include background($orange, 25%);
 		color: $orange;
 	}
 
-	&-normal {
+	&.normal {
 		@include background($green, 25%);
 		color: $green;
 	}

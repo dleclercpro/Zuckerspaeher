@@ -62,7 +62,7 @@ export class User {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATEPUMPBATTERYLEVEL
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updatePumpBatteryLevel(data) {
+    updatePumpBatteryLevel(data, scale) {
 
         // Destructure data
         const [ t, levels ] = data;
@@ -82,20 +82,10 @@ export class User {
         		  minLevel = 1.15;
 
 		    // Compute and round level (%)
-		    const level = lib.round((lastLevel - minLevel) / (maxLevel - minLevel) * 100, 0);
+		    const level = lib.round((lastLevel - minLevel) / (maxLevel - minLevel) * 100);
 
-		    // Rank level
-		    if (level < 20) {
-		    	this.pumpBattery.addClass("very-low");
-		    } else if (level >= 20 && level < 50) {
-		    	this.pumpBattery.addClass("low");
-		    } else if (level >= 50 && level < 75) {
-		    	this.pumpBattery.addClass("medium");
-		    } else if (level >= 75 && level < 90) {
-		    	this.pumpBattery.addClass("high");
-		    } else if (level >= 90) {
-		    	this.pumpBattery.addClass("very-high");
-		    }
+            // Rank level
+            this.pumpBattery.addClass(lib.rank(level, scale));
 
             // Update level
             this.pumpBattery.text("(" + level + "%)");
@@ -106,7 +96,7 @@ export class User {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATECGMBATTERYLEVEL
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateCGMBatteryLevel(data) {
+    updateCGMBatteryLevel(data, scale) {
 
         // Destructure data
         const [ t, levels ] = data;
@@ -122,20 +112,10 @@ export class User {
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
 		    // Round level (%)
-		    const level = lib.round(lastLevel, 0);
+		    const level = lib.round(lastLevel);
 
 		    // Rank level
-		    if (level < 20) {
-		    	this.cgmBattery.addClass("very-low");
-		    } else if (level >= 20 && level < 50) {
-		    	this.cgmBattery.addClass("low");
-		    } else if (level >= 50 && level < 75) {
-		    	this.cgmBattery.addClass("medium");
-		    } else if (level >= 75 && level < 90) {
-		    	this.cgmBattery.addClass("high");
-		    } else if (level >= 90) {
-		    	this.cgmBattery.addClass("very-high");
-		    }
+            this.cgmBattery.addClass(lib.rank(level, scale));
 
             // Update level
             this.cgmBattery.text("(" + level + "%)");

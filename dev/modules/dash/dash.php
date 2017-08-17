@@ -1,7 +1,7 @@
 <div class="mod-dash">
     <div class="live">
         <span class="BG">---</span>
-        <span class="trend"></span>
+        <span class="BG trend"></span>
     </div>
     <div class="delta">
         <p class="dBG">

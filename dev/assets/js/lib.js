@@ -89,7 +89,7 @@ export const mirror = (x, zero = false) => {
     return X;
 };
 
-export const round = (x, n = 1) => {
+export const round = (x, n = 0) => {
 
     // Ensure float
     x = parseFloat(x);
@@ -421,51 +421,41 @@ export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS")
     return [x, y];
 };
 
-export const decodeHTMLEntity = (str) => {
-    return $("<textarea>").html(str).text();
-};
+export const rank = (x, scale) => {
 
-export const rankBG = (BG, BGScale) => {
+    // Make sure value is a float
+    x = parseFloat(x);
 
-    // Make sure BG is a float
-    BG = parseFloat(BG);
+    // Get limits and ranks
+    const limits = scale.limits,
+          ranks = scale.ranks;
 
-    // Rank it
-    if (BG < BGScale[0]) {
-        return "BG-very-low";
-    } else if (BG >= BGScale[0] && BG < BGScale[1]) {
-        return "BG-low";
-    } else if (BG >= BGScale[1] && BG < BGScale[2]) {
-        return "BG-normal";
-    } else if (BG >= BGScale[2] && BG < BGScale[3]) {
-        return "BG-high";
-    } else if (BG >= BGScale[3]) {
-        return "BG-very-high";
+    // Count number of limits in scale
+    const n = limits.length;
+
+    // Initialize rank
+    let rank;
+
+    // Get it
+    for (let i = 0; i < n; i++) {
+
+        // Check if under limit
+        if (x <= limits[i]) {
+
+            // Assign rank
+            rank = ranks[i];
+
+            // Exit
+            break;
+        }
+        // If last, check if over limit
+        else if (i == n - 1 && x > limits[i]) {
+
+            // Assign rank
+            rank = ranks[i + 1];
+        }
     }
-};
 
-export const rankdBGdt = (dBGdt, dBGdtScale) => {
-
-    // Make sure dBGdt is a float
-    dBGdt = parseFloat(dBGdt);
-
-    // Define arrows
-    const arrowUp = decodeHTMLEntity("&#8593;");
-    const arrowRightUp = decodeHTMLEntity("&#8599;");
-    const arrowRight = decodeHTMLEntity("&#8594;");
-    const arrowRightDown = decodeHTMLEntity("&#8600");
-    const arrowDown = decodeHTMLEntity("&#8595;");
-
-    // Rank it and return corresponding arrow
-    if (dBGdt < dBGdtScale[0]) {
-        return arrowDown;
-    } else if (dBGdt >= dBGdtScale[0]  && dBGdt < dBGdtScale[1]) {
-        return arrowRightDown;
-    } else if (dBGdt >= dBGdtScale[1] && dBGdt < dBGdtScale[2]) {
-        return arrowRight;
-    } else if (dBGdt >= dBGdtScale[2] && dBGdt < dBGdtScale[3]) {
-        return arrowRightUp;
-    } else if (dBGdt >= dBGdtScale[3]) {
-        return arrowUp;
-    }
+    // Return rank
+    return rank;
 };

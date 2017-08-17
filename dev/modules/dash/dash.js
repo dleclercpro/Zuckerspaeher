@@ -32,9 +32,9 @@ export class Dash {
 
         // Get its sub-elements
         // Live
-        this.live = this.self.find(".live");
-        this.BG = this.live.find(".BG").add("#user > .BG");
-        this.trend = this.live.find(".trend").add("#user > .live > .trend");
+        this.live = this.self.find(".live").add($(".mod-user > .details > .live"));
+        this.BG = this.live.find(".BG");
+        this.trend = this.live.find(".trend");
 
         // Delta
         this.delta = this.self.find(".delta");
@@ -85,10 +85,10 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMaxBG, () => {
 
             // Compute BG rank
-            const BGRank = lib.rankBG(lastBG, this.BGScale);
+            const BGRank = lib.rank(lastBG, this.BGScale);
 
             // Update BG
-            this.BG.text(lib.round(lastBG));
+            this.BG.text(lib.round(lastBG, 1));
 
             // Add rank
             this.BG.addClass(BGRank);
@@ -106,11 +106,11 @@ export class Dash {
                 const dBGdt = dBG / dt;
 
                 // Compute dBG/dt rank and get trend arrow
-                const trend = lib.rankdBGdt(dBGdt, this.dBGdtScale);
+                const trend = lib.rank(dBGdt, this.dBGdtScale);
 
                 // Update dBG and dBG/dt
-                this.dBG.find(".value").text(lib.round(dBG));
-                this.dBGdt.find(".value").text(lib.round(dBGdt));
+                this.dBG.find(".value").text(lib.round(dBG, 1));
+                this.dBGdt.find(".value").text(lib.round(dBGdt, 1));
 
                 // Add trend arrow
                 this.trend.text(trend).addClass(BGRank);
@@ -168,7 +168,7 @@ export class Dash {
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      UPDATEPUMPRESERVOIRLEVEL
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updatePumpReservoirLevel(data) {
+    updatePumpReservoirLevel(data, scale) {
 
         // Destructure data
         const [ t, levels ] = data;
@@ -185,6 +185,9 @@ export class Dash {
 
             // Round level (U)
             const level = lib.round(lastLevel, 1);
+
+            // Rank level
+            this.reservoir.addClass(lib.rank(level, scale));
 
             // Update level
             this.reservoir.find(".value").text(level);

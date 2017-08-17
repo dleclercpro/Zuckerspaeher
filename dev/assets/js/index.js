@@ -73,11 +73,11 @@ const build = (config, elements, data) => {
     dash.updateBG(BGs);
     dash.updateNB(TBs);
     dash.updateIOB(IOBs);
-    dash.updatePumpReservoirLevel(pumpReservoirLevels);
+    dash.updatePumpReservoirLevel(pumpReservoirLevels, config.reservoirLevelScale);
 
     // Update user
-    user.updatePumpBatteryLevel(pumpBatteryLevels);
-    user.updateCGMBatteryLevel(cgmBatteryLevels);
+    user.updatePumpBatteryLevel(pumpBatteryLevels, config.batteryLevelScale);
+    user.updateCGMBatteryLevel(cgmBatteryLevels, config.batteryLevelScale);
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,8 +162,22 @@ $(document).ready(() => {
         y0: 0, // Basal baseline (U/h)
         yBG: [0, 2, 4, 6, 8, 10, 15, 20], // mmol/L
         yI: lib.mirror([2, 4], true), // U/h
-        BGScale: [3.8, 4.2, 7.0, 9.0], // (mmol/L)
-        dBGdtScale: lib.mirror([0.1, 0.3]).map(x => lib.round(x * 60 / 5, 1)), // (mmol/L/h)
+        BGScale: {
+            ranks: ["very-low", "low", "normal", "high", "very-high"],
+            limits: [3.8, 4.2, 7.0, 9.0], // (mmol/L)
+        },
+        dBGdtScale: {
+            ranks: ["↓↓", "↓", "↘", "→", "↗", "↑", "↑↑"],
+            limits: lib.mirror([0.1, 0.3, 0.5]).map(x => lib.round(x * 60 / 5, 1)), // (mmol/L/h)
+        },
+        batteryLevelScale: {
+            ranks: ["very-low", "low", "medium", "high", "very-high"],
+            limits: [20, 50, 75, 90], // (%)
+        },
+        reservoirLevelScale: {
+            ranks: ["very-low", "low", "medium", "high", "very-high"],
+            limits: [25, 50, 100, 200], // (U)
+        },
     };
 
     // Generate elements

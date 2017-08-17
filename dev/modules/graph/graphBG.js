@@ -41,7 +41,7 @@ export class GraphBG extends Graph {
         for (let dot of this.dots["BG"]) {
 
             // Add class based on rank
-            dot.self.addClass(lib.rankBG(dot.y, scale));
+            dot.self.addClass(lib.rank(dot.y, scale));
         }
     }
 }

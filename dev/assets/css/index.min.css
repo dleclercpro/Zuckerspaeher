@@ -478,22 +478,22 @@ main {
   flex: 1;
   flex-direction: column; }
 
-.BG-very-low, .BG-very-high {
+.BG.very-low, .mod-user > .details > .live > .very-low.trend, .BG.very-high, .mod-user > .details > .live > .very-high.trend {
   background-color: #e50000;
   color: #e50000; }
-  .BG-very-low:hover, .BG-very-high:hover {
+  .BG.very-low:hover, .mod-user > .details > .live > .very-low.trend:hover, .BG.very-high:hover, .mod-user > .details > .live > .very-high.trend:hover {
     background-color: #660000; }
 
-.BG-low, .BG-high {
+.BG.low, .mod-user > .details > .live > .low.trend, .BG.high, .mod-user > .details > .live > .high.trend {
   background-color: #ff7500;
   color: #ff7500; }
-  .BG-low:hover, .BG-high:hover {
+  .BG.low:hover, .mod-user > .details > .live > .low.trend:hover, .BG.high:hover, .mod-user > .details > .live > .high.trend:hover {
     background-color: #803b00; }
 
-.BG-normal {
+.BG.normal, .mod-user > .details > .live > .normal.trend {
   background-color: #99e500;
   color: #99e500; }
-  .BG-normal:hover {
+  .BG.normal:hover, .mod-user > .details > .live > .normal.trend:hover {
     background-color: #446600; }
 
 .TB {
@@ -591,7 +591,7 @@ main {
       background: none; }
     .mod-dash > .live > .trend {
       background: none;
-      margin-left: 5px;
+      margin-left: 8px;
       font-weight: normal; }
   .mod-dash > .delta,
   .mod-dash > .insulin,
