@@ -508,6 +508,20 @@ main {
   .B:hover {
     background-color: #00105e; }
 
+.battery.very-low,
+.reservoir.very-low {
+  color: #e50000; }
+
+.battery.low, .battery.medium,
+.reservoir.low,
+.reservoir.medium {
+  color: #ff7500; }
+
+.battery.high, .battery.very-high,
+.reservoir.high,
+.reservoir.very-high {
+  color: #99e500; }
+
 .mod-bubble {
   display: flex;
   flex: none;
@@ -536,6 +550,44 @@ main {
   .mod-bubble > .time > .units {
     white-space: nowrap;
     background: none; }
+
+.mod-graph {
+  display: flex;
+  flex-wrap: wrap; }
+  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
+    width: 100vw;
+    height: calc(0.75 * (100vh - 70px));
+    flex: none;
+    order: 3; }
+    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
+      width: calc(100% - 28px);
+      height: 0px; }
+    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
+      width: 28px;
+      height: calc(100% - 0px); }
+    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 0px); }
+    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
+      width: 28px;
+      height: 0px; }
+  .mod-graph.I {
+    width: 100vw;
+    height: calc(0.25 * (100vh - 70px));
+    flex: 1;
+    order: 4; }
+    .mod-graph.I > .mod-axis.x {
+      width: calc(100% - 28px);
+      height: 28px; }
+    .mod-graph.I > .mod-axis.y {
+      width: 28px;
+      height: calc(100% - 28px); }
+    .mod-graph.I > .mod-inner {
+      width: calc(100% - 28px);
+      height: calc(100% - 28px); }
+    .mod-graph.I > .mod-corner {
+      width: 28px;
+      height: 28px; }
 
 .mod-dash {
   display: flex;
@@ -628,44 +680,6 @@ main {
       .mod-dash > .factors > p:last-child,
       .mod-dash > .age > p:last-child {
         margin-right: 0; }
-
-.mod-graph {
-  display: flex;
-  flex-wrap: wrap; }
-  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
-    width: 100vw;
-    height: calc(0.75 * (100vh - 70px));
-    flex: none;
-    order: 3; }
-    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
-      width: calc(100% - 28px);
-      height: 0px; }
-    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
-      width: 28px;
-      height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
-      width: calc(100% - 28px);
-      height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
-      width: 28px;
-      height: 0px; }
-  .mod-graph.I {
-    width: 100vw;
-    height: calc(0.25 * (100vh - 70px));
-    flex: 1;
-    order: 4; }
-    .mod-graph.I > .mod-axis.x {
-      width: calc(100% - 28px);
-      height: 28px; }
-    .mod-graph.I > .mod-axis.y {
-      width: 28px;
-      height: calc(100% - 28px); }
-    .mod-graph.I > .mod-inner {
-      width: calc(100% - 28px);
-      height: calc(100% - 28px); }
-    .mod-graph.I > .mod-corner {
-      width: 28px;
-      height: 28px; }
 
 header {
   display: flex;
@@ -830,17 +844,6 @@ header {
     .mod-user > .details > .cgm > .battery,
     .mod-user > .details > .pump > .battery {
       font-weight: bold; }
-      .mod-user > .details > .cgm > .battery.very-low,
-      .mod-user > .details > .pump > .battery.very-low {
-        color: #e50000; }
-      .mod-user > .details > .cgm > .battery.low, .mod-user > .details > .cgm > .battery.medium,
-      .mod-user > .details > .pump > .battery.low,
-      .mod-user > .details > .pump > .battery.medium {
-        color: #ff7500; }
-      .mod-user > .details > .cgm > .battery.high, .mod-user > .details > .cgm > .battery.very-high,
-      .mod-user > .details > .pump > .battery.high,
-      .mod-user > .details > .pump > .battery.very-high {
-        color: #99e500; }
     .mod-user > .details > .live {
       display: none; }
       @media only screen and (max-width: 640px) {
@@ -855,6 +858,9 @@ header {
       .mod-user > .details > .live > .trend {
         margin-left: -5px; }
 
+.mod-corner {
+  order: 4; }
+
 .mod-axis {
   display: flex; }
   .mod-axis.x {
@@ -863,9 +869,6 @@ header {
   .mod-axis.y {
     flex-direction: column-reverse;
     order: 2; }
-
-.mod-corner {
-  order: 4; }
 
 .mod-inner {
   position: relative;

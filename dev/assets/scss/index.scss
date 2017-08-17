@@ -44,3 +44,21 @@
 	@include background($blue, 25%);
 	color: $blue;
 }
+
+.battery,
+.reservoir {
+
+    &.very-low {
+        color: $red;
+    }
+
+    &.low,
+    &.medium {
+        color: $orange;
+    }
+
+    &.high,
+    &.very-high {
+        color: $green;
+    }
+}
