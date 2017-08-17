@@ -9,6 +9,23 @@
         height: $height-graph-BG;
         flex: none;
         order: 3;
+
+        .BG {
+
+            &.very-low,
+            &.very-high {
+                @include background($red, 25%);
+            }
+
+            &.low,
+            &.high {
+                @include background($orange, 25%);
+            }
+
+            &.normal {
+                @include background($green, 25%);
+            }
+        }
     }
 
     // Insulin graph
@@ -18,5 +35,17 @@
         height: $height-graph-I;
         flex: 1;
         order: 4;
+
+        .TB {
+            @include background($light-gray, 10%);
+        }
+
+        .IOB {
+            @include background($purple, 3%);
+        }
+
+        .B {
+            @include background($blue, 25%);
+        }
     }
 }

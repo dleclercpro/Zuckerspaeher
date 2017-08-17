@@ -49,12 +49,7 @@
 			display: none;
 		}
 
-		> .BG {
-			background: none;
-		}
-
 		> .trend {
-			background: none;
 			margin-left: 8px;
 			font-weight: normal;
 		}
@@ -69,8 +64,8 @@
 
 		> p {
 			@include font("dash-details");
-			margin-right: 15px;
 			white-space: nowrap;
+			margin-right: 15px;
 
 			&:last-child {
 				margin-right: 0;

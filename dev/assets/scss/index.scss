@@ -14,56 +14,50 @@
 @import "placeholders";
 @import "base";
 
-// Styles
+// General styles
 .BG {
 
 	&.very-low,
 	&.very-high {
-		@include background($red, 25%);
 		color: $red;
 	}
 
 	&.low,
 	&.high {
-		@include background($orange, 25%);
 		color: $orange;
 	}
 
 	&.normal {
-		@include background($green, 25%);
 		color: $green;
 	}
 }
 
 .TB {
-	@include background($light-gray, 10%);
-	color: $light-gray;
+    color: $light-gray;
 }
 
 .IOB {
-	@include background($purple, 3%);
-	color: $purple;
+    color: $purple;
 }
 
 .B {
-	@include background($blue, 25%);
-	color: $blue;
+    color: $blue;
 }
 
 .battery,
 .reservoir {
 
     &.very-low {
-        color: $red;
+        color: $red !important;
     }
 
     &.low,
     &.medium {
-        color: $orange;
+        color: $orange !important;
     }
 
     &.high,
     &.very-high {
-        color: $green;
+        color: $green !important;
     }
 }

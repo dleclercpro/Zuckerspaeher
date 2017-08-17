@@ -23,8 +23,7 @@ import * as lib from "./lib";
 import * as config from "./config";
 import {User} from "../../modules/user/user";
 import {Dash} from "../../modules/dash/dash";
-import {GraphBG} from "../../modules/graph/graphBG";
-import {GraphI} from "../../modules/graph/graphI";
+import {Graph} from "../../modules/graph/graph";
 
 // Enable jQuery
 window.$ = window.jQuery = jQuery;
@@ -59,8 +58,8 @@ const build = (elements, data, now) => {
     graphI.buildDots("IOB", "U", 1, "YYYY.MM.DD - HH:MM:SS", IOBs);
     graphBG.buildDots("BG", "mmol/L", 1, "YYYY.MM.DD - HH:MM:SS", BGs);
 
-    // Color graph elements
-    graphBG.color(config.BGScale);
+    // Rank graph elements
+    graphBG.rank("dots", "BG", config.BGScale);
 
     // Update dash
     dash.updateBG(BGs);
@@ -152,8 +151,8 @@ $(document).ready(() => {
 
     // Generate elements
     const elements = {
-        graphBG: new GraphBG(),
-        graphI: new GraphI(),
+        graphBG: new Graph("BG"),
+        graphI: new Graph("I"),
         dash: new Dash(now),
         user: new User(now),
     };

@@ -47,14 +47,14 @@ $font-highlight: "Shadows Into Light", sans-serif;
 
 // Fonts dictionary
 $fonts: (
-	"logo": (family: $font-highlight, size: 38px, weight: bold, color: $white),
+	"logo": (family: $font-highlight, size: 38px, weight: bold),
 	"user-BG": (family: $font-highlight, size: 45px, weight: bold),
 	"user-details": (size: (desktop: 17px, tablet: 16px, mobile: 15px), line-height: 1.25em),
-	"dash-BG": (family: $font-highlight, size: (desktop: 50px, tablet: 40px), weight: bold, line-height: 1em, color: $white),
-	"dash-details": (size: (desktop: 17px, tablet: 16px, mobile: 15px), line-height: 1.25em),
+	"dash-BG": (family: $font-highlight, size: (desktop: 50px, tablet: 40px), weight: bold, line-height: 1em),
+	"dash-details": (size: (desktop: 17px, tablet: 16px, mobile: 15px), line-height: 1.25em, color: $white),
 	"settings-head": (family: $font-highlight, size: 25px, weight: bold),
 	"settings-text": (weight: bold),
-	"bubble-text": (size: (desktop: 17px, tablet: 16px, mobile: 15px), weight: bold, line-height: 1.25em, color: $white),
+	"bubble-text": (size: (desktop: 17px, tablet: 16px, mobile: 15px), weight: bold, line-height: 1.25em),
 	"graph-tick": (size: (desktop: 15px, mobile: 14px), weight: bold),
 	"button": (size: (desktop: 18px, mobile: 15px), weight: bold)
 );

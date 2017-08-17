@@ -459,7 +459,8 @@ p, h1, h2, h3, h4, h5, h6, strong, a, ul, ol, li, img {
   text-decoration: none; }
 
 a {
-  cursor: pointer; }
+  cursor: pointer;
+  color: #eeeeee; }
 
 body {
   display: flex;
@@ -479,54 +480,36 @@ main {
   flex-direction: column; }
 
 .BG.very-low, .mod-user > .details > .live > .very-low.trend, .BG.very-high, .mod-user > .details > .live > .very-high.trend {
-  background-color: #e50000;
   color: #e50000; }
-  .BG.very-low:hover, .mod-user > .details > .live > .very-low.trend:hover, .BG.very-high:hover, .mod-user > .details > .live > .very-high.trend:hover {
-    background-color: #660000; }
 
 .BG.low, .mod-user > .details > .live > .low.trend, .BG.high, .mod-user > .details > .live > .high.trend {
-  background-color: #ff7500;
   color: #ff7500; }
-  .BG.low:hover, .mod-user > .details > .live > .low.trend:hover, .BG.high:hover, .mod-user > .details > .live > .high.trend:hover {
-    background-color: #803b00; }
 
 .BG.normal, .mod-user > .details > .live > .normal.trend {
-  background-color: #99e500;
   color: #99e500; }
-  .BG.normal:hover, .mod-user > .details > .live > .normal.trend:hover {
-    background-color: #446600; }
 
 .TB {
-  background-color: #484848;
   color: #484848; }
-  .TB:hover {
-    background-color: #2f2f2f; }
 
 .IOB {
-  background-color: #300a24;
   color: #300a24; }
-  .IOB:hover {
-    background-color: #23071b; }
 
 .B {
-  background-color: #0025dd;
   color: #0025dd; }
-  .B:hover {
-    background-color: #00105e; }
 
 .battery.very-low,
 .reservoir.very-low {
-  color: #e50000; }
+  color: #e50000 !important; }
 
 .battery.low, .battery.medium,
 .reservoir.low,
 .reservoir.medium {
-  color: #ff7500; }
+  color: #ff7500 !important; }
 
 .battery.high, .battery.very-high,
 .reservoir.high,
 .reservoir.very-high {
-  color: #99e500; }
+  color: #99e500 !important; }
 
 .mod-bubble {
   display: flex;
@@ -539,7 +522,6 @@ main {
   font-size: 17px;
   font-weight: bold;
   line-height: 1.25em;
-  color: #eeeeee;
   flex-direction: column;
   padding: 10px;
   z-index: 50;
@@ -550,12 +532,9 @@ main {
   @media only screen and (max-width: 640px) {
     .mod-bubble {
       font-size: 15px; } }
-  .mod-bubble > .info > .value,
-  .mod-bubble > .info > .units,
-  .mod-bubble > .time > .value,
-  .mod-bubble > .time > .units {
-    white-space: nowrap;
-    background: none; }
+  .mod-bubble p,
+  .mod-bubble span {
+    white-space: nowrap; }
 
 .mod-dash {
   display: flex;
@@ -599,18 +578,14 @@ main {
     font-family: "Shadows Into Light", sans-serif;
     font-size: 50px;
     font-weight: bold;
-    line-height: 1em;
-    color: #eeeeee; }
+    line-height: 1em; }
     @media only screen and (max-width: 1024px) {
       .mod-dash > .live {
         font-size: 40px; } }
     @media only screen and (max-width: 640px) {
       .mod-dash > .live {
         display: none; } }
-    .mod-dash > .live > .BG, .mod-user > .details.mod-dash > .live > .trend {
-      background: none; }
     .mod-dash > .live > .trend {
-      background: none;
       margin-left: 8px;
       font-weight: normal; }
   .mod-dash > .delta,
@@ -626,8 +601,9 @@ main {
     .mod-dash > .age > p {
       font-size: 17px;
       line-height: 1.25em;
-      margin-right: 15px;
-      white-space: nowrap; }
+      color: #eeeeee;
+      white-space: nowrap;
+      margin-right: 15px; }
       @media only screen and (max-width: 1024px) {
         .mod-dash > .delta > p,
         .mod-dash > .insulin > p,
@@ -669,6 +645,18 @@ main {
     .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
       width: 28px;
       height: 0px; }
+    .mod-graph.BG .BG.very-low, .mod-user > .details > .live > .mod-graph.trend .BG.very-low, .mod-graph.BG .mod-user > .details > .live > .very-low.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-low.trend, .mod-graph.BG .BG.very-high, .mod-user > .details > .live > .mod-graph.trend .BG.very-high, .mod-graph.BG .mod-user > .details > .live > .very-high.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-high.trend {
+      background-color: #e50000; }
+      .mod-graph.BG .BG.very-low:hover, .mod-user > .details > .live > .mod-graph.trend .BG.very-low:hover, .mod-graph.BG .mod-user > .details > .live > .very-low.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-low.trend:hover, .mod-graph.BG .BG.very-high:hover, .mod-user > .details > .live > .mod-graph.trend .BG.very-high:hover, .mod-graph.BG .mod-user > .details > .live > .very-high.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-high.trend:hover {
+        background-color: #660000; }
+    .mod-graph.BG .BG.low, .mod-user > .details > .live > .mod-graph.trend .BG.low, .mod-graph.BG .mod-user > .details > .live > .low.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .low.trend, .mod-graph.BG .BG.high, .mod-user > .details > .live > .mod-graph.trend .BG.high, .mod-graph.BG .mod-user > .details > .live > .high.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .high.trend {
+      background-color: #ff7500; }
+      .mod-graph.BG .BG.low:hover, .mod-user > .details > .live > .mod-graph.trend .BG.low:hover, .mod-graph.BG .mod-user > .details > .live > .low.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .low.trend:hover, .mod-graph.BG .BG.high:hover, .mod-user > .details > .live > .mod-graph.trend .BG.high:hover, .mod-graph.BG .mod-user > .details > .live > .high.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .high.trend:hover {
+        background-color: #803b00; }
+    .mod-graph.BG .BG.normal, .mod-user > .details > .live > .mod-graph.trend .BG.normal, .mod-graph.BG .mod-user > .details > .live > .normal.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .normal.trend {
+      background-color: #99e500; }
+      .mod-graph.BG .BG.normal:hover, .mod-user > .details > .live > .mod-graph.trend .BG.normal:hover, .mod-graph.BG .mod-user > .details > .live > .normal.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .normal.trend:hover {
+        background-color: #446600; }
   .mod-graph.I {
     width: 100vw;
     height: calc(0.25 * (100vh - 70px));
@@ -686,6 +674,46 @@ main {
     .mod-graph.I > .mod-corner {
       width: 28px;
       height: 28px; }
+    .mod-graph.I .TB {
+      background-color: #484848; }
+      .mod-graph.I .TB:hover {
+        background-color: #2f2f2f; }
+    .mod-graph.I .IOB {
+      background-color: #300a24; }
+      .mod-graph.I .IOB:hover {
+        background-color: #23071b; }
+    .mod-graph.I .B {
+      background-color: #0025dd; }
+      .mod-graph.I .B:hover {
+        background-color: #00105e; }
+
+header {
+  display: flex;
+  flex: none;
+  width: 100vw;
+  height: 70px;
+  padding: 0 3%;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 3px 3px black;
+  z-index: 35; }
+  @media only screen and (max-width: 1024px) {
+    header {
+      padding: 0 5%; } }
+  header > #logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 38px;
+    font-weight: bold; }
+    header > #logo > span {
+      color: #484848; }
+  header > #buttons {
+    width: 20px;
+    margin-left: auto; }
+    header > #buttons > img {
+      width: 100%;
+      cursor: pointer; }
 
 .mod-settings {
   display: none;
@@ -834,35 +862,6 @@ main {
         background: none; }
       .mod-user > .details > .live > .trend {
         margin-left: -5px; }
-
-header {
-  display: flex;
-  flex: none;
-  width: 100vw;
-  height: 70px;
-  padding: 0 3%;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 3px 3px black;
-  z-index: 35; }
-  @media only screen and (max-width: 1024px) {
-    header {
-      padding: 0 5%; } }
-  header > #logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 38px;
-    font-weight: bold;
-    color: #eeeeee; }
-    header > #logo > span {
-      color: #484848; }
-  header > #buttons {
-    width: 20px;
-    margin-left: auto; }
-    header > #buttons > img {
-      width: 100%;
-      cursor: pointer; }
 
 .mod-axis {
   display: flex; }

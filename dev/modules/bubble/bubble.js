@@ -106,11 +106,11 @@ export class Bubble {
         let [x, y] = [mouseEvent.clientX, mouseEvent.clientY];
 
         // Add offset from mouse
-        x += 10;
+        y -= 10 + this.h;
 
         // Compute deltas with window extremities
         const dx = x + this.w - windowWidth,
-            dy = y + this.h - windowHeight;
+              dy = y + this.h - windowHeight;
 
         // Bring back bubble within window range
         // x-axis

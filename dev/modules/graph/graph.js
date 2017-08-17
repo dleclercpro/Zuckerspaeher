@@ -330,24 +330,6 @@ export class Graph {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     SPACEBARS
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    spaceBars(type) {
-
-        // Get last bar
-        const lastBar = lib.last(this.bars[type]);
-
-        // Compute time elapsed between last bar and now
-        const dt = this.axes.x.max - lastBar.x;
-
-        // Convert to pixels
-        const t = dt / this.axes.x.dZ * this.inner.width;
-
-        // Push bars according to time difference between last bar and now
-        lastBar.self.css("margin-right", t);
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      MEASURE
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     measure() {
@@ -383,6 +365,50 @@ export class Graph {
                 bar.measure();
             }
         }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     RANK
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    rank(elements, type, scale) {
+
+        // If dots
+        if (elements == "dots") {
+
+            // Assign them
+            elements = this.dots[type];
+        }
+        // If bars
+        else if (elements == "bars") {
+
+            // Assign them
+            elements = this.bars[type];
+        }
+
+        // Rank elements
+        for (let e of elements) {
+
+            // Add class based on rank
+            e.self.addClass(lib.rank(e.y, scale));
+        }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SPACEBARS
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    spaceBars(type) {
+
+        // Get last bar
+        const lastBar = lib.last(this.bars[type]);
+
+        // Compute time elapsed between last bar and now
+        const dt = this.axes.x.max - lastBar.x;
+
+        // Convert to pixels
+        const t = dt / this.axes.x.dZ * this.inner.width;
+
+        // Push bars according to time difference between last bar and now
+        lastBar.self.css("margin-right", t);
     }
 
 }

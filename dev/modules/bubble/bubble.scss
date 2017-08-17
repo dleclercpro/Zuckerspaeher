@@ -7,13 +7,8 @@
 	z-index: 50;
 	display: none;
 
-	> .info,
-	> .time {
-
-		> .value,
-		> .units {
-			white-space: nowrap;
-			background: none;
-		}
+	p,
+	span {
+		white-space: nowrap;
 	}
 }
