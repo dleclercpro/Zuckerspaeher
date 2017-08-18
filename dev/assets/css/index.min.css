@@ -536,95 +536,6 @@ main {
   .mod-bubble span {
     white-space: nowrap; }
 
-.mod-dash {
-  display: flex;
-  flex: none;
-  border: none;
-  border-radius: 3px;
-  background-color: rgba(0, 0, 0, 0.75);
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
-  position: absolute;
-  top: 5%;
-  right: 3%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  width: 45vw;
-  max-width: 450px;
-  padding: 30px 2.5vw;
-  z-index: 15;
-  order: 2; }
-  @media only screen and (max-width: 1024px) {
-    .mod-dash {
-      width: 50vw;
-      height: 190px;
-      max-width: none;
-      top: 0;
-      right: 0;
-      padding: 15px 5vw; } }
-  @media only screen and (max-width: 640px) {
-    .mod-dash {
-      display: none;
-      width: 100vw;
-      height: auto;
-      align-items: center;
-      top: 100px;
-      left: 0; } }
-  .mod-dash .title {
-    font-weight: bold; }
-  .mod-dash > .live {
-    display: flex;
-    margin-bottom: 10px;
-    font-family: "Shadows Into Light", sans-serif;
-    font-size: 50px;
-    font-weight: bold;
-    line-height: 1em; }
-    @media only screen and (max-width: 1024px) {
-      .mod-dash > .live {
-        font-size: 40px; } }
-    @media only screen and (max-width: 640px) {
-      .mod-dash > .live {
-        display: none; } }
-    .mod-dash > .live > .trend {
-      margin-left: 8px;
-      font-weight: normal; }
-  .mod-dash > .delta,
-  .mod-dash > .insulin,
-  .mod-dash > .on-board,
-  .mod-dash > .factors,
-  .mod-dash > .age {
-    display: flex; }
-    .mod-dash > .delta > p,
-    .mod-dash > .insulin > p,
-    .mod-dash > .on-board > p,
-    .mod-dash > .factors > p,
-    .mod-dash > .age > p {
-      font-size: 17px;
-      line-height: 1.25em;
-      color: #eeeeee;
-      white-space: nowrap;
-      margin-right: 15px; }
-      @media only screen and (max-width: 1024px) {
-        .mod-dash > .delta > p,
-        .mod-dash > .insulin > p,
-        .mod-dash > .on-board > p,
-        .mod-dash > .factors > p,
-        .mod-dash > .age > p {
-          font-size: 16px; } }
-      @media only screen and (max-width: 640px) {
-        .mod-dash > .delta > p,
-        .mod-dash > .insulin > p,
-        .mod-dash > .on-board > p,
-        .mod-dash > .factors > p,
-        .mod-dash > .age > p {
-          font-size: 15px; } }
-      .mod-dash > .delta > p:last-child,
-      .mod-dash > .insulin > p:last-child,
-      .mod-dash > .on-board > p:last-child,
-      .mod-dash > .factors > p:last-child,
-      .mod-dash > .age > p:last-child {
-        margin-right: 0; }
-
 .mod-graph {
   display: flex;
   flex-wrap: wrap; }
@@ -714,6 +625,95 @@ header {
     header > #buttons > img {
       width: 100%;
       cursor: pointer; }
+
+.mod-dash {
+  display: flex;
+  flex: none;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 5%;
+  right: 3%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 45vw;
+  max-width: 450px;
+  padding: 30px 2.5vw;
+  z-index: 15;
+  order: 2; }
+  @media only screen and (max-width: 1024px) {
+    .mod-dash {
+      width: 50vw;
+      height: 190px;
+      max-width: none;
+      top: 0;
+      right: 0;
+      padding: 15px 5vw; } }
+  @media only screen and (max-width: 640px) {
+    .mod-dash {
+      display: none;
+      width: 100vw;
+      height: auto;
+      align-items: center;
+      top: 100px;
+      left: 0; } }
+  .mod-dash .title {
+    font-weight: bold; }
+  .mod-dash > .live {
+    display: flex;
+    margin-bottom: 10px;
+    font-family: "Shadows Into Light", sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1em; }
+    @media only screen and (max-width: 1024px) {
+      .mod-dash > .live {
+        font-size: 40px; } }
+    @media only screen and (max-width: 640px) {
+      .mod-dash > .live {
+        display: none; } }
+    .mod-dash > .live > .trend {
+      margin-left: 8px;
+      font-weight: normal; }
+  .mod-dash > .delta,
+  .mod-dash > .insulin,
+  .mod-dash > .on-board,
+  .mod-dash > .factors,
+  .mod-dash > .age {
+    display: flex; }
+    .mod-dash > .delta > p,
+    .mod-dash > .insulin > p,
+    .mod-dash > .on-board > p,
+    .mod-dash > .factors > p,
+    .mod-dash > .age > p {
+      font-size: 17px;
+      line-height: 1.25em;
+      color: #eeeeee;
+      white-space: nowrap;
+      margin-right: 15px; }
+      @media only screen and (max-width: 1024px) {
+        .mod-dash > .delta > p,
+        .mod-dash > .insulin > p,
+        .mod-dash > .on-board > p,
+        .mod-dash > .factors > p,
+        .mod-dash > .age > p {
+          font-size: 16px; } }
+      @media only screen and (max-width: 640px) {
+        .mod-dash > .delta > p,
+        .mod-dash > .insulin > p,
+        .mod-dash > .on-board > p,
+        .mod-dash > .factors > p,
+        .mod-dash > .age > p {
+          font-size: 15px; } }
+      .mod-dash > .delta > p:last-child,
+      .mod-dash > .insulin > p:last-child,
+      .mod-dash > .on-board > p:last-child,
+      .mod-dash > .factors > p:last-child,
+      .mod-dash > .age > p:last-child {
+        margin-right: 0; }
 
 .mod-settings {
   display: none;

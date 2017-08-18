@@ -160,8 +160,9 @@ $(document).ready(() => {
     // Get data
     const data = {
         BGs: lib.getData("reports/BG.json"),
-        TBs: lib.getData("reports/treatments.json", ["Net Basals"]),
         Bs: lib.getData("reports/treatments.json", ["Boluses"]),
+        basal: lib.getData("reports/pump.json", ["Basal Profile (Standard)"], "HH:MM"),
+        TBs: lib.getData("reports/treatments.json", ["Net Basals"]),
         IOBs: lib.getData("reports/treatments.json", ["IOB"]),
         pumpReservoirLevels: lib.getData("reports/history.json", ["Pump", "Reservoir Levels"]),
         pumpBatteryLevels: lib.getData("reports/history.json", ["Pump", "Battery Levels"]),

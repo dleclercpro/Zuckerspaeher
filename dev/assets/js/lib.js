@@ -9,13 +9,13 @@
  Date:     08.08.2017
 
  License:  GNU General Public License, Version 3
-           (http://www.gnu.org/licenses/gpl.html)
+ (http://www.gnu.org/licenses/gpl.html)
 
  Overview: ...
 
  Notes:    ...
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 export const last = (array, n = 1) => {
 
@@ -81,7 +81,7 @@ export const mirror = (x, zero = false) => {
         // Add zero
         X.push(0);
     }
-    
+
     // Add positive part
     X.push.apply(X, x);
 
@@ -99,6 +99,50 @@ export const round = (x, n = 0) => {
 
     // Return rounded value
     return Math.round(x * e) / e;
+};
+
+export const mapTime = (t) => {
+
+    // Initialize date components
+    let year, month, day, hour, minute, second;
+
+    // Generate new dates for considered time, today and yesterday
+    const now = new Date(),
+        today = new Date(),
+        yesterday = new Date(now.getDate() - 1);
+
+    // Read time
+    hour = t.slice(0, 2);
+    minute = t.slice(3, 5);
+    second = 0;
+
+    // Define considered time
+    now.setHours(hour);
+    now.setMinutes(minute);
+    now.setSeconds(second);
+
+    // If later than current time
+    if (now > today) {
+
+        // Define date
+        year = yesterday.getFullYear();
+        month = yesterday.getMonth() + 1;
+        day = yesterday.getDate();
+    }
+    // Otherwise
+    else {
+
+        // Define date
+        year = today.getFullYear();
+        month = today.getMonth() + 1;
+        day = today.getDate();
+    }
+
+    // Define new date object
+    const date = new Date(year, month - 1, day, hour, minute, second);
+
+    // Return mapped time in epoch format (ms)
+    return date.getTime();
 };
 
 export const formatTime = (T, format) => {
@@ -129,25 +173,25 @@ export const formatTime = (T, format) => {
 
             // Read date components
             const year = date.getFullYear(),
-                  month = date.getMonth() + 1,
-                  day = date.getDate(),
-                  hour = date.getHours(),
-                  minute = date.getMinutes(),
-                  second = date.getSeconds();
+                month = date.getMonth() + 1,
+                day = date.getDate(),
+                hour = date.getHours(),
+                minute = date.getMinutes(),
+                second = date.getSeconds();
 
             // Look for correct format
-            switch(format) {
+            switch (format) {
 
                 // Format 1
                 case "YYYY.MM.DD - HH:MM:SS":
 
                     // Store conversion
                     t_ = year + "." +
-                         ("0" + month).slice(-2) + "." +
-                         ("0" + day).slice(-2) + " - " +
-                         ("0" + hour).slice(-2) + ":" +
-                         ("0" + minute).slice(-2) + ":" +
-                         ("0" + second).slice(-2);
+                        ("0" + month).slice(-2) + "." +
+                        ("0" + day).slice(-2) + " - " +
+                        ("0" + hour).slice(-2) + ":" +
+                        ("0" + minute).slice(-2) + ":" +
+                        ("0" + second).slice(-2);
 
                     break;
 
@@ -156,10 +200,10 @@ export const formatTime = (T, format) => {
 
                     // Store conversion
                     t_ = ("0" + hour).slice(-2) + ":" +
-                         ("0" + minute).slice(-2) + " - " +
-                         ("0" + day).slice(-2) + "." +
-                         ("0" + month).slice(-2) + "." +
-                         year;
+                        ("0" + minute).slice(-2) + " - " +
+                        ("0" + day).slice(-2) + "." +
+                        ("0" + month).slice(-2) + "." +
+                        year;
 
                     break;
 
@@ -168,7 +212,7 @@ export const formatTime = (T, format) => {
 
                     // Store conversion
                     t_ = ("0" + hour).slice(-2) + ":" +
-                         ("0" + minute).slice(-2);
+                        ("0" + minute).slice(-2);
 
                     break;
 
@@ -176,13 +220,15 @@ export const formatTime = (T, format) => {
                 default:
 
                     // Show error
-                    console.log("Time conversion error: " + T);
+                    console.error("Time conversion error: " + T);
             }
         }
 
         // If date object
         else if (t instanceof Date) {
 
+            // Show error
+            console.error("No implementation yet for conversion of: " + T);
         }
 
         // If formatted string
@@ -197,7 +243,7 @@ export const formatTime = (T, format) => {
                 second = null;
 
             // Look for correct format
-            switch(format) {
+            switch (format) {
 
                 // Format 1
                 case "YYYY.MM.DD - HH:MM:SS":
@@ -228,70 +274,34 @@ export const formatTime = (T, format) => {
                 // Format 3 (map time)
                 case "HH:MM":
 
-                    // Generate new dates for considered time, today and yesterday
-                    const now = new Date();
-                    const today = new Date();
-                    const yesterday = new Date();
-
-                    // Set yesterday
-                    yesterday.setDate(now.getDate() - 1);
-
-                    // Read time
-                    hour = t.slice(0, 2);
-                    minute = t.slice(3, 5);
-                    second = 0;
-
-                    // Define considered time
-                    now.setHours(hour);
-                    now.setMinutes(minute);
-                    now.setSeconds(second);
-
-                    // If later than current time
-                    if (now > today) {
-
-                        // Define date
-                        year = yesterday.getFullYear();
-                        month = yesterday.getMonth() + 1;
-                        day = yesterday.getDate();
-                    }
-                    // Otherwise
-                    else {
-
-                        // Define date
-                        year = today.getFullYear();
-                        month = today.getMonth() + 1;
-                        day = today.getDate();
-                    }
+                    // Map time
+                    t_ = mapTime(t);
 
                     break;
 
-                    // Error
-                    default:
+                // Error
+                default:
 
-                        // Show error
-                        console.log("Time conversion error: " + T);
+                    // Show error
+                    console.error("Time conversion error: " + T);
             }
 
-            // Generate new date object
-            const date = new Date();
+            // If time was not already converted to epoch
+            if (t_ == null) {
 
-            // Define date
-            date.setFullYear(year);
-            date.setMonth(month - 1);
-            date.setDate(day);
-            date.setHours(hour);
-            date.setMinutes(minute);
-            date.setSeconds(second);
+                // Define new date object
+                const date = new Date(year, month - 1, day, hour, minute, second);
 
-            // Convert time
-            t_ = date.getTime();
+                // Convert to epoch format (ms)
+                t_ = date.getTime();
+            }
         }
 
         // Unknown format
         else {
 
             // Show error
-            console.log("Time conversion error: " + T);
+            console.error("Time conversion error: " + T);
         }
 
         // Store time conversion
@@ -302,7 +312,6 @@ export const formatTime = (T, format) => {
     if (T_.length > 1) {
         return T_;
     }
-
     // Return single value
     else {
         return T_[0];
@@ -368,7 +377,7 @@ export const verifyValidity = (t0, t1, dt, callback) => {
         // Execute callback
         callback();
     }
-}
+};
 
 export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS") => {
 
@@ -428,7 +437,7 @@ export const rank = (x, scale) => {
 
     // Get limits and ranks
     const limits = scale.limits,
-          ranks = scale.ranks;
+        ranks = scale.ranks;
 
     // Count number of limits in scale
     const n = limits.length;
