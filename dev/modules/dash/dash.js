@@ -194,4 +194,23 @@ export class Dash {
         });
     }
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     UPDATEBASAL
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    updateBasal(data) {
+
+        // Destructure data
+        const [ t, basals ] = data;
+
+        // Get last basal and its corresponding epoch time
+        const lastT = lib.last(t),
+              lastBasal = lib.last(basals);
+
+        // Round basal (U/h)
+        const basal = lib.round(lastBasal, 2);
+
+        // Update basal
+        this.basal.find(".value").text(basal);
+    }
+
 }

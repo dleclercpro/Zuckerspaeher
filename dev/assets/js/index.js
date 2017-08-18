@@ -35,7 +35,7 @@ const build = (elements, data, now) => {
 
     // Destructure input
     const { graphI, graphBG, dash, user } = elements,
-          { TBs, Bs, IOBs, BGs, pumpReservoirLevels, pumpBatteryLevels, cgmBatteryLevels} = data;
+          { basal, TBs, Bs, IOBs, BGs, pumpReservoirLevels, pumpBatteryLevels, cgmBatteryLevels} = data;
 
     // Build corner
     graphI.buildCorner();
@@ -66,6 +66,7 @@ const build = (elements, data, now) => {
     dash.updateNB(TBs);
     dash.updateIOB(IOBs);
     dash.updatePumpReservoirLevel(pumpReservoirLevels, config.reservoirLevelScale);
+    dash.updateBasal(basal);
 
     // Update user
     user.updatePumpBatteryLevel(pumpBatteryLevels, config.batteryLevelScale);
