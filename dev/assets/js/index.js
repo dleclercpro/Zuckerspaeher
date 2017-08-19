@@ -34,8 +34,20 @@ window.$ = window.jQuery = jQuery;
 const build = (elements, data, now) => {
 
     // Destructure input
-    const { graphI, graphBG, dash, user } = elements,
-          { basal, TBs, Bs, IOBs, BGs, pumpReservoirLevels, pumpBatteryLevels, cgmBatteryLevels} = data;
+    const { graphI,
+            graphBG,
+            dash,
+            user } = elements,
+          { NBs,
+            Bs,
+            IOBs,
+            ISF,
+            CSF,
+            BGs,
+            basal,
+            pumpReservoirLevels,
+            pumpBatteryLevels,
+            cgmBatteryLevels} = data;
 
     // Build corner
     graphI.buildCorner();
@@ -53,7 +65,7 @@ const build = (elements, data, now) => {
     graphBG.buildInner();
 
     // Build graph elements
-    graphI.buildBars("TB", "U/h", 2, "YYYY.MM.DD - HH:MM:SS", TBs);
+    graphI.buildBars("TB", "U/h", 2, "YYYY.MM.DD - HH:MM:SS", NBs);
     graphI.buildDots("B", "U", 1, "YYYY.MM.DD - HH:MM:SS", Bs);
     graphI.buildDots("IOB", "U", 1, "YYYY.MM.DD - HH:MM:SS", IOBs);
     graphBG.buildDots("BG", "mmol/L", 1, "YYYY.MM.DD - HH:MM:SS", BGs);
@@ -63,10 +75,12 @@ const build = (elements, data, now) => {
 
     // Update dash
     dash.updateBG(BGs);
-    dash.updateNB(TBs);
+    dash.updateNB(NBs);
     dash.updateIOB(IOBs);
     dash.updatePumpReservoirLevel(pumpReservoirLevels, config.reservoirLevelScale);
     dash.updateBasal(basal);
+    dash.updateISF(ISF);
+    dash.updateCSF(CSF);
 
     // Update user
     user.updatePumpBatteryLevel(pumpBatteryLevels, config.batteryLevelScale);
@@ -163,8 +177,10 @@ $(document).ready(() => {
         BGs: lib.getData("reports/BG.json"),
         Bs: lib.getData("reports/treatments.json", ["Boluses"]),
         basal: lib.getData("reports/pump.json", ["Basal Profile (Standard)"], "HH:MM"),
-        TBs: lib.getData("reports/treatments.json", ["Net Basals"]),
+        NBs: lib.getData("reports/treatments.json", ["Net Basals"]),
         IOBs: lib.getData("reports/treatments.json", ["IOB"]),
+        ISF: lib.getData("reports/pump.json", ["ISF"]),
+        CSF: lib.getData("reports/pump.json", ["CSF"]),
         pumpReservoirLevels: lib.getData("reports/history.json", ["Pump", "Reservoir Levels"]),
         pumpBatteryLevels: lib.getData("reports/history.json", ["Pump", "Battery Levels"]),
         cgmBatteryLevels: lib.getData("reports/history.json", ["CGM", "Battery Levels"]),

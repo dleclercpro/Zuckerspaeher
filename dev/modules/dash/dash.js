@@ -207,4 +207,36 @@ export class Dash {
         this.basal.find(".value").text(lastBasal.toFixed(2));
     }
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     UPDATEISF
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    updateISF(data) {
+
+        // Destructure data
+        const [ t, y ] = data;
+
+        // Get last value and its corresponding epoch time
+        const lastT = lib.last(t),
+              lastY = lib.last(y);
+
+        // Update element
+        this.ISF.find(".value").text(lastY.toFixed(1));
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     UPDATECSF
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    updateCSF(data) {
+
+        // Destructure data
+        const [ t, y ] = data;
+
+        // Get last value and its corresponding epoch time
+        const lastT = lib.last(t),
+              lastY = lib.last(y);
+
+        // Update element
+        this.CSF.find(".value").text(lastY.toFixed(1));
+    }
+
 }
