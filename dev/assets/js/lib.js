@@ -17,6 +17,12 @@
 
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+// Imports
+import jQuery from "jquery";
+
+// Enable jQuery
+window.$ = window.jQuery = jQuery;
+
 export const last = (array, n = 1) => {
 
     // If empty
@@ -467,4 +473,8 @@ export const rank = (x, scale) => {
 
     // Return rank
     return rank;
+};
+
+export const decodeHTMLUnicode = (x) => {
+    return $("<textarea>").html(x).text();
 };

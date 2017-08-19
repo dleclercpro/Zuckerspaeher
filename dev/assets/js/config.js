@@ -32,7 +32,7 @@ export let
       limits: [3.8, 4.2, 7.0, 9.0], // (mmol/L)
     },
     dBGdtScale = {
-      ranks: ["↓↓", "↓", "↘", "→", "↗", "↑", "↑↑"],
+      ranks: ["&#8595;&#8595;", "&#8595;", "&#8600;", "&#8594;", "&#8599;", "&#8593;", "&#8593;&#8593;"],
       limits: lib.mirror([0.1, 0.3, 0.5]), // (mmol/L/5m)
     },
     batteryLevelScale = {
@@ -44,7 +44,8 @@ export let
       limits: [25, 50, 100, 200], // (U)
     };
 
-// Convert time units
+// Retouch
 dx *= 60 * 60 * 1000; // (ms)
 dX *= 60 * 60 * 1000; // (ms)
 dBGdtScale.limits = dBGdtScale.limits.map(x => lib.round(x * 60 / 5, 1)); // (mmol/L/h)
+dBGdtScale.ranks = dBGdtScale.ranks.map(x => lib.decodeHTMLUnicode(x));
