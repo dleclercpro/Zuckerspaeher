@@ -236,7 +236,7 @@ export class Dash {
               lastY = lib.last(y);
 
         // Update element
-        this.CSF.find(".value").text(lastY.toFixed(1));
+        this.CSF.find(".value").text(lastY.toFixed(0));
     }
 
 }
