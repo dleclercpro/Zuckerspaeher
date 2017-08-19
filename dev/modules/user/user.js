@@ -88,7 +88,7 @@ export class User {
             this.pumpBattery.addClass(lib.rank(level, scale));
 
             // Update level
-            this.pumpBattery.text("(" + level + "%)");
+            this.pumpBattery.text("(" + level.toFixed(0) + "%)");
 
         });
     }
@@ -118,7 +118,7 @@ export class User {
             this.cgmBattery.addClass(lib.rank(level, scale));
 
             // Update level
-            this.cgmBattery.text("(" + level + "%)");
+            this.cgmBattery.text("(" + level.toFixed(0) + "%)");
 
         });
     }

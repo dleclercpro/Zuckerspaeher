@@ -87,7 +87,7 @@ export class Dash {
             const BGRank = lib.rank(lastBG, config.BGScale);
 
             // Update BG
-            this.BG.text(lib.round(lastBG, 1));
+            this.BG.text(lastBG.toFixed(1));
 
             // Add rank
             this.BG.addClass(BGRank);
@@ -108,8 +108,8 @@ export class Dash {
                 const trend = lib.rank(dBGdt, config.dBGdtScale);
 
                 // Update dBG and dBG/dt
-                this.dBG.find(".value").text(lib.round(dBG, 1));
-                this.dBGdt.find(".value").text(lib.round(dBGdt, 1));
+                this.dBG.find(".value").text(lib.round(dBG, 1).toFixed(1));
+                this.dBGdt.find(".value").text(lib.round(dBGdt, 1).toFixed(1));
 
                 // Add trend arrow
                 this.trend.text(trend).addClass(BGRank);
@@ -123,11 +123,11 @@ export class Dash {
     updateNB(data) {
 
         // Destructure data
-        const [ t, TBs ] = data;
+        const [ t, NBs ] = data;
 
-        // Get last TB and its corresponding epoch time
+        // Get last NB and its corresponding epoch time
         const lastT = lib.last(t),
-              lastTB = lib.last(TBs);
+              lastNB = lib.last(NBs);
 
         // Define max validity time (ms)
         const dtMax = 30 * 60 * 1000;
@@ -136,7 +136,7 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
-            this.netBasal.find(".value").text(lib.round(lastTB, 2));
+            this.netBasal.find(".value").text(lastNB.toFixed(2));
 
         });
     }
@@ -160,7 +160,7 @@ export class Dash {
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
             // Update TB
-            this.IOB.find(".value").text(lib.round(lastIOB, 1));
+            this.IOB.find(".value").text(lastIOB.toFixed(1));
         });
     }
 
@@ -182,14 +182,11 @@ export class Dash {
         // If last level found is still valid
         lib.verifyValidity(lastT, this.now, dtMax, () => {
 
-            // Round level (U)
-            const level = lib.round(lastLevel, 1);
-
             // Rank level
-            this.reservoir.addClass(lib.rank(level, scale));
+            this.reservoir.addClass(lib.rank(lastLevel, scale));
 
             // Update level
-            this.reservoir.find(".value").text(level);
+            this.reservoir.find(".value").text(lastLevel.toFixed(1));
 
         });
     }
@@ -206,11 +203,8 @@ export class Dash {
         const lastT = lib.last(t),
               lastBasal = lib.last(basals);
 
-        // Round basal (U/h)
-        const basal = lib.round(lastBasal, 2);
-
         // Update basal
-        this.basal.find(".value").text(basal);
+        this.basal.find(".value").text(lastBasal.toFixed(2));
     }
 
 }
