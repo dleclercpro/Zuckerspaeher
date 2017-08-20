@@ -63,180 +63,57 @@ export class Dash {
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEBG
+     COMPUTEDELTABG
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateBG(data) {
-
-        // Destructure data
-        const [ t, BGs ] = data;
-
-        // Get last BGs and their corresponding epoch times
-        const lastT = lib.last(t),
-              lastBG = lib.last(BGs),
-              lastlastT = lib.last(t, 2),
-              lastlastBG = lib.last(BGs, 2);
-
-        // Define max validity time (ms) for (1) latest BG and (2) latest dBG/dt
-        const dtMaxBG = 15 * 60 * 1000,
-              dtMaxdBGdt = 5 * 60 * 1000;
-
-        // If last BG found is still valid
-        lib.verifyValidity(lastT, this.now, dtMaxBG, () => {
-
-            // Compute BG rank
-            const BGRank = lib.rank(lastBG, config.BGScale);
-
-            // Update BG
-            this.BG.text(lastBG.toFixed(1));
-
-            // Add rank
-            this.BG.addClass(BGRank);
-
-            // If second last BG found is still valid
-            lib.verifyValidity(lastlastT, lastT, dtMaxdBGdt, () => {
-
-                // Compute dBG (mmol/L)
-                const dBG = lastBG - lastlastBG;
-
-                // Compute dt (h)
-                const dt = (lastT - lastlastT) / 1000 / 60 / 60;
-
-                // Compute derivative (mmol/L/ms)
-                const dBGdt = dBG / dt;
-
-                // Compute dBG/dt rank and get trend arrow
-                const trend = lib.rank(dBGdt, config.dBGdtScale);
-
-                // Update dBG and dBG/dt
-                this.dBG.find(".value").text(lib.round(dBG, 1).toFixed(1));
-                this.dBGdt.find(".value").text(lib.round(dBGdt, 1).toFixed(1));
-
-                // Add trend arrow
-                this.trend.text(trend).addClass(BGRank);
-            });
-        });
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATENB
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateNB(data) {
-
-        // Destructure data
-        const [ t, NBs ] = data;
-
-        // Get last NB and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastNB = lib.last(NBs);
-
-        // Define max validity time (ms)
-        const dtMax = 30 * 60 * 1000;
-
-        // If last TB found is still valid
-        lib.verifyValidity(lastT, this.now, dtMax, () => {
-
-            // Update TB
-            this.netBasal.find(".value").text(lastNB.toFixed(2));
-
-        });
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEIOB
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateIOB(data) {
-
-        // Destructure data
-        const [ t, IOBs ] = data;
-
-        // Get last IOB and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastIOB = lib.last(IOBs);
-
-        // Define max validity time (ms)
-        const dtMax = 15 * 60 * 1000;
-
-        // If last TB found is still valid
-        lib.verifyValidity(lastT, this.now, dtMax, () => {
-
-            // Update TB
-            this.IOB.find(".value").text(lastIOB.toFixed(1));
-        });
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEPUMPRESERVOIRLEVEL
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updatePumpReservoirLevel(data, scale) {
-
-        // Destructure data
-        const [ t, levels ] = data;
-
-        // Get last level and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastLevel = lib.last(levels);
-
-        // Define max validity time (ms)
-        const dtMax = 30 * 60 * 1000;
-
-        // If last level found is still valid
-        lib.verifyValidity(lastT, this.now, dtMax, () => {
-
-            // Rank level
-            this.reservoir.addClass(lib.rank(lastLevel, scale));
-
-            // Update level
-            this.reservoir.find(".value").text(lastLevel.toFixed(1));
-
-        });
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEBASAL
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateBasal(data) {
-
-        // Destructure data
-        const [ t, basals ] = data;
-
-        // Get last basal and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastBasal = lib.last(basals);
-
-        // Update basal
-        this.basal.find(".value").text(lastBasal.toFixed(2));
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEISF
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateISF(data) {
+    computeDeltaBG(data) {
 
         // Destructure data
         const [ t, y ] = data;
 
-        // Get last value and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastY = lib.last(y);
+        // Compute dBG (mmol/L)
+        const dBG = lib.last(y) - lib.last(y, 2);
 
-        // Update element
-        this.ISF.find(".value").text(lastY.toFixed(1));
+        // Return it
+        return dBG;
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATECSF
+     COMPUTEDELTABGDELTAT
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateCSF(data) {
+    computeDeltaBGDeltaT(data) {
 
         // Destructure data
         const [ t, y ] = data;
 
-        // Get last value and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastY = lib.last(y);
+        // Compute dBG (mmol/L)
+        const dBG = this.computeDeltaBG(data);
 
-        // Update element
-        this.CSF.find(".value").text(lastY.toFixed(0));
+        // Compute dt (h)
+        const dt = (lib.last(t) - lib.last(t, 2)) / 1000 / 60 / 60;
+
+        // Compute derivative (mmol/L/h)
+        const dBGdt = dBG / dt;
+
+        // Return it
+        return dBGdt;
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     COMPUTEBGTREND
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    computeBGTrend(data) {
+
+        // Destructure data
+        const [ t, y ] = data;
+
+        // Compute derivative (mmol/L/h)
+        const dBGdt = this.computeDeltaBGDeltaT(data);
+
+        // Color trend according to last BG
+        this.trend.addClass(lib.rank(lib.last(y), config.BGScale));
+
+        // Return trend
+        return lib.rank(dBGdt, config.dBGdtScale);
     }
 
 }

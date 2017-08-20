@@ -479,13 +479,13 @@ main {
   flex: 1;
   flex-direction: column; }
 
-.BG.very-low, .mod-user > .details > .live > .very-low.trend, .BG.very-high, .mod-user > .details > .live > .very-high.trend {
+.BG.very-low, .mod-user > .right > .live > .very-low.trend, .BG.very-high, .mod-user > .right > .live > .very-high.trend {
   color: #e50000; }
 
-.BG.low, .mod-user > .details > .live > .low.trend, .BG.high, .mod-user > .details > .live > .high.trend {
+.BG.low, .mod-user > .right > .live > .low.trend, .BG.high, .mod-user > .right > .live > .high.trend {
   color: #ff7500; }
 
-.BG.normal, .mod-user > .details > .live > .normal.trend {
+.BG.normal, .mod-user > .right > .live > .normal.trend {
   color: #99e500; }
 
 .TB {
@@ -628,34 +628,34 @@ main {
 .mod-graph {
   display: flex;
   flex-wrap: wrap; }
-  .mod-graph.BG, .mod-user > .details > .live > .mod-graph.trend {
+  .mod-graph.BG, .mod-user > .right > .live > .mod-graph.trend {
     width: 100vw;
     height: calc(0.75 * (100vh - 70px));
     flex: none;
     order: 3; }
-    .mod-graph.BG > .mod-axis.x, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.x {
+    .mod-graph.BG > .mod-axis.x, .mod-user > .right > .live > .mod-graph.trend > .mod-axis.x {
       width: calc(100% - 28px);
       height: 0px; }
-    .mod-graph.BG > .mod-axis.y, .mod-user > .details > .live > .mod-graph.trend > .mod-axis.y {
+    .mod-graph.BG > .mod-axis.y, .mod-user > .right > .live > .mod-graph.trend > .mod-axis.y {
       width: 28px;
       height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-inner, .mod-user > .details > .live > .mod-graph.trend > .mod-inner {
+    .mod-graph.BG > .mod-inner, .mod-user > .right > .live > .mod-graph.trend > .mod-inner {
       width: calc(100% - 28px);
       height: calc(100% - 0px); }
-    .mod-graph.BG > .mod-corner, .mod-user > .details > .live > .mod-graph.trend > .mod-corner {
+    .mod-graph.BG > .mod-corner, .mod-user > .right > .live > .mod-graph.trend > .mod-corner {
       width: 28px;
       height: 0px; }
-    .mod-graph.BG .BG.very-low, .mod-user > .details > .live > .mod-graph.trend .BG.very-low, .mod-graph.BG .mod-user > .details > .live > .very-low.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-low.trend, .mod-graph.BG .BG.very-high, .mod-user > .details > .live > .mod-graph.trend .BG.very-high, .mod-graph.BG .mod-user > .details > .live > .very-high.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-high.trend {
+    .mod-graph.BG .BG.very-low, .mod-user > .right > .live > .mod-graph.trend .BG.very-low, .mod-graph.BG .mod-user > .right > .live > .very-low.trend, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .very-low.trend, .mod-graph.BG .BG.very-high, .mod-user > .right > .live > .mod-graph.trend .BG.very-high, .mod-graph.BG .mod-user > .right > .live > .very-high.trend, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .very-high.trend {
       background-color: #e50000; }
-      .mod-graph.BG .BG.very-low:hover, .mod-user > .details > .live > .mod-graph.trend .BG.very-low:hover, .mod-graph.BG .mod-user > .details > .live > .very-low.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-low.trend:hover, .mod-graph.BG .BG.very-high:hover, .mod-user > .details > .live > .mod-graph.trend .BG.very-high:hover, .mod-graph.BG .mod-user > .details > .live > .very-high.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .very-high.trend:hover {
+      .mod-graph.BG .BG.very-low:hover, .mod-user > .right > .live > .mod-graph.trend .BG.very-low:hover, .mod-graph.BG .mod-user > .right > .live > .very-low.trend:hover, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .very-low.trend:hover, .mod-graph.BG .BG.very-high:hover, .mod-user > .right > .live > .mod-graph.trend .BG.very-high:hover, .mod-graph.BG .mod-user > .right > .live > .very-high.trend:hover, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .very-high.trend:hover {
         background-color: #660000; }
-    .mod-graph.BG .BG.low, .mod-user > .details > .live > .mod-graph.trend .BG.low, .mod-graph.BG .mod-user > .details > .live > .low.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .low.trend, .mod-graph.BG .BG.high, .mod-user > .details > .live > .mod-graph.trend .BG.high, .mod-graph.BG .mod-user > .details > .live > .high.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .high.trend {
+    .mod-graph.BG .BG.low, .mod-user > .right > .live > .mod-graph.trend .BG.low, .mod-graph.BG .mod-user > .right > .live > .low.trend, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .low.trend, .mod-graph.BG .BG.high, .mod-user > .right > .live > .mod-graph.trend .BG.high, .mod-graph.BG .mod-user > .right > .live > .high.trend, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .high.trend {
       background-color: #ff7500; }
-      .mod-graph.BG .BG.low:hover, .mod-user > .details > .live > .mod-graph.trend .BG.low:hover, .mod-graph.BG .mod-user > .details > .live > .low.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .low.trend:hover, .mod-graph.BG .BG.high:hover, .mod-user > .details > .live > .mod-graph.trend .BG.high:hover, .mod-graph.BG .mod-user > .details > .live > .high.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .high.trend:hover {
+      .mod-graph.BG .BG.low:hover, .mod-user > .right > .live > .mod-graph.trend .BG.low:hover, .mod-graph.BG .mod-user > .right > .live > .low.trend:hover, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .low.trend:hover, .mod-graph.BG .BG.high:hover, .mod-user > .right > .live > .mod-graph.trend .BG.high:hover, .mod-graph.BG .mod-user > .right > .live > .high.trend:hover, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .high.trend:hover {
         background-color: #803b00; }
-    .mod-graph.BG .BG.normal, .mod-user > .details > .live > .mod-graph.trend .BG.normal, .mod-graph.BG .mod-user > .details > .live > .normal.trend, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .normal.trend {
+    .mod-graph.BG .BG.normal, .mod-user > .right > .live > .mod-graph.trend .BG.normal, .mod-graph.BG .mod-user > .right > .live > .normal.trend, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .normal.trend {
       background-color: #99e500; }
-      .mod-graph.BG .BG.normal:hover, .mod-user > .details > .live > .mod-graph.trend .BG.normal:hover, .mod-graph.BG .mod-user > .details > .live > .normal.trend:hover, .mod-user > .details > .live > .mod-graph.trend .mod-user > .details > .live > .normal.trend:hover {
+      .mod-graph.BG .BG.normal:hover, .mod-user > .right > .live > .mod-graph.trend .BG.normal:hover, .mod-graph.BG .mod-user > .right > .live > .normal.trend:hover, .mod-user > .right > .live > .mod-graph.trend .mod-user > .right > .live > .normal.trend:hover {
         background-color: #446600; }
   .mod-graph.I {
     width: 100vw;
@@ -790,7 +790,7 @@ header {
   position: absolute;
   top: 5%;
   left: 3%;
-  align-items: center;
+  display: flex;
   width: 45vw;
   max-width: 450px;
   padding: 30px 2.5vw;
@@ -808,59 +808,73 @@ header {
     .mod-user {
       width: 100vw;
       height: 100px;
-      justify-content: center;
       cursor: pointer; } }
-  .mod-user > .img {
-    width: 125px;
-    height: 125px;
-    border-radius: 50%;
-    border: 5px solid #eeeeee;
-    object-fit: cover; }
-    @media only screen and (max-width: 1024px) {
-      .mod-user > .img {
-        width: 100px;
-        height: 100px;
-        border-width: 4px; } }
-    @media only screen and (max-width: 640px) {
-      .mod-user > .img {
-        width: 75px;
-        height: 75px;
-        border-width: 3px; } }
-  .mod-user > .details {
+  .mod-user > .left {
     display: flex;
-    flex-direction: column;
-    margin-left: 5%; }
-    @media only screen and (max-width: 640px) {
-      .mod-user > .details {
-        flex-direction: column-reverse; } }
-    .mod-user > .details > p {
-      font-size: 17px;
-      line-height: 1.25em;
-      white-space: nowrap; }
+    flex: none;
+    align-items: center;
+    margin-right: 5%; }
+    .mod-user > .left > .img {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      border: 5px solid #eeeeee;
+      object-fit: cover; }
       @media only screen and (max-width: 1024px) {
-        .mod-user > .details > p {
+        .mod-user > .left > .img {
+          width: 100px;
+          height: 100px;
+          border-width: 4px; } }
+      @media only screen and (max-width: 640px) {
+        .mod-user > .left > .img {
+          width: 75px;
+          height: 75px;
+          border-width: 3px; } }
+  .mod-user > .right {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center; }
+    .mod-user > .right p,
+    .mod-user > .right span {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: 17px;
+      line-height: 1.25em; }
+      @media only screen and (max-width: 1024px) {
+        .mod-user > .right p,
+        .mod-user > .right span {
           font-size: 16px; } }
       @media only screen and (max-width: 640px) {
-        .mod-user > .details > p {
+        .mod-user > .right p,
+        .mod-user > .right span {
           font-size: 15px; } }
-    @media only screen and (max-width: 640px) {
-      .mod-user > .details > .name, .mod-user > .details > .birthday, .mod-user > .details > .cgm, .mod-user > .details > .pump {
-        display: none; } }
-    .mod-user > .details > .cgm > .battery,
-    .mod-user > .details > .pump > .battery {
+    .mod-user > .right .battery {
       font-weight: bold; }
-    .mod-user > .details > .live {
+    @media only screen and (max-width: 640px) {
+      .mod-user > .right > .details {
+        display: none; } }
+    .mod-user > .right > .details > .name,
+    .mod-user > .right > .details > .birthday {
+      display: block; }
+    @media only screen and (max-width: 640px) {
+      .mod-user > .right > .cgm,
+      .mod-user > .right > .pump,
+      .mod-user > .right > .loop {
+        display: none; } }
+    .mod-user > .right > .live {
       display: none; }
       @media only screen and (max-width: 640px) {
-        .mod-user > .details > .live {
-          display: block;
-          text-align: center;
-          font-family: "Shadows Into Light", sans-serif;
-          font-size: 45px;
-          font-weight: bold; } }
-      .mod-user > .details > .live > .BG, .mod-user > .details > .live > .trend {
-        background: none; }
-      .mod-user > .details > .live > .trend {
+        .mod-user > .right > .live {
+          display: flex;
+          justify-content: center;
+          align-items: center; } }
+      .mod-user > .right > .live > .BG, .mod-user > .right > .live > .trend {
+        background: none;
+        font-family: "Shadows Into Light", sans-serif;
+        font-size: 45px;
+        font-weight: bold; }
+      .mod-user > .right > .live > .trend {
         margin-left: -5px; }
 
 .mod-axis {

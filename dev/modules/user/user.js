@@ -60,67 +60,25 @@ export class User {
 	}
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATEPUMPBATTERYLEVEL
+     COMPUTEBATTERYLEVEL
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updatePumpBatteryLevel(data, scale) {
+    computeBatteryLevel(data) {
 
         // Destructure data
-        const [ t, levels ] = data;
+        const [ t, y ] = data;
 
-        // Get last level and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastLevel = lib.last(levels);
+        // Get last level
+        let level = lib.last(y);
 
-        // Define max validity time (ms)
-        const dtMax = 60 * 60 * 1000;
+        // Define min/max levels (V)
+        const maxLevel = 1.50,
+              minLevel = 1.15;
 
-        // If last level found is still valid
-        lib.verifyValidity(lastT, this.now, dtMax, () => {
+        // Convert and round level (%)
+        level = lib.round((level - minLevel) / (maxLevel - minLevel) * 100);
 
-        	// Define min/max levels (V)
-        	const maxLevel = 1.50,
-        		  minLevel = 1.15;
-
-		    // Compute and round level (%)
-		    const level = lib.round((lastLevel - minLevel) / (maxLevel - minLevel) * 100);
-
-            // Rank level
-            this.pumpBattery.addClass(lib.rank(level, scale));
-
-            // Update level
-            this.pumpBattery.text("(" + level.toFixed(0) + "%)");
-
-        });
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     UPDATECGMBATTERYLEVEL
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    updateCGMBatteryLevel(data, scale) {
-
-        // Destructure data
-        const [ t, levels ] = data;
-
-        // Get last level and its corresponding epoch time
-        const lastT = lib.last(t),
-              lastLevel = lib.last(levels);
-
-        // Define max validity time (ms)
-        const dtMax = 30 * 60 * 1000;
-
-        // If last level found is still valid
-        lib.verifyValidity(lastT, this.now, dtMax, () => {
-
-		    // Round level (%)
-		    const level = lib.round(lastLevel);
-
-		    // Rank level
-            this.cgmBattery.addClass(lib.rank(level, scale));
-
-            // Update level
-            this.cgmBattery.text("(" + level.toFixed(0) + "%)");
-
-        });
+        // Return it
+        return level
     }
 
 }

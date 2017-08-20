@@ -1,4 +1,4 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  Title:    lib.js
 
@@ -15,7 +15,7 @@
 
  Notes:    ...
 
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 // Imports
 import jQuery from "jquery";
@@ -23,6 +23,9 @@ import jQuery from "jquery";
 // Enable jQuery
 window.$ = window.jQuery = jQuery;
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ LAST
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const last = (array, n = 1) => {
 
     // If empty
@@ -40,6 +43,9 @@ export const last = (array, n = 1) => {
     }
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ FILTERSTRING
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const filterString = (string, x) => {
 
     // Get undesirable term length
@@ -54,6 +60,9 @@ export const filterString = (string, x) => {
     return result;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ARRAYIZE
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const arrayize = (x) => {
 
     // Initialize response
@@ -70,6 +79,9 @@ export const arrayize = (x) => {
     return X;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ MIRROR
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const mirror = (x, zero = false) => {
 
     // Initialize mirrored array
@@ -95,6 +107,9 @@ export const mirror = (x, zero = false) => {
     return X;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ROUND
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const round = (x, n = 0) => {
 
     // Ensure float
@@ -107,6 +122,9 @@ export const round = (x, n = 0) => {
     return Math.round(x * e) / e;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ MAPTIME
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const mapTime = (t) => {
 
     // Initialize date components
@@ -151,6 +169,9 @@ export const mapTime = (t) => {
     return date.getTime();
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ FORMATTIME
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const formatTime = (T, format) => {
 
     // Make sure an array was given as input
@@ -324,6 +345,9 @@ export const formatTime = (T, format) => {
     }
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ INDEXSORT
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const indexSort = (x, ...args) => {
 
     // Count number of entries in main array
@@ -375,16 +399,9 @@ export const indexSort = (x, ...args) => {
     return [x, ...sorted]
 };
 
-export const verifyValidity = (t0, t1, dt, callback) => {
-
-    // If input is still valid
-    if (t0 != null && t1 - t0 <= dt) {
-
-        // Execute callback
-        callback();
-    }
-};
-
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ GETDATA
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS") => {
 
     // Initialize data arrays
@@ -436,6 +453,9 @@ export const getData = (report, branch = null, format = "YYYY.MM.DD - HH:MM:SS")
     return [x, y];
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ RANK
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const rank = (x, scale) => {
 
     // Make sure value is a float
@@ -475,6 +495,46 @@ export const rank = (x, scale) => {
     return rank;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ DECODEHTMLUNICODE
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 export const decodeHTMLUnicode = (x) => {
     return $("<textarea>").html(x).text();
 };
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ UPDATE
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+export const update = (element, data, precision, expiration, scale, value) => {
+
+    // Destructure data
+    const [ t, y ] = data;
+
+    // If data is still valid
+    if (expiration && this.now - last(t) <= expiration * 60 * 1000 || !expiration) {
+
+        // If no value given
+        if (!value) {
+
+            // Get last one
+            value = last(y);
+        }
+
+        // If scale given
+        if (scale) {
+
+            // Rank value
+            element.addClass(rank(value, scale));
+        }
+
+        // If number
+        if (typeof(value) == "number") {
+
+            // Round it
+            value = round(value, precision).toFixed(precision);
+        }
+
+        // Update element
+        element.find(".value").text(value);
+    }
+}

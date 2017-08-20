@@ -1,7 +1,7 @@
 .mod-user {
 	@include box($black-trans, $border-radius, $shadow-radius);
 	@include absolute($top: 5%, $left: $padding-header);
-	align-items: center;
+	display: flex;
 	width: 45vw;
 	max-width: 450px;
 	padding: 30px 2.5vw;
@@ -20,78 +20,85 @@
 	@include mq(mobile) {
 		width: 100vw;
 		height: $mobile-height-user;
-		justify-content: center;
 		cursor: pointer;
 	}
 
-	> .img {
-		width: 125px;
-		height: 125px;
-		border-radius: 50%;
-		border: 5px solid $white;
-		object-fit: cover;
+	> .left {
+		display: flex;
+		flex: none;
+		align-items: center;
+		margin-right: 5%;
 
-		@include mq(tablet) {
-			width: 100px;
-			height: 100px;
-			border-width: 4px;
+		> .img {
+			width: 125px;
+			height: 125px;
+			border-radius: 50%;
+			border: 5px solid $white;
+			object-fit: cover;
+
+			@include mq(tablet) {
+				width: 100px;
+				height: 100px;
+				border-width: 4px;
+			}
+
+			@include mq(mobile) {
+				width: 75px;
+				height: 75px;
+				border-width: 3px;
+			}
 		}
 
-		@include mq(mobile) {
-			width: 75px;
-			height: 75px;
-			border-width: 3px;
-		}
 	}
 
-	> .details {
+	> .right {
 		display: flex;
+		flex: 1;
 		flex-direction: column;
-		margin-left: 5%;
+		justify-content: center;
 
-		@include mq(mobile) {
-			flex-direction: column-reverse;
-		}
-
-		> p {
-			@include font("user-details");
+		p,
+		span {
+			display: inline-block;
 			white-space: nowrap;
+			@include font("user-details");
 		}
 
-		> .name {
+		.battery {
+			font-weight: bold;
+		}
+
+		> .details {
 			@include mq(mobile) {
 				display: none;
 			}
-		}
 
-		> .birthday {
-			@extend .name;
-		}
-
-		> .cgm,
-		> .pump {
-			@extend .name;
-
-			> .battery {
-				font-weight: bold;
+			> .name,
+			> .birthday {
+				display: block;
 			}
 		}
 
+		> .cgm,
+		> .pump,
 		> .loop {
-
+			@include mq(mobile) {
+				display: none;
+			}
 		}
 
 		> .live {
 			display: none;
 
 			@include mq(mobile) {
-				display: block;
-				text-align: center;
-				@include font("user-BG");
+				display: flex;
+				justify-content: center;
+				align-items: center;
 			}
 			
 			> .BG {
 				background: none;
+				@include font("user-BG");
 			}
 
 			> .trend {

@@ -74,17 +74,21 @@ const build = (elements, data, now) => {
     graphBG.rank("dots", "BG", config.BGScale);
 
     // Update dash
-    dash.updateBG(BGs);
-    dash.updateNB(NBs);
-    dash.updateIOB(IOBs);
-    dash.updatePumpReservoirLevel(pumpReservoirLevels, config.reservoirLevelScale);
-    dash.updateBasal(basal);
-    dash.updateISF(ISF);
-    dash.updateCSF(CSF);
+    lib.update(dash.BG, BGs, 1, 15, config.BGScale);
+    lib.update(dash.dBG, BGs, 1, 15, null, dash.computeDeltaBG(BGs));
+    lib.update(dash.dBGdt, BGs, 1, 15, config.dBGdtScale, dash.computeDeltaBGDeltaT(BGs));
+    lib.update(dash.trend, BGs, 1, 15, null, dash.computeBGTrend(BGs))
+    lib.update(dash.NB, NBs, 2, 30);
+    lib.update(dash.IOB, IOBs, 1, 15);
+    lib.update(dash.reservoir, pumpReservoirLevels, 1, 30, config.reservoirLevelScale);
+    lib.update(dash.basal, basal, 2);
+    lib.update(dash.ISF, ISF, 1);
+    lib.update(dash.CSF, CSF, 0);
 
     // Update user
-    user.updatePumpBatteryLevel(pumpBatteryLevels, config.batteryLevelScale);
-    user.updateCGMBatteryLevel(cgmBatteryLevels, config.batteryLevelScale);
+    lib.update(user.pumpBattery, pumpBatteryLevels, 0, 30, config.batteryLevelScale,
+               user.computeBatteryLevel(pumpBatteryLevels));
+    lib.update(user.cgmBattery, cgmBatteryLevels, 0, 30, config.batteryLevelScale);
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
