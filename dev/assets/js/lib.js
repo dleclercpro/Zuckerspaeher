@@ -505,30 +505,33 @@ export const decodeHTMLUnicode = (x) => {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  UPDATE
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-export const update = (element, data, precision, expiration, scale, value) => {
+export const update = (element, data, precision = null, age = null, scale = null, value = null) => {
+
+    // Get current epoch time
+    const now = new Date().getTime();
 
     // Destructure data
     const [ t, y ] = data;
 
     // If data is still valid
-    if (expiration && this.now - last(t) <= expiration * 60 * 1000 || !expiration) {
+    if (age != null && now - last(t) <= age * 60 * 1000 || age == null) {
 
         // If no value given
-        if (!value) {
+        if (value == null) {
 
             // Get last one
             value = last(y);
         }
 
         // If scale given
-        if (scale) {
+        if (scale != null) {
 
             // Rank value
             element.addClass(rank(value, scale));
         }
 
         // If number
-        if (typeof(value) == "number") {
+        if (precision != null && typeof(value) == "number") {
 
             // Round it
             value = round(value, precision).toFixed(precision);

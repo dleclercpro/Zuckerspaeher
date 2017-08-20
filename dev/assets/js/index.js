@@ -78,17 +78,17 @@ const build = (elements, data, now) => {
     lib.update(dash.dBG, BGs, 1, 15, null, dash.computeDeltaBG(BGs));
     lib.update(dash.dBGdt, BGs, 1, 15, config.dBGdtScale, dash.computeDeltaBGDeltaT(BGs));
     lib.update(dash.trend, BGs, 1, 15, null, dash.computeBGTrend(BGs))
-    lib.update(dash.NB, NBs, 2, 30);
     lib.update(dash.IOB, IOBs, 1, 15);
-    lib.update(dash.reservoir, pumpReservoirLevels, 1, 30, config.reservoirLevelScale);
-    lib.update(dash.basal, basal, 2);
     lib.update(dash.ISF, ISF, 1);
     lib.update(dash.CSF, CSF, 0);
+    lib.update(dash.basal, basal, 2);
+    lib.update(dash.netBasal, NBs, 2, 30);
+    lib.update(dash.reservoir, pumpReservoirLevels, 1, 30, config.reservoirLevelScale);
 
     // Update user
+    lib.update(user.cgmBattery, cgmBatteryLevels, 0, 30, config.batteryLevelScale);
     lib.update(user.pumpBattery, pumpBatteryLevels, 0, 30, config.batteryLevelScale,
                user.computeBatteryLevel(pumpBatteryLevels));
-    lib.update(user.cgmBattery, cgmBatteryLevels, 0, 30, config.batteryLevelScale);
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
