@@ -51,6 +51,10 @@
 
 .B {
     color: $blue;
+
+    &.mod-dot {
+        @extend %square;
+    }
 }
 
 .battery,

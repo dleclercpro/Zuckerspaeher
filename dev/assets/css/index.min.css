@@ -441,6 +441,9 @@ header > #buttons {
   justify-content: center;
   align-items: center; }
 
+.B.mod-dot {
+  border-radius: 0; }
+
 /***************************************************************************************************
 
 	Title : _base.scss
@@ -978,8 +981,6 @@ header {
     .mod-dot {
       width: 8px;
       height: 8px; } }
-  .mod-dot.square {
-    border-radius: 0; }
   @media only screen and (max-width: 1024px) {
     .mod-dot {
       border-size: 1px; } }
