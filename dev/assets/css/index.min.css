@@ -488,6 +488,11 @@ main {
 .BG.normal, .mod-user > .right > .live > .normal.trend {
   color: #99e500; }
 
+.mod-dash .TB, .mod-dash
+.IOB, .mod-dash
+.B {
+  color: #eeeeee; }
+
 .TB {
   color: #484848; }
 
@@ -497,32 +502,30 @@ main {
 .B {
   color: #0025dd; }
 
-.battery .very-low,
-.reservoir .very-low {
-  color: #e50000 !important; }
+.battery.very-low,
+.reservoir.very-low {
+  color: #e50000; }
 
-.battery .low,
-.battery .medium,
-.reservoir .low,
-.reservoir .medium {
-  color: #ff7500 !important; }
+.battery.low, .battery.medium,
+.reservoir.low,
+.reservoir.medium {
+  color: #ff7500; }
 
-.battery .high,
-.battery .very-high,
-.reservoir .high,
-.reservoir .very-high {
-  color: #99e500 !important; }
+.battery.high, .battery.very-high,
+.reservoir.high,
+.reservoir.very-high {
+  color: #99e500; }
 
 .age .new {
-  color: #99e500 !important; }
+  color: #99e500; }
 
 .age .very-young,
 .age .young {
-  color: #ff7500 !important; }
+  color: #ff7500; }
 
 .age .old,
 .age .very-old {
-  color: #e50000 !important; }
+  color: #e50000; }
 
 .mod-bubble {
   display: flex;
@@ -614,7 +617,6 @@ main {
     .mod-dash > .age > p {
       font-size: 17px;
       line-height: 1.25em;
-      color: #eeeeee;
       white-space: nowrap;
       margin-right: 15px; }
       @media only screen and (max-width: 1024px) {

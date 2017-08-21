@@ -32,6 +32,15 @@
 	}
 }
 
+.TB,
+.IOB,
+.B {
+
+    .mod-dash & {
+        color: $white;
+    }
+}
+
 .TB {
     color: $light-gray;
 }
@@ -47,34 +56,34 @@
 .battery,
 .reservoir {
 
-    .very-low {
-        color: $red !important;
+    &.very-low {
+        color: $red;
     }
 
-    .low,
-    .medium {
-        color: $orange !important;
+    &.low,
+    &.medium {
+        color: $orange;
     }
 
-    .high,
-    .very-high {
-        color: $green !important;
+    &.high,
+    &.very-high {
+        color: $green;
     }
 }
 
 .age {
 
     .new {
-        color: $green !important;
+        color: $green;
     }
 
     .very-young,
     .young {
-        color: $orange !important;
+        color: $orange;
     }
 
     .old,
     .very-old {
-        color: $red !important;
+        color: $red;
     }
 }
