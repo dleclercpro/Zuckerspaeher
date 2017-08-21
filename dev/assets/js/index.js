@@ -47,7 +47,8 @@ const build = (elements, data, now) => {
             basal,
             pumpReservoirLevels,
             pumpBatteryLevels,
-            cgmBatteryLevels} = data;
+            cgmBatteryLevels,
+            cgmSensorStatuses } = data;
 
     // Build corner
     graphI.buildCorner();
@@ -77,13 +78,14 @@ const build = (elements, data, now) => {
     lib.update(dash.BG, BGs, 1, 15, config.BGScale);
     lib.update(dash.dBG, BGs, 1, 15, null, dash.computeDeltaBG(BGs));
     lib.update(dash.dBGdt, BGs, 1, 15, config.dBGdtScale, dash.computeDeltaBGDeltaT(BGs));
-    lib.update(dash.trend, BGs, 1, 15, null, dash.computeBGTrend(BGs))
+    lib.update(dash.trend, BGs, 1, 15, null, dash.computeBGTrend(BGs));
     lib.update(dash.IOB, IOBs, 1, 15);
     lib.update(dash.ISF, ISF, 1);
     lib.update(dash.CSF, CSF, 0);
     lib.update(dash.basal, basal, 2);
     lib.update(dash.netBasal, NBs, 2, 30);
     lib.update(dash.reservoir, pumpReservoirLevels, 1, 30, config.reservoirLevelScale);
+    lib.update(dash.SAGE, cgmSensorStatuses, 0, null, config.ageScale, dash.computeSensorAge(cgmSensorStatuses));
 
     // Update user
     lib.update(user.cgmBattery, cgmBatteryLevels, 0, 30, config.batteryLevelScale);
@@ -188,6 +190,7 @@ $(document).ready(() => {
         pumpReservoirLevels: lib.getData("reports/history.json", ["Pump", "Reservoir Levels"]),
         pumpBatteryLevels: lib.getData("reports/history.json", ["Pump", "Battery Levels"]),
         cgmBatteryLevels: lib.getData("reports/history.json", ["CGM", "Battery Levels"]),
+        cgmSensorStatuses: lib.getData("reports/history.json", ["CGM", "Sensor Statuses"]),
     };
 
     // Build elements

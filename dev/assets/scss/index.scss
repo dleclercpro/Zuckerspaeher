@@ -47,17 +47,34 @@
 .battery,
 .reservoir {
 
-    &.very-low {
+    .very-low {
         color: $red !important;
     }
 
-    &.low,
-    &.medium {
+    .low,
+    .medium {
         color: $orange !important;
     }
 
-    &.high,
-    &.very-high {
+    .high,
+    .very-high {
         color: $green !important;
+    }
+}
+
+.age {
+
+    .new {
+        color: $green !important;
+    }
+
+    .very-young,
+    .young {
+        color: $orange !important;
+    }
+
+    .old,
+    .very-old {
+        color: $red !important;
     }
 }

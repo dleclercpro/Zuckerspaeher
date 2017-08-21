@@ -497,19 +497,32 @@ main {
 .B {
   color: #0025dd; }
 
-.battery.very-low,
-.reservoir.very-low {
+.battery .very-low,
+.reservoir .very-low {
   color: #e50000 !important; }
 
-.battery.low, .battery.medium,
-.reservoir.low,
-.reservoir.medium {
+.battery .low,
+.battery .medium,
+.reservoir .low,
+.reservoir .medium {
   color: #ff7500 !important; }
 
-.battery.high, .battery.very-high,
-.reservoir.high,
-.reservoir.very-high {
+.battery .high,
+.battery .very-high,
+.reservoir .high,
+.reservoir .very-high {
   color: #99e500 !important; }
+
+.age .new {
+  color: #99e500 !important; }
+
+.age .very-young,
+.age .young {
+  color: #ff7500 !important; }
+
+.age .old,
+.age .very-old {
+  color: #e50000 !important; }
 
 .mod-bubble {
   display: flex;

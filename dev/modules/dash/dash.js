@@ -58,6 +58,11 @@ export class Dash {
         this.ISF = this.factors.find(".ISF");
         this.CSF = this.factors.find(".CSF");
 
+        // Age
+        this.age = this.self.find(".age");
+        this.SAGE = this.age.find(".SAGE");
+        this.CAGE = this.age.find(".CAGE");
+
         // Store current epoch time
         this.now = now;
     }
@@ -114,6 +119,41 @@ export class Dash {
 
         // Return trend
         return lib.rank(dBGdt, config.dBGdtScale);
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     COMPUTESENSORAGE
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    computeSensorAge(data) {
+
+        // Destructure data
+        const [ t, y ] = data;
+
+        // Initialize last sensor starting time
+        let start;
+
+        // Look for last started in descending order
+        for (let i = t.length - 1; i >= 0; i--) {
+
+            // If sensor start found
+            if (y[i] == "Started") {
+
+                // Store it
+                start = t[i];
+
+                // Exit
+                break;
+            }
+        }
+
+        // Get current epoch time
+        const now = new Date().getTime();
+
+        // Compute sensor age (h)
+        const age = (now - start) / 1000 / 60 / 60;
+
+        // Return it
+        return age;
     }
 
 }
