@@ -71,8 +71,8 @@ export class User {
         let level = lib.last(y);
 
         // Define min/max levels (V)
-        const maxLevel = 1.50,
-              minLevel = 1.15;
+        const maxLevel = 1.65,
+              minLevel = 1.05;
 
         // Convert and round level (%)
         level = lib.round((level - minLevel) / (maxLevel - minLevel) * 100);
